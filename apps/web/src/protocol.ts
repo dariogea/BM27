@@ -1,24 +1,81 @@
-import type { MatchDetail, Season, TeamTactics } from '@bm27/schema';
+import type {
+  GroupSeason,
+  MatchDetail,
+  MatchResult,
+  Player,
+  PlayerSeasonStats,
+  PlayoffSeriesState,
+  TeamTactics,
+} from '@bm27/schema';
 
 /** Commands the UI sends to the simulation worker. The UI never runs the core itself. */
 export type Command =
   | { id: number; type: 'generate'; seed: string }
-  | { id: number; type: 'simulateSeason' }
-  | { id: number; type: 'matchDetail'; matchId: string };
+  | { id: number; type: 'chooseTeam'; teamId: string | null }
+  | { id: number; type: 'setTactics'; tactics: TeamTactics }
+  | { id: number; type: 'setRotation'; playerIds: string[] | null }
+  | { id: number; type: 'advance' }
+  | { id: number; type: 'finishSeason' }
+  | { id: number; type: 'matchDetail'; matchId: string }
+  | { id: number; type: 'exportSave' }
+  | { id: number; type: 'importSave'; json: string };
 
-export interface UniverseSummary {
-  seed: string;
-  /** Next season to simulate. */
+export interface CompetitionViewData {
+  competitionId: string;
   seasonNumber: number;
+  phase: 'regular' | 'playoffs' | 'done';
+  groups: GroupSeason[];
+  playoffSeries: PlayoffSeriesState[];
+  matches: MatchResult[];
+  championTeamId: string | null;
+  promotedTeamIds: string[];
+  relegatedTeamIds: string[];
+}
+
+export interface SquadPlayer {
+  player: Player;
+  overall: number;
+  /** Season totals so far, if the player has played. */
+  stats: PlayerSeasonStats | null;
+}
+
+export interface MyTeamView {
+  teamId: string;
+  name: string;
+  competitionId: string;
+  competitionName: string;
+  level: number;
+  tactics: TeamTactics;
+  /** Hand-picked line-up, or null when the coach decides. */
+  rotation: string[] | null;
+  /** Squad in the order the team will use it: five starters, then the bench. */
+  squad: SquadPlayer[];
+  position: number | null;
+  wins: number;
+  losses: number;
+  nextMatch: { round: number; opponentId: string; home: boolean } | null;
+  lastMatch: MatchResult | null;
+}
+
+/** Everything the UI needs to draw the current state of the game. */
+export interface GameView {
+  seed: string;
+  /** Season being played, or about to be played. */
+  seasonNumber: number;
+  seasonInProgress: boolean;
+  step: number;
+  userTeamId: string | null;
   teamCount: number;
   playerCount: number;
-  competitions: { id: string; name: string; level: number; teamCount: number }[];
+  competitions: { id: string; name: string; level: number; teamIds: string[] }[];
   teamNames: Record<string, string>;
+  /** Tables of the season in progress, or of the last finished one. */
+  tables: CompetitionViewData[];
+  myTeam: MyTeamView | null;
 }
 
 export type Reply =
-  | { id: number; type: 'universe'; summary: UniverseSummary; ms: number }
-  | { id: number; type: 'season'; summary: UniverseSummary; season: Season; ms: number }
+  | { id: number; type: 'state'; view: GameView; message: string }
   | {
       id: number;
       type: 'matchDetail';
@@ -28,4 +85,5 @@ export type Reply =
       tactics: Record<string, TeamTactics>;
       ms: number;
     }
+  | { id: number; type: 'save'; json: string; fileName: string }
   | { id: number; type: 'error'; message: string };

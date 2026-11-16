@@ -1,14 +1,15 @@
 import type {
   Competition,
+  CompetitionProgress,
   CompetitionSeason,
+  Fixture,
   GroupSeason,
   MatchDetail,
   MatchResult,
   Player,
-  PlayerSeasonStats,
-  PlayoffSeries,
   Ruleset,
   Season,
+  SeasonProgress,
   StandingRow,
   Team,
   Universe,
@@ -32,7 +33,26 @@ interface SeasonContext {
   prepared: Map<string, PreparedTeam>;
 }
 
+/** Contexts are cached per universe so stepping through a season stays cheap. */
+const contextCache = new WeakMap<Universe['teams'], SeasonContext>();
+
 function makeContext(universe: Universe): SeasonContext {
+  const cached = contextCache.get(universe.teams);
+  if (
+    cached &&
+    cached.universe.players === universe.players &&
+    cached.universe.seed === universe.seed
+  ) {
+    cached.universe = universe;
+    cached.seasonNumber = universe.seasonNumber;
+    return cached;
+  }
+  const context = buildContext(universe);
+  contextCache.set(universe.teams, context);
+  return context;
+}
+
+function buildContext(universe: Universe): SeasonContext {
   const teamsById = new Map(universe.teams.map((t) => [t.id, t]));
   const playersById = new Map(universe.players.map((p) => [p.id, p]));
   return {
@@ -116,15 +136,157 @@ export interface CompetitionSeasonOptions {
   onMatch?: (detail: MatchDetail) => void;
 }
 
-function simulateCompetition(
+// ---------------------------------------------------------------------------
+// One competition, step by step
+// ---------------------------------------------------------------------------
+
+function createProgress(ctx: SeasonContext, competition: Competition): CompetitionProgress {
+  const prefix = `s${ctx.seasonNumber}-${competition.id}`;
+  const groups = assignGroups(ctx.universe, competition, ctx.teamsById);
+  const fixtures: Fixture[] = [];
+  let counter = 0;
+  let totalRounds = 0;
+  groups.forEach((group, groupIndex) => {
+    for (const f of buildRoundRobin(group.teamIds, competition.format.roundRobinLegs)) {
+      counter++;
+      fixtures.push({
+        id: `${prefix}-r${String(counter).padStart(4, '0')}`,
+        round: f.round,
+        group: groupIndex,
+        homeTeamId: f.homeTeamId,
+        awayTeamId: f.awayTeamId,
+      });
+      if (f.round > totalRounds) totalRounds = f.round;
+    }
+  });
+  return {
+    competitionId: competition.id,
+    phase: 'regular',
+    groups,
+    fixtures,
+    nextRound: 1,
+    totalRounds,
+    matches: [],
+    playoffSeeds: [],
+    playoffRound: 0,
+    playoffAlive: [],
+    playoffEliminated: [],
+    playoffSeries: [],
+    playerStats: [],
+  };
+}
+
+/** League tables of a competition with the matches played so far. */
+export function standingsOf(progress: CompetitionProgress): GroupSeason[] {
+  const regular = progress.matches.filter((m) => m.stage === 'regular');
+  return progress.groups.map((group) => ({
+    name: group.name,
+    teamIds: group.teamIds,
+    standings: computeStandings(group.teamIds, regular),
+  }));
+}
+
+function rankAcrossGroups(groups: readonly GroupSeason[]): Ranked[] {
+  return groups
+    .flatMap((g) => g.standings.map((row) => ({ teamId: row.teamId, row })))
+    .sort(compareAcrossGroups);
+}
+
+/** Creates the series of the current playoff round from the bracket slots. */
+function openPlayoffRound(competition: Competition, work: CompetitionProgress): void {
+  const playoffs = competition.format.playoffs;
+  if (!playoffs) return;
+  const seedOf = new Map(work.playoffSeeds.map((teamId, i) => [teamId, i + 1]));
+  const bestOf = bestOfForRound(playoffs.seriesBestOf, work.playoffRound - 1);
+  for (let i = 0; i < work.playoffAlive.length; i += 2) {
+    const a = work.playoffAlive[i] ?? null;
+    const b = work.playoffAlive[i + 1] ?? null;
+    if (a === null && b === null) continue;
+    if (a === null || b === null) {
+      const through = (a ?? b) as string;
+      work.playoffSeries.push({
+        round: work.playoffRound,
+        bestOf,
+        highSeed: seedOf.get(through) as number,
+        highSeedTeamId: through,
+        lowSeedTeamId: null,
+        highSeedWins: 0,
+        lowSeedWins: 0,
+        winnerTeamId: through, // bye
+        matchIds: [],
+      });
+      continue;
+    }
+    const aIsHigh = (seedOf.get(a) as number) < (seedOf.get(b) as number);
+    const high = aIsHigh ? a : b;
+    work.playoffSeries.push({
+      round: work.playoffRound,
+      bestOf,
+      highSeed: seedOf.get(high) as number,
+      highSeedTeamId: high,
+      lowSeedTeamId: aIsHigh ? b : a,
+      highSeedWins: 0,
+      lowSeedWins: 0,
+      winnerTeamId: null,
+      matchIds: [],
+    });
+  }
+}
+
+/** Closes every finished playoff round and opens the next one. */
+function settlePlayoffs(competition: Competition, work: CompetitionProgress): void {
+  while (work.phase === 'playoffs') {
+    const current = work.playoffSeries.filter((s) => s.round === work.playoffRound);
+    if (current.some((s) => s.winnerTeamId === null)) return;
+    const seedOf = new Map(work.playoffSeeds.map((teamId, i) => [teamId, i + 1]));
+    const winners: (string | null)[] = [];
+    const eliminated: string[] = [];
+    for (let i = 0; i < work.playoffAlive.length; i += 2) {
+      const a = work.playoffAlive[i] ?? null;
+      const b = work.playoffAlive[i + 1] ?? null;
+      const series = current.find((s) => s.highSeedTeamId === a || s.highSeedTeamId === b);
+      winners.push(series ? series.winnerTeamId : null);
+      if (series && series.lowSeedTeamId !== null) {
+        eliminated.push(
+          series.winnerTeamId === series.highSeedTeamId
+            ? series.lowSeedTeamId
+            : series.highSeedTeamId,
+        );
+      }
+    }
+    eliminated.sort((x, y) => (seedOf.get(x) as number) - (seedOf.get(y) as number));
+    work.playoffEliminated = [...work.playoffEliminated, eliminated];
+    work.playoffAlive = winners;
+    if (winners.length <= 1) {
+      work.phase = 'done';
+      return;
+    }
+    work.playoffRound++;
+    openPlayoffRound(competition, work);
+  }
+}
+
+/**
+ * Plays the next step of a competition: one regular-season matchday, or one
+ * game of every open playoff series. Returns a new progress object.
+ */
+function stepCompetition(
   ctx: SeasonContext,
   competition: Competition,
+  progress: CompetitionProgress,
   options: CompetitionSeasonOptions,
-): CompetitionSeason {
+  played: MatchResult[],
+): CompetitionProgress {
+  if (progress.phase === 'done') return progress;
   const { universe, seasonNumber } = ctx;
   const ruleset = rulesetOf(universe, competition);
-  const matches: MatchResult[] = [];
-  const statsByPlayer = new Map<string, PlayerSeasonStats>();
+  const work: CompetitionProgress = {
+    ...progress,
+    matches: progress.matches.slice(),
+    playoffSeries: progress.playoffSeries.map((s) => ({ ...s, matchIds: s.matchIds.slice() })),
+  };
+  const stats = new Map(progress.playerStats.map((s) => [s.playerId, s]));
+  const touched = new Set<string>();
 
   const play = (
     id: string,
@@ -133,7 +295,7 @@ function simulateCompetition(
     homeTeamId: string,
     awayTeamId: string,
   ): MatchResult => {
-    const played = playMatch(
+    const match = playMatch(
       preparedTeam(ctx, homeTeamId),
       preparedTeam(ctx, awayTeamId),
       ruleset,
@@ -147,163 +309,128 @@ function simulateCompetition(
       round,
       homeTeamId,
       awayTeamId,
-      homeScore: played.boxScore.home.points,
-      awayScore: played.boxScore.away.points,
-      overtimePeriods: played.overtimePeriods,
+      homeScore: match.boxScore.home.points,
+      awayScore: match.boxScore.away.points,
+      overtimePeriods: match.overtimePeriods,
     };
-    matches.push(result);
-    for (const side of [played.boxScore.home, played.boxScore.away]) {
+    work.matches.push(result);
+    played.push(result);
+    for (const side of [match.boxScore.home, match.boxScore.away]) {
       for (const line of side.players) {
         if (line.seconds === 0) continue;
-        let stats = statsByPlayer.get(line.playerId);
-        if (!stats) {
-          stats = { playerId: line.playerId, teamId: side.teamId, games: 0, ...emptyStatLine() };
-          statsByPlayer.set(line.playerId, stats);
+        let entry = stats.get(line.playerId);
+        if (!entry) {
+          entry = { playerId: line.playerId, teamId: side.teamId, games: 0, ...emptyStatLine() };
+          stats.set(line.playerId, entry);
+          touched.add(line.playerId);
+        } else if (!touched.has(line.playerId)) {
+          entry = { ...entry }; // never modify the previous step's objects
+          stats.set(line.playerId, entry);
+          touched.add(line.playerId);
         }
-        stats.games++;
-        addStatLine(stats, line);
+        entry.games++;
+        addStatLine(entry, line);
       }
     }
-    options.onMatch?.({ result, boxScore: played.boxScore, events: played.events });
+    options.onMatch?.({ result, boxScore: match.boxScore, events: match.events });
     return result;
   };
 
-  // --- Regular season -------------------------------------------------------
-  const prefix = `s${seasonNumber}-${competition.id}`;
-  const groups: GroupSeason[] = [];
-  let regularCounter = 0;
-  for (const group of assignGroups(universe, competition, ctx.teamsById)) {
-    const fixtures = buildRoundRobin(group.teamIds, competition.format.roundRobinLegs);
-    const groupMatches: MatchResult[] = [];
-    for (const f of fixtures) {
-      regularCounter++;
-      const id = `${prefix}-r${String(regularCounter).padStart(4, '0')}`;
-      groupMatches.push(play(id, 'regular', f.round, f.homeTeamId, f.awayTeamId));
+  if (work.phase === 'regular') {
+    for (const f of work.fixtures) {
+      if (f.round === work.nextRound) play(f.id, 'regular', f.round, f.homeTeamId, f.awayTeamId);
     }
-    groups.push({
-      name: group.name,
-      teamIds: group.teamIds,
-      standings: computeStandings(group.teamIds, groupMatches),
-    });
-  }
-
-  const ranked: Ranked[] = groups
-    .flatMap((g) => g.standings.map((row) => ({ teamId: row.teamId, row })))
-    .sort(compareAcrossGroups);
-
-  // --- Playoffs -------------------------------------------------------------
-  const playoffSeries: PlayoffSeries[] = [];
-  const playoffOrder: string[] = []; // best to worst among playoff teams
-  const playoffs = competition.format.playoffs;
-  if (playoffs) {
-    const seeds = ranked
-      .filter((r) => r.row.position <= playoffs.qualifiersPerGroup)
-      .map((r) => r.teamId);
-    const seedOf = new Map(seeds.map((teamId, i) => [teamId, i + 1]));
-    const size = bracketSize(seeds.length);
-    let alive: (string | null)[] = bracketOrder(size).map((seed) => seeds[seed - 1] ?? null);
-    const eliminatedByRound: string[][] = [];
-    let playoffCounter = 0;
-
-    for (let round = 0; alive.length > 1; round++) {
-      const bestOf = bestOfForRound(playoffs.seriesBestOf, round);
-      const winners: (string | null)[] = [];
-      const eliminated: string[] = [];
-      for (let i = 0; i < alive.length; i += 2) {
-        const a = alive[i] ?? null;
-        const b = alive[i + 1] ?? null;
-        if (a === null || b === null) {
-          const through = a ?? b;
-          winners.push(through);
-          if (through !== null) {
-            playoffSeries.push({
-              round: round + 1,
-              bestOf,
-              highSeed: seedOf.get(through) as number,
-              highSeedTeamId: through,
-              lowSeedTeamId: null,
-              highSeedWins: 0,
-              lowSeedWins: 0,
-              winnerTeamId: through,
-              matchIds: [],
-            });
-          }
-          continue;
-        }
-        const aIsHigh = (seedOf.get(a) as number) < (seedOf.get(b) as number);
-        const high = aIsHigh ? a : b;
-        const low = aIsHigh ? b : a;
-        const needed = Math.floor(bestOf / 2) + 1;
-        let highWins = 0;
-        let lowWins = 0;
-        const matchIds: string[] = [];
-        for (let game = 1; highWins < needed && lowWins < needed; game++) {
-          playoffCounter++;
-          const id = `${prefix}-p${String(playoffCounter).padStart(4, '0')}`;
-          // The higher seed hosts the odd games (1, 3, 5...).
-          const highHome = game % 2 === 1;
-          const result = play(
-            id,
-            'playoff',
-            round + 1,
-            highHome ? high : low,
-            highHome ? low : high,
-          );
-          const homeWon = result.homeScore > result.awayScore;
-          if (homeWon === highHome) highWins++;
-          else lowWins++;
-          matchIds.push(id);
-        }
-        const winner = highWins > lowWins ? high : low;
-        winners.push(winner);
-        eliminated.push(winner === high ? low : high);
-        playoffSeries.push({
-          round: round + 1,
-          bestOf,
-          highSeed: seedOf.get(high) as number,
-          highSeedTeamId: high,
-          lowSeedTeamId: low,
-          highSeedWins: highWins,
-          lowSeedWins: lowWins,
-          winnerTeamId: winner,
-          matchIds,
-        });
+    work.nextRound++;
+    if (work.nextRound > work.totalRounds) {
+      const playoffs = competition.format.playoffs;
+      if (!playoffs) {
+        work.phase = 'done';
+      } else {
+        const seeds = rankAcrossGroups(standingsOf(work))
+          .filter((r) => r.row.position <= playoffs.qualifiersPerGroup)
+          .map((r) => r.teamId);
+        work.playoffSeeds = seeds;
+        work.playoffAlive = bracketOrder(bracketSize(seeds.length)).map(
+          (seed) => seeds[seed - 1] ?? null,
+        );
+        work.playoffRound = 1;
+        work.phase = 'playoffs';
+        openPlayoffRound(competition, work);
+        settlePlayoffs(competition, work);
       }
-      eliminated.sort((x, y) => (seedOf.get(x) as number) - (seedOf.get(y) as number));
-      eliminatedByRound.push(eliminated);
-      alive = winners;
     }
-    const champion = alive[0];
-    if (champion) playoffOrder.push(champion);
-    for (let r = eliminatedByRound.length - 1; r >= 0; r--) {
-      playoffOrder.push(...(eliminatedByRound[r] as string[]));
-    }
+  } else {
+    const prefix = `s${seasonNumber}-${competition.id}`;
+    const current = work.playoffSeries.filter((s) => s.round === work.playoffRound);
+    current.forEach((series, index) => {
+      if (series.winnerTeamId !== null || series.lowSeedTeamId === null) return;
+      const game = series.matchIds.length + 1;
+      const id = `${prefix}-p${series.round}-${index + 1}-${game}`;
+      // The higher seed hosts the odd games (1, 3, 5...).
+      const highHome = game % 2 === 1;
+      const result = play(
+        id,
+        'playoff',
+        series.round,
+        highHome ? series.highSeedTeamId : series.lowSeedTeamId,
+        highHome ? series.lowSeedTeamId : series.highSeedTeamId,
+      );
+      const homeWon = result.homeScore > result.awayScore;
+      if (homeWon === highHome) series.highSeedWins++;
+      else series.lowSeedWins++;
+      series.matchIds.push(id);
+      const needed = Math.floor(series.bestOf / 2) + 1;
+      if (series.highSeedWins >= needed) series.winnerTeamId = series.highSeedTeamId;
+      else if (series.lowSeedWins >= needed) series.winnerTeamId = series.lowSeedTeamId;
+    });
+    settlePlayoffs(competition, work);
   }
 
-  // --- Final ranking, promotion and relegation ------------------------------
+  work.playerStats = [...stats.values()];
+  return work;
+}
+
+/** Turns a finished competition into its permanent season record. */
+function finalizeCompetition(
+  competition: Competition,
+  progress: CompetitionProgress,
+): CompetitionSeason {
+  if (progress.phase !== 'done') {
+    throw new Error(`Competition ${competition.id} has not finished yet`);
+  }
+  const groups = standingsOf(progress);
+  const ranked = rankAcrossGroups(groups);
+  const playoffOrder: string[] = [];
+  if (progress.playoffSeeds.length > 0) {
+    const champion = progress.playoffAlive[0];
+    if (champion) playoffOrder.push(champion);
+    for (let r = progress.playoffEliminated.length - 1; r >= 0; r--) {
+      playoffOrder.push(...(progress.playoffEliminated[r] as string[]));
+    }
+  }
   const inPlayoffs = new Set(playoffOrder);
   const finalRanking = [
     ...playoffOrder,
     ...ranked.filter((r) => !inPlayoffs.has(r.teamId)).map((r) => r.teamId),
   ];
-  const promotedTeamIds = finalRanking.slice(0, competition.promotionSlots);
-  const relegatedTeamIds =
-    competition.relegationSlots > 0 ? finalRanking.slice(-competition.relegationSlots) : [];
-
   return {
     competitionId: competition.id,
     groups,
-    matches,
-    playoffSeries,
+    matches: progress.matches,
+    playoffSeries: progress.playoffSeries.map((s) => ({
+      ...s,
+      winnerTeamId: s.winnerTeamId as string,
+    })),
     finalRanking,
     championTeamId: finalRanking[0] as string,
-    promotedTeamIds,
-    relegatedTeamIds,
-    playerStats: [...statsByPlayer.values()],
+    promotedTeamIds: finalRanking.slice(0, competition.promotionSlots),
+    relegatedTeamIds:
+      competition.relegationSlots > 0 ? finalRanking.slice(-competition.relegationSlots) : [],
+    playerStats: progress.playerStats,
   };
 }
 
-/** Simulates one competition of the universe's current season (no offseason). */
+/** Simulates one whole competition of the universe's current season (no offseason). */
 export function simulateCompetitionSeason(
   universe: Universe,
   competitionId: string,
@@ -311,7 +438,83 @@ export function simulateCompetitionSeason(
 ): CompetitionSeason {
   const competition = universe.competitions.find((c) => c.id === competitionId);
   if (!competition) throw new Error(`Unknown competition ${competitionId}`);
-  return simulateCompetition(makeContext(universe), competition, options);
+  const ctx = makeContext(universe);
+  let progress = createProgress(ctx, competition);
+  while (progress.phase !== 'done') {
+    progress = stepCompetition(ctx, competition, progress, options, []);
+  }
+  return finalizeCompetition(competition, progress);
+}
+
+// ---------------------------------------------------------------------------
+// The whole season, step by step
+// ---------------------------------------------------------------------------
+
+/** Creates the calendar of every competition. The universe must be between seasons. */
+export function startSeason(universe: Universe): Universe {
+  if (universe.currentSeason) throw new Error('A season is already in progress');
+  const ctx = makeContext(universe);
+  const competitions = [...universe.competitions].sort((a, b) => a.level - b.level);
+  const currentSeason: SeasonProgress = {
+    seasonNumber: universe.seasonNumber,
+    step: 0,
+    competitions: competitions.map((c) => createProgress(ctx, c)),
+  };
+  return { ...universe, currentSeason };
+}
+
+export interface AdvanceOutcome {
+  /** New universe. The input universe is not modified. */
+  universe: Universe;
+  /** Matches played in this step. */
+  played: MatchResult[];
+  /**
+   * The finished season, if this step was the last one. In that case promotion,
+   * relegation and ageing have already been applied to `universe`.
+   */
+  season: Season | null;
+}
+
+/**
+ * Plays the next step of the season: one matchday of every league still in
+ * its regular season and one game of every open playoff series. Starts the
+ * season first if needed. When the last competition finishes, the offseason
+ * is applied.
+ */
+export function advanceSeason(
+  universe: Universe,
+  options: CompetitionSeasonOptions = {},
+): AdvanceOutcome {
+  const started = universe.currentSeason ? universe : startSeason(universe);
+  const progress = started.currentSeason as SeasonProgress;
+  const ctx = makeContext(started);
+  const competitionsById = new Map(started.competitions.map((c) => [c.id, c]));
+  const played: MatchResult[] = [];
+  const competitions = progress.competitions.map((p) =>
+    stepCompetition(ctx, competitionsById.get(p.competitionId) as Competition, p, options, played),
+  );
+
+  if (competitions.every((c) => c.phase === 'done')) {
+    const season: Season = {
+      seasonNumber: progress.seasonNumber,
+      competitions: competitions.map((c) =>
+        finalizeCompetition(competitionsById.get(c.competitionId) as Competition, c),
+      ),
+    };
+    return {
+      universe: applyOffseason({ ...started, currentSeason: null }, season),
+      played,
+      season,
+    };
+  }
+  return {
+    universe: {
+      ...started,
+      currentSeason: { seasonNumber: progress.seasonNumber, step: progress.step + 1, competitions },
+    },
+    played,
+    season: null,
+  };
 }
 
 export interface SeasonOutcome {
@@ -322,41 +525,40 @@ export interface SeasonOutcome {
 }
 
 /**
- * Simulates the current season of every competition, then applies promotion,
- * relegation and ageing. Pure function: returns a new universe.
+ * Plays the current season to its end (starting it, or continuing it if it is
+ * already in progress), then applies promotion, relegation and ageing.
  */
 export function simulateSeason(
   universe: Universe,
   options: CompetitionSeasonOptions = {},
 ): SeasonOutcome {
-  const ctx = makeContext(universe);
-  const competitions = [...universe.competitions].sort((a, b) => a.level - b.level);
-  const season: Season = {
-    seasonNumber: universe.seasonNumber,
-    competitions: competitions.map((c) => simulateCompetition(ctx, c, options)),
-  };
-  return { universe: applyOffseason(universe, season), season };
+  let current = universe;
+  for (;;) {
+    const outcome = advanceSeason(current, options);
+    current = outcome.universe;
+    if (outcome.season) return { universe: current, season: outcome.season };
+  }
 }
 
 /**
- * Re-simulates a single match of the season about to be (or just) played from
- * the universe as it was BEFORE that season. Because every match has its own
+ * Re-simulates a single match from the universe as it was when the match was
+ * played (same squads, tactics and line-ups). Because every match has its own
  * seed, the replay is identical to the original, including the event log.
  */
-export function replayMatch(universeBeforeSeason: Universe, result: MatchResult): MatchDetail {
-  if (result.seasonNumber !== universeBeforeSeason.seasonNumber) {
+export function replayMatch(universeAtTheTime: Universe, result: MatchResult): MatchDetail {
+  if (result.seasonNumber !== universeAtTheTime.seasonNumber) {
     throw new Error(
-      `Match ${result.id} belongs to season ${result.seasonNumber}, but the universe is at season ${universeBeforeSeason.seasonNumber}`,
+      `Match ${result.id} belongs to season ${result.seasonNumber}, but the universe is at season ${universeAtTheTime.seasonNumber}`,
     );
   }
-  const ctx = makeContext(universeBeforeSeason);
-  const competition = universeBeforeSeason.competitions.find((c) => c.id === result.competitionId);
+  const ctx = makeContext(universeAtTheTime);
+  const competition = universeAtTheTime.competitions.find((c) => c.id === result.competitionId);
   if (!competition) throw new Error(`Unknown competition ${result.competitionId}`);
   const played = playMatch(
     preparedTeam(ctx, result.homeTeamId),
     preparedTeam(ctx, result.awayTeamId),
-    rulesetOf(universeBeforeSeason, competition),
-    matchSeed(universeBeforeSeason.seed, result.id),
+    rulesetOf(universeAtTheTime, competition),
+    matchSeed(universeAtTheTime.seed, result.id),
   );
   return { result, boxScore: played.boxScore, events: played.events };
 }

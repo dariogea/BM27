@@ -10,3 +10,4 @@ export * from './season/playoffs';
 export * from './season/season';
 export * from './season/offseason';
 export * from './save/saveStore';
+export * from './game/manage';

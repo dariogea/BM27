@@ -88,6 +88,7 @@ export function generateUniverse(options: GenerateUniverseOptions): Universe {
         region: city.region,
         playerIds,
         tactics: chooseTactics(players.slice(-rosterSize), rng),
+        rotation: null,
       });
       teamIds.push(teamId);
     }
@@ -118,6 +119,8 @@ export function generateUniverse(options: GenerateUniverseOptions): Universe {
     teams,
     players,
     history: [],
+    currentSeason: null,
+    userTeamId: null,
   };
 }
 

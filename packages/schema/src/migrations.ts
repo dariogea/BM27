@@ -20,6 +20,20 @@ const MIGRATIONS: Record<number, (data: Json) => Json> = {
         )
       : data.teams,
   }),
+  // v1 → v2 (T-003): hand-picked rotations, user team and season in progress.
+  1: (data) => ({
+    ...data,
+    schemaVersion: 2,
+    currentSeason: 'currentSeason' in data ? data.currentSeason : null,
+    userTeamId: 'userTeamId' in data ? data.userTeamId : null,
+    teams: Array.isArray(data.teams)
+      ? data.teams.map((team: unknown) =>
+          team !== null && typeof team === 'object' && !('rotation' in team)
+            ? { ...team, rotation: null }
+            : team,
+        )
+      : data.teams,
+  }),
 };
 
 export class MigrationError extends Error {

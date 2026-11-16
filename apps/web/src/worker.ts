@@ -1,73 +1,324 @@
 /// <reference lib="webworker" />
-import { generateUniverse, replayMatch, simulateSeason } from '@bm27/core';
-import type { Season, TeamTactics, Universe } from '@bm27/schema';
-import type { Command, Reply, UniverseSummary } from './protocol';
+import {
+  advanceSeason,
+  exportSave,
+  generateUniverse,
+  importSave,
+  playerOverall,
+  prepareTeam,
+  replayMatch,
+  setTeamRotation,
+  setTeamTactics,
+  setUserTeam,
+  standingsOf,
+} from '@bm27/core';
+import type { MatchDetail, MatchResult, Season, TeamTactics, Universe } from '@bm27/schema';
+import type { Command, CompetitionViewData, GameView, MyTeamView, Reply } from './protocol';
 
-// The whole simulation state lives here, off the UI thread.
+// The whole game state lives here, off the UI thread.
 let universe: Universe | null = null;
-/** Universe as it was before the last simulated season (needed to replay its matches). */
-let universeBeforeLastSeason: Universe | null = null;
-let lastSeason: Season | null = null;
+/** Universe from which the matches shown on screen can be re-simulated. */
+let replayUniverse: Universe | null = null;
+/**
+ * Full detail of the user team's matches. They are kept because the user can
+ * change tactics or line-up afterwards, which would make a replay differ.
+ */
+const myMatches = new Map<string, { detail: MatchDetail; tactics: Record<string, TeamTactics> }>();
 
-function summarize(u: Universe): UniverseSummary {
+function tablesOf(u: Universe): CompetitionViewData[] {
+  if (u.currentSeason) {
+    return u.currentSeason.competitions.map((c) => ({
+      competitionId: c.competitionId,
+      seasonNumber: u.seasonNumber,
+      phase: c.phase,
+      groups: standingsOf(c),
+      playoffSeries: c.playoffSeries,
+      matches: c.matches,
+      championTeamId: null,
+      promotedTeamIds: [],
+      relegatedTeamIds: [],
+    }));
+  }
+  const last: Season | undefined = u.history[u.history.length - 1];
+  if (!last) return [];
+  return last.competitions.map((c) => ({
+    competitionId: c.competitionId,
+    seasonNumber: last.seasonNumber,
+    phase: 'done' as const,
+    groups: c.groups,
+    playoffSeries: c.playoffSeries,
+    matches: c.matches,
+    championTeamId: c.championTeamId,
+    promotedTeamIds: c.promotedTeamIds,
+    relegatedTeamIds: c.relegatedTeamIds,
+  }));
+}
+
+function myTeamOf(u: Universe): MyTeamView | null {
+  const team = u.teams.find((t) => t.id === u.userTeamId);
+  if (!team) return null;
+  const competition = u.competitions.find((c) => c.teamIds.includes(team.id));
+  if (!competition) return null;
+  const playersById = new Map(u.players.map((p) => [p.id, p]));
+  const progress = u.currentSeason?.competitions.find((c) => c.competitionId === competition.id);
+  const statsById = new Map((progress?.playerStats ?? []).map((s) => [s.playerId, s]));
+  const order = prepareTeam(team, playersById).players.map((p) => p.id);
+
+  let position: number | null = null;
+  let wins = 0;
+  let losses = 0;
+  let nextMatch: MyTeamView['nextMatch'] = null;
+  let lastMatch: MatchResult | null = null;
+  if (progress) {
+    for (const group of standingsOf(progress)) {
+      const row = group.standings.find((r) => r.teamId === team.id);
+      if (row) {
+        position = row.position;
+        wins = row.wins;
+        losses = row.losses;
+      }
+    }
+    const mine = (m: { homeTeamId: string; awayTeamId: string }): boolean =>
+      m.homeTeamId === team.id || m.awayTeamId === team.id;
+    lastMatch = [...progress.matches].reverse().find(mine) ?? null;
+    if (progress.phase === 'regular') {
+      const fixture = progress.fixtures
+        .filter((f) => f.round >= progress.nextRound && mine(f))
+        .sort((a, b) => a.round - b.round)[0];
+      if (fixture) {
+        const home = fixture.homeTeamId === team.id;
+        nextMatch = {
+          round: fixture.round,
+          opponentId: home ? fixture.awayTeamId : fixture.homeTeamId,
+          home,
+        };
+      }
+    } else if (progress.phase === 'playoffs') {
+      const series = progress.playoffSeries.find(
+        (s) =>
+          s.winnerTeamId === null && (s.highSeedTeamId === team.id || s.lowSeedTeamId === team.id),
+      );
+      if (series && series.lowSeedTeamId) {
+        const isHigh = series.highSeedTeamId === team.id;
+        const highHome = (series.matchIds.length + 1) % 2 === 1;
+        nextMatch = {
+          round: series.round,
+          opponentId: isHigh ? series.lowSeedTeamId : series.highSeedTeamId,
+          home: isHigh === highHome,
+        };
+      }
+    }
+  }
+
+  return {
+    teamId: team.id,
+    name: team.name,
+    competitionId: competition.id,
+    competitionName: competition.name,
+    level: competition.level,
+    tactics: team.tactics,
+    rotation: team.rotation,
+    squad: order.map((id) => {
+      const player = playersById.get(id)!;
+      return { player, overall: playerOverall(player), stats: statsById.get(id) ?? null };
+    }),
+    position,
+    wins,
+    losses,
+    nextMatch,
+    lastMatch,
+  };
+}
+
+function viewOf(u: Universe): GameView {
   return {
     seed: u.seed,
     seasonNumber: u.seasonNumber,
+    seasonInProgress: u.currentSeason !== null,
+    step: u.currentSeason?.step ?? 0,
+    userTeamId: u.userTeamId,
     teamCount: u.teams.length,
     playerCount: u.players.filter((p) => !p.retired).length,
     competitions: [...u.competitions]
       .sort((a, b) => a.level - b.level)
-      .map((c) => ({ id: c.id, name: c.name, level: c.level, teamCount: c.teamIds.length })),
+      .map((c) => ({ id: c.id, name: c.name, level: c.level, teamIds: c.teamIds })),
     teamNames: Object.fromEntries(u.teams.map((t) => [t.id, t.name])),
+    tables: tablesOf(u),
+    myTeam: myTeamOf(u),
   };
+}
+
+function need(): Universe {
+  if (!universe) throw new Error('Primero hay que generar un universo o cargar una partida.');
+  return universe;
+}
+
+/** Plays one step, remembering the user team's matches in full. */
+function step(): { season: Season | null; played: MatchResult[] } {
+  const before = need();
+  const userTeamId = before.userTeamId;
+  const outcome = advanceSeason(before, {
+    onMatch: (detail) => {
+      const { homeTeamId, awayTeamId } = detail.result;
+      if (homeTeamId !== userTeamId && awayTeamId !== userTeamId) return;
+      const tactics: Record<string, TeamTactics> = {};
+      for (const t of before.teams) {
+        if (t.id === homeTeamId || t.id === awayTeamId) tactics[t.id] = t.tactics;
+      }
+      myMatches.set(detail.result.id, { detail, tactics });
+    },
+  });
+  // After the last step the universe has aged; keep the pre-offseason one for replays.
+  replayUniverse = outcome.season ? before : outcome.universe;
+  universe = outcome.universe;
+  return { season: outcome.season, played: outcome.played };
+}
+
+function describeMine(played: MatchResult[], u: Universe, before: string | null): string {
+  if (!before) return '';
+  const mine = played.find((m) => m.homeTeamId === before || m.awayTeamId === before);
+  if (!mine) return ' Tu equipo descansó.';
+  const name = (id: string): string => u.teams.find((t) => t.id === id)?.name ?? id;
+  const myScore = mine.homeTeamId === before ? mine.homeScore : mine.awayScore;
+  const theirScore = mine.homeTeamId === before ? mine.awayScore : mine.homeScore;
+  return ` Tu partido: ${name(mine.homeTeamId)} ${mine.homeScore} – ${mine.awayScore} ${name(mine.awayTeamId)} (${myScore > theirScore ? 'victoria' : 'derrota'}).`;
 }
 
 function handle(command: Command): Reply {
   const start = performance.now();
   const ms = (): number => Math.round(performance.now() - start);
+  const state = (message: string): Reply => ({
+    id: command.id,
+    type: 'state',
+    view: viewOf(need()),
+    message,
+  });
+
   switch (command.type) {
     case 'generate': {
       universe = generateUniverse({ seed: command.seed });
-      universeBeforeLastSeason = null;
-      lastSeason = null;
-      return { id: command.id, type: 'universe', summary: summarize(universe), ms: ms() };
+      replayUniverse = universe;
+      myMatches.clear();
+      return state(
+        `Universo generado en ${ms()} ms: ${universe.teams.length} equipos. Elige un equipo para dirigirlo.`,
+      );
     }
-    case 'simulateSeason': {
-      if (!universe) throw new Error('Primero hay que generar un universo.');
-      const outcome = simulateSeason(universe);
-      universeBeforeLastSeason = universe;
-      universe = outcome.universe;
-      lastSeason = outcome.season;
-      return {
-        id: command.id,
-        type: 'season',
-        summary: summarize(universe),
-        season: outcome.season,
-        ms: ms(),
-      };
+    case 'chooseTeam': {
+      universe = setUserTeam(need(), command.teamId);
+      const name = universe.teams.find((t) => t.id === command.teamId)?.name;
+      return state(name ? `Ahora diriges a ${name}.` : 'Ya no diriges ningún equipo.');
+    }
+    case 'setTactics': {
+      const u = need();
+      if (!u.userTeamId) throw new Error('Primero elige un equipo.');
+      universe = setTeamTactics(u, u.userTeamId, command.tactics);
+      return state('Tácticas guardadas. Se aplican desde el próximo partido.');
+    }
+    case 'setRotation': {
+      const u = need();
+      if (!u.userTeamId) throw new Error('Primero elige un equipo.');
+      universe = setTeamRotation(u, u.userTeamId, command.playerIds);
+      return state(
+        command.playerIds
+          ? 'Quinteto y rotación guardados. Se aplican desde el próximo partido.'
+          : 'El entrenador vuelve a decidir el quinteto.',
+      );
+    }
+    case 'advance': {
+      const userTeamId = need().userTeamId;
+      const seasonNumber = need().seasonNumber;
+      const { season, played } = step();
+      const mine = describeMine(played, need(), userTeamId);
+      return state(
+        season
+          ? `Temporada ${seasonNumber} terminada (${ms()} ms).${mine} Se han aplicado ascensos, descensos y un año más de edad.`
+          : `Jornada jugada: ${played.length} partidos en ${ms()} ms.${mine}`,
+      );
+    }
+    case 'finishSeason': {
+      const seasonNumber = need().seasonNumber;
+      let matches = 0;
+      for (;;) {
+        const { season, played } = step();
+        matches += played.length;
+        if (season) break;
+      }
+      return state(
+        `Temporada ${seasonNumber} terminada: ${matches} partidos simulados en ${ms()} ms. Se han aplicado ascensos, descensos y un año más de edad.`,
+      );
     }
     case 'matchDetail': {
-      if (!universeBeforeLastSeason || !lastSeason) {
-        throw new Error('Todavía no se ha simulado ninguna temporada.');
+      const u = need();
+      const stored = myMatches.get(command.matchId);
+      const names = (detail: MatchDetail, source: Universe): Record<string, string> => {
+        const ids = new Set(
+          [...detail.boxScore.home.players, ...detail.boxScore.away.players].map((l) => l.playerId),
+        );
+        const out: Record<string, string> = {};
+        for (const p of source.players) {
+          if (ids.has(p.id)) out[p.id] = `${p.firstName} ${p.lastName}`;
+        }
+        return out;
+      };
+      if (stored) {
+        return {
+          id: command.id,
+          type: 'matchDetail',
+          detail: stored.detail,
+          playerNames: names(stored.detail, u),
+          tactics: stored.tactics,
+          ms: ms(),
+        };
       }
-      const result = lastSeason.competitions
+      const result = tablesOf(u)
         .flatMap((c) => c.matches)
         .find((m) => m.id === command.matchId);
       if (!result) throw new Error(`Partido ${command.matchId} no encontrado.`);
+      const source = replayUniverse;
+      if (!source || source.seasonNumber !== result.seasonNumber) {
+        throw new Error(
+          'El detalle de este partido ya no está disponible: solo se guarda el resultado, y la plantilla ha cambiado desde entonces.',
+        );
+      }
       // The box score is not stored: the match is re-simulated from its seed.
-      const detail = replayMatch(universeBeforeLastSeason, result);
-      const ids = new Set(
-        [...detail.boxScore.home.players, ...detail.boxScore.away.players].map((l) => l.playerId),
-      );
-      const playerNames: Record<string, string> = {};
-      for (const p of universeBeforeLastSeason.players) {
-        if (ids.has(p.id)) playerNames[p.id] = `${p.firstName} ${p.lastName}`;
+      const detail = replayMatch(source, result);
+      if (
+        detail.boxScore.home.points !== result.homeScore ||
+        detail.boxScore.away.points !== result.awayScore
+      ) {
+        throw new Error(
+          'El detalle de este partido ya no se puede reconstruir: las tácticas o el quinteto de uno de los equipos cambiaron después de jugarlo.',
+        );
       }
       const tactics: Record<string, TeamTactics> = {};
-      for (const t of universeBeforeLastSeason.teams) {
+      for (const t of source.teams) {
         if (t.id === result.homeTeamId || t.id === result.awayTeamId) tactics[t.id] = t.tactics;
       }
-      return { id: command.id, type: 'matchDetail', detail, playerNames, tactics, ms: ms() };
+      return {
+        id: command.id,
+        type: 'matchDetail',
+        detail,
+        playerNames: names(detail, source),
+        tactics,
+        ms: ms(),
+      };
+    }
+    case 'exportSave': {
+      const u = need();
+      return {
+        id: command.id,
+        type: 'save',
+        json: exportSave(u),
+        fileName: `bm27-${u.seed.replace(/[^a-zA-Z0-9_-]+/g, '_') || 'partida'}-t${u.seasonNumber}.json`,
+      };
+    }
+    case 'importSave': {
+      universe = importSave(command.json);
+      replayUniverse = universe;
+      myMatches.clear();
+      return state(
+        `Partida cargada: temporada ${universe.seasonNumber}${universe.currentSeason ? ' (en curso)' : ''}.`,
+      );
     }
   }
 }

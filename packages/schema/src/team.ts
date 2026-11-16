@@ -40,5 +40,11 @@ export const TeamSchema = z.object({
   region: z.string().min(1),
   playerIds: z.array(z.string().min(1)),
   tactics: TeamTacticsSchema,
+  /**
+   * Line-up chosen by hand: player ids in order. The first five are the
+   * starters at PG, SG, SF, PF and C; the rest is the bench, most used first.
+   * Null means "let the coach decide".
+   */
+  rotation: z.array(z.string().min(1)).min(5).nullable(),
 });
 export type Team = z.infer<typeof TeamSchema>;

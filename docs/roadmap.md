@@ -8,12 +8,12 @@
 
 ## Resumen
 
-**Avance global: 34 %** `██████████░░░░░░░░░░░░░░░░░░░░`  (295 elementos)
+**Avance global: 35 %** `██████████░░░░░░░░░░░░░░░░░░░░`  (295 elementos)
 
 ```mermaid
 pie showData title Elementos por estado
-  "Hecho" : 95
-  "En curso" : 10
+  "Hecho" : 99
+  "En curso" : 6
   "Pendiente" : 157
   "Bloqueado" : 3
   "Idea" : 30
@@ -23,8 +23,8 @@ pie showData title Elementos por estado
 
 ```mermaid
 flowchart LR
-  F0["F0 Fundaciones<br/>85 %"]
-  F1["F1 Primera versión jugable<br/>52 %"]
+  F0["F0 Fundaciones<br/>86 %"]
+  F1["F1 Primera versión jugable<br/>53 %"]
   F2["F2 Profundidad de gestión<br/>0 %"]
   F3["F3 Mundo, datos y mods<br/>0 %"]
   F4["F4 Presentación<br/>0 %"]
@@ -45,8 +45,8 @@ flowchart LR
 
 | Fase | Avance | | Hecho | Qué significa |
 | --- | ---: | --- | ---: | --- |
-| **F0 Fundaciones** | 85 % | `█████████████████░░░` | 79/98 | Núcleo determinista, motor de partido, mundo persistente, mercado y finanzas, y la forma de trabajar de los dos agentes. |
-| **F1 Primera versión jugable** | 52 % | `██████████░░░░░░░░░░` | 15/31 | Que el propietario pueda jugar de principio a fin una temporada y varias más sin tocar una terminal, con consultas básicas del mundo. |
+| **F0 Fundaciones** | 86 % | `█████████████████░░░` | 82/98 | Núcleo determinista, motor de partido, mundo persistente, mercado y finanzas, y la forma de trabajar de los dos agentes. |
+| **F1 Primera versión jugable** | 53 % | `███████████░░░░░░░░░` | 16/31 | Que el propietario pueda jugar de principio a fin una temporada y varias más sin tocar una terminal, con consultas básicas del mundo. |
 | **F2 Profundidad de gestión** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0/64 | Traspasos, cantera y ojeadores, economía con decisiones, entrenador rival con criterio, motor de partido completo. |
 | **F3 Mundo, datos y mods** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0/51 | Calibración con datos contrastados, paquetes de datos cargables, pirámide completa y otras competiciones. |
 | **F4 Presentación** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0/24 | Diseño visual, accesibilidad, partido en 2D, narración, sonido y varios idiomas. |
@@ -63,17 +63,17 @@ flowchart LR
 | **Clubes** | 27 % | `█████░░░░░░░░░░░░░░░` | 4 | 0 | 9 | 0 | 2 | El club como organización: plantilla, reputación, afición, estadio y objetivos. |
 | **Entrenadores y personal técnico** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 9 | 0 | 0 | Las personas que dirigen y apoyan al equipo, con efecto real en el juego. |
 | **Competiciones** | 35 % | `███████░░░░░░░░░░░░░` | 6 | 0 | 9 | 0 | 2 | Pirámide masculina española en cuatro niveles como datos, ampliable sin tocar el motor. |
-| **Mercado y contratos** | 37 % | `███████░░░░░░░░░░░░░` | 5 | 1 | 7 | 0 | 3 | Cómo se mueven los jugadores y el dinero entre clubes, con reglas distintas según la liga. |
+| **Mercado y contratos** | 38 % | `████████░░░░░░░░░░░░` | 6 | 0 | 7 | 0 | 3 | Cómo se mueven los jugadores y el dinero entre clubes, con reglas distintas según la liga. |
 | **Finanzas** | 31 % | `██████░░░░░░░░░░░░░░` | 4 | 0 | 8 | 0 | 1 | El dinero como restricción real: ingresos, gastos, presupuestos y consecuencias de gestionar mal. |
 | **Gestión del usuario** | 36 % | `███████░░░░░░░░░░░░░` | 5 | 0 | 7 | 0 | 2 | Lo que el jugador puede hacer: decidir, delegar y entender las consecuencias. |
 | **Mundo persistente** | 30 % | `██████░░░░░░░░░░░░░░` | 3 | 0 | 6 | 0 | 1 | Un mundo que sigue vivo y estable durante decenas de temporadas, sin inflarse ni hundirse. |
 | **Datos, mods e idiomas** | 15 % | `███░░░░░░░░░░░░░░░░░` | 2 | 0 | 9 | 0 | 2 | Reglamentos, competiciones y contenido como datos: añadir una liga no debe tocar el motor. |
-| **Guardado y persistencia** | 37 % | `███████░░░░░░░░░░░░░` | 3 | 1 | 6 | 0 | 0 | Las partidas no se pierden, son compactas y se pueden recuperar. |
+| **Guardado y persistencia** | 40 % | `████████░░░░░░░░░░░░` | 4 | 0 | 6 | 0 | 0 | Las partidas no se pierden, son compactas y se pueden recuperar. |
 | **Interfaz web** | 25 % | `█████░░░░░░░░░░░░░░░` | 7 | 0 | 21 | 0 | 0 | La cara del juego: clara, rápida y accesible. |
 | **Visualización del partido** | 11 % | `██░░░░░░░░░░░░░░░░░░` | 1 | 0 | 6 | 0 | 2 | Ver el partido, no solo leerlo, derivado siempre del registro de eventos. |
 | **Aplicación de escritorio y distribución** | 13 % | `███░░░░░░░░░░░░░░░░░` | 1 | 1 | 7 | 1 | 2 | Que el propietario instale y actualice el juego sin pasar por GitHub. |
 | **Calidad, pruebas y herramientas** | 43 % | `█████████░░░░░░░░░░░` | 5 | 1 | 5 | 0 | 2 | Poder fiarse de lo construido y detectar a tiempo lo que se rompe. |
-| **Proceso y coordinación** | 65 % | `█████████████░░░░░░░` | 5 | 2 | 1 | 2 | 0 | Que dos agentes y un propietario no programador trabajen sin estorbarse. |
+| **Proceso y coordinación** | 70 % | `██████████████░░░░░░` | 7 | 0 | 1 | 2 | 0 | Que dos agentes y un propietario no programador trabajen sin estorbarse. |
 | **Documentación y comunidad** | 23 % | `█████░░░░░░░░░░░░░░░` | 2 | 1 | 5 | 0 | 3 | Que cualquiera entienda el juego, el proyecto y cómo ampliarlo. |
 | **Producto, legal y negocio** | 14 % | `███░░░░░░░░░░░░░░░░░` | 1 | 0 | 3 | 0 | 3 | Decisiones que no son código pero condicionan el lanzamiento. |
 | **Ideas sin clasificar _(no cuenta)_** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 0 | 0 | 8 | Aparcamiento de ideas que aún no son tareas. No cuentan en el porcentaje. |
@@ -86,19 +86,15 @@ Los agentes solo trabajan cuando el propietario lo autoriza (D-052); esto reflej
 
 | Estado | Elemento | Área | Avance | Enlace |
 | --- | --- | --- | ---: | --- |
-| 🔄 En curso | Excepción del salario mínimo solo para llegar al mínimo de plantilla | Mercado y contratos | 90 % | [#26](https://github.com/dariogea/BM27/issues/26) |
 | 🔄 En curso | Publicación en Releases de GitHub (preversión) | Aplicación de escritorio y distribución | 60 % | [#22](https://github.com/dariogea/BM27/issues/22) |
 | ⬜ Pendiente | Versión 0.1.0-alpha.1 publicada | Aplicación de escritorio y distribución | — | — |
 | ⬜ Pendiente | La etiqueta de la Release corresponde al código compilado | Aplicación de escritorio y distribución | — | [#39](https://github.com/dariogea/BM27/issues/39) |
-| 🔄 En curso | Trabajo bajo autorización del propietario | Proceso y coordinación | 80 % | — |
-| 🔄 En curso | Esta hoja de ruta, generada y comprobada en CI | Proceso y coordinación | 70 % | — |
 | ⬜ Pendiente | Política de fusión sin huecos conocidos | Proceso y coordinación | — | [#36](https://github.com/dariogea/BM27/issues/36) |
 
 ### Codex
 
 | Estado | Elemento | Área | Avance | Enlace |
 | --- | --- | --- | ---: | --- |
-| 🔄 En curso | Repeticiones verificables tras recargar | Guardado y persistencia | 70 % | [#27](https://github.com/dariogea/BM27/issues/27) |
 | 🔄 En curso | Auditoría independiente de main | Calidad, pruebas y herramientas | 60 % | [#28](https://github.com/dariogea/BM27/issues/28) |
 
 ### En curso sin dueño asignado
@@ -298,7 +294,7 @@ _Pirámide masculina española en cuatro niveles como datos, ampliable sin tocar
 
 </details>
 
-<details><summary><b>Mercado y contratos</b> — 37 % `████░░░░░░░░`</summary>
+<details><summary><b>Mercado y contratos</b> — 38 % `█████░░░░░░░`</summary>
 
 _Cómo se mueven los jugadores y el dinero entre clubes, con reglas distintas según la liga._
 
@@ -306,7 +302,7 @@ _Cómo se mueven los jugadores y el dinero entre clubes, con reglas distintas se
 - ✅ Renovaciones y contratos cumplidos (`F0`)
 - ✅ Tope salarial y salario mínimo (`F0`)
 - ✅ Liberar jugadores con indemnización (`F0`) — _Regla de indemnización pendiente de confirmar por el propietario (#24)._
-- 🔄 Excepción del salario mínimo solo para llegar al mínimo de plantilla (`F0` · 90 % · @claude · [#26](https://github.com/dariogea/BM27/issues/26)) — _PR #38 abierto._
+- ✅ Excepción del salario mínimo solo para llegar al mínimo de plantilla (`F0` · @claude · [#26](https://github.com/dariogea/BM27/issues/26)) — _Corregido en el PR #38._
 - ✅ Mercado de la IA para los clubes rivales (`F0`)
 - ⬜ Traspasos entre clubes con dinero y negociación (`F2` · [#8](https://github.com/dariogea/BM27/issues/8)) — _T-010._
 - ⬜ Ofertas de rivales por jugadores del usuario (`F2` · [#8](https://github.com/dariogea/BM27/issues/8))
@@ -399,7 +395,7 @@ _Reglamentos, competiciones y contenido como datos: añadir una liga no debe toc
 
 </details>
 
-<details><summary><b>Guardado y persistencia</b> — 37 % `████░░░░░░░░`</summary>
+<details><summary><b>Guardado y persistencia</b> — 40 % `█████░░░░░░░`</summary>
 
 _Las partidas no se pierden, son compactas y se pueden recuperar._
 
@@ -412,7 +408,7 @@ _Las partidas no se pierden, son compactas y se pueden recuperar._
 - ⬜ Compresión del archivo (`F2` · [#17](https://github.com/dariogea/BM27/issues/17))
 - ⬜ Recuperación ante archivo corrupto (`F1` · [#16](https://github.com/dariogea/BM27/issues/16))
 - ⬜ Copias de seguridad automáticas (`F2`)
-- 🔄 Repeticiones verificables tras recargar (`F1` · 70 % · @codex · [#27](https://github.com/dariogea/BM27/issues/27)) — _PR #32 de Codex._
+- ✅ Repeticiones verificables tras recargar (`F1` · @codex · [#27](https://github.com/dariogea/BM27/issues/27)) — _Fusionado (PR #32 de Codex)._
 
 </details>
 
@@ -509,7 +505,7 @@ _Poder fiarse de lo construido y detectar a tiempo lo que se rompe._
 
 </details>
 
-<details><summary><b>Proceso y coordinación</b> — 65 % `████████░░░░`</summary>
+<details><summary><b>Proceso y coordinación</b> — 70 % `████████░░░░`</summary>
 
 _Que dos agentes y un propietario no programador trabajen sin estorbarse._
 
@@ -517,8 +513,8 @@ _Que dos agentes y un propietario no programador trabajen sin estorbarse._
 - ✅ Tareas como Issues y etiquetas de agente (`F0`)
 - ✅ Revisión cruzada entre agentes (`F0`)
 - ✅ Fusión automática con la CI en verde (`F0`) — _Falta confirmar la primera fusión real con PR elegible (#38)._
-- 🔄 Trabajo bajo autorización del propietario (`F0` · 80 % · @claude) — _PR de reglas pendiente de fusión manual._
-- 🔄 Esta hoja de ruta, generada y comprobada en CI (`F0` · 70 % · @claude)
+- ✅ Trabajo bajo autorización del propietario (`F0` · @claude) — _Fusionado (PR #40)._
+- ✅ Esta hoja de ruta, generada y comprobada en CI (`F0`) — _PR #41._
 - ⬜ Política de fusión sin huecos conocidos (`F0` · @claude · [#36](https://github.com/dariogea/BM27/issues/36)) — _Hallazgos de Codex en #29._
 - ⛔ Protección de la rama main (`F0` · [#24](https://github.com/dariogea/BM27/issues/24)) — _Paso del propietario en GitHub._
 - ⛔ Entorno de Codex en la nube (`F0` · [#24](https://github.com/dariogea/BM27/issues/24)) — _Paso del propietario._

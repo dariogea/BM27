@@ -1,6 +1,6 @@
 # Estado de las tareas
 
-Leyenda: IDEA · PROPUESTA · APROBADA · DISEÑADA · IMPLEMENTADA · PROBADA · FINALIZADA
+Leyenda: IDEA · PROPUESTA · APROBADA · DISEÑADA · PROBADA · PROBADA · FINALIZADA
 
 | Tarea | Título                                                                                                         | Estado     | Rama                         | Notas                                  |
 | ----- | -------------------------------------------------------------------------------------------------------------- | ---------- | ---------------------------- | -------------------------------------- |
@@ -38,3 +38,9 @@ Reglas en [`coordinacion.md`](coordinacion.md).
 | T-008 | Fusión automática de PR cuando la CI está en verde (opción A del propietario)         | PROBADA | `t-008-fusion-automatica`  | La lógica de decisión tiene 29 tests; el flujo de GitHub no se ha podido probar hasta que se fusione.                                                                                                                                               |
 | T-023 | Aplicación de escritorio: instalador .exe para Windows publicado en Releases (fase 1) | PROBADA | `t-023-escritorio`         | Fase 1 (descarga manual). La actualización automática (fase 2) espera la decisión del propietario sobre el canal público. El instalador se compila y se genera en el Windows de GitHub (1,4 MB), pero nadie lo ha ejecutado aún en un Windows real. |
 | T-026 | Hoja de ruta completa, visual y generada desde datos (`docs/roadmap.md`)              | PROBADA | `t-026-roadmap`            | 295 elementos; avance global y porcentajes por fase y área. Los porcentajes «en curso» son estimaciones. Vista en GitHub con gráficos Mermaid (no comprobada la apariencia dentro de GitHub; solo la sintaxis).                                     |
+
+## Correcciones de Codex
+
+| Tarea | Título                                               | Estado  | Rama                            | Notas                                                                              |
+| ----- | ---------------------------------------------------- | ------- | ------------------------------- | ---------------------------------------------------------------------------------- |
+| #27   | Repeticiones verificadas con las entradas originales | PROBADA | `codex-027-repeticiones-fieles` | 126 tests aprobados; revisión cruzada pendiente. No cambia el formato de guardado. |

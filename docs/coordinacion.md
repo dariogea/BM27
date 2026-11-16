@@ -40,16 +40,16 @@ Un Issue **libre** no tiene etiqueta de agente. Cuando un agente lo coge, le pon
    nuevos dirigidos a él y los responde.
 8. **Máximo 2 rondas de ida y vuelta por tema.** Si no hay acuerdo, decides tú.
 
-## Qué hacen cuando no hay nadie diciéndoles qué hacer
+## Trabajan solo cuando tú lo autorizas
 
-Al terminar una tarea cogen la siguiente de mayor prioridad que esté libre, en este orden:
+Desde el 16-11-2026 los agentes **no encadenan tareas por su cuenta**. Al terminar una tarea:
 
-1. Lo que pidas tú.
-2. Los Issues pendientes.
-3. Lo que figure en [`estado.md`](estado.md).
+1. Entregan el PR con su parte y te informan de lo hecho y de lo pendiente.
+2. **Paran.** No cogen la siguiente, no abren Issues ni PR nuevos.
+3. Siguen cuando tú dices «continúa» (o les asignas algo concreto).
 
-Si no queda nada, crean ellos los Issues de lo que necesita el proyecto. **Tus órdenes pasan siempre
-por delante.**
+Así controlas el gasto de crédito. Dentro de una tarea autorizada sí arreglan lo que haga falta para
+cerrarla (CI roja, revisiones de su propio PR). **Tus órdenes pasan siempre por delante.**
 
 ## La hoja de ruta
 

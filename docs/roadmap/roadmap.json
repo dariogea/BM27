@@ -763,11 +763,10 @@
         },
         {
           "t": "Excepción del salario mínimo solo para llegar al mínimo de plantilla",
-          "s": "en-curso",
-          "p": 90,
+          "s": "hecho",
           "o": "claude",
           "i": 26,
-          "n": "PR #38 abierto."
+          "n": "Corregido en el PR #38."
         },
         {
           "t": "Mercado de la IA para los clubes rivales",
@@ -1154,11 +1153,10 @@
         },
         {
           "t": "Repeticiones verificables tras recargar",
-          "s": "en-curso",
-          "p": 70,
+          "s": "hecho",
           "o": "codex",
           "i": 27,
-          "n": "PR #32 de Codex."
+          "n": "Fusionado (PR #32 de Codex)."
         }
       ]
     },
@@ -1531,16 +1529,14 @@
         },
         {
           "t": "Trabajo bajo autorización del propietario",
-          "s": "en-curso",
-          "p": 80,
+          "s": "hecho",
           "o": "claude",
-          "n": "PR de reglas pendiente de fusión manual."
+          "n": "Fusionado (PR #40)."
         },
         {
           "t": "Esta hoja de ruta, generada y comprobada en CI",
-          "s": "en-curso",
-          "p": 70,
-          "o": "claude"
+          "s": "hecho",
+          "n": "PR #41."
         },
         {
           "t": "Política de fusión sin huecos conocidos",

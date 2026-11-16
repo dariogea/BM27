@@ -6,7 +6,8 @@ export const SAVE_FORMAT = 'bm27-save' as const;
 /** Envelope of an exported save file. `payload` is validated separately as a Universe. */
 export const SaveEnvelopeSchema = z.object({
   format: z.literal(SAVE_FORMAT),
-  schemaVersion: z.literal(SCHEMA_VERSION),
+  /** Contract version the payload was written with (may be older than the current one). */
+  schemaVersion: z.number().int().min(0).max(SCHEMA_VERSION),
   /** "sha256:<hex>" of the JSON text of `payload`. */
   checksum: z.string().regex(/^sha256:[0-9a-f]{64}$/),
   payload: z.unknown(),

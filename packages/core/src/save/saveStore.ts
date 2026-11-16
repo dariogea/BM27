@@ -2,6 +2,7 @@ import {
   SAVE_FORMAT,
   SCHEMA_VERSION,
   SaveEnvelopeSchema,
+  migrateUniverseData,
   parseUniverse,
   parseWith,
   type Universe,
@@ -39,7 +40,10 @@ export function exportSave(universe: Universe): string {
   return `${head.slice(0, -1)},"payload":${payload}}`;
 }
 
-/** Parses and verifies a document produced by `exportSave`. */
+/**
+ * Parses and verifies a document produced by `exportSave` (by this or an older
+ * version of the game; older data is migrated automatically).
+ */
 export function importSave(json: string): Universe {
   let raw: unknown;
   try {
@@ -48,9 +52,9 @@ export function importSave(json: string): Universe {
     throw new SaveError(`The save file is not valid JSON: ${(error as Error).message}`);
   }
   const version = (raw as { schemaVersion?: unknown } | null)?.schemaVersion;
-  if (typeof version === 'number' && version !== SCHEMA_VERSION) {
+  if (typeof version === 'number' && version > SCHEMA_VERSION) {
     throw new SaveError(
-      `The save file uses data version ${version}, but this build expects version ${SCHEMA_VERSION}. No migration is available yet.`,
+      `The save file was written by a newer version of the game (data version ${version}; this build understands up to ${SCHEMA_VERSION}).`,
     );
   }
   const envelope = parseWith(SaveEnvelopeSchema, 'save file', raw);
@@ -60,7 +64,14 @@ export function importSave(json: string): Universe {
       'The save file is corrupt: its checksum does not match its content (it was modified or damaged).',
     );
   }
-  return parseUniverse(envelope.payload);
+  // Older saves are upgraded step by step to the current contract version.
+  let migrated: unknown;
+  try {
+    migrated = migrateUniverseData(envelope.payload);
+  } catch (error) {
+    throw new SaveError((error as Error).message);
+  }
+  return parseUniverse(migrated);
 }
 
 /** Keeps saves as live objects in memory (deep-copied on the way in and out). */

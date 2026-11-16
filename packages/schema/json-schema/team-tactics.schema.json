@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "pace": {
+      "type": "string",
+      "enum": [
+        "slow",
+        "normal",
+        "fast"
+      ]
+    },
+    "offenseFocus": {
+      "type": "string",
+      "enum": [
+        "inside",
+        "balanced",
+        "perimeter"
+      ]
+    },
+    "defenseScheme": {
+      "type": "string",
+      "enum": [
+        "man",
+        "zone"
+      ]
+    },
+    "pickAndRollCoverage": {
+      "type": "string",
+      "enum": [
+        "drop",
+        "switch",
+        "hedge",
+        "blitz"
+      ]
+    },
+    "pressure": {
+      "type": "string",
+      "enum": [
+        "low",
+        "normal",
+        "high"
+      ]
+    },
+    "offensiveRebounding": {
+      "type": "string",
+      "enum": [
+        "get-back",
+        "normal",
+        "crash"
+      ]
+    },
+    "rotationDepth": {
+      "type": "integer",
+      "minimum": 7,
+      "maximum": 12
+    }
+  },
+  "required": [
+    "pace",
+    "offenseFocus",
+    "defenseScheme",
+    "pickAndRollCoverage",
+    "pressure",
+    "offensiveRebounding",
+    "rotationDepth"
+  ],
+  "additionalProperties": false
+}

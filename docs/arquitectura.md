@@ -16,15 +16,21 @@ packages/core     El "cerebro": genera el universo, simula partidos y temporadas
 
 ## Cómo se simula un partido
 
-1. El motor recibe dos equipos, un reglamento y una **semilla**.
-2. Juega posesión a posesión y apunta cada cosa que pasa en un **registro de eventos**
-   (tiro, rebote, falta, cambio...), con el periodo y el reloj.
-3. El **box score** se calcula después, leyendo únicamente ese registro.
+1. El motor recibe dos equipos (con sus tácticas), un reglamento y una **semilla**.
+2. En cada posesión el ataque elige una **jugada** (bloqueo directo, aislamiento, poste, tiro tras
+   pase, corte, salida de bloqueo o contraataque). La jugada escoge a sus protagonistas entre los
+   cinco en pista, los enfrenta a sus defensores según la táctica defensiva y termina en pérdida,
+   falta o tiro. Cada tiro tiene una zona de la pista y un grado de libertad del tirador.
+3. Todo lo que ocurre se apunta en un **registro de eventos** (tiro, rebote, falta, cambio...), con
+   el periodo y el reloj.
+4. El **box score** y la narración jugada a jugada se calculan después, leyendo únicamente ese
+   registro.
 
-Con la misma semilla, el partido sale idéntico siempre. Por eso se puede "volver a ver" cualquier
+Con la misma semilla, el partido sale idéntico siempre. Por eso se puede «volver a ver» cualquier
 partido sin haberlo guardado: basta con re-simularlo.
 
-> El motor actual es un `PLACEHOLDER`: sirve para probar la arquitectura, no es baloncesto fino.
+> El entrenador es todavía un `PLACEHOLDER`: quinteto, minutos y cambios siguen reglas fijas.
+> Qué hace cada táctica está explicado en [`tacticas.md`](tacticas.md).
 
 ## Cómo se simula una temporada
 

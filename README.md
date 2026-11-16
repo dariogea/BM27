@@ -4,8 +4,8 @@ Simulador de gestión de baloncesto para PC: mundo persistente, simulación por 
 de mods. Proyecto **privado y comercial** (ver `LICENSE`). Todos los clubes y jugadores son
 ficticios.
 
-> **Estado actual:** tarea T-001, prueba técnica del núcleo. El motor de partido es provisional
-> (`PLACEHOLDER`) y se reescribirá.
+> **Estado actual:** motor de partido v1 (tarea T-002) con tipos de jugada y tácticas. El
+> entrenador (quinteto, minutos y cambios) es todavía provisional (`PLACEHOLDER`).
 
 ## Qué hay en cada carpeta
 
@@ -44,7 +44,8 @@ Abre en el navegador la dirección que aparece (normalmente <http://localhost:51
 1. Escribe una semilla (cualquier texto) y pulsa **Generar universo**.
 2. Pulsa **Simular temporada**.
 3. Elige una competición en el desplegable para ver su clasificación y sus playoffs.
-4. Pulsa cualquier partido de la lista para ver su **box score**.
+4. Pulsa cualquier partido de la lista para ver su **box score**, las tácticas de cada equipo y
+   la narración **jugada a jugada**.
 
 La misma semilla produce siempre el mismo universo y los mismos resultados. Para cerrar la página,
 pulsa `Ctrl + C` en la terminal.
@@ -55,7 +56,7 @@ pulsa `Ctrl + C` en la terminal.
 pnpm test
 ```
 
-Deben salir todos en verde (tarda unos 15 segundos). Otras comprobaciones, las mismas que hace
+Deben salir todos en verde (tarda unos 25 segundos). Otras comprobaciones, las mismas que hace
 GitHub automáticamente en cada Pull Request:
 
 ```bash
@@ -84,8 +85,18 @@ pnpm sim --seed demo --seasons 3 --out saves/demo.json
 pnpm bench
 ```
 
-Ejecuta las pruebas B1–B4 (tarda en torno a medio minuto) y escribe el resultado en
-[`docs/benchmarks/T-001.md`](docs/benchmarks/T-001.md).
+Ejecuta las pruebas B1–B4 (tarda en torno a un minuto) y escribe el resultado en
+[`docs/benchmarks/T-002.md`](docs/benchmarks/T-002.md).
+
+## Comprobar la calibración del motor
+
+```bash
+pnpm calibrate
+```
+
+Simula la liga regular de cada nivel y compara las medias (puntos, posesiones, porcentajes,
+faltas…) con bandas de referencia. Con `pnpm calibrate --write` guarda el informe en
+[`docs/benchmarks/T-002-calibracion.md`](docs/benchmarks/T-002-calibracion.md).
 
 ## Otros comandos
 

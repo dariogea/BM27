@@ -1,6 +1,7 @@
 /**
- * Benchmarks for T-001. Run with:  pnpm bench
- * Writes real measurements to docs/benchmarks/T-001.md.
+ * Performance benchmarks. Run with:  pnpm bench
+ * Writes real measurements to docs/benchmarks/<TASK>.md. Older files are kept
+ * as a historical record of each task.
  */
 import { writeFileSync } from 'node:fs';
 import { cpus, totalmem, platform, release, arch } from 'node:os';
@@ -14,6 +15,8 @@ import {
   simulateSeason,
 } from '@bm27/core';
 
+const TASK = 'T-002';
+const ENGINE_LABEL = 'v1 (T-002), con entrenador PLACEHOLDER';
 const SEED = 'bench-t001';
 const SEASONS = 10;
 const REPEATS = 5;
@@ -94,7 +97,7 @@ if (imported.value.seasonNumber !== universe.seasonNumber) throw new Error('impo
 
 const cpu = cpus();
 const lines = [
-  '# Benchmarks T-001',
+  `# Benchmarks ${TASK}`,
   '',
   '> Archivo generado automáticamente por `pnpm bench`. Las cifras son mediciones reales de la',
   '> ejecución indicada abajo, no estimaciones. Para repetirlas: `pnpm install && pnpm bench`.',
@@ -107,7 +110,7 @@ const lines = [
   `- Sistema: ${platform()} ${release()} (${arch()}), contenedor en la nube (máquina virtual compartida)`,
   `- Node.js ${process.version} · ejecutado con \`tsx\` (TypeScript sin compilar previamente)`,
   `- Semilla: \`${SEED}\` · Universo: ${universe0.teams.length} equipos, ${universe0.players.length} jugadores (generado en ${f0(generation.ms)} ms)`,
-  `- Motor de partido: **PLACEHOLDER** (provisional). Estas cifras miden la arquitectura, no el motor definitivo.`,
+  `- Motor de partido: ${ENGINE_LABEL}. Misma semilla y mismas pruebas que en T-001 para poder comparar.`,
   '',
   '## Resultados',
   '',
@@ -139,25 +142,23 @@ const lines = [
   '- Qué contiene: equipos, jugadores (incluidos los retirados), competiciones y, por cada temporada, clasificaciones, resultado de cada partido, series de playoff y estadísticas acumuladas por jugador.',
   '- Qué NO contiene: el registro de eventos ni el box score de cada partido. Se pueden reconstruir de forma idéntica re-simulando el partido con su semilla mientras la temporada esté en curso, pero no se guardan. JSON sin comprimir ni sangrado.',
   '',
-  '## Rangos de plausibilidad usados en los tests (provisionales)',
+  '## Comparación con T-001 (motor provisional)',
   '',
-  'El test `provisional plausibility` (en `packages/core/test/match.test.ts`) simula 500 partidos entre dos equipos de calidad de nivel 1 con reglamento `fiba` y exige estas medias por equipo y partido:',
+  '| Prueba | T-001 | Ahora |',
+  '| --- | --- | --- |',
+  `| B1 · temporada del nivel 1 | 143 ms | ${f0(median(b1Runs))} ms |`,
+  `| B2 · temporada de todo el universo | 1260 ms | ${f0(median(b2Runs))} ms |`,
+  `| B3 · 10 temporadas | 12,14 s | ${f2(seasonMs.reduce((a, b) => a + b, 0) / 1000)} s |`,
+  `| B3 · memoria al final | 28,2 MB | ${f1(heapEnd)} MB |`,
+  `| B4 · guardado tras 10 temporadas | 13,89 MB | ${f2(saveBytes / 1024 / 1024)} MB |`,
   '',
-  '| Magnitud | Rango aceptado |',
-  '| --- | --- |',
-  '| Puntos | 70 – 92 |',
-  '| Posesiones | 66 – 78 |',
-  '| % tiros de campo | 42 % – 52 % |',
-  '| % triples | 30 % – 42 % |',
-  '| Tiros libres intentados | 10 – 26 |',
-  '| Pérdidas | 9 – 17 |',
-  '| Rebotes totales | 28 – 42 |',
+  'Las cifras de T-001 son las registradas en `T-001.md`, medidas en un contenedor equivalente pero en otra ejecución; la comparación es orientativa.',
   '',
-  '**De dónde salen:** son rangos amplios alrededor de las medias aproximadas de las grandes ligas europeas con reglas FIBA en temporadas recientes (en torno a 78–86 puntos y 70–75 posesiones por equipo en 40 minutos). **Aviso honesto:** proceden de conocimiento general, no de un conjunto de datos verificado; no los he contrastado contra una fuente oficial en esta tarea. Deben sustituirse por rangos calculados a partir de datos reales cuando se haga el motor definitivo.',
+  'La calibración del motor (medias de liga frente a bandas de referencia) está en `T-002-calibracion.md`.',
   '',
 ];
 
 const here = dirname(fileURLToPath(import.meta.url));
-const outFile = join(here, '..', '..', '..', 'docs', 'benchmarks', 'T-001.md');
+const outFile = join(here, '..', '..', '..', 'docs', 'benchmarks', `${TASK}.md`);
 writeFileSync(outFile, lines.join('\n'));
 console.log(`\n${lines.join('\n')}\nEscrito en ${outFile}`);

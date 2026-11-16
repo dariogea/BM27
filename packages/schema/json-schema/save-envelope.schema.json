@@ -7,8 +7,9 @@
       "const": "bm27-save"
     },
     "schemaVersion": {
-      "type": "number",
-      "const": 0
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 1
     },
     "checksum": {
       "type": "string",

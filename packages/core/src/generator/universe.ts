@@ -7,11 +7,12 @@ import {
   type Position,
   type Ruleset,
   type Team,
+  type TeamTactics,
   type Universe,
   type UniverseConfig,
 } from '@bm27/schema';
 import { BUILTIN_RULESETS, DEFAULT_NAME_POOL, DEFAULT_UNIVERSE_CONFIG } from '../data';
-import { createRng } from '../rng';
+import { createRng, type Rng } from '../rng';
 import { generatePlayer, playerId } from './player';
 
 export interface GenerateUniverseOptions {
@@ -80,7 +81,14 @@ export function generateUniverse(options: GenerateUniverseOptions): Universe {
         players.push(player);
         playerIds.push(player.id);
       }
-      teams.push({ id: teamId, name, city: city.name, region: city.region, playerIds });
+      teams.push({
+        id: teamId,
+        name,
+        city: city.name,
+        region: city.region,
+        playerIds,
+        tactics: chooseTactics(players.slice(-rosterSize), rng),
+      });
       teamIds.push(teamId);
     }
     competitions.push({
@@ -110,6 +118,59 @@ export function generateUniverse(options: GenerateUniverseOptions): Universe {
     teams,
     players,
     history: [],
+  };
+}
+
+/**
+ * PLACEHOLDER club AI: picks tactics that roughly suit the squad, with some
+ * randomness so that not every team plays the same way. There is no coach
+ * entity yet; a later task will replace this.
+ */
+export function chooseTactics(roster: readonly Player[], rng: Rng): TeamTactics {
+  const mean = (pick: (p: Player) => number, of: readonly Player[] = roster): number =>
+    of.reduce((sum, p) => sum + pick(p), 0) / Math.max(1, of.length);
+  const bigs = roster.filter((p) => p.positions[0] === 'PF' || p.positions[0] === 'C');
+  const jitter = (): number => rng.normal(0, 3);
+
+  const shooting = mean((p) => p.attributes.offensive.threePoint) + jitter();
+  const insideGame = mean((p) => p.attributes.offensive.closeShot) + jitter();
+  const athleticism =
+    mean((p) => (p.attributes.physical.speed + p.attributes.physical.stamina) / 2) -
+    mean((p) => p.attributes.mental.decisions) +
+    jitter();
+  const perimeterD = mean((p) => p.attributes.defensive.perimeterDefense) + jitter();
+  const interiorD = mean((p) => p.attributes.defensive.interiorDefense) + jitter();
+  const thieves =
+    mean((p) => p.attributes.defensive.steal) -
+    mean((p) => p.attributes.mental.discipline) +
+    jitter();
+  const glass =
+    mean((p) => p.attributes.offensive.offensiveRebound) -
+    mean((p) => p.attributes.physical.speed) +
+    jitter();
+  const bigSpeed = mean((p) => p.attributes.physical.speed, bigs) + jitter();
+  const bigBlock = mean((p) => p.attributes.defensive.block, bigs) + jitter();
+
+  const coverage: TeamTactics['pickAndRollCoverage'] =
+    bigSpeed - bigBlock > 2
+      ? rng.chance(0.6)
+        ? 'switch'
+        : 'hedge'
+      : bigBlock - bigSpeed > 12
+        ? 'drop'
+        : rng.chance(0.12)
+          ? 'blitz'
+          : 'hedge';
+
+  return {
+    pace: athleticism > 3 ? 'fast' : athleticism < -3 ? 'slow' : 'normal',
+    offenseFocus:
+      shooting - insideGame > 3 ? 'perimeter' : insideGame - shooting > 3 ? 'inside' : 'balanced',
+    defenseScheme: interiorD - perimeterD > 5 ? 'zone' : 'man',
+    pickAndRollCoverage: coverage,
+    pressure: thieves > 3 ? 'high' : thieves < -3 ? 'low' : 'normal',
+    offensiveRebounding: glass > 4 ? 'crash' : glass < -4 ? 'get-back' : 'normal',
+    rotationDepth: rng.int(9, 10),
   };
 }
 

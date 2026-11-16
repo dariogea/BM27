@@ -248,6 +248,40 @@
             "three"
           ]
         },
+        "zone": {
+          "type": "string",
+          "enum": [
+            "restricted",
+            "paint",
+            "midrange",
+            "corner3",
+            "above-break3"
+          ]
+        },
+        "playType": {
+          "type": "string",
+          "enum": [
+            "pick-and-roll",
+            "isolation",
+            "post-up",
+            "spot-up",
+            "cut",
+            "off-screen",
+            "transition",
+            "putback"
+          ]
+        },
+        "x": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "openness": {
+          "type": "number",
+          "minimum": -1,
+          "maximum": 1
+        },
         "made": {
           "type": "boolean"
         },
@@ -274,6 +308,11 @@
         "type",
         "playerId",
         "shotType",
+        "zone",
+        "playType",
+        "x",
+        "y",
+        "openness",
         "made",
         "points"
       ],
@@ -425,6 +464,29 @@
           "type": "string",
           "minLength": 1
         },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "bad-pass",
+            "lost-ball",
+            "travel",
+            "offensive-foul",
+            "shot-clock"
+          ]
+        },
+        "playType": {
+          "type": "string",
+          "enum": [
+            "pick-and-roll",
+            "isolation",
+            "post-up",
+            "spot-up",
+            "cut",
+            "off-screen",
+            "transition",
+            "putback"
+          ]
+        },
         "stealPlayerId": {
           "type": "string",
           "minLength": 1
@@ -437,7 +499,9 @@
         "possession",
         "offenseTeamId",
         "type",
-        "playerId"
+        "playerId",
+        "kind",
+        "playType"
       ],
       "additionalProperties": false
     },
@@ -488,8 +552,12 @@
           "type": "string",
           "enum": [
             "personal",
-            "shooting"
+            "shooting",
+            "offensive"
           ]
+        },
+        "intentional": {
+          "type": "boolean"
         },
         "freeThrows": {
           "type": "integer",
@@ -511,6 +579,7 @@
         "teamId",
         "drawnByPlayerId",
         "kind",
+        "intentional",
         "freeThrows",
         "fouledOut"
       ],

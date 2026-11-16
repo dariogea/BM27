@@ -1,4 +1,11 @@
-import { SchemaValidationError, parseUniverse, type Universe } from '@bm27/schema';
+import {
+  DEFAULT_TACTICS,
+  SCHEMA_VERSION,
+  SchemaValidationError,
+  migrateUniverseData,
+  parseUniverse,
+  type Universe,
+} from '@bm27/schema';
 import { beforeAll, describe, expect, it } from 'vitest';
 import {
   JsonSaveStore,
@@ -8,6 +15,7 @@ import {
   generateUniverse,
   hashValue,
   importSave,
+  sha256Hex,
   simulateSeason,
   type SaveStore,
 } from '../src/index';
@@ -78,8 +86,40 @@ describe('JSON export / import with checksum', () => {
   it('gives readable errors for garbage or other versions', () => {
     expect(() => importSave('not json {')).toThrow(/not valid JSON/);
     expect(() => importSave('{"hello":1}')).toThrow(/Invalid save file/);
-    const other = exportSave(fresh).replace('"schemaVersion":0', '"schemaVersion":7');
-    expect(() => importSave(other)).toThrow(/data version 7/);
+    const newer = exportSave(fresh).replace(/"schemaVersion":\d+/, '"schemaVersion":99');
+    expect(() => importSave(newer)).toThrow(/newer version of the game \(data version 99/);
+  });
+});
+
+describe('migration of old saves', () => {
+  /** Rebuilds what a T-001 (contract v0) save looked like: no tactics on teams. */
+  function asVersion0(universe: Universe): string {
+    const old = JSON.parse(JSON.stringify(universe));
+    old.schemaVersion = 0;
+    for (const team of old.teams) delete team.tactics;
+    const payload = JSON.stringify(old);
+    return `{"format":"bm27-save","schemaVersion":0,"checksum":"sha256:${sha256Hex(payload)}","payload":${payload}}`;
+  }
+
+  it('opens a version-0 save, adds default tactics and keeps everything else', () => {
+    const loaded = importSave(asVersion0(afterTwo));
+    expect(loaded.schemaVersion).toBe(SCHEMA_VERSION);
+    expect(loaded.teams.length).toBe(afterTwo.teams.length);
+    for (const team of loaded.teams) expect(team.tactics).toEqual(DEFAULT_TACTICS);
+    expect(hashValue(loaded.players)).toBe(hashValue(afterTwo.players));
+    expect(hashValue(loaded.history)).toBe(hashValue(afterTwo.history));
+    // And the migrated universe can keep being simulated.
+    expect(simulateSeason(loaded).universe.seasonNumber).toBe(afterTwo.seasonNumber + 1);
+  });
+
+  it('still verifies the checksum of old saves', () => {
+    const tampered = asVersion0(fresh).replace(fresh.teams[0]!.name, 'Hacked');
+    expect(() => importSave(tampered)).toThrow(/corrupt/);
+  });
+
+  it('migrateUniverseData leaves current data untouched and rejects the future', () => {
+    expect(migrateUniverseData(fresh)).toBe(fresh);
+    expect(() => migrateUniverseData({ schemaVersion: 42 })).toThrow(/newer than this build/);
   });
 });
 

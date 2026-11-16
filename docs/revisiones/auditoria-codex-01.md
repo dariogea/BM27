@@ -73,7 +73,7 @@ Si no existe detalle en myMatches, el Worker re-simula con replayUniverse y acep
 
 ## Reproducción portable
 
-El script usa únicamente el motor del repositorio. Guardar el siguiente bloque como `/tmp/bm27-audit-repro.ts` en un entorno cuyo checkout esté en `/workspace/BM27`, y ejecutar el comando indicado en la tabla. Ajustar la ruta de importación si el checkout está en otra carpeta. Los datos sintéticos se modifican solo en memoria.
+Esta reproducción corresponde exclusivamente al commit auditado `a846332`: la posterior tarea de finanzas cambia la generación y las reglas salariales, por lo que sus cifras no se deben trasladar a otras versiones. El script usa únicamente el motor del repositorio. Guardar el siguiente bloque como `/tmp/bm27-audit-repro.ts` en un entorno cuyo checkout esté en `/workspace/BM27`, y ejecutar el comando indicado en la tabla. Para el bloque guardado en `/tmp`, ejecutar `node --import /workspace/BM27/node_modules/tsx/dist/loader.mjs /tmp/bm27-audit-repro.ts`. Ajustar la ruta de importación si el checkout está en otra carpeta. Los datos sintéticos se modifican solo en memoria.
 
 ```typescript
 import {

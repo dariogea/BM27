@@ -1,0 +1,90 @@
+/* No design work in T-001: just enough to read tables comfortably. */
+body {
+  font-family: system-ui, sans-serif;
+  margin: 0;
+  padding: 16px;
+  color: #1c1c1c;
+  background: #fafafa;
+}
+h1 {
+  font-size: 20px;
+}
+h2 {
+  font-size: 17px;
+  margin-top: 24px;
+}
+h3 {
+  font-size: 15px;
+}
+.bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin: 8px 0;
+}
+button,
+select,
+input {
+  font: inherit;
+  padding: 6px 10px;
+}
+table {
+  border-collapse: collapse;
+  font-size: 13px;
+  margin: 8px 0 16px;
+  background: #fff;
+}
+th,
+td {
+  border: 1px solid #d0d0d0;
+  padding: 3px 8px;
+  text-align: right;
+  white-space: nowrap;
+}
+th:first-child,
+td:first-child,
+td.name,
+th.name {
+  text-align: left;
+}
+.scroll {
+  overflow-x: auto;
+}
+.note {
+  color: #555;
+  font-size: 13px;
+}
+.error {
+  color: #b00020;
+  font-weight: 600;
+}
+.tag {
+  background: #ffe9a8;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+.up {
+  background: #e3f6e3;
+}
+.down {
+  background: #fde4e4;
+}
+.playoff {
+  background: #eef3ff;
+}
+tr.clickable {
+  cursor: pointer;
+}
+tr.clickable:hover {
+  background: #f0f0f0;
+}
+tr.selected {
+  background: #fff3c4;
+}
+.columns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}

@@ -1,0 +1,15 @@
+{
+  "name": "@bm27/cli",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "sim": "tsx src/sim.ts",
+    "bench": "node --expose-gc --import tsx src/bench.ts"
+  },
+  "dependencies": {
+    "@bm27/core": "workspace:*",
+    "@bm27/schema": "workspace:*"
+  }
+}

@@ -1,0 +1,1140 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "result": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "seasonNumber": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "competitionId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "stage": {
+          "type": "string",
+          "enum": [
+            "regular",
+            "playoff"
+          ]
+        },
+        "round": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "homeTeamId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "awayTeamId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "homeScore": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "awayScore": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "overtimePeriods": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        }
+      },
+      "required": [
+        "id",
+        "seasonNumber",
+        "competitionId",
+        "stage",
+        "round",
+        "homeTeamId",
+        "awayTeamId",
+        "homeScore",
+        "awayScore",
+        "overtimePeriods"
+      ],
+      "additionalProperties": false
+    },
+    "boxScore": {
+      "type": "object",
+      "properties": {
+        "home": {
+          "type": "object",
+          "properties": {
+            "teamId": {
+              "type": "string",
+              "minLength": 1
+            },
+            "points": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "periodPoints": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              }
+            },
+            "possessions": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "players": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "seconds": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "points": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "fieldGoalsMade": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "fieldGoalsAttempted": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "threePointersMade": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "threePointersAttempted": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "freeThrowsMade": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "freeThrowsAttempted": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "offensiveRebounds": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "defensiveRebounds": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "assists": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "steals": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "blocks": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "turnovers": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "fouls": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "playerId": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "starter": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "seconds",
+                  "points",
+                  "fieldGoalsMade",
+                  "fieldGoalsAttempted",
+                  "threePointersMade",
+                  "threePointersAttempted",
+                  "freeThrowsMade",
+                  "freeThrowsAttempted",
+                  "offensiveRebounds",
+                  "defensiveRebounds",
+                  "assists",
+                  "steals",
+                  "blocks",
+                  "turnovers",
+                  "fouls",
+                  "playerId",
+                  "starter"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "totals": {
+              "type": "object",
+              "properties": {
+                "seconds": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "points": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "fieldGoalsMade": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "fieldGoalsAttempted": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "threePointersMade": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "threePointersAttempted": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "freeThrowsMade": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "freeThrowsAttempted": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "offensiveRebounds": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "defensiveRebounds": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "assists": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "steals": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "blocks": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "turnovers": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "fouls": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                }
+              },
+              "required": [
+                "seconds",
+                "points",
+                "fieldGoalsMade",
+                "fieldGoalsAttempted",
+                "threePointersMade",
+                "threePointersAttempted",
+                "freeThrowsMade",
+                "freeThrowsAttempted",
+                "offensiveRebounds",
+                "defensiveRebounds",
+                "assists",
+                "steals",
+                "blocks",
+                "turnovers",
+                "fouls"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "teamId",
+            "points",
+            "periodPoints",
+            "possessions",
+            "players",
+            "totals"
+          ],
+          "additionalProperties": false
+        },
+        "away": {
+          "type": "object",
+          "properties": {
+            "teamId": {
+              "type": "string",
+              "minLength": 1
+            },
+            "points": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "periodPoints": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              }
+            },
+            "possessions": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "players": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "seconds": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "points": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "fieldGoalsMade": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "fieldGoalsAttempted": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "threePointersMade": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "threePointersAttempted": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "freeThrowsMade": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "freeThrowsAttempted": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "offensiveRebounds": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "defensiveRebounds": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "assists": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "steals": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "blocks": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "turnovers": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "fouls": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "playerId": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "starter": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "seconds",
+                  "points",
+                  "fieldGoalsMade",
+                  "fieldGoalsAttempted",
+                  "threePointersMade",
+                  "threePointersAttempted",
+                  "freeThrowsMade",
+                  "freeThrowsAttempted",
+                  "offensiveRebounds",
+                  "defensiveRebounds",
+                  "assists",
+                  "steals",
+                  "blocks",
+                  "turnovers",
+                  "fouls",
+                  "playerId",
+                  "starter"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "totals": {
+              "type": "object",
+              "properties": {
+                "seconds": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "points": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "fieldGoalsMade": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "fieldGoalsAttempted": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "threePointersMade": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "threePointersAttempted": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "freeThrowsMade": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "freeThrowsAttempted": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "offensiveRebounds": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "defensiveRebounds": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "assists": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "steals": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "blocks": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "turnovers": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "fouls": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                }
+              },
+              "required": [
+                "seconds",
+                "points",
+                "fieldGoalsMade",
+                "fieldGoalsAttempted",
+                "threePointersMade",
+                "threePointersAttempted",
+                "freeThrowsMade",
+                "freeThrowsAttempted",
+                "offensiveRebounds",
+                "defensiveRebounds",
+                "assists",
+                "steals",
+                "blocks",
+                "turnovers",
+                "fouls"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "teamId",
+            "points",
+            "periodPoints",
+            "possessions",
+            "players",
+            "totals"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "home",
+        "away"
+      ],
+      "additionalProperties": false
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "seq": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "period": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 9007199254740991
+              },
+              "clock": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "possession": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "offenseTeamId": {
+                "type": "string",
+                "minLength": 1
+              },
+              "type": {
+                "type": "string",
+                "const": "lineup"
+              },
+              "teamId": {
+                "type": "string",
+                "minLength": 1
+              },
+              "playerIds": {
+                "minItems": 5,
+                "maxItems": 5,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            },
+            "required": [
+              "seq",
+              "period",
+              "clock",
+              "possession",
+              "offenseTeamId",
+              "type",
+              "teamId",
+              "playerIds"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "seq": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "period": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 9007199254740991
+              },
+              "clock": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "possession": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "offenseTeamId": {
+                "type": "string",
+                "minLength": 1
+              },
+              "type": {
+                "type": "string",
+                "const": "period_start"
+              },
+              "periodSeconds": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 9007199254740991
+              }
+            },
+            "required": [
+              "seq",
+              "period",
+              "clock",
+              "possession",
+              "offenseTeamId",
+              "type",
+              "periodSeconds"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "seq": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "period": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 9007199254740991
+              },
+              "clock": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "possession": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "offenseTeamId": {
+                "type": "string",
+                "minLength": 1
+              },
+              "type": {
+                "type": "string",
+                "const": "period_end"
+              }
+            },
+            "required": [
+              "seq",
+              "period",
+              "clock",
+              "possession",
+              "offenseTeamId",
+              "type"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "seq": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "period": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 9007199254740991
+              },
+              "clock": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "possession": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "offenseTeamId": {
+                "type": "string",
+                "minLength": 1
+              },
+              "type": {
+                "type": "string",
+                "const": "substitution"
+              },
+              "teamId": {
+                "type": "string",
+                "minLength": 1
+              },
+              "playerInId": {
+                "type": "string",
+                "minLength": 1
+              },
+              "playerOutId": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "seq",
+              "period",
+              "clock",
+              "possession",
+              "offenseTeamId",
+              "type",
+              "teamId",
+              "playerInId",
+              "playerOutId"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "seq": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "period": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 9007199254740991
+              },
+              "clock": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "possession": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "offenseTeamId": {
+                "type": "string",
+                "minLength": 1
+              },
+              "type": {
+                "type": "string",
+                "const": "shot"
+              },
+              "playerId": {
+                "type": "string",
+                "minLength": 1
+              },
+              "shotType": {
+                "type": "string",
+                "enum": [
+                  "rim",
+                  "mid",
+                  "three"
+                ]
+              },
+              "made": {
+                "type": "boolean"
+              },
+              "points": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 3
+              },
+              "assistPlayerId": {
+                "type": "string",
+                "minLength": 1
+              },
+              "blockPlayerId": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "seq",
+              "period",
+              "clock",
+              "possession",
+              "offenseTeamId",
+              "type",
+              "playerId",
+              "shotType",
+              "made",
+              "points"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "seq": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "period": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 9007199254740991
+              },
+              "clock": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "possession": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "offenseTeamId": {
+                "type": "string",
+                "minLength": 1
+              },
+              "type": {
+                "type": "string",
+                "const": "free_throw"
+              },
+              "playerId": {
+                "type": "string",
+                "minLength": 1
+              },
+              "made": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "seq",
+              "period",
+              "clock",
+              "possession",
+              "offenseTeamId",
+              "type",
+              "playerId",
+              "made"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "seq": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "period": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 9007199254740991
+              },
+              "clock": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "possession": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "offenseTeamId": {
+                "type": "string",
+                "minLength": 1
+              },
+              "type": {
+                "type": "string",
+                "const": "rebound"
+              },
+              "playerId": {
+                "type": "string",
+                "minLength": 1
+              },
+              "teamId": {
+                "type": "string",
+                "minLength": 1
+              },
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "offensive",
+                  "defensive"
+                ]
+              }
+            },
+            "required": [
+              "seq",
+              "period",
+              "clock",
+              "possession",
+              "offenseTeamId",
+              "type",
+              "playerId",
+              "teamId",
+              "kind"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "seq": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "period": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 9007199254740991
+              },
+              "clock": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "possession": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "offenseTeamId": {
+                "type": "string",
+                "minLength": 1
+              },
+              "type": {
+                "type": "string",
+                "const": "turnover"
+              },
+              "playerId": {
+                "type": "string",
+                "minLength": 1
+              },
+              "stealPlayerId": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "seq",
+              "period",
+              "clock",
+              "possession",
+              "offenseTeamId",
+              "type",
+              "playerId"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "seq": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "period": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 9007199254740991
+              },
+              "clock": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "possession": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "offenseTeamId": {
+                "type": "string",
+                "minLength": 1
+              },
+              "type": {
+                "type": "string",
+                "const": "foul"
+              },
+              "playerId": {
+                "type": "string",
+                "minLength": 1
+              },
+              "teamId": {
+                "type": "string",
+                "minLength": 1
+              },
+              "drawnByPlayerId": {
+                "type": "string",
+                "minLength": 1
+              },
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "personal",
+                  "shooting"
+                ]
+              },
+              "freeThrows": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 3
+              },
+              "fouledOut": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "seq",
+              "period",
+              "clock",
+              "possession",
+              "offenseTeamId",
+              "type",
+              "playerId",
+              "teamId",
+              "drawnByPlayerId",
+              "kind",
+              "freeThrows",
+              "fouledOut"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "seq": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "period": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 9007199254740991
+              },
+              "clock": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "possession": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "offenseTeamId": {
+                "type": "string",
+                "minLength": 1
+              },
+              "type": {
+                "type": "string",
+                "const": "game_end"
+              }
+            },
+            "required": [
+              "seq",
+              "period",
+              "clock",
+              "possession",
+              "offenseTeamId",
+              "type"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      }
+    }
+  },
+  "required": [
+    "result",
+    "boxScore",
+    "events"
+  ],
+  "additionalProperties": false
+}

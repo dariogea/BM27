@@ -1,0 +1,114 @@
+import { SchemaValidationError, parseUniverse, type Universe } from '@bm27/schema';
+import { beforeAll, describe, expect, it } from 'vitest';
+import {
+  JsonSaveStore,
+  MemorySaveStore,
+  SaveError,
+  exportSave,
+  generateUniverse,
+  hashValue,
+  importSave,
+  simulateSeason,
+  type SaveStore,
+} from '../src/index';
+
+let fresh: Universe;
+let afterTwo: Universe;
+
+beforeAll(() => {
+  fresh = generateUniverse({ seed: 'save-test' });
+  afterTwo = simulateSeason(simulateSeason(fresh).universe).universe;
+});
+
+describe('schema validation of universes', () => {
+  it('loads a valid universe', () => {
+    expect(() => parseUniverse(JSON.parse(JSON.stringify(afterTwo)))).not.toThrow();
+  });
+
+  it('rejects a corrupt universe with a readable error', () => {
+    const broken = JSON.parse(JSON.stringify(fresh));
+    broken.players[3].age = 'veinte';
+    broken.players[5].attributes.offensive.threePoint = 250;
+    delete broken.teams[0].name;
+
+    let error: unknown;
+    try {
+      parseUniverse(broken);
+    } catch (e) {
+      error = e;
+    }
+    expect(error).toBeInstanceOf(SchemaValidationError);
+    const message = (error as Error).message;
+    expect(message).toContain('Invalid universe');
+    expect(message).toContain('players[3].age');
+    expect(message).toContain('players[5].attributes.offensive.threePoint');
+    expect(message).toContain('teams[0].name');
+  });
+
+  it('rejects broken references between entities', () => {
+    const broken = JSON.parse(JSON.stringify(fresh));
+    broken.competitions[1].rulesetId = 'does-not-exist';
+    broken.teams[2].playerIds[0] = 'ghost';
+    expect(() => parseUniverse(broken)).toThrow(/unknown ruleset "does-not-exist"/);
+    expect(() => parseUniverse(broken)).toThrow(/teams\[2\].playerIds: unknown player "ghost"/);
+  });
+
+  it('rejects data that is not a universe at all', () => {
+    expect(() => parseUniverse(null)).toThrow(SchemaValidationError);
+    expect(() => parseUniverse({ schemaVersion: 99 })).toThrow(/schemaVersion/);
+  });
+});
+
+describe('JSON export / import with checksum', () => {
+  it('round-trips without changing anything', () => {
+    const json = exportSave(afterTwo);
+    expect(hashValue(importSave(json))).toBe(hashValue(afterTwo));
+    expect(JSON.parse(json).checksum).toMatch(/^sha256:[0-9a-f]{64}$/);
+  });
+
+  it('detects a modified save file', () => {
+    const json = exportSave(fresh);
+    const name = fresh.teams[0]!.name;
+    const tampered = json.replace(name, `${name}X`);
+    expect(tampered).not.toBe(json);
+    expect(() => importSave(tampered)).toThrow(SaveError);
+    expect(() => importSave(tampered)).toThrow(/corrupt/);
+  });
+
+  it('gives readable errors for garbage or other versions', () => {
+    expect(() => importSave('not json {')).toThrow(/not valid JSON/);
+    expect(() => importSave('{"hello":1}')).toThrow(/Invalid save file/);
+    const other = exportSave(fresh).replace('"schemaVersion":0', '"schemaVersion":7');
+    expect(() => importSave(other)).toThrow(/data version 7/);
+  });
+});
+
+describe.each<[string, () => SaveStore]>([
+  ['MemorySaveStore', () => new MemorySaveStore()],
+  ['JsonSaveStore', () => new JsonSaveStore()],
+])('%s', (_name, create) => {
+  it('saves, lists, loads and deletes', async () => {
+    const store = create();
+    await store.save('slot-a', fresh);
+    await store.save('slot-b', afterTwo);
+    expect(await store.list()).toEqual(['slot-a', 'slot-b']);
+    expect(hashValue(await store.load('slot-b'))).toBe(hashValue(afterTwo));
+    await store.delete('slot-a');
+    expect(await store.list()).toEqual(['slot-b']);
+    await expect(store.load('slot-a')).rejects.toThrow(/does not exist/);
+  });
+
+  it('save → load → keep simulating equals simulating without saving', async () => {
+    // Without saving: 2 seasons already played + 2 more.
+    let straight = afterTwo;
+    for (let i = 0; i < 2; i++) straight = simulateSeason(straight).universe;
+
+    const store = create();
+    await store.save('mid', afterTwo);
+    let resumed = await store.load('mid');
+    for (let i = 0; i < 2; i++) resumed = simulateSeason(resumed).universe;
+
+    expect(resumed.seasonNumber).toBe(5);
+    expect(hashValue(resumed)).toBe(hashValue(straight));
+  });
+});

@@ -1,0 +1,11 @@
+node_modules/
+dist/
+coverage/
+*.log
+.DS_Store
+.env
+.env.*
+*.tsbuildinfo
+.vite/
+# Local saves produced by the CLI
+saves/

@@ -1,0 +1,24 @@
+[
+  {
+    "id": "fiba",
+    "name": "FIBA-style (4x10)",
+    "periods": 4,
+    "periodMinutes": 10,
+    "overtimeMinutes": 5,
+    "personalFoulLimit": 5,
+    "teamFoulsForBonus": 5,
+    "shotClockSeconds": 24,
+    "shotClockOffensiveReboundSeconds": 14
+  },
+  {
+    "id": "nba-like",
+    "name": "NBA-like (4x12)",
+    "periods": 4,
+    "periodMinutes": 12,
+    "overtimeMinutes": 5,
+    "personalFoulLimit": 6,
+    "teamFoulsForBonus": 5,
+    "shotClockSeconds": 24,
+    "shotClockOffensiveReboundSeconds": 14
+  }
+]

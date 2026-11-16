@@ -1,0 +1,38 @@
+import { z } from 'zod';
+import { CompetitionSchema } from './competition';
+import { MatchEventSchema } from './event';
+import { MatchDetailSchema, MatchResultSchema } from './match';
+import { PlayerSchema } from './player';
+import { RulesetSchema } from './ruleset';
+import { SaveEnvelopeSchema } from './save';
+import { SeasonSchema } from './season';
+import { TeamSchema } from './team';
+import { NamePoolSchema, UniverseConfigSchema, UniverseSchema } from './universe';
+
+/** Every public contract, by file name, for JSON Schema export (used by mods/tools). */
+export const CONTRACTS = {
+  player: PlayerSchema,
+  team: TeamSchema,
+  ruleset: RulesetSchema,
+  competition: CompetitionSchema,
+  event: MatchEventSchema,
+  'match-result': MatchResultSchema,
+  'match-detail': MatchDetailSchema,
+  season: SeasonSchema,
+  universe: UniverseSchema,
+  'universe-config': UniverseConfigSchema,
+  'name-pool': NamePoolSchema,
+  'save-envelope': SaveEnvelopeSchema,
+} as const;
+
+export type ContractName = keyof typeof CONTRACTS;
+
+export function toJsonSchema(name: ContractName): unknown {
+  return z.toJSONSchema(CONTRACTS[name]);
+}
+
+export function allJsonSchemas(): Record<ContractName, unknown> {
+  const out = {} as Record<ContractName, unknown>;
+  for (const name of Object.keys(CONTRACTS) as ContractName[]) out[name] = toJsonSchema(name);
+  return out;
+}

@@ -1,0 +1,25 @@
+{
+  "rustc": 18169182855791486453,
+  "features": "[\"default\", \"diff\"]",
+  "declared_features": "[\"default\", \"diff\", \"schemars\", \"utoipa\"]",
+  "target": 14406124900114693622,
+  "profile": 2241668132362809309,
+  "path": 8309693939933359394,
+  "deps": [
+    [1957009224993739128, "thiserror", false, 13506129655468595022],
+    [6557439603276904804, "serde", false, 13970588307941943658],
+    [8160210889872729633, "serde_json", false, 17438295753251318374],
+    [18154336712578461417, "jsonptr", false, 2930195081394235060]
+  ],
+  "local": [
+    {
+      "CheckDepInfo": {
+        "dep_info": "debug/.fingerprint/json-patch-01c7940943326084/dep-lib-json_patch",
+        "checksum": false
+      }
+    }
+  ],
+  "rustflags": [],
+  "config": 9396254390672932401,
+  "compile_kind": 0
+}

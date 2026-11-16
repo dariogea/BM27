@@ -1,0 +1,36 @@
+{
+  "rustc": 18169182855791486453,
+  "features": "[\"gdkx11\", \"javascriptcore-rs\", \"linux-body\", \"os-webview\", \"soup3\", \"webkit2gtk\", \"webkit2gtk-sys\", \"x11\", \"x11-dl\"]",
+  "declared_features": "[\"default\", \"devtools\", \"gdkx11\", \"javascriptcore-rs\", \"linux-body\", \"mac-proxy\", \"os-webview\", \"serde\", \"soup3\", \"tracing\", \"webkit2gtk\", \"webkit2gtk-sys\", \"x11\", \"x11-dl\"]",
+  "target": 12197630692228066342,
+  "profile": 3254806551126565539,
+  "path": 17243400736443247571,
+  "deps": [
+    [1556476424214855099, "javascriptcore", false, 12356620897700256386],
+    [1957009224993739128, "thiserror", false, 13506129655468595022],
+    [3017117728893610998, "build_script_build", false, 13946735610443509044],
+    [4052690969609167974, "gtk", false, 15306664086605782840],
+    [4143744114649553716, "raw_window_handle", false, 7422443823896548157],
+    [5573101603161346839, "x11_dl", false, 5445042703438055901],
+    [6803352382179706244, "percent_encoding", false, 9982883519635519683],
+    [7606335748176206944, "dpi", false, 2990193549251991553],
+    [9411499128705678843, "soup", false, 5108111961868207959],
+    [12216365939420334724, "webkit2gtk_sys", false, 2766110958396904626],
+    [12328341851100645683, "http", false, 7463529697779651182],
+    [15353468482004736280, "dirs", false, 1324902700387138901],
+    [15354660475779376316, "gdkx11", false, 914035192106128955],
+    [16092542839092148581, "webkit2gtk", false, 4709436096802594420],
+    [16658285272315469075, "cookie", false, 2152794609989350702]
+  ],
+  "local": [
+    {
+      "CheckDepInfo": {
+        "dep_info": "debug/.fingerprint/wry-300b1f3204982e0b/dep-lib-wry",
+        "checksum": false
+      }
+    }
+  ],
+  "rustflags": [],
+  "config": 9396254390672932401,
+  "compile_kind": 0
+}

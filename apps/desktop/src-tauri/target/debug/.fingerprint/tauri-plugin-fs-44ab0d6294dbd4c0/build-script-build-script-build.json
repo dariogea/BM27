@@ -1,0 +1,26 @@
+{
+  "rustc": 18169182855791486453,
+  "features": "[]",
+  "declared_features": "[\"notify\", \"notify-debouncer-full\", \"watch\"]",
+  "target": 2835126046236718539,
+  "profile": 2225463790103693989,
+  "path": 12049922220483359871,
+  "deps": [
+    [303028951359412795, "tauri_plugin", false, 1629151004628393930],
+    [6150761115169611044, "toml", false, 7882308281220004111],
+    [6557439603276904804, "serde", false, 15042448118682780602],
+    [6913375703034175521, "schemars", false, 1800804397641868455],
+    [13639946509620662596, "tauri_utils", false, 5613245134960012993]
+  ],
+  "local": [
+    {
+      "CheckDepInfo": {
+        "dep_info": "debug/.fingerprint/tauri-plugin-fs-44ab0d6294dbd4c0/dep-build-script-build-script-build",
+        "checksum": false
+      }
+    }
+  ],
+  "rustflags": [],
+  "config": 9396254390672932401,
+  "compile_kind": 0
+}

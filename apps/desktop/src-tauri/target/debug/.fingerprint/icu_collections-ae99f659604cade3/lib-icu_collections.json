@@ -1,0 +1,27 @@
+{
+  "rustc": 18169182855791486453,
+  "features": "[]",
+  "declared_features": "[\"alloc\", \"databake\", \"serde\"]",
+  "target": 14034987384370266605,
+  "profile": 3867430601044957572,
+  "path": 6664417706208286747,
+  "deps": [
+    [7165959572538889038, "zerovec", false, 4005731899195613401],
+    [7664967068156160197, "displaydoc", false, 5910913014091576018],
+    [9300050984335437028, "utf8_iter", false, 16172385783819308090],
+    [9967924475131658895, "yoke", false, 10330242862188861892],
+    [12481580349051900383, "zerofrom", false, 15455206593217723711],
+    [13773585947560742783, "potential_utf", false, 16115402207341066511]
+  ],
+  "local": [
+    {
+      "CheckDepInfo": {
+        "dep_info": "debug/.fingerprint/icu_collections-ae99f659604cade3/dep-lib-icu_collections",
+        "checksum": false
+      }
+    }
+  ],
+  "rustflags": [],
+  "config": 9396254390672932401,
+  "compile_kind": 0
+}

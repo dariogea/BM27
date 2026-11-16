@@ -1,0 +1,26 @@
+{
+  "rustc": 18169182855791486453,
+  "features": "[]",
+  "declared_features": "[]",
+  "target": 9393901212528516648,
+  "profile": 17672942494452627365,
+  "path": 4942398508502643691,
+  "deps": [
+    [8550416195703903170, "tauri_plugin_dialog", false, 8569304346077033469],
+    [12652212924442594523, "tauri_plugin_fs", false, 3248462789309589224],
+    [13075075740062251120, "bm27_desktop_lib", false, 18346047963006635968],
+    [13075075740062251120, "build_script_build", false, 13410868924797873524],
+    [14375137941914813287, "tauri", false, 2131702490088006920]
+  ],
+  "local": [
+    {
+      "CheckDepInfo": {
+        "dep_info": "debug/.fingerprint/bm27-desktop-f2bc31451463ab96/dep-bin-bm27-desktop",
+        "checksum": false
+      }
+    }
+  ],
+  "rustflags": [],
+  "config": 9396254390672932401,
+  "compile_kind": 0
+}

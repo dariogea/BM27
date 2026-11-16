@@ -115,7 +115,7 @@ export function signFreeAgent(universe: Universe, playerId: string, years: numbe
   const payroll = teamPayroll(universe, team.id) - expiringSalaries(universe, team);
   if (
     payroll + salary > effectiveSalaryLimit(team, competition) &&
-    salary > competition.minSalary
+    !minimumWageException(universe, team, competition, salary, true)
   ) {
     throw overBudget(team, competition, salary, payroll);
   }
@@ -127,6 +127,30 @@ export function signFreeAgent(universe: Universe, playerId: string, years: numbe
     teams: new Map([[team.id, withPlayer(team, target.id)]]),
     log: [transaction(universe, 'signed', target, team.id, salary, endSeason)],
   });
+}
+
+/** Players who will still be at the club next season: those whose contract has not run out. */
+function playersStaying(universe: Universe, team: Team): number {
+  const byId = new Map(universe.players.map((p) => [p.id, p]));
+  return team.playerIds.filter((id) => !isExpired(universe, byId.get(id) as Player)).length;
+}
+
+/**
+ * D-030: a minimum-wage contract may go over the salary limit only when the club needs it to
+ * reach the minimum squad for the next season. With the squad complete there is no exception.
+ */
+function minimumWageException(
+  universe: Universe,
+  team: Team,
+  competition: Competition,
+  salary: number,
+  fillsASpot: boolean,
+): boolean {
+  return (
+    fillsASpot &&
+    salary <= competition.minSalary &&
+    playersStaying(universe, team) < competition.rosterMin
+  );
 }
 
 /** Salaries that stop counting because the contract is already over. */
@@ -158,7 +182,13 @@ export function renewContract(universe: Universe, playerId: string, years: numbe
     target.contract.salary -
     expiringSalaries(universe, team) +
     (isExpired(universe, target) ? target.contract.salary : 0);
-  if (others + salary > effectiveSalaryLimit(team, competition) && salary > competition.minSalary) {
+  // Renewing a player whose contract has run out brings him back into the squad; renewing one
+  // who is still under contract does not add anyone, so it never qualifies for the exception.
+  const bringsBack = isExpired(universe, target);
+  if (
+    others + salary > effectiveSalaryLimit(team, competition) &&
+    !minimumWageException(universe, team, competition, salary, bringsBack)
+  ) {
     throw overBudget(team, competition, salary, others);
   }
   const endSeason = universe.seasonNumber + years - 1;

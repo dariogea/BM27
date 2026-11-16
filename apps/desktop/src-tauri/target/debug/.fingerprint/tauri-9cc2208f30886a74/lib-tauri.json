@@ -1,0 +1,47 @@
+{
+  "rustc": 18169182855791486453,
+  "features": "[\"common-controls-v6\", \"compression\", \"dbus\", \"default\", \"dynamic-acl\", \"tauri-runtime-wry\", \"webkit2gtk\", \"webview2-com\", \"wry\", \"x11\"]",
+  "declared_features": "[\"common-controls-v6\", \"compression\", \"config-json5\", \"config-toml\", \"custom-protocol\", \"data-url\", \"dbus\", \"default\", \"devtools\", \"dynamic-acl\", \"http-range\", \"image\", \"image-ico\", \"image-png\", \"isolation\", \"linux-libxdo\", \"macos-private-api\", \"macos-proxy\", \"native-tls\", \"native-tls-vendored\", \"objc-exception\", \"process-relaunch-dangerous-allow-symlink-macos\", \"protocol-asset\", \"rustls-tls\", \"specta\", \"tauri-runtime-wry\", \"test\", \"tracing\", \"tray-icon\", \"unstable\", \"uuid\", \"webkit2gtk\", \"webview-data-url\", \"webview2-com\", \"wry\", \"x11\"]",
+  "target": 10704551532154500348,
+  "profile": 10188255792524423441,
+  "path": 6935361531561181403,
+  "deps": [
+    [1260461579271933187, "serialize_to_javascript", false, 1209289404266648597],
+    [1528297757488249563, "url", false, 8652437174296015682],
+    [1957009224993739128, "thiserror", false, 13506129655468595022],
+    [4052690969609167974, "gtk", false, 15306664086605782840],
+    [4143744114649553716, "raw_window_handle", false, 7422443823896548157],
+    [6557439603276904804, "serde", false, 13970588307941943658],
+    [6803352382179706244, "percent_encoding", false, 9982883519635519683],
+    [7016282161962957707, "mime", false, 6667688007467847796],
+    [7264839661287455353, "log", false, 2603476740080437142],
+    [8160210889872729633, "serde_json", false, 17438295753251318374],
+    [8184031567584963515, "glob", false, 16902698856190014740],
+    [9717716013987613034, "serde_repr", false, 9496257409523187242],
+    [9812898627214262702, "tauri_macros", false, 18193412426336575930],
+    [10364619138950789809, "anyhow", false, 17871168091735763800],
+    [11989259058781683633, "dunce", false, 15349025686794505626],
+    [12036095936970396046, "muda", false, 16883991434958856229],
+    [12328341851100645683, "http", false, 7463529697779651182],
+    [13162997345675096638, "tauri_runtime_wry", false, 14439104269266655227],
+    [13639946509620662596, "tauri_utils", false, 14005459239265284523],
+    [14375137941914813287, "build_script_build", false, 6324751364362642797],
+    [15353468482004736280, "dirs", false, 1324902700387138901],
+    [15834483184531552455, "tauri_runtime", false, 13770374614481216037],
+    [16092542839092148581, "webkit2gtk", false, 4709436096802594420],
+    [16658285272315469075, "cookie", false, 2152794609989350702],
+    [17866805608252134857, "tokio", false, 5676508400900310632],
+    [18408407127522236545, "getrandom", false, 2037221669956467684]
+  ],
+  "local": [
+    {
+      "CheckDepInfo": {
+        "dep_info": "debug/.fingerprint/tauri-9cc2208f30886a74/dep-lib-tauri",
+        "checksum": false
+      }
+    }
+  ],
+  "rustflags": [],
+  "config": 9396254390672932401,
+  "compile_kind": 0
+}

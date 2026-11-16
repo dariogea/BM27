@@ -1,0 +1,26 @@
+{
+  "rustc": 18169182855791486453,
+  "features": "[]",
+  "declared_features": "[\"benchmarks\", \"unstable\", \"zlib-rs\"]",
+  "target": 12046889002252286887,
+  "profile": 9346826069578435451,
+  "path": 3127630072979058706,
+  "deps": [
+    [1351049240346719129, "crc32fast", false, 2251003828036864576],
+    [3389776682256874761, "fdeflate", false, 6929147537808083232],
+    [7636735136738807108, "miniz_oxide", false, 3966859159298384149],
+    [12567418643760272543, "bitflags", false, 5650798542227169322],
+    [16451031974877080987, "flate2", false, 17269987787839192918]
+  ],
+  "local": [
+    {
+      "CheckDepInfo": {
+        "dep_info": "debug/.fingerprint/png-205e39f37ef4679e/dep-lib-png",
+        "checksum": false
+      }
+    }
+  ],
+  "rustflags": [],
+  "config": 9396254390672932401,
+  "compile_kind": 0
+}

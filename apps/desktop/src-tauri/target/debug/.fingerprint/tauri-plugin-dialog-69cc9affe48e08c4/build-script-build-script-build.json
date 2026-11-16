@@ -1,0 +1,20 @@
+{
+  "rustc": 18169182855791486453,
+  "features": "[\"default\", \"gtk3\"]",
+  "declared_features": "[\"default\", \"gtk3\", \"xdg-portal\"]",
+  "target": 2835126046236718539,
+  "profile": 2225463790103693989,
+  "path": 10932511087769388462,
+  "deps": [[303028951359412795, "tauri_plugin", false, 1629151004628393930]],
+  "local": [
+    {
+      "CheckDepInfo": {
+        "dep_info": "debug/.fingerprint/tauri-plugin-dialog-69cc9affe48e08c4/dep-build-script-build-script-build",
+        "checksum": false
+      }
+    }
+  ],
+  "rustflags": [],
+  "config": 9396254390672932401,
+  "compile_kind": 0
+}

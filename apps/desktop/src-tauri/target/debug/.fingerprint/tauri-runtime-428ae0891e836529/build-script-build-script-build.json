@@ -1,0 +1,20 @@
+{
+  "rustc": 18169182855791486453,
+  "features": "[]",
+  "declared_features": "[\"devtools\", \"macos-private-api\"]",
+  "target": 2835126046236718539,
+  "profile": 11192384809959439318,
+  "path": 1650651436191887574,
+  "deps": [],
+  "local": [
+    {
+      "CheckDepInfo": {
+        "dep_info": "debug/.fingerprint/tauri-runtime-428ae0891e836529/dep-build-script-build-script-build",
+        "checksum": false
+      }
+    }
+  ],
+  "rustflags": [],
+  "config": 9396254390672932401,
+  "compile_kind": 0
+}

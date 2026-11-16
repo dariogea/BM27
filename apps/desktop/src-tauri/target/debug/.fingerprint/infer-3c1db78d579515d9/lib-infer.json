@@ -1,0 +1,20 @@
+{
+  "rustc": 18169182855791486453,
+  "features": "[\"alloc\", \"cfb\", \"default\", \"std\"]",
+  "declared_features": "[\"alloc\", \"cfb\", \"default\", \"std\"]",
+  "target": 17666350777014811520,
+  "profile": 2225463790103693989,
+  "path": 3869316146536991287,
+  "deps": [[12172069012472988407, "cfb", false, 15344969419407400008]],
+  "local": [
+    {
+      "CheckDepInfo": {
+        "dep_info": "debug/.fingerprint/infer-3c1db78d579515d9/dep-lib-infer",
+        "checksum": false
+      }
+    }
+  ],
+  "rustflags": [],
+  "config": 9396254390672932401,
+  "compile_kind": 0
+}

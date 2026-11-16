@@ -1,0 +1,25 @@
+{
+  "rustc": 18169182855791486453,
+  "features": "",
+  "declared_features": "",
+  "target": 0,
+  "profile": 0,
+  "path": 0,
+  "deps": [
+    [14375137941914813287, "build_script_build", false, 6324751364362642797],
+    [8550416195703903170, "build_script_build", false, 11457915498486316066],
+    [12652212924442594523, "build_script_build", false, 15905562928316938473]
+  ],
+  "local": [
+    {
+      "RerunIfChanged": {
+        "output": "debug/build/tauri-plugin-dialog-8d8e898a5938d50b/output",
+        "paths": ["permissions"]
+      }
+    },
+    { "RerunIfEnvChanged": { "var": "REMOVE_UNUSED_COMMANDS", "val": null } }
+  ],
+  "rustflags": [],
+  "config": 0,
+  "compile_kind": 0
+}

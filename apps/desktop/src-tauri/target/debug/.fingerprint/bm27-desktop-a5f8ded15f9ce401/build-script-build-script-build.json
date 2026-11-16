@@ -1,0 +1,20 @@
+{
+  "rustc": 18169182855791486453,
+  "features": "[]",
+  "declared_features": "[]",
+  "target": 5408242616063297496,
+  "profile": 7409704062750675268,
+  "path": 13767053534773805487,
+  "deps": [[3773114941899429447, "tauri_build", false, 12247956092243222634]],
+  "local": [
+    {
+      "CheckDepInfo": {
+        "dep_info": "debug/.fingerprint/bm27-desktop-a5f8ded15f9ce401/dep-build-script-build-script-build",
+        "checksum": false
+      }
+    }
+  ],
+  "rustflags": [],
+  "config": 9396254390672932401,
+  "compile_kind": 0
+}

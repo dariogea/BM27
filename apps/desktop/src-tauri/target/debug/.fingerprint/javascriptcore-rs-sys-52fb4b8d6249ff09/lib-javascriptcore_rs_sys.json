@@ -1,0 +1,25 @@
+{
+  "rustc": 18169182855791486453,
+  "features": "[\"v2_28\", \"v2_38\"]",
+  "declared_features": "[\"v2_28\", \"v2_38\"]",
+  "target": 17217257543979948008,
+  "profile": 2241668132362809309,
+  "path": 4132365572231596772,
+  "deps": [
+    [12726616099386114179, "build_script_build", false, 10746676079411031604],
+    [13626264195287554611, "glib", false, 10580498126222270683],
+    [15885457518084958445, "gobject", false, 7411198285938936181],
+    [18070707816531966863, "libc", false, 7830776285847450546]
+  ],
+  "local": [
+    {
+      "CheckDepInfo": {
+        "dep_info": "debug/.fingerprint/javascriptcore-rs-sys-52fb4b8d6249ff09/dep-lib-javascriptcore_rs_sys",
+        "checksum": false
+      }
+    }
+  ],
+  "rustflags": [],
+  "config": 9396254390672932401,
+  "compile_kind": 0
+}

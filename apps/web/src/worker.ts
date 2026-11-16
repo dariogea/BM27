@@ -43,10 +43,13 @@ import type {
   Reply,
 } from './protocol';
 
+import { ReplayProofs } from './replayProof';
+
 // The whole game state lives here, off the UI thread.
 let universe: Universe | null = null;
 /** Universe from which the matches shown on screen can be re-simulated. */
 let replayUniverse: Universe | null = null;
+const replayProofs = new ReplayProofs();
 /**
  * Full detail of the user team's matches. They are kept because the user can
  * change tactics or line-up afterwards, which would make a replay differ.
@@ -267,6 +270,8 @@ function need(): Universe {
 function step(): { season: Season | null; played: MatchResult[] } {
   const before = need();
   const userTeamId = before.userTeamId;
+  // Older seasons cannot be reconstructed from this season's universe.
+  if (!before.currentSeason) replayProofs.clear();
   const outcome = advanceSeason(before, {
     onMatch: (detail) => {
       const { homeTeamId, awayTeamId } = detail.result;
@@ -280,6 +285,7 @@ function step(): { season: Season | null; played: MatchResult[] } {
   });
   // After the last step the universe has aged; keep the pre-offseason one for replays.
   replayUniverse = outcome.season ? before : outcome.universe;
+  for (const result of outcome.played) replayProofs.remember(replayUniverse, result);
   universe = outcome.universe;
   offseasonReport = null;
   if (outcome.season && userTeamId) {
@@ -366,6 +372,7 @@ function handle(command: Command): Reply {
       offseasonReport = null;
       replayUniverse = universe;
       myMatches.clear();
+      replayProofs.clear();
       return state(
         `Universo generado en ${ms()} ms: ${universe.teams.length} equipos. Elige un equipo para dirigirlo.`,
       );
@@ -463,9 +470,13 @@ function handle(command: Command): Reply {
         .find((m) => m.id === command.matchId);
       if (!result) throw new Error(`Partido ${command.matchId} no encontrado.`);
       const source = replayUniverse;
-      if (!source || source.seasonNumber !== result.seasonNumber) {
+      if (
+        !source ||
+        source.seasonNumber !== result.seasonNumber ||
+        !replayProofs.allows(source, result)
+      ) {
         throw new Error(
-          'El detalle de este partido ya no está disponible: solo se guarda el resultado, y la plantilla ha cambiado desde entonces.',
+          'El detalle de este partido no está disponible: solo se guarda el resultado y no se pueden verificar las tácticas, el quinteto y los datos originales.',
         );
       }
       // The box score is not stored: the match is re-simulated from its seed.
@@ -505,6 +516,7 @@ function handle(command: Command): Reply {
       offseasonReport = null;
       replayUniverse = universe;
       myMatches.clear();
+      replayProofs.clear();
       return state(
         `Partida cargada: temporada ${universe.seasonNumber}${universe.currentSeason ? ' (en curso)' : ''}.`,
       );

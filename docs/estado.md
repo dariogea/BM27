@@ -1,6 +1,6 @@
 # Estado de las tareas
 
-Leyenda: IDEA · PROPUESTA · APROBADA · DISEÑADA · IMPLEMENTADA · PROBADA · FINALIZADA
+Leyenda: IDEA · PROPUESTA · APROBADA · DISEÑADA · PROBADA · PROBADA · FINALIZADA
 
 | Tarea | Título                                                                                                         | Estado     | Rama                         | Notas                                  |
 | ----- | -------------------------------------------------------------------------------------------------------------- | ---------- | ---------------------------- | -------------------------------------- |
@@ -35,3 +35,9 @@ Reglas en [`coordinacion.md`](coordinacion.md).
 | Tarea | Título                                                        | Estado  | Rama                       | Notas                                                                                                         |
 | ----- | ------------------------------------------------------------- | ------- | -------------------------- | ------------------------------------------------------------------------------------------------------------- |
 | T-007 | Coordinación con Codex: AGENTS.md, reglas, etiquetas e Issues | PROBADA | `t-007-coordinacion-codex` | Solo documentación y configuración de GitHub. No he podido comprobar que Codex esté conectado al repositorio. |
+
+## Correcciones de Codex
+
+| Tarea | Título                                               | Estado  | Rama                            | Notas                                                                              |
+| ----- | ---------------------------------------------------- | ------- | ------------------------------- | ---------------------------------------------------------------------------------- |
+| #27   | Repeticiones verificadas con las entradas originales | PROBADA | `codex-027-repeticiones-fieles` | 126 tests aprobados; revisión cruzada pendiente. No cambia el formato de guardado. |

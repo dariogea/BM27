@@ -4,6 +4,8 @@ on:
   push:
     branches: ['**']
   pull_request:
+  # Lo usa la fusión automática para volver a probar `main` tras fusionar un PR.
+  workflow_dispatch:
 
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}

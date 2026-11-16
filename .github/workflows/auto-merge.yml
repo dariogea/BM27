@@ -1,0 +1,52 @@
+name: Fusión automática
+
+# Política elegida por el propietario ("opción A"): un PR se fusiona solo cuando su CI está en
+# verde, salvo los que cambian el contrato de datos, la API pública del núcleo, .github/,
+# CLAUDE.md o AGENTS.md, que fusiona el propietario. Toda la lógica está en
+# tools/ci/auto-merge.mjs (con tests en tools/ci/test/).
+#
+# IMPORTANTE: un flujo con "workflow_run" se ejecuta con la versión que hay en `main`. Los cambios
+# de este archivo solo se notan después de fusionarlos.
+on:
+  workflow_run:
+    workflows: ['CI']
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      pr:
+        description: Número del PR que se quiere evaluar
+        required: true
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+  checks: read
+  actions: write
+
+concurrency:
+  group: auto-merge-${{ github.event.workflow_run.head_branch || inputs.pr }}
+  cancel-in-progress: false
+
+jobs:
+  merge:
+    name: Evaluar y fusionar
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    # Solo ramas del propio repositorio y solo si la CI ha terminado bien (o a mano).
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.head_repository.full_name == github.repository)
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Evaluar el PR
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EVENT_HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+          EVENT_HEAD_BRANCH: ${{ github.event.workflow_run.head_branch }}
+          PR_NUMBER: ${{ inputs.pr }}
+          AUTO_MERGE_GRACE_MINUTES: '10'
+        run: node tools/ci/auto-merge.mjs

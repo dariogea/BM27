@@ -37,6 +37,8 @@ export function makeTestTeam(
     playerIds: players.map((p) => p.id),
     tactics: { ...DEFAULT_TACTICS, ...tactics },
     rotation: null,
+    reputation: 50,
+    finance: { balance: 0, lastRevenue: 1_000_000 },
   };
   return prepareTeam(team, new Map(players.map((p) => [p.id, p])));
 }

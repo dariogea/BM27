@@ -11,6 +11,7 @@ import { fileURLToPath } from 'node:url';
 import {
   freeAgents,
   generateUniverse,
+  isFinanciallyRestricted,
   playerAbility,
   simulateSeason,
   startSeason,
@@ -41,6 +42,13 @@ interface Row {
   signed: number;
   expired: number;
   renewed: number;
+  /** Median cash by level. */
+  balanceByLevel: number[];
+  reputationByLevel: number[];
+  inDebt: number;
+  restricted: number;
+  /** Share of revenue left as profit in the last season closed, by level (median). */
+  marginByLevel: number[];
 }
 
 function measure(universe: Universe, season: number, retirements: number, ms: number): Row {
@@ -51,6 +59,28 @@ function measure(universe: Universe, season: number, retirements: number, ms: nu
         c.teamIds.reduce((sum, id) => sum + teamPayroll(universe, id) / c.salaryCap, 0) /
         c.teamIds.length,
     );
+  const median = (values: number[]): number => {
+    const sorted = [...values].sort((a, b) => a - b);
+    return sorted[Math.floor((sorted.length - 1) / 2)] ?? 0;
+  };
+  const ordered = [...universe.competitions].sort((a, b) => a.level - b.level);
+  const teamById = new Map(universe.teams.map((t) => [t.id, t]));
+  const balanceByLevel = ordered.map((c) =>
+    median(
+      c.teamIds.map((id) => (teamById.get(id) as { finance: { balance: number } }).finance.balance),
+    ),
+  );
+  const reputationByLevel = ordered.map((c) =>
+    median(c.teamIds.map((id) => (teamById.get(id) as { reputation: number }).reputation)),
+  );
+  const lastBooks = universe.history[universe.history.length - 1]?.finance ?? [];
+  const marginByLevel = ordered.map((c) =>
+    median(
+      lastBooks
+        .filter((r) => r.competitionId === c.id)
+        .map((r) => r.result / Math.max(1, r.tv + r.sponsors + r.tickets)),
+    ),
+  );
   const moves = (type: string): number =>
     universe.transactions.filter((t) => t.seasonNumber === universe.seasonNumber && t.type === type)
       .length;
@@ -106,6 +136,11 @@ function measure(universe: Universe, season: number, retirements: number, ms: nu
     signed: moves('signed'),
     expired: moves('expired'),
     renewed: moves('renewed'),
+    balanceByLevel,
+    reputationByLevel,
+    inDebt: universe.teams.filter((t) => t.finance.balance < 0).length,
+    restricted: universe.teams.filter(isFinanciallyRestricted).length,
+    marginByLevel,
   };
 }
 
@@ -158,7 +193,7 @@ const names = [...universe.competitions]
 const first = rows[0] as Row;
 const last = rows[rows.length - 1] as Row;
 const lines: string[] = [
-  '# Estabilidad del mundo: desarrollo de jugadores y mercado (T-005)',
+  '# Estabilidad del mundo: desarrollo, mercado y finanzas (T-006)',
   '',
   `> Generado por \`pnpm stability --write\`. Universo con semilla \`${SEED}\`, ${SEASONS} temporadas`,
   `> seguidas (con ascensos, descensos, retiradas y sustitución por jóvenes). Entorno: ${cpus()[0]?.model ?? 'desconocida'}, Node ${process.version}.`,
@@ -189,6 +224,10 @@ const lines: string[] = [
   `Mercado (media de las temporadas 1–${SEASONS}): ${f1(rows.slice(1).reduce((s, r) => s + r.expired, 0) / SEASONS)} contratos cumplidos y no renovados, ${f1(rows.slice(1).reduce((s, r) => s + r.renewed, 0) / SEASONS)} renovaciones y ${f1(rows.slice(1).reduce((s, r) => s + r.signed, 0) / SEASONS)} fichajes de agentes libres por temporada.`,
   `Agentes libres al final de cada temporada: media ${f1(rows.slice(1).reduce((s, r) => s + r.freeAgents, 0) / SEASONS)} (mínimo ${Math.min(...rows.slice(1).map((r) => r.freeAgents))}, máximo ${Math.max(...rows.slice(1).map((r) => r.freeAgents))}).`,
   `Masa salarial media respecto al tope, temporada 0 → ${SEASONS}: ${names.map((n, i) => `${n} ${(100 * (first.payrollShare[i] as number)).toFixed(0)} % → ${(100 * (last.payrollShare[i] as number)).toFixed(0)} %`).join(', ')}.`,
+  `Reputación mediana, temporada 0 → ${SEASONS}: ${names.map((n, i) => `${n} ${first.reputationByLevel[i]} → ${last.reputationByLevel[i]}`).join(', ')}.`,
+  `Caja mediana (miles de €), temporada 0 → ${SEASONS}: ${names.map((n, i) => `${n} ${Math.round((first.balanceByLevel[i] as number) / 1000)} → ${Math.round((last.balanceByLevel[i] as number) / 1000)}`).join(', ')}.`,
+  `Beneficio mediano sobre ingresos (media de las temporadas 1–${SEASONS}): ${names.map((n, i) => `${n} ${(100 * (rows.slice(1).reduce((s, r) => s + (r.marginByLevel[i] as number), 0) / SEASONS)).toFixed(1)} %`).join(', ')}.`,
+  `Clubes con caja negativa al empezar cada temporada: media ${f1(rows.slice(1).reduce((s, r) => s + r.inDebt, 0) / SEASONS)} de ${universe.teams.length} (máximo ${Math.max(...rows.slice(1).map((r) => r.inDebt))}); clubes que han superado el descubierto permitido y no pueden asumir salarios: media ${f1(rows.slice(1).reduce((s, r) => s + r.restricted, 0) / SEASONS)} (máximo ${Math.max(...rows.slice(1).map((r) => r.restricted))}).`,
   `Retiradas por temporada (media de las temporadas 1–${SEASONS}): ${f1(rows.slice(1).reduce((s, r) => s + r.retirements, 0) / SEASONS)} jugadores de ${universe.teams.length} equipos.`,
   `Edad en la que la habilidad media es máxima (mundo final, edades con 15 o más jugadores): ${careerPeak.age} años.`,
   '',
@@ -215,7 +254,7 @@ const lines: string[] = [
 console.log(lines.slice(0, 40).join('\n'));
 if (process.argv.includes('--write')) {
   const here = dirname(fileURLToPath(import.meta.url));
-  const file = join(here, '..', '..', '..', 'docs', 'benchmarks', 'T-005-estabilidad.md');
+  const file = join(here, '..', '..', '..', 'docs', 'benchmarks', 'T-006-estabilidad.md');
   writeFileSync(file, lines.join('\n'));
   console.log(`\nEscrito en ${file}`);
 }

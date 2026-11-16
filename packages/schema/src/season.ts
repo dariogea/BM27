@@ -57,9 +57,30 @@ export const CompetitionSeasonSchema = z.object({
 });
 export type CompetitionSeason = z.infer<typeof CompetitionSeasonSchema>;
 
+/** What a club earned and spent in one season. */
+export const TeamFinanceRecordSchema = z.object({
+  teamId: id,
+  competitionId: id,
+  tv: z.number().int().min(0),
+  sponsors: z.number().int().min(0),
+  tickets: z.number().int().min(0),
+  homeGames: count,
+  averageCrowd: count,
+  /** Salaries paid. */
+  wages: z.number().int().min(0),
+  fixedCosts: z.number().int().min(0),
+  /** Revenue minus costs. */
+  result: z.number().int(),
+  balanceEnd: z.number().int(),
+  reputationEnd: z.number().int().min(0).max(100),
+});
+export type TeamFinanceRecord = z.infer<typeof TeamFinanceRecordSchema>;
+
 export const SeasonSchema = z.object({
   seasonNumber: z.number().int().min(1),
   competitions: z.array(CompetitionSeasonSchema),
+  /** One record per club that played. */
+  finance: z.array(TeamFinanceRecordSchema),
 });
 export type Season = z.infer<typeof SeasonSchema>;
 
@@ -133,5 +154,7 @@ export const TransactionSchema = z.object({
   teamId: id.nullable(),
   salary: z.number().int().min(0).nullable(),
   endSeason: z.number().int().min(1).nullable(),
+  /** Money paid by the club for this move (e.g. severance for releasing a player). */
+  cost: z.number().int().min(0).nullable(),
 });
 export type Transaction = z.infer<typeof TransactionSchema>;

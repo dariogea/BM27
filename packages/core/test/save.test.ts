@@ -117,6 +117,13 @@ describe('migration of old saves', () => {
       delete competition.rosterMax;
     }
     delete old.transactions;
+    // v4 → v5: money.
+    for (const team of old.teams) {
+      delete team.reputation;
+      delete team.finance;
+    }
+    for (const competition of old.competitions) delete competition.economy;
+    for (const season of old.history) delete season.finance;
     const payload = JSON.stringify(old);
     return `{"format":"bm27-save","schemaVersion":0,"checksum":"sha256:${sha256Hex(payload)}","payload":${payload}}`;
   }
@@ -133,6 +140,15 @@ describe('migration of old saves', () => {
     expect(loaded.userTeamId).toBeNull();
     // v3 → v4: contracts for everybody with a club, caps and roster limits for competitions.
     expect(loaded.transactions).toEqual([]);
+    // v4 → v5: every club gets a reputation and some cash; every competition an economy.
+    for (const team of loaded.teams) {
+      expect(team.reputation).toBeGreaterThanOrEqual(0);
+      expect(team.finance.lastRevenue).toBeGreaterThan(0);
+    }
+    for (const competition of loaded.competitions) {
+      expect(competition.economy.tvRevenue).toBeGreaterThan(0);
+    }
+    for (const season of loaded.history) expect(season.finance).toEqual([]);
     for (const competition of loaded.competitions) {
       expect(competition.salaryCap).toBeGreaterThan(0);
       expect(competition.rosterMin).toBe(12);
@@ -159,7 +175,9 @@ describe('migration of old saves', () => {
       expect(restLoaded).toEqual(rest);
     }
     expect(youngGap / youngCount).toBeGreaterThan(2);
-    expect(hashValue(loaded.history)).toBe(hashValue(afterTwo.history));
+    // Seasons played before money existed have no books.
+    const withoutBooks = (u: Universe) => u.history.map(({ finance: _books, ...rest }) => rest);
+    expect(hashValue(withoutBooks(loaded))).toBe(hashValue(withoutBooks(afterTwo)));
     // And the migrated universe can keep being simulated.
     expect(simulateSeason(loaded).universe.seasonNumber).toBe(afterTwo.seasonNumber + 1);
   });

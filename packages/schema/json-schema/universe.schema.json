@@ -4,7 +4,7 @@
   "properties": {
     "schemaVersion": {
       "type": "number",
-      "const": 4
+      "const": 5
     },
     "seed": {
       "type": "string"
@@ -211,6 +211,55 @@
             "type": "integer",
             "minimum": 5,
             "maximum": 9007199254740991
+          },
+          "economy": {
+            "type": "object",
+            "properties": {
+              "tvRevenue": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "sponsorRevenue": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "ticketPrice": {
+                "type": "number",
+                "minimum": 0
+              },
+              "averageAttendance": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "fixedCosts": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "wageShare": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "baseReputation": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 100
+              }
+            },
+            "required": [
+              "tvRevenue",
+              "sponsorRevenue",
+              "ticketPrice",
+              "averageAttendance",
+              "fixedCosts",
+              "wageShare",
+              "baseReputation"
+            ],
+            "additionalProperties": false
           }
         },
         "required": [
@@ -225,7 +274,8 @@
           "salaryCap",
           "minSalary",
           "rosterMin",
-          "rosterMax"
+          "rosterMax",
+          "economy"
         ],
         "additionalProperties": false
       }
@@ -341,6 +391,31 @@
                 "type": "null"
               }
             ]
+          },
+          "reputation": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "finance": {
+            "type": "object",
+            "properties": {
+              "balance": {
+                "type": "integer",
+                "minimum": -9007199254740991,
+                "maximum": 9007199254740991
+              },
+              "lastRevenue": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              }
+            },
+            "required": [
+              "balance",
+              "lastRevenue"
+            ],
+            "additionalProperties": false
           }
         },
         "required": [
@@ -350,7 +425,9 @@
           "region",
           "playerIds",
           "tactics",
-          "rotation"
+          "rotation",
+          "reputation",
+          "finance"
         ],
         "additionalProperties": false
       }
@@ -1016,11 +1093,93 @@
               ],
               "additionalProperties": false
             }
+          },
+          "finance": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "teamId": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "competitionId": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "tv": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "sponsors": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "tickets": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "homeGames": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "averageCrowd": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "wages": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "fixedCosts": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "result": {
+                  "type": "integer",
+                  "minimum": -9007199254740991,
+                  "maximum": 9007199254740991
+                },
+                "balanceEnd": {
+                  "type": "integer",
+                  "minimum": -9007199254740991,
+                  "maximum": 9007199254740991
+                },
+                "reputationEnd": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 100
+                }
+              },
+              "required": [
+                "teamId",
+                "competitionId",
+                "tv",
+                "sponsors",
+                "tickets",
+                "homeGames",
+                "averageCrowd",
+                "wages",
+                "fixedCosts",
+                "result",
+                "balanceEnd",
+                "reputationEnd"
+              ],
+              "additionalProperties": false
+            }
           }
         },
         "required": [
           "seasonNumber",
-          "competitions"
+          "competitions",
+          "finance"
         ],
         "additionalProperties": false
       }
@@ -1519,6 +1678,18 @@
                 "type": "null"
               }
             ]
+          },
+          "cost": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              {
+                "type": "null"
+              }
+            ]
           }
         },
         "required": [
@@ -1527,7 +1698,8 @@
           "playerId",
           "teamId",
           "salary",
-          "endSeason"
+          "endSeason",
+          "cost"
         ],
         "additionalProperties": false
       }

@@ -4,7 +4,7 @@
  * writes) league averages next to their reference targets.
  *
  *   pnpm calibrate            → prints the report
- *   pnpm calibrate --write    → also writes docs/benchmarks/T-005-calibracion.md
+ *   pnpm calibrate --write    → also writes docs/benchmarks/T-006-calibracion.md
  */
 import { writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -211,7 +211,7 @@ function report(levelName: string, t: Totals, withTargets: boolean): string[] {
 const SEEDS = [SEED, `${SEED}-b`, `${SEED}-c`];
 const universes = SEEDS.map((seed) => generateUniverse({ seed }));
 const out: string[] = [
-  '# Calibración del motor de partido v1 con mercado y jugadores que se desarrollan (T-005)',
+  '# Calibración del motor de partido v1 con finanzas, mercado y jugadores que se desarrollan (T-006)',
   '',
   '> Archivo generado por `pnpm calibrate --write`. Cifras medidas simulando la liga regular de',
   `> cada nivel en ${SEEDS.length} universos (semillas \`${SEEDS.join('`, `')}\`) y promediando.`,
@@ -236,7 +236,7 @@ for (const level of [1, 2, 3, 4]) {
 console.log(out.join('\n'));
 if (process.argv.includes('--write')) {
   const here = dirname(fileURLToPath(import.meta.url));
-  const file = join(here, '..', '..', '..', 'docs', 'benchmarks', 'T-005-calibracion.md');
+  const file = join(here, '..', '..', '..', 'docs', 'benchmarks', 'T-006-calibracion.md');
   writeFileSync(file, out.join('\n'));
   console.log(`Escrito en ${file}`);
 }

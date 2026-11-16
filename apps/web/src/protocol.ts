@@ -1,6 +1,7 @@
 import type {
   Contract,
   GroupSeason,
+  TeamFinanceRecord,
   MatchDetail,
   MatchResult,
   Player,
@@ -46,6 +47,8 @@ export interface SquadPlayer {
   expired: boolean;
   /** Salary he would ask to renew. */
   renewalSalary: number;
+  /** What it would cost to release him now. */
+  releaseCost: number;
 }
 
 export interface FreeAgentRow {
@@ -60,6 +63,7 @@ export interface MarketMove {
   playerName: string;
   salary: number | null;
   endSeason: number | null;
+  cost: number | null;
 }
 
 export interface MarketView {
@@ -68,7 +72,11 @@ export interface MarketView {
   payroll: number;
   /** Contracts that stay next season (expired ones excluded). */
   payrollNextSeason: number;
+  /** What the club will commit to in salaries: the lower of the league cap and its wage budget. */
+  salaryLimit: number;
   salaryCap: number;
+  wageBudget: number;
+  wageSharePercent: number;
   minSalary: number;
   rosterMin: number;
   rosterMax: number;
@@ -117,6 +125,24 @@ export interface OffseasonReport {
   arrivals: { playerId: string; name: string; age: number; ability: number; potential: number }[];
 }
 
+export interface FinanceView {
+  balance: number;
+  /** How far into debt the club may go. */
+  overdraftLimit: number;
+  restricted: boolean;
+  reputation: number;
+  /** Reputation a typical club of this league has. */
+  typicalReputation: number;
+  lastRevenue: number;
+  wageBudget: number;
+  payroll: number;
+  fixedCosts: number;
+  /** What the club would earn next season at its current reputation. */
+  expectedRevenue: number;
+  /** One record per finished season, newest first. */
+  history: TeamFinanceRecord[];
+}
+
 /** Everything the UI needs to draw the current state of the game. */
 export interface GameView {
   seed: string;
@@ -135,6 +161,7 @@ export interface GameView {
   /** Squad changes after the last finished season, until the next step is played. */
   offseason: OffseasonReport | null;
   market: MarketView | null;
+  finance: FinanceView | null;
 }
 
 export type Reply =

@@ -43,9 +43,12 @@ Explicación para el propietario: `docs/coordinacion.md`. Instrucciones de Codex
 3. **Contrato.** Si vas a cambiar `packages/schema` o la API pública del núcleo, avisa primero en un
    Issue con la etiqueta `contrato`, porque el otro depende de ello. Solo un cambio de contrato en
    vuelo a la vez.
-4. **Cada tarea va en su rama y en un PR pequeño con parte.** Nunca push ni merge a `main`; el merge
-   lo hace el propietario (o la fusión automática que él ha autorizado: los PR sin la etiqueta
-   `contrato`, cuando la CI está en verde; los `contrato` siguen siendo manuales).
+4. **Cada tarea va en su rama y en un PR pequeño con parte.** Nunca push ni merge a `main` a mano.
+   Las fusiones las hace el propietario o la **fusión automática** que él ha autorizado
+   (`.github/workflows/auto-merge.yml`): se fusionan solos los PR con la CI en verde, 10 minutos
+   después, con la rama al día con `main` y sin las etiquetas `contrato`, `manual` ni `bloqueado`.
+   **Siempre manuales:** los que cambian `packages/schema/src/`, `packages/core/src/index.ts`,
+   `.github/`, `CLAUDE.md`, `AGENTS.md` o `tools/ci/` (la propia política de fusión). Para frenar una fusión: etiqueta `bloqueado`.
 5. **Revisión cruzada:** cada PR lo revisa el otro agente. A Codex se le pide comentando
    `@codex review` en el PR. Tus PR los revisa Codex; los PR de Codex te los pide con la etiqueta
    `agente:claude` y `@claude review`.

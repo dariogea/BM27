@@ -1,0 +1,83 @@
+name: Fusión automática
+
+# Política elegida por el propietario ("opción A"): un PR se fusiona solo cuando su CI está en
+# verde, salvo los que cambian el contrato de datos, la API pública del núcleo, .github/,
+# CLAUDE.md, AGENTS.md o la propia política (tools/ci/), que fusiona el propietario.
+# Toda la lógica está en tools/ci/auto-merge.mjs (con tests en tools/ci/test/).
+#
+# Dos trabajos, para que dos PR nunca se fusionen a la vez:
+#  1. "esperar": uno por rama; espera el margen de revisión y no fusiona nada.
+#  2. "fusionar": uno solo en todo el repositorio a la vez; vuelve a comprobar todo (incluida la
+#     rama al día con main) justo antes de fusionar.
+#
+# IMPORTANTE: un flujo con "workflow_run" se ejecuta con la versión que hay en `main`. Los cambios
+# de este archivo solo se notan después de fusionarlos.
+on:
+  workflow_run:
+    workflows: ['CI']
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      pr:
+        description: Número del PR que se quiere evaluar
+        required: true
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+  checks: read
+  actions: write
+
+jobs:
+  esperar:
+    name: Esperar el margen de revisión
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    concurrency:
+      group: auto-merge-wait-${{ github.event.workflow_run.head_branch || inputs.pr }}
+      cancel-in-progress: false
+    # Solo ramas del propio repositorio y solo si la CI ha terminado bien (o a mano).
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.head_repository.full_name == github.repository)
+    outputs:
+      ready: ${{ steps.evaluar.outputs.ready }}
+      pr: ${{ steps.evaluar.outputs.pr }}
+      sha: ${{ steps.evaluar.outputs.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Evaluar el PR
+        id: evaluar
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EVENT_HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+          EVENT_HEAD_BRANCH: ${{ github.event.workflow_run.head_branch }}
+          PR_NUMBER: ${{ inputs.pr }}
+          AUTO_MERGE_GRACE_MINUTES: '10'
+        run: node tools/ci/auto-merge.mjs --phase=wait
+
+  fusionar:
+    name: Fusionar (de uno en uno)
+    needs: esperar
+    if: needs.esperar.outputs.ready == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    # Un solo trabajo de fusión en todo el repositorio. Si hay varios en cola, GitHub conserva
+    # solo el último; los demás PR se reevalúan tras cada fusión.
+    concurrency:
+      group: auto-merge-main
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Comprobar de nuevo y fusionar
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ needs.esperar.outputs.pr }}
+          EVENT_HEAD_SHA: ${{ needs.esperar.outputs.sha }}
+        run: node tools/ci/auto-merge.mjs --phase=merge

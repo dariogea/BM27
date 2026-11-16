@@ -8,6 +8,7 @@ import {
   type Universe,
 } from '@bm27/schema';
 import { DEFAULT_NAME_POOL } from '../data';
+import { effectiveSalaryLimit } from '../finance/economy';
 import { playerAbility } from '../generator/development';
 import { generatePlayer, playerId } from '../generator/player';
 import type { Rng } from '../rng';
@@ -139,6 +140,7 @@ export function resolveContracts(
       continue;
     }
     const competition = competitionOfTeam(universe, team.id);
+    const limit = effectiveSalaryLimit(team, competition);
     const roster = team.playerIds.map((id) => players.get(id) as Player);
     const expiring = roster.filter((p) => p.contract && p.contract.endSeason < seasonNumber);
     if (expiring.length === 0) {
@@ -164,7 +166,7 @@ export function resolveContracts(
         wanted &&
         player.age <= 35 &&
         rng.chance(MARKET.renewalChance) &&
-        payroll + salary <= competition.salaryCap
+        payroll + salary <= limit
       ) {
         payroll += salary;
         keep.add(player.id);
@@ -178,6 +180,7 @@ export function resolveContracts(
           teamId: team.id,
           salary,
           endSeason,
+          cost: null,
         });
       }
     }
@@ -192,6 +195,7 @@ export function resolveContracts(
         teamId: team.id,
         salary: null,
         endSeason: null,
+        cost: null,
       });
       updated = withoutPlayer(updated, player.id);
     }
@@ -271,6 +275,7 @@ export function closeMarket(universe: Universe, rng: Rng): Universe {
         teamId: team.id,
         salary: null,
         endSeason: null,
+        cost: null,
       });
       current = withoutPlayer(current, id);
     }
@@ -308,6 +313,7 @@ export function closeMarket(universe: Universe, rng: Rng): Universe {
       teamId: team.id,
       salary,
       endSeason,
+      cost: null,
     });
   };
 
@@ -333,6 +339,7 @@ export function closeMarket(universe: Universe, rng: Rng): Universe {
   ): Player | null => {
     const roster = rosterOf(team);
     const payroll = payrollOf(team);
+    const limit = effectiveSalaryLimit(teams.get(team.id) as Team, competition);
     let best: Player | null = null;
     let bestScore = -Infinity;
     for (const candidate of pool) {
@@ -340,7 +347,7 @@ export function closeMarket(universe: Universe, rng: Rng): Universe {
       const salary = salaryOf(candidate, competition);
       // Only a minimum-wage contract needed to reach the minimum squad may go over the cap.
       const exception = mandatory && salary <= competition.minSalary;
-      if (payroll + salary > competition.salaryCap && !exception) continue;
+      if (payroll + salary > limit && !exception) continue;
       const score = rateOf(candidate) + positionNeed(roster, primary(candidate));
       if (score > bestScore) {
         best = candidate;
@@ -387,9 +394,10 @@ export function closeMarket(universe: Universe, rng: Rng): Universe {
       const ratings = roster.map(rateOf).sort((a, b) => b - a);
       const bar = (ratings[8] ?? 0) + 1.5;
       const payroll = payrollOf(team);
+      const limit = effectiveSalaryLimit(teams.get(team.id) as Team, competition);
       const candidate = pool.find((c) => {
         if (taken.has(c.id) || rateOf(c) <= bar) return false;
-        return payroll + salaryOf(c, competition) <= competition.salaryCap;
+        return payroll + salaryOf(c, competition) <= limit;
       });
       if (!candidate) break;
       sign(team, candidate, salaryOf(candidate, competition));

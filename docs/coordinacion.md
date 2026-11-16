@@ -66,13 +66,29 @@ por delante.**
 
 Un PR se fusiona solo cuando **todo** esto es cierto:
 
-- La CI (lint, formato, tipos, tests y compilación) está **en verde** y no hay ninguna prueba en marcha.
+- La CI (lint, formato, tipos, tests y compilación) ha terminado **en verde**: hace falta una
+  ejecución correcta de la CI del proyecto (por nombre), no basta con que no haya fallos.
 - Han pasado **10 minutos** desde que la CI se puso en verde (margen para la revisión cruzada).
 - La rama está **al día con `main`** (así la CI ha probado el resultado real de la mezcla) y no hay conflictos.
-- No tiene las etiquetas **`contrato`, `manual` ni `bloqueado`**, ni una revisión que pida cambios.
-- No cambia **ninguno de estos archivos**, que siempre fusionas tú a mano: `packages/schema/src/`
-  (contrato de datos), `packages/core/src/index.ts` (API pública del núcleo), cualquier cosa de
-  `.github/` (flujos y plantillas), `CLAUDE.md` y `AGENTS.md` (las reglas del proyecto).
+- No tiene las etiquetas **`contrato`, `manual` ni `bloqueado`**, ni una revisión que pida cambios
+  (se leen las revisiones una a una: cuenta el último estado de cada revisor, aunque `main` no tenga
+  protección).
+- No cambia **ninguno de estos archivos**, que siempre fusionas tú a mano (se comprueban también las
+  rutas **antiguas** de los archivos movidos o renombrados): `packages/schema/src/` (contrato de datos),
+  `packages/core/src/index.ts` (API pública del núcleo), cualquier cosa de `.github/` (flujos y
+  plantillas), `CLAUDE.md` y `AGENTS.md` (las reglas del proyecto) y **`tools/ci/`** (la propia política
+  de fusión: el script tiene el mismo poder que el flujo).
+- No **elimina ni cambia una declaración exportada** del código del núcleo (`packages/core/src/`).
+  Es una **detección parcial**: la API pública del núcleo se reexporta con `export *` y no hay forma
+  fiable de calcularla sin compilar. Se detecta una línea `export` eliminada (un cambio de firma en la
+  misma línea lo es) y se desconfía de archivos cuyo cambio GitHub no muestra entero. Un cambio de
+  parámetros en una línea posterior puede escaparse: **por eso quien cambie la API debe poner la etiqueta
+  `contrato`** (regla 3).
+
+Los PR se fusionan **de uno en uno**: el flujo tiene dos trabajos, uno que espera (por rama) y otro que
+fusiona (uno solo en todo el repositorio), que vuelve a comprobar todo justo antes de fusionar. Tras cada
+fusión, el flujo reevalúa los demás PR abiertos, y los que se han quedado por detrás de `main` reciben un
+aviso para que actualicen su rama.
 
 Si algo de eso no se cumple, el PR **no se fusiona solo** y el flujo deja un comentario explicando
 por qué (una vez por commit). Si sí, lo fusiona, deja un comentario y vuelve a lanzar la CI sobre `main`.
@@ -84,6 +100,8 @@ Detalles que conviene saber:
 
 - **Los flujos de GitHub con `workflow_run` usan siempre la versión que hay en `main`.** Por eso el
   PR que añade este flujo (T-008) lo tienes que fusionar tú a mano una vez; después ya funciona solo.
+- **Una limitación honesta:** sin protección de `main` en GitHub (Issue #24), nada impide que alguien
+  con permiso fusione a mano saltándose estas reglas; la fusión automática solo se controla a sí misma.
 - **El flujo no pasa por encima de la protección de `main`:** si la activas (Issue #24), puede que
   haya que ajustarla para permitirle fusionar.
 - **Una fusión hecha por el flujo no lanza otros flujos**, así que el propio flujo vuelve a lanzar la CI

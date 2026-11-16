@@ -11,6 +11,7 @@ import {
 import { DEFAULT_NAME_POOL } from '../data';
 import { developPlayer, retirementChance } from '../generator/development';
 import { generatePlayer, playerId } from '../generator/player';
+import { settleSeason } from '../finance/economy';
 import { resolveContracts, withoutPlayer } from '../market/market';
 import { MARKET } from '../market/value';
 import { createRng } from '../rng';
@@ -27,7 +28,11 @@ import { createRng } from '../rng';
  * - Clubs renew or release the players whose contract ends (the user's club
  *   decides by itself before the season starts).
  */
-export function applyOffseason(universe: Universe, season: Season): Universe {
+export function applyOffseason(universe: Universe, playedSeason: Season): Universe {
+  // Close the books of the season that has just been played.
+  const books = settleSeason(universe, playedSeason);
+  const season: Season = { ...playedSeason, finance: books.records };
+  universe = { ...universe, teams: books.teams };
   const rng = createRng(`${universe.seed}/offseason/${season.seasonNumber}`);
 
   // --- Promotion and relegation --------------------------------------------
@@ -91,6 +96,7 @@ export function applyOffseason(universe: Universe, season: Season): Universe {
       teamId: aged.teamId,
       salary: null,
       endSeason: null,
+      cost: null,
     });
     if (aged.teamId === null) {
       retiredFreeAgents++;

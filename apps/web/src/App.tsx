@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { CompetitionView } from './CompetitionView';
 import { BoxScoreView } from './MatchView';
 import type { Command, GameView, Reply } from './protocol';
+import { FinancePanel } from './FinanceView';
 import { MarketPanel } from './MarketView';
 import { LineupEditor, OffseasonPanel, SquadTable, TacticsEditor } from './TeamView';
 
@@ -36,12 +37,13 @@ function useSimulation() {
     });
 }
 
-type Tab = 'team' | 'tactics' | 'lineup' | 'market' | 'competition' | 'match';
+type Tab = 'team' | 'tactics' | 'lineup' | 'market' | 'finance' | 'competition' | 'match';
 const TABS: [Tab, string][] = [
   ['team', 'Mi equipo'],
   ['tactics', 'Tácticas'],
   ['lineup', 'Quinteto'],
   ['market', 'Mercado'],
+  ['finance', 'Finanzas'],
   ['competition', 'Competición'],
   ['match', 'Partido'],
 ];
@@ -303,6 +305,13 @@ export function App() {
             }
             onRelease={(playerId) => run({ type: 'releasePlayer', playerId }, 'Liberando…')}
           />
+        </section>
+      )}
+
+      {view && tab === 'finance' && mine && view.finance && (
+        <section>
+          <h2>Finanzas de {mine.name}</h2>
+          <FinancePanel finance={view.finance} seasonNumber={view.seasonNumber} />
         </section>
       )}
 

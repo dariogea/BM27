@@ -30,8 +30,7 @@ Son las mismas para los dos. Tu etiqueta es **`agente:codex`**; la de Claude es 
 4. **Una tarea = una rama = un PR pequeño con parte.** Nunca hagas push ni merge a `main` a mano.
    Los PR se fusionan solos cuando la CI está en verde (10 minutos después, con tu rama al día con
    `main`, y sin las etiquetas `contrato`, `manual` ni `bloqueado`). **Los fusiona el propietario**
-   los que cambian `packages/schema/src/`, `packages/core/src/index.ts`, `.github/`, `CLAUDE.md` o
-   `AGENTS.md`. Como revisor puedes frenar una fusión con la etiqueta `bloqueado` o pidiendo cambios.
+   los que cambian `packages/schema/src/`, `packages/core/src/index.ts`, `.github/`, `CLAUDE.md`, `AGENTS.md` o `tools/ci/` (la propia política de fusión). Como revisor puedes frenar una fusión con la etiqueta `bloqueado` o pidiendo cambios.
    Detalle en `docs/coordinacion.md`.
 5. **Revisión cruzada.** Cada PR lo revisa el otro agente. Tus PR los revisa Claude: pon la
    etiqueta `agente:claude` al PR y comenta `@claude review`. Para pedirle algo a Claude: Issue con la

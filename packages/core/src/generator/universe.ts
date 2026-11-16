@@ -13,10 +13,14 @@ import {
 } from '@bm27/schema';
 import { BUILTIN_RULESETS, DEFAULT_NAME_POOL, DEFAULT_UNIVERSE_CONFIG } from '../data';
 import { createRng, type Rng } from '../rng';
+import { FINANCE, revenueOf } from '../finance/economy';
 import { askingSalary } from '../market/market';
 import { MARKET } from '../market/value';
 import { sampleCareerAge } from './development';
 import { generatePlayer, playerId } from './player';
+
+/** Reputation points gained per point of squad quality above the level average. */
+const REPUTATION_PER_QUALITY = 3;
 
 export interface GenerateUniverseOptions {
   seed: string;
@@ -86,7 +90,25 @@ export function generateUniverse(options: GenerateUniverseOptions): Universe {
         players.push(player);
         playerIds.push(player.id);
       }
-      // Contracts: asking salary with a little spread, scaled down if the club would exceed its cap.
+      // Reputation follows the quality of the squad (plus luck); it sets the club's income.
+      const reputation = Math.round(
+        Math.max(
+          5,
+          Math.min(
+            98,
+            level.economy.baseReputation +
+              REPUTATION_PER_QUALITY * (teamQuality - level.averageQuality) +
+              rng.normal(0, 6),
+          ),
+        ),
+      );
+      const groupSize = level.teamCount / Math.max(1, level.format.groupCount);
+      const homeGames = Math.round(((groupSize - 1) * level.format.roundRobinLegs) / 2);
+      const revenue = revenueOf(level.economy, reputation, homeGames).total;
+      const wageBudgetNow = Math.min(level.salaryCap, revenue * level.economy.wageShare);
+
+      // Contracts: asking salary with a little spread, scaled down if the club would exceed
+      // its cap or the wage budget its income allows.
       const roster = players.slice(-rosterSize);
       const asking = roster.map(
         (p) =>
@@ -94,7 +116,8 @@ export function generateUniverse(options: GenerateUniverseOptions): Universe {
           (0.92 + 0.16 * rng.next()),
       );
       const total = asking.reduce((a, b) => a + b, 0);
-      const scale = total > level.salaryCap * 0.97 ? (level.salaryCap * 0.97) / total : 1;
+      const limit = Math.min(level.salaryCap, wageBudgetNow) * 0.97;
+      const scale = total > limit ? limit / total : 1;
       roster.forEach((p, i) => {
         const salary = Math.max(
           level.minSalary,
@@ -111,6 +134,11 @@ export function generateUniverse(options: GenerateUniverseOptions): Universe {
         playerIds,
         tactics: chooseTactics(players.slice(-rosterSize), rng),
         rotation: null,
+        reputation,
+        finance: {
+          balance: Math.round(revenue * FINANCE.openingBalanceShare * (0.5 + rng.next())),
+          lastRevenue: revenue,
+        },
       });
       teamIds.push(teamId);
     }
@@ -127,6 +155,7 @@ export function generateUniverse(options: GenerateUniverseOptions): Universe {
       minSalary: level.minSalary,
       rosterMin: config.rosterSize.min,
       rosterMax: config.rosterSize.max,
+      economy: level.economy,
     });
   }
 

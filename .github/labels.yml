@@ -11,3 +11,9 @@
 - name: contrato
   color: B60205
   description: Cambia packages/schema o la API pública del núcleo; avisar antes
+- name: manual
+  color: 5319E7
+  description: Lo fusiona el propietario a mano; la fusión automática lo deja pasar
+- name: bloqueado
+  color: 000000
+  description: Frena la fusión automática (por ejemplo, desde la revisión cruzada)

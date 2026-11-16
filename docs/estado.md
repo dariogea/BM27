@@ -32,6 +32,7 @@ Desde el 16-11-2026 trabajan dos agentes (Claude Code y Codex). Las tareas pendi
 GitHub** (<https://github.com/dariogea/BM27/issues>); esta tabla recoge las que ya se han hecho.
 Reglas en [`coordinacion.md`](coordinacion.md).
 
-| Tarea | Título                                                        | Estado  | Rama                       | Notas                                                                                                         |
-| ----- | ------------------------------------------------------------- | ------- | -------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| T-007 | Coordinación con Codex: AGENTS.md, reglas, etiquetas e Issues | PROBADA | `t-007-coordinacion-codex` | Solo documentación y configuración de GitHub. No he podido comprobar que Codex esté conectado al repositorio. |
+| Tarea | Título                                                                        | Estado  | Rama                       | Notas                                                                                                         |
+| ----- | ----------------------------------------------------------------------------- | ------- | -------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| T-007 | Coordinación con Codex: AGENTS.md, reglas, etiquetas e Issues                 | PROBADA | `t-007-coordinacion-codex` | Solo documentación y configuración de GitHub. No he podido comprobar que Codex esté conectado al repositorio. |
+| T-008 | Fusión automática de PR cuando la CI está en verde (opción A del propietario) | PROBADA | `t-008-fusion-automatica`  | La lógica de decisión tiene 29 tests; el flujo de GitHub no se ha podido probar hasta que se fusione.         |

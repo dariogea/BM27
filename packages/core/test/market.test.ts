@@ -413,3 +413,152 @@ describe('long-run stability with the market', () => {
     expect(() => parseUniverse(current)).not.toThrow();
   });
 });
+
+/**
+ * Issue #26 (found by the Codex audit): a minimum-wage contract used to be accepted over the
+ * salary limit even with a complete squad. D-030 only allows it to reach the minimum squad.
+ */
+describe('the minimum-wage exception (D-030)', () => {
+  /** The user's competition with a cap so low that the club is far above its limit. */
+  function tight(u: Universe): Universe {
+    const competition = competitionOfTeam(u, u.userTeamId!);
+    return {
+      ...u,
+      competitions: u.competitions.map((c) =>
+        c.id === competition.id ? { ...c, salaryCap: 1 } : c,
+      ),
+    };
+  }
+  /** Plenty of cash, so that releasing players for the setup is never refused. */
+  function rich(u: Universe): Universe {
+    return {
+      ...u,
+      teams: u.teams.map((t) =>
+        t.id === u.userTeamId ? { ...t, finance: { ...t.finance, balance: 500_000_000 } } : t,
+      ),
+    };
+  }
+  /** A player who asks for the minimum wage, from the free agents. */
+  function cheapAgent(u: Universe, skip: string[] = []): Player {
+    const competition = competitionOfTeam(u, u.userTeamId!);
+    const found = freeAgents(u).find(
+      (p) => !skip.includes(p.id) && askingSalary(p, competition) <= competition.minSalary,
+    );
+    if (!found) throw new Error('test setup: no free agent asks for the minimum wage');
+    return found;
+  }
+  const staying = (u: Universe): number =>
+    myTeam(u).playerIds.filter((id) => !isExpired(u, playerOf(u, id))).length;
+
+  // A season-1 universe has a market open, no expired contracts and a few free agents.
+  const start = (): Universe => {
+    const base = generateUniverse({ seed: 'min-wage-exception' });
+    // A club with 13 players: not full (15) and above the minimum (12).
+    const team = base.teams.find((t) => t.playerIds.length === 13)!;
+    return setUserTeam(base, team.id);
+  };
+
+  it('refuses a minimum-wage signing over the limit when the squad is complete (the #26 case)', () => {
+    const u = tight(start());
+    const competition = competitionOfTeam(u, u.userTeamId!);
+    expect(myTeam(u).playerIds.length).toBeGreaterThanOrEqual(competition.rosterMin);
+    expect(teamPayroll(u, u.userTeamId!)).toBeGreaterThan(competition.salaryCap);
+    const agent = cheapAgent(u);
+    expect(() => signFreeAgent(u, agent.id, 1)).toThrow(/No cabe/);
+  });
+
+  it('still allows a minimum-wage signing that is needed to reach the minimum squad', () => {
+    let u = rich(tight(start()));
+    const competition = competitionOfTeam(u, u.userTeamId!);
+    // Let players go until the squad is one short of the minimum.
+    while (staying(u) >= competition.rosterMin) {
+      u = releasePlayer(u, myTeam(u).playerIds[myTeam(u).playerIds.length - 1]!);
+    }
+    expect(staying(u)).toBe(competition.rosterMin - 1);
+
+    const first = cheapAgent(u);
+    u = signFreeAgent(u, first.id, 1); // fills the missing spot, over the limit: allowed
+    expect(staying(u)).toBe(competition.rosterMin);
+    // The squad is complete again: the exception is gone.
+    expect(() => signFreeAgent(u, cheapAgent(u, [first.id]).id, 1)).toThrow(/No cabe/);
+  });
+
+  it('never lets a renewal of a player still under contract use the exception', () => {
+    const base = start();
+    const team = myTeam(base);
+    // A player with one year left (renewable) who would ask for the minimum wage.
+    const weakened: Universe = {
+      ...base,
+      players: base.players.map((p) =>
+        p.id === team.playerIds[0]
+          ? {
+              ...p,
+              potential: 1,
+              age: 36,
+              contract: { salary: p.contract!.salary, endSeason: base.seasonNumber },
+              attributes: {
+                offensive: Object.fromEntries(
+                  Object.keys(p.attributes.offensive).map((k) => [k, 1]),
+                ) as Player['attributes']['offensive'],
+                defensive: Object.fromEntries(
+                  Object.keys(p.attributes.defensive).map((k) => [k, 1]),
+                ) as Player['attributes']['defensive'],
+                physical: Object.fromEntries(
+                  Object.keys(p.attributes.physical).map((k) => [k, 1]),
+                ) as Player['attributes']['physical'],
+                mental: Object.fromEntries(
+                  Object.keys(p.attributes.mental).map((k) => [k, 1]),
+                ) as Player['attributes']['mental'],
+              },
+            }
+          : p,
+      ),
+    };
+    const u = tight(weakened);
+    const competition = competitionOfTeam(u, u.userTeamId!);
+    expect(askingSalary(playerOf(u, team.playerIds[0]!), competition, true)).toBe(
+      competition.minSalary,
+    );
+    expect(isExpired(u, playerOf(u, team.playerIds[0]!))).toBe(false);
+    expect(() => renewContract(u, team.playerIds[0]!, 1)).toThrow(/No cabe/);
+  });
+
+  it('allows bringing back an expired player at the minimum wage only while the squad is short', () => {
+    // The offseason of the main fixture has expired contracts for the user's club.
+    let u = rich(tight(setUserTeam(offseason, offseason.userTeamId)));
+    const competition = competitionOfTeam(u, u.userTeamId!);
+    const weak = (p: Player): Player => ({
+      ...p,
+      potential: 1,
+      age: 36,
+      attributes: {
+        offensive: Object.fromEntries(
+          Object.keys(p.attributes.offensive).map((k) => [k, 1]),
+        ) as Player['attributes']['offensive'],
+        defensive: Object.fromEntries(
+          Object.keys(p.attributes.defensive).map((k) => [k, 1]),
+        ) as Player['attributes']['defensive'],
+        physical: Object.fromEntries(
+          Object.keys(p.attributes.physical).map((k) => [k, 1]),
+        ) as Player['attributes']['physical'],
+        mental: Object.fromEntries(
+          Object.keys(p.attributes.mental).map((k) => [k, 1]),
+        ) as Player['attributes']['mental'],
+      },
+    });
+    const expired = myTeam(u).playerIds.filter((id) => isExpired(u, playerOf(u, id)));
+    expect(expired.length).toBeGreaterThanOrEqual(2);
+    u = { ...u, players: u.players.map((p) => (expired.slice(0, 2).includes(p.id) ? weak(p) : p)) };
+    // Shrink the squad that stays until it is exactly one below the minimum.
+    while (staying(u) >= competition.rosterMin) {
+      const leaving = myTeam(u).playerIds.find((id) => !isExpired(u, playerOf(u, id)))!;
+      u = releasePlayer(u, leaving);
+    }
+    expect(staying(u)).toBe(competition.rosterMin - 1);
+
+    const [first, second] = expired as [string, string];
+    u = renewContract(u, first, 1); // needed to reach the minimum: allowed over the limit
+    expect(staying(u)).toBe(competition.rosterMin);
+    expect(() => renewContract(u, second, 1)).toThrow(/No cabe/); // squad complete: refused
+  });
+});

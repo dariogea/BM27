@@ -4,3 +4,6 @@ pnpm-lock.yaml
 packages/schema/json-schema
 docs/benchmarks
 CLAUDE.md
+target
+apps/desktop/src-tauri/gen
+apps/desktop/src-tauri/icons

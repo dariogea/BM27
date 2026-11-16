@@ -1,0 +1,28 @@
+[package]
+name = "bm27-desktop"
+version = "0.1.0"
+description = "Basketball Manager 2027 (título provisional)"
+authors = ["BM27"]
+edition = "2021"
+rust-version = "1.77"
+publish = false
+
+[lib]
+name = "bm27_desktop_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+tauri-plugin-dialog = "2"
+tauri-plugin-fs = "2"
+
+[profile.release]
+# A smaller, faster installer. Slower to compile, which only matters on the release build.
+codegen-units = 1
+lto = true
+opt-level = "s"
+panic = "abort"
+strip = true

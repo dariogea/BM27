@@ -3,7 +3,13 @@ import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
   {
-    ignores: ['**/node_modules/**', '**/dist/**', 'packages/schema/json-schema/**'],
+    ignores: [
+      '**/node_modules/**',
+      '**/dist/**',
+      '**/target/**',
+      'packages/schema/json-schema/**',
+      'apps/desktop/src-tauri/gen/**',
+    ],
   },
   js.configs.recommended,
   {

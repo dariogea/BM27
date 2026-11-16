@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "format": {
+      "type": "string",
+      "const": "bm27-save"
+    },
+    "schemaVersion": {
+      "type": "number",
+      "const": 0
+    },
+    "checksum": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "payload": {}
+  },
+  "required": [
+    "format",
+    "schemaVersion",
+    "checksum",
+    "payload"
+  ],
+  "additionalProperties": false
+}

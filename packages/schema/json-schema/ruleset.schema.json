@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "periods": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 8
+    },
+    "periodMinutes": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 30
+    },
+    "overtimeMinutes": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 15
+    },
+    "personalFoulLimit": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 10
+    },
+    "teamFoulsForBonus": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 20
+    },
+    "shotClockSeconds": {
+      "type": "integer",
+      "minimum": 10,
+      "maximum": 60
+    },
+    "shotClockOffensiveReboundSeconds": {
+      "type": "integer",
+      "minimum": 5,
+      "maximum": 60
+    }
+  },
+  "required": [
+    "id",
+    "name",
+    "periods",
+    "periodMinutes",
+    "overtimeMinutes",
+    "personalFoulLimit",
+    "teamFoulsForBonus",
+    "shotClockSeconds",
+    "shotClockOffensiveReboundSeconds"
+  ],
+  "additionalProperties": false
+}

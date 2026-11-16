@@ -1,0 +1,774 @@
+{
+  "cities": [
+    {
+      "name": "Madrid",
+      "region": "Madrid"
+    },
+    {
+      "name": "Barcelona",
+      "region": "Cataluña"
+    },
+    {
+      "name": "Valencia",
+      "region": "Comunidad Valenciana"
+    },
+    {
+      "name": "Sevilla",
+      "region": "Andalucía"
+    },
+    {
+      "name": "Zaragoza",
+      "region": "Aragón"
+    },
+    {
+      "name": "Málaga",
+      "region": "Andalucía"
+    },
+    {
+      "name": "Murcia",
+      "region": "Murcia"
+    },
+    {
+      "name": "Palma",
+      "region": "Baleares"
+    },
+    {
+      "name": "Las Palmas",
+      "region": "Canarias"
+    },
+    {
+      "name": "Bilbao",
+      "region": "País Vasco"
+    },
+    {
+      "name": "Alicante",
+      "region": "Comunidad Valenciana"
+    },
+    {
+      "name": "Córdoba",
+      "region": "Andalucía"
+    },
+    {
+      "name": "Valladolid",
+      "region": "Castilla y León"
+    },
+    {
+      "name": "Vigo",
+      "region": "Galicia"
+    },
+    {
+      "name": "Gijón",
+      "region": "Asturias"
+    },
+    {
+      "name": "Vitoria",
+      "region": "País Vasco"
+    },
+    {
+      "name": "A Coruña",
+      "region": "Galicia"
+    },
+    {
+      "name": "Granada",
+      "region": "Andalucía"
+    },
+    {
+      "name": "Elche",
+      "region": "Comunidad Valenciana"
+    },
+    {
+      "name": "Oviedo",
+      "region": "Asturias"
+    },
+    {
+      "name": "Santa Cruz de Tenerife",
+      "region": "Canarias"
+    },
+    {
+      "name": "Pamplona",
+      "region": "Navarra"
+    },
+    {
+      "name": "Cartagena",
+      "region": "Murcia"
+    },
+    {
+      "name": "Almería",
+      "region": "Andalucía"
+    },
+    {
+      "name": "San Sebastián",
+      "region": "País Vasco"
+    },
+    {
+      "name": "Burgos",
+      "region": "Castilla y León"
+    },
+    {
+      "name": "Santander",
+      "region": "Cantabria"
+    },
+    {
+      "name": "Castellón",
+      "region": "Comunidad Valenciana"
+    },
+    {
+      "name": "Albacete",
+      "region": "Castilla-La Mancha"
+    },
+    {
+      "name": "Logroño",
+      "region": "La Rioja"
+    },
+    {
+      "name": "Badajoz",
+      "region": "Extremadura"
+    },
+    {
+      "name": "Salamanca",
+      "region": "Castilla y León"
+    },
+    {
+      "name": "Huelva",
+      "region": "Andalucía"
+    },
+    {
+      "name": "Lleida",
+      "region": "Cataluña"
+    },
+    {
+      "name": "Tarragona",
+      "region": "Cataluña"
+    },
+    {
+      "name": "León",
+      "region": "Castilla y León"
+    },
+    {
+      "name": "Cádiz",
+      "region": "Andalucía"
+    },
+    {
+      "name": "Jaén",
+      "region": "Andalucía"
+    },
+    {
+      "name": "Ourense",
+      "region": "Galicia"
+    },
+    {
+      "name": "Girona",
+      "region": "Cataluña"
+    },
+    {
+      "name": "Lugo",
+      "region": "Galicia"
+    },
+    {
+      "name": "Cáceres",
+      "region": "Extremadura"
+    },
+    {
+      "name": "Santiago",
+      "region": "Galicia"
+    },
+    {
+      "name": "Toledo",
+      "region": "Castilla-La Mancha"
+    },
+    {
+      "name": "Guadalajara",
+      "region": "Castilla-La Mancha"
+    },
+    {
+      "name": "Pontevedra",
+      "region": "Galicia"
+    },
+    {
+      "name": "Palencia",
+      "region": "Castilla y León"
+    },
+    {
+      "name": "Ciudad Real",
+      "region": "Castilla-La Mancha"
+    },
+    {
+      "name": "Zamora",
+      "region": "Castilla y León"
+    },
+    {
+      "name": "Ávila",
+      "region": "Castilla y León"
+    },
+    {
+      "name": "Cuenca",
+      "region": "Castilla-La Mancha"
+    },
+    {
+      "name": "Huesca",
+      "region": "Aragón"
+    },
+    {
+      "name": "Segovia",
+      "region": "Castilla y León"
+    },
+    {
+      "name": "Soria",
+      "region": "Castilla y León"
+    },
+    {
+      "name": "Teruel",
+      "region": "Aragón"
+    },
+    {
+      "name": "Mérida",
+      "region": "Extremadura"
+    },
+    {
+      "name": "Jerez",
+      "region": "Andalucía"
+    },
+    {
+      "name": "Alcalá de Henares",
+      "region": "Madrid"
+    },
+    {
+      "name": "Getafe",
+      "region": "Madrid"
+    },
+    {
+      "name": "Leganés",
+      "region": "Madrid"
+    },
+    {
+      "name": "Móstoles",
+      "region": "Madrid"
+    },
+    {
+      "name": "Alcorcón",
+      "region": "Madrid"
+    },
+    {
+      "name": "Torrejón",
+      "region": "Madrid"
+    },
+    {
+      "name": "Badalona",
+      "region": "Cataluña"
+    },
+    {
+      "name": "Sabadell",
+      "region": "Cataluña"
+    },
+    {
+      "name": "Terrassa",
+      "region": "Cataluña"
+    },
+    {
+      "name": "Mataró",
+      "region": "Cataluña"
+    },
+    {
+      "name": "Reus",
+      "region": "Cataluña"
+    },
+    {
+      "name": "Manresa",
+      "region": "Cataluña"
+    },
+    {
+      "name": "Hospitalet",
+      "region": "Cataluña"
+    },
+    {
+      "name": "Gandía",
+      "region": "Comunidad Valenciana"
+    },
+    {
+      "name": "Torrevieja",
+      "region": "Comunidad Valenciana"
+    },
+    {
+      "name": "Benidorm",
+      "region": "Comunidad Valenciana"
+    },
+    {
+      "name": "Alcoy",
+      "region": "Comunidad Valenciana"
+    },
+    {
+      "name": "Sagunto",
+      "region": "Comunidad Valenciana"
+    },
+    {
+      "name": "Lorca",
+      "region": "Murcia"
+    },
+    {
+      "name": "Molina de Segura",
+      "region": "Murcia"
+    },
+    {
+      "name": "Algeciras",
+      "region": "Andalucía"
+    },
+    {
+      "name": "Marbella",
+      "region": "Andalucía"
+    },
+    {
+      "name": "Motril",
+      "region": "Andalucía"
+    },
+    {
+      "name": "Linares",
+      "region": "Andalucía"
+    },
+    {
+      "name": "Dos Hermanas",
+      "region": "Andalucía"
+    },
+    {
+      "name": "Écija",
+      "region": "Andalucía"
+    },
+    {
+      "name": "Ronda",
+      "region": "Andalucía"
+    },
+    {
+      "name": "Úbeda",
+      "region": "Andalucía"
+    },
+    {
+      "name": "Avilés",
+      "region": "Asturias"
+    },
+    {
+      "name": "Mieres",
+      "region": "Asturias"
+    },
+    {
+      "name": "Langreo",
+      "region": "Asturias"
+    },
+    {
+      "name": "Torrelavega",
+      "region": "Cantabria"
+    },
+    {
+      "name": "Castro Urdiales",
+      "region": "Cantabria"
+    },
+    {
+      "name": "Barakaldo",
+      "region": "País Vasco"
+    },
+    {
+      "name": "Getxo",
+      "region": "País Vasco"
+    },
+    {
+      "name": "Irún",
+      "region": "País Vasco"
+    },
+    {
+      "name": "Eibar",
+      "region": "País Vasco"
+    },
+    {
+      "name": "Tudela",
+      "region": "Navarra"
+    },
+    {
+      "name": "Estella",
+      "region": "Navarra"
+    },
+    {
+      "name": "Calahorra",
+      "region": "La Rioja"
+    },
+    {
+      "name": "Haro",
+      "region": "La Rioja"
+    },
+    {
+      "name": "Calatayud",
+      "region": "Aragón"
+    },
+    {
+      "name": "Ejea",
+      "region": "Aragón"
+    },
+    {
+      "name": "Ibiza",
+      "region": "Baleares"
+    },
+    {
+      "name": "Manacor",
+      "region": "Baleares"
+    },
+    {
+      "name": "Mahón",
+      "region": "Baleares"
+    },
+    {
+      "name": "Inca",
+      "region": "Baleares"
+    },
+    {
+      "name": "Talavera",
+      "region": "Castilla-La Mancha"
+    },
+    {
+      "name": "Puertollano",
+      "region": "Castilla-La Mancha"
+    },
+    {
+      "name": "Tomelloso",
+      "region": "Castilla-La Mancha"
+    },
+    {
+      "name": "Hellín",
+      "region": "Castilla-La Mancha"
+    },
+    {
+      "name": "Ponferrada",
+      "region": "Castilla y León"
+    },
+    {
+      "name": "Miranda de Ebro",
+      "region": "Castilla y León"
+    },
+    {
+      "name": "Aranda de Duero",
+      "region": "Castilla y León"
+    },
+    {
+      "name": "Medina del Campo",
+      "region": "Castilla y León"
+    },
+    {
+      "name": "Plasencia",
+      "region": "Extremadura"
+    },
+    {
+      "name": "Don Benito",
+      "region": "Extremadura"
+    },
+    {
+      "name": "Almendralejo",
+      "region": "Extremadura"
+    },
+    {
+      "name": "Ferrol",
+      "region": "Galicia"
+    },
+    {
+      "name": "Vilagarcía",
+      "region": "Galicia"
+    },
+    {
+      "name": "Monforte",
+      "region": "Galicia"
+    },
+    {
+      "name": "La Laguna",
+      "region": "Canarias"
+    },
+    {
+      "name": "Telde",
+      "region": "Canarias"
+    },
+    {
+      "name": "Arrecife",
+      "region": "Canarias"
+    },
+    {
+      "name": "Puerto del Rosario",
+      "region": "Canarias"
+    },
+    {
+      "name": "Arona",
+      "region": "Canarias"
+    },
+    {
+      "name": "Vic",
+      "region": "Cataluña"
+    },
+    {
+      "name": "Figueres",
+      "region": "Cataluña"
+    },
+    {
+      "name": "Igualada",
+      "region": "Cataluña"
+    },
+    {
+      "name": "Tortosa",
+      "region": "Cataluña"
+    },
+    {
+      "name": "Dénia",
+      "region": "Comunidad Valenciana"
+    },
+    {
+      "name": "Villena",
+      "region": "Comunidad Valenciana"
+    },
+    {
+      "name": "Yecla",
+      "region": "Murcia"
+    },
+    {
+      "name": "Águilas",
+      "region": "Murcia"
+    },
+    {
+      "name": "Aranjuez",
+      "region": "Madrid"
+    },
+    {
+      "name": "Pozuelo",
+      "region": "Madrid"
+    },
+    {
+      "name": "Las Rozas",
+      "region": "Madrid"
+    },
+    {
+      "name": "Coslada",
+      "region": "Madrid"
+    },
+    {
+      "name": "Antequera",
+      "region": "Andalucía"
+    },
+    {
+      "name": "Lucena",
+      "region": "Andalucía"
+    },
+    {
+      "name": "Andújar",
+      "region": "Andalucía"
+    },
+    {
+      "name": "Baza",
+      "region": "Andalucía"
+    }
+  ],
+  "teamNicknames": [
+    "Halcones",
+    "Cierzo",
+    "Titanes",
+    "Cometas",
+    "Linces",
+    "Vendaval",
+    "Alcotanes",
+    "Faro",
+    "Trueno",
+    "Galerna",
+    "Centauros",
+    "Dragones",
+    "Lobos",
+    "Atalaya",
+    "Mareas",
+    "Volcanes",
+    "Áncoras",
+    "Zorros",
+    "Búhos",
+    "Tormenta",
+    "Relámpago",
+    "Corsarios",
+    "Minotauros",
+    "Robles",
+    "Fénix",
+    "Gigantes",
+    "Aurora",
+    "Bisontes",
+    "Cóndores",
+    "Jabalíes",
+    "Gavilanes",
+    "Tritones",
+    "Bastión",
+    "Brújula",
+    "Ciclones",
+    "Forja",
+    "Grifos",
+    "Hidras",
+    "Nómadas",
+    "Órbita",
+    "Quimeras",
+    "Rayos",
+    "Tizón",
+    "Vikingos",
+    "Yunque",
+    "Zafiro",
+    "Albatros",
+    "Cumbre"
+  ],
+  "firstNames": [
+    "Alejandro",
+    "Álvaro",
+    "Adrián",
+    "Andrés",
+    "Antonio",
+    "Arnau",
+    "Asier",
+    "Bruno",
+    "Carlos",
+    "César",
+    "Daniel",
+    "Darío",
+    "David",
+    "Diego",
+    "Eduardo",
+    "Enrique",
+    "Fernando",
+    "Francisco",
+    "Gabriel",
+    "Gonzalo",
+    "Guillermo",
+    "Héctor",
+    "Hugo",
+    "Ignacio",
+    "Iker",
+    "Iván",
+    "Javier",
+    "Joaquín",
+    "Joel",
+    "Jorge",
+    "José",
+    "Juan",
+    "Julián",
+    "Lucas",
+    "Luis",
+    "Manuel",
+    "Marc",
+    "Marcos",
+    "Mario",
+    "Martín",
+    "Mateo",
+    "Miguel",
+    "Nicolás",
+    "Óscar",
+    "Pablo",
+    "Pau",
+    "Pedro",
+    "Rafael",
+    "Raúl",
+    "Ricardo",
+    "Roberto",
+    "Rodrigo",
+    "Rubén",
+    "Samuel",
+    "Santiago",
+    "Sergio",
+    "Tomás",
+    "Unai",
+    "Víctor",
+    "Xavier"
+  ],
+  "lastNames": [
+    "García",
+    "Rodríguez",
+    "González",
+    "Fernández",
+    "López",
+    "Martínez",
+    "Sánchez",
+    "Pérez",
+    "Gómez",
+    "Martín",
+    "Jiménez",
+    "Ruiz",
+    "Hernández",
+    "Díaz",
+    "Moreno",
+    "Muñoz",
+    "Álvarez",
+    "Romero",
+    "Alonso",
+    "Gutiérrez",
+    "Navarro",
+    "Torres",
+    "Domínguez",
+    "Vázquez",
+    "Ramos",
+    "Gil",
+    "Ramírez",
+    "Serrano",
+    "Blanco",
+    "Molina",
+    "Morales",
+    "Suárez",
+    "Ortega",
+    "Delgado",
+    "Castro",
+    "Ortiz",
+    "Rubio",
+    "Marín",
+    "Sanz",
+    "Iglesias",
+    "Núñez",
+    "Medina",
+    "Garrido",
+    "Cortés",
+    "Castillo",
+    "Santos",
+    "Lozano",
+    "Guerrero",
+    "Cano",
+    "Prieto",
+    "Méndez",
+    "Cruz",
+    "Calvo",
+    "Gallego",
+    "Vidal",
+    "León",
+    "Márquez",
+    "Herrera",
+    "Peña",
+    "Flores",
+    "Cabrera",
+    "Campos",
+    "Vega",
+    "Fuentes",
+    "Carrasco",
+    "Diez",
+    "Caballero",
+    "Reyes",
+    "Nieto",
+    "Aguilar",
+    "Pascual",
+    "Santana",
+    "Herrero",
+    "Lorenzo",
+    "Montero",
+    "Hidalgo",
+    "Giménez",
+    "Ibáñez",
+    "Ferrer",
+    "Durán",
+    "Santiago",
+    "Benítez",
+    "Mora",
+    "Vicente",
+    "Vargas",
+    "Arias",
+    "Carmona",
+    "Crespo",
+    "Román",
+    "Pastor",
+    "Soto",
+    "Sáez",
+    "Velasco",
+    "Moya",
+    "Soler",
+    "Parra",
+    "Esteban",
+    "Bravo",
+    "Gallardo",
+    "Rojas"
+  ]
+}

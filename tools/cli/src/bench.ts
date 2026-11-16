@@ -1,0 +1,163 @@
+/**
+ * Benchmarks for T-001. Run with:  pnpm bench
+ * Writes real measurements to docs/benchmarks/T-001.md.
+ */
+import { writeFileSync } from 'node:fs';
+import { cpus, totalmem, platform, release, arch } from 'node:os';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import {
+  exportSave,
+  generateUniverse,
+  importSave,
+  simulateCompetitionSeason,
+  simulateSeason,
+} from '@bm27/core';
+
+const SEED = 'bench-t001';
+const SEASONS = 10;
+const REPEATS = 5;
+
+const gc = (globalThis as { gc?: () => void }).gc;
+function heapMb(): number {
+  gc?.();
+  gc?.();
+  return process.memoryUsage().heapUsed / 1024 / 1024;
+}
+function time<T>(fn: () => T): { ms: number; value: T } {
+  const start = performance.now();
+  const value = fn();
+  return { ms: performance.now() - start, value };
+}
+const median = (values: number[]): number => {
+  const sorted = [...values].sort((a, b) => a - b);
+  return sorted[Math.floor(sorted.length / 2)] as number;
+};
+const f0 = (n: number): string => n.toFixed(0);
+const f1 = (n: number): string => n.toFixed(1);
+const f2 = (n: number): string => n.toFixed(2);
+
+console.log('Generando universo...');
+const generation = time(() => generateUniverse({ seed: SEED }));
+const universe0 = generation.value;
+
+// Warm-up so that the JIT compiler does not distort the first measurement.
+simulateCompetitionSeason(universe0, 'es-l1');
+
+// --- B1: one full season of level 1 ----------------------------------------
+console.log('B1...');
+const b1Runs: number[] = [];
+let b1Matches = 0;
+for (let i = 0; i < REPEATS; i++) {
+  const run = time(() => simulateCompetitionSeason(universe0, 'es-l1'));
+  b1Runs.push(run.ms);
+  b1Matches = run.value.matches.length;
+}
+
+// --- B2: one full season of the whole universe -------------------------------
+console.log('B2...');
+const b2Runs: number[] = [];
+let b2Matches = 0;
+for (let i = 0; i < REPEATS; i++) {
+  const run = time(() => simulateSeason(universe0));
+  b2Runs.push(run.ms);
+  b2Matches = run.value.season.competitions.reduce((n, c) => n + c.matches.length, 0);
+}
+
+// --- B3: ten consecutive seasons ---------------------------------------------
+console.log('B3...');
+const heapStart = heapMb();
+const rssStart = process.memoryUsage().rss / 1024 / 1024;
+let universe = universe0;
+const seasonMs: number[] = [];
+const heapAfter: number[] = [];
+for (let i = 0; i < SEASONS; i++) {
+  const run = time(() => simulateSeason(universe));
+  universe = run.value.universe;
+  seasonMs.push(run.ms);
+  heapAfter.push(heapMb());
+}
+const heapEnd = heapAfter[heapAfter.length - 1] as number;
+const rssEnd = process.memoryUsage().rss / 1024 / 1024;
+const totalMatches = universe.history.reduce(
+  (n, s) => n + s.competitions.reduce((m, c) => m + c.matches.length, 0),
+  0,
+);
+
+// --- B4: save size after ten seasons -----------------------------------------
+console.log('B4...');
+const exported = time(() => exportSave(universe));
+const saveBytes = Buffer.byteLength(exported.value, 'utf8');
+const imported = time(() => importSave(exported.value));
+const freshBytes = Buffer.byteLength(exportSave(universe0), 'utf8');
+if (imported.value.seasonNumber !== universe.seasonNumber) throw new Error('import mismatch');
+
+const cpu = cpus();
+const lines = [
+  '# Benchmarks T-001',
+  '',
+  '> Archivo generado automáticamente por `pnpm bench`. Las cifras son mediciones reales de la',
+  '> ejecución indicada abajo, no estimaciones. Para repetirlas: `pnpm install && pnpm bench`.',
+  '',
+  '## Entorno de la medición',
+  '',
+  `- Fecha: ${new Date().toISOString()}`,
+  `- CPU: ${cpu[0]?.model ?? 'desconocida'} · ${cpu.length} núcleos lógicos (la simulación usa 1 solo hilo)`,
+  `- Memoria RAM total: ${f1(totalmem() / 1024 ** 3)} GB`,
+  `- Sistema: ${platform()} ${release()} (${arch()}), contenedor en la nube (máquina virtual compartida)`,
+  `- Node.js ${process.version} · ejecutado con \`tsx\` (TypeScript sin compilar previamente)`,
+  `- Semilla: \`${SEED}\` · Universo: ${universe0.teams.length} equipos, ${universe0.players.length} jugadores (generado en ${f0(generation.ms)} ms)`,
+  `- Motor de partido: **PLACEHOLDER** (provisional). Estas cifras miden la arquitectura, no el motor definitivo.`,
+  '',
+  '## Resultados',
+  '',
+  '| Prueba | Qué mide | Resultado |',
+  '| --- | --- | --- |',
+  `| B1 | Temporada completa del nivel 1 (${b1Matches} partidos, liga + playoffs) | **${f0(median(b1Runs))} ms** (mediana de ${REPEATS}; mín ${f0(Math.min(...b1Runs))}, máx ${f0(Math.max(...b1Runs))}) |`,
+  `| B2 | Temporada completa de todo el universo (${b2Matches} partidos) + ascensos/descensos y envejecimiento | **${f0(median(b2Runs))} ms** (mediana de ${REPEATS}; mín ${f0(Math.min(...b2Runs))}, máx ${f0(Math.max(...b2Runs))}) |`,
+  `| B3 | ${SEASONS} temporadas seguidas de todo el universo (${totalMatches} partidos) | **${f2(seasonMs.reduce((a, b) => a + b, 0) / 1000)} s** en total · media ${f0(seasonMs.reduce((a, b) => a + b, 0) / SEASONS)} ms por temporada |`,
+  `| B3 | Memoria (heap de JavaScript tras recolección de basura) | inicio **${f1(heapStart)} MB** → final **${f1(heapEnd)} MB** |`,
+  `| B4 | Tamaño del guardado JSON tras ${SEASONS} temporadas | **${f2(saveBytes / 1024 / 1024)} MB** (${saveBytes.toLocaleString('es-ES')} bytes) |`,
+  '',
+  `Velocidad media en B2: ${f0(b2Matches / (median(b2Runs) / 1000))} partidos por segundo en un solo hilo (cada partido genera su registro completo de eventos y de él se deriva el box score).`,
+  '',
+  '### B3 · Detalle por temporada',
+  '',
+  '| Temporada | Tiempo (ms) | Heap tras la temporada (MB) |',
+  '| --- | --- | --- |',
+  ...seasonMs.map((ms, i) => `| ${i + 1} | ${f0(ms)} | ${f1(heapAfter[i] as number)} |`),
+  '',
+  `- Tiempo: la temporada más lenta fue ${f0(Math.max(...seasonMs))} ms y la más rápida ${f0(Math.min(...seasonMs))} ms. La temporada 10 tardó ${f0(seasonMs[SEASONS - 1] as number)} ms frente a ${f0(seasonMs[0] as number)} ms de la primera.`,
+  `- Memoria: crece ${f1((heapEnd - heapStart) / SEASONS)} MB por temporada de media. Ese crecimiento es el historial que se conserva a propósito (resultados de todos los partidos, clasificaciones y estadísticas de temporada por jugador), no una fuga: es proporcional al tamaño del guardado.`,
+  `- Memoria total del proceso (RSS, incluye Node y el compilador): ${f0(rssStart)} MB al inicio de B3 → ${f0(rssEnd)} MB al final.`,
+  '',
+  '### B4 · Detalle del guardado',
+  '',
+  `- Universo recién generado (0 temporadas): ${f2(freshBytes / 1024 / 1024)} MB.`,
+  `- Tras ${SEASONS} temporadas: ${f2(saveBytes / 1024 / 1024)} MB → unas ${f2((saveBytes - freshBytes) / SEASONS / 1024 / 1024)} MB por temporada.`,
+  `- Exportar (serializar + checksum SHA-256): ${f0(exported.ms)} ms. Importar (leer + verificar checksum + validar esquema): ${f0(imported.ms)} ms.`,
+  '- Qué contiene: equipos, jugadores (incluidos los retirados), competiciones y, por cada temporada, clasificaciones, resultado de cada partido, series de playoff y estadísticas acumuladas por jugador.',
+  '- Qué NO contiene: el registro de eventos ni el box score de cada partido. Se pueden reconstruir de forma idéntica re-simulando el partido con su semilla mientras la temporada esté en curso, pero no se guardan. JSON sin comprimir ni sangrado.',
+  '',
+  '## Rangos de plausibilidad usados en los tests (provisionales)',
+  '',
+  'El test `provisional plausibility` (en `packages/core/test/match.test.ts`) simula 500 partidos entre dos equipos de calidad de nivel 1 con reglamento `fiba` y exige estas medias por equipo y partido:',
+  '',
+  '| Magnitud | Rango aceptado |',
+  '| --- | --- |',
+  '| Puntos | 70 – 92 |',
+  '| Posesiones | 66 – 78 |',
+  '| % tiros de campo | 42 % – 52 % |',
+  '| % triples | 30 % – 42 % |',
+  '| Tiros libres intentados | 10 – 26 |',
+  '| Pérdidas | 9 – 17 |',
+  '| Rebotes totales | 28 – 42 |',
+  '',
+  '**De dónde salen:** son rangos amplios alrededor de las medias aproximadas de las grandes ligas europeas con reglas FIBA en temporadas recientes (en torno a 78–86 puntos y 70–75 posesiones por equipo en 40 minutos). **Aviso honesto:** proceden de conocimiento general, no de un conjunto de datos verificado; no los he contrastado contra una fuente oficial en esta tarea. Deben sustituirse por rangos calculados a partir de datos reales cuando se haga el motor definitivo.',
+  '',
+];
+
+const here = dirname(fileURLToPath(import.meta.url));
+const outFile = join(here, '..', '..', '..', 'docs', 'benchmarks', 'T-001.md');
+writeFileSync(outFile, lines.join('\n'));
+console.log(`\n${lines.join('\n')}\nEscrito en ${outFile}`);

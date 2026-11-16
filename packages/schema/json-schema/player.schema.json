@@ -1,0 +1,233 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "firstName": {
+      "type": "string",
+      "minLength": 1
+    },
+    "lastName": {
+      "type": "string",
+      "minLength": 1
+    },
+    "age": {
+      "type": "integer",
+      "minimum": 15,
+      "maximum": 50
+    },
+    "heightCm": {
+      "type": "integer",
+      "minimum": 150,
+      "maximum": 240
+    },
+    "positions": {
+      "minItems": 1,
+      "maxItems": 3,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "PG",
+          "SG",
+          "SF",
+          "PF",
+          "C"
+        ]
+      }
+    },
+    "attributes": {
+      "type": "object",
+      "properties": {
+        "offensive": {
+          "type": "object",
+          "properties": {
+            "closeShot": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 99
+            },
+            "midRange": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 99
+            },
+            "threePoint": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 99
+            },
+            "freeThrow": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 99
+            },
+            "passing": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 99
+            },
+            "ballHandling": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 99
+            },
+            "offensiveRebound": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 99
+            }
+          },
+          "required": [
+            "closeShot",
+            "midRange",
+            "threePoint",
+            "freeThrow",
+            "passing",
+            "ballHandling",
+            "offensiveRebound"
+          ],
+          "additionalProperties": false
+        },
+        "defensive": {
+          "type": "object",
+          "properties": {
+            "perimeterDefense": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 99
+            },
+            "interiorDefense": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 99
+            },
+            "steal": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 99
+            },
+            "block": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 99
+            },
+            "defensiveRebound": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 99
+            }
+          },
+          "required": [
+            "perimeterDefense",
+            "interiorDefense",
+            "steal",
+            "block",
+            "defensiveRebound"
+          ],
+          "additionalProperties": false
+        },
+        "physical": {
+          "type": "object",
+          "properties": {
+            "speed": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 99
+            },
+            "strength": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 99
+            },
+            "stamina": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 99
+            },
+            "jumping": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 99
+            }
+          },
+          "required": [
+            "speed",
+            "strength",
+            "stamina",
+            "jumping"
+          ],
+          "additionalProperties": false
+        },
+        "mental": {
+          "type": "object",
+          "properties": {
+            "decisions": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 99
+            },
+            "composure": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 99
+            },
+            "workRate": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 99
+            },
+            "discipline": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 99
+            }
+          },
+          "required": [
+            "decisions",
+            "composure",
+            "workRate",
+            "discipline"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "offensive",
+        "defensive",
+        "physical",
+        "mental"
+      ],
+      "additionalProperties": false
+    },
+    "teamId": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "retired": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "id",
+    "firstName",
+    "lastName",
+    "age",
+    "heightCm",
+    "positions",
+    "attributes",
+    "teamId",
+    "retired"
+  ],
+  "additionalProperties": false
+}

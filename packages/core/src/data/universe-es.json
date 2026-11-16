@@ -1,0 +1,85 @@
+{
+  "id": "es-fictional",
+  "regions": [
+    "Galicia",
+    "Asturias",
+    "Cantabria",
+    "País Vasco",
+    "Navarra",
+    "La Rioja",
+    "Aragón",
+    "Cataluña",
+    "Baleares",
+    "Comunidad Valenciana",
+    "Murcia",
+    "Castilla-La Mancha",
+    "Madrid",
+    "Castilla y León",
+    "Extremadura",
+    "Andalucía",
+    "Canarias"
+  ],
+  "rosterSize": { "min": 12, "max": 15 },
+  "levels": [
+    {
+      "competitionId": "es-l1",
+      "name": "Liga Nacional 1",
+      "level": 1,
+      "rulesetId": "fiba",
+      "teamCount": 18,
+      "averageQuality": 72,
+      "format": {
+        "groupCount": 1,
+        "roundRobinLegs": 2,
+        "playoffs": { "qualifiersPerGroup": 8, "seriesBestOf": [3, 5, 5] }
+      },
+      "promotionSlots": 0,
+      "relegationSlots": 2
+    },
+    {
+      "competitionId": "es-l2",
+      "name": "Liga Nacional 2",
+      "level": 2,
+      "rulesetId": "fiba",
+      "teamCount": 18,
+      "averageQuality": 63,
+      "format": {
+        "groupCount": 1,
+        "roundRobinLegs": 2,
+        "playoffs": { "qualifiersPerGroup": 8, "seriesBestOf": [3, 3, 5] }
+      },
+      "promotionSlots": 2,
+      "relegationSlots": 3
+    },
+    {
+      "competitionId": "es-l3",
+      "name": "Liga Nacional 3",
+      "level": 3,
+      "rulesetId": "fiba",
+      "teamCount": 28,
+      "averageQuality": 54,
+      "format": {
+        "groupCount": 2,
+        "roundRobinLegs": 2,
+        "playoffs": { "qualifiersPerGroup": 4, "seriesBestOf": [3] }
+      },
+      "promotionSlots": 3,
+      "relegationSlots": 6
+    },
+    {
+      "competitionId": "es-l4",
+      "name": "Liga Regional 4",
+      "level": 4,
+      "rulesetId": "fiba",
+      "teamCount": 138,
+      "averageQuality": 45,
+      "format": {
+        "groupCount": 10,
+        "roundRobinLegs": 2,
+        "playoffs": { "qualifiersPerGroup": 2, "seriesBestOf": [1] }
+      },
+      "promotionSlots": 6,
+      "relegationSlots": 0
+    }
+  ]
+}

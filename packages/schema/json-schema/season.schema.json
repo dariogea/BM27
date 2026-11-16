@@ -1,0 +1,399 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "seasonNumber": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9007199254740991
+    },
+    "competitions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "competitionId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "groups": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "teamIds": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "standings": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "position": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 9007199254740991
+                      },
+                      "teamId": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "played": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 9007199254740991
+                      },
+                      "wins": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 9007199254740991
+                      },
+                      "losses": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 9007199254740991
+                      },
+                      "pointsFor": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 9007199254740991
+                      },
+                      "pointsAgainst": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 9007199254740991
+                      }
+                    },
+                    "required": [
+                      "position",
+                      "teamId",
+                      "played",
+                      "wins",
+                      "losses",
+                      "pointsFor",
+                      "pointsAgainst"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "required": [
+                "name",
+                "teamIds",
+                "standings"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "matches": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "seasonNumber": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 9007199254740991
+                },
+                "competitionId": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "stage": {
+                  "type": "string",
+                  "enum": [
+                    "regular",
+                    "playoff"
+                  ]
+                },
+                "round": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 9007199254740991
+                },
+                "homeTeamId": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "awayTeamId": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "homeScore": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "awayScore": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "overtimePeriods": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                }
+              },
+              "required": [
+                "id",
+                "seasonNumber",
+                "competitionId",
+                "stage",
+                "round",
+                "homeTeamId",
+                "awayTeamId",
+                "homeScore",
+                "awayScore",
+                "overtimePeriods"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "playoffSeries": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "round": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 9007199254740991
+                },
+                "bestOf": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 9007199254740991
+                },
+                "highSeed": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 9007199254740991
+                },
+                "highSeedTeamId": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "lowSeedTeamId": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "highSeedWins": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "lowSeedWins": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "winnerTeamId": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "matchIds": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              },
+              "required": [
+                "round",
+                "bestOf",
+                "highSeed",
+                "highSeedTeamId",
+                "lowSeedTeamId",
+                "highSeedWins",
+                "lowSeedWins",
+                "winnerTeamId",
+                "matchIds"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "finalRanking": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "championTeamId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "promotedTeamIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "relegatedTeamIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "playerStats": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "seconds": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "points": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "fieldGoalsMade": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "fieldGoalsAttempted": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "threePointersMade": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "threePointersAttempted": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "freeThrowsMade": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "freeThrowsAttempted": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "offensiveRebounds": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "defensiveRebounds": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "assists": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "steals": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "blocks": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "turnovers": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "fouls": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "playerId": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "teamId": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "games": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                }
+              },
+              "required": [
+                "seconds",
+                "points",
+                "fieldGoalsMade",
+                "fieldGoalsAttempted",
+                "threePointersMade",
+                "threePointersAttempted",
+                "freeThrowsMade",
+                "freeThrowsAttempted",
+                "offensiveRebounds",
+                "defensiveRebounds",
+                "assists",
+                "steals",
+                "blocks",
+                "turnovers",
+                "fouls",
+                "playerId",
+                "teamId",
+                "games"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "competitionId",
+          "groups",
+          "matches",
+          "playoffSeries",
+          "finalRanking",
+          "championTeamId",
+          "promotedTeamIds",
+          "relegatedTeamIds",
+          "playerStats"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "seasonNumber",
+    "competitions"
+  ],
+  "additionalProperties": false
+}

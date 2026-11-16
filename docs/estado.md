@@ -23,3 +23,13 @@ Leyenda: IDEA · PROPUESTA · APROBADA · DISEÑADA · IMPLEMENTADA · PROBADA �
 - Comprobar que las medias de la liga se mantienen tras muchas temporadas de envejecimiento.
 - Política de conservación del historial y formato definitivo de guardado (base de datos).
 - Calibrar rangos de plausibilidad con datos reales verificados.
+
+## Trabajo en paralelo con Codex
+
+Desde el 16-11-2026 trabajan dos agentes (Claude Code y Codex). Las tareas pendientes son **Issues de
+GitHub** (<https://github.com/dariogea/BM27/issues>); esta tabla recoge las que ya se han hecho.
+Reglas en [`coordinacion.md`](coordinacion.md).
+
+| Tarea | Título                                                        | Estado  | Rama                       | Notas                                                                                                         |
+| ----- | ------------------------------------------------------------- | ------- | -------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| T-007 | Coordinación con Codex: AGENTS.md, reglas, etiquetas e Issues | PROBADA | `t-007-coordinacion-codex` | Solo documentación y configuración de GitHub. No he podido comprobar que Codex esté conectado al repositorio. |

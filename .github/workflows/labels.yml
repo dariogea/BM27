@@ -1,0 +1,42 @@
+name: Etiquetas
+
+# Crea o actualiza las etiquetas de coordinación (.github/labels.yml).
+# Se ejecuta al fusionar un cambio en ese archivo y también a mano.
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/labels.yml
+      - .github/workflows/labels.yml
+  workflow_dispatch:
+
+permissions:
+  issues: write
+  contents: read
+
+jobs:
+  sync:
+    name: Sincronizar etiquetas
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Crear o actualizar etiquetas
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 - <<'PY'
+          import re, subprocess
+          text = open('.github/labels.yml', encoding='utf-8').read()
+          for block in re.split(r'(?m)^- name: ', text)[1:]:
+              lines = block.strip().splitlines()
+              name = lines[0].strip()
+              color = re.search(r'color: (\w+)', block).group(1)
+              description = re.search(r'description: (.*)', block).group(1).strip()
+              subprocess.run(
+                  ['gh', 'label', 'create', name, '--color', color,
+                   '--description', description, '--force'],
+                  check=True,
+              )
+              print('OK', name)
+          PY

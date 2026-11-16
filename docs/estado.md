@@ -57,3 +57,9 @@ Reglas en [`coordinacion.md`](coordinacion.md).
 | Tarea | Estado  | Entrega                                                                                               |
 | ----- | ------- | ----------------------------------------------------------------------------------------------------- |
 | #42   | PROBADA | Resumen visual del roadmap en README, generado desde los mismos datos y comprobado por roadmap:check. |
+
+## Planificación y portada
+
+| Tarea | Estado  | Entrega                                                                                                                                                                                     |
+| ----- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| #44   | PROBADA | Roadmap ampliado conservando fases y tareas existentes; landing de GitHub con identidad visual, navegación y acceso a guías. Nuevas tareas pendientes, sin implementar funciones del juego. |

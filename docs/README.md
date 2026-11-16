@@ -11,3 +11,6 @@
 
 El contrato de datos en formato JSON Schema (útil para mods y herramientas externas) está en
 [`../packages/schema/json-schema/`](../packages/schema/json-schema/).
+
+La [guía de desarrollo](desarrollo.md) reúne instalación, arranque, pruebas y comandos.
+La [portada del proyecto](../README.md) presenta el juego y el resumen visual de avance.

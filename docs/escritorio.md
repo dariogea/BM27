@@ -6,6 +6,9 @@ de tu disco. Esta página explica cómo se publica y qué se puede esperar.
 
 ## Cómo conseguirlo (fase 1: descarga manual)
 
+Cuando se publique una Release, la descarga se hará de esta forma. Mientras no exista, usa la
+[compilación de prueba de Actions](#probar-sin-esperar-a-una-versión-publicada).
+
 1. Entra en la pestaña **Releases** del repositorio en GitHub (con tu sesión abierta: el repositorio
    es privado) y elige la versión más reciente.
 2. Descarga el archivo **`BM27_…_x64-setup.exe`** y ejecútalo. Se instala solo para tu usuario, sin

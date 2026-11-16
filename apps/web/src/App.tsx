@@ -2,6 +2,7 @@ import type { MatchDetail, TeamTactics } from '@bm27/schema';
 import { useEffect, useRef, useState } from 'react';
 import { CompetitionView } from './CompetitionView';
 import { BoxScoreView } from './MatchView';
+import { isDesktop, pickTextFile, saveTextFile } from './platform';
 import type { Command, GameView, Reply } from './protocol';
 import { FinancePanel } from './FinanceView';
 import { MarketPanel } from './MarketView';
@@ -107,15 +108,20 @@ export function App() {
         setStatus('');
         break;
       case 'save': {
-        const url = URL.createObjectURL(new Blob([reply.json], { type: 'application/json' }));
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = reply.fileName;
-        link.click();
-        URL.revokeObjectURL(url);
-        setStatus(
-          `Partida guardada en el archivo ${reply.fileName} (${(reply.json.length / 1024 / 1024).toFixed(1)} MB).`,
-        );
+        const size = `${(reply.json.length / 1024 / 1024).toFixed(1)} MB`;
+        try {
+          const result = await saveTextFile(reply.fileName, reply.json);
+          setStatus(
+            result.kind === 'saved'
+              ? `Partida guardada en ${result.where} (${size}).`
+              : 'Guardado cancelado.',
+          );
+        } catch (error) {
+          setError(
+            `No se pudo guardar el archivo: ${error instanceof Error ? error.message : String(error)}`,
+          );
+          setStatus('');
+        }
         break;
       }
     }
@@ -144,7 +150,23 @@ export function App() {
         <button disabled={busy || !view} onClick={() => run({ type: 'exportSave' }, 'Guardando…')}>
           Guardar partida
         </button>
-        <button disabled={busy} onClick={() => fileInput.current?.click()}>
+        <button
+          disabled={busy}
+          onClick={async () => {
+            if (!isDesktop()) {
+              fileInput.current?.click();
+              return;
+            }
+            try {
+              const json = await pickTextFile();
+              if (json !== null) await run({ type: 'importSave', json }, 'Cargando…');
+            } catch (error) {
+              setError(
+                `No se pudo abrir el archivo: ${error instanceof Error ? error.message : String(error)}`,
+              );
+            }
+          }}
+        >
           Cargar partida
         </button>
         <input

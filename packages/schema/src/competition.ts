@@ -41,5 +41,13 @@ export const CompetitionSchema = z.object({
   relegationSlots: z.number().int().min(0),
   /** Current members. Changes every season with promotion/relegation. */
   teamIds: z.array(z.string().min(1)).min(2),
+  /** Maximum total salaries a club may have under contract, in euros per season. */
+  salaryCap: z.number().int().min(0),
+  /** Lowest salary a player can be paid, in euros per season. */
+  minSalary: z.number().int().min(0),
+  /** A club needs at least this many players when the season starts. */
+  rosterMin: z.number().int().min(5),
+  /** A club cannot have more players than this. */
+  rosterMax: z.number().int().min(5),
 });
 export type Competition = z.infer<typeof CompetitionSchema>;

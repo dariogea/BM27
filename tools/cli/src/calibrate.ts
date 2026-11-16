@@ -4,12 +4,12 @@
  * writes) league averages next to their reference targets.
  *
  *   pnpm calibrate            → prints the report
- *   pnpm calibrate --write    → also writes docs/benchmarks/T-004-calibracion.md
+ *   pnpm calibrate --write    → also writes docs/benchmarks/T-005-calibracion.md
  */
 import { writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { generateUniverse, simulateCompetitionSeason } from '@bm27/core';
+import { generateUniverse, simulateCompetitionSeason, startSeason } from '@bm27/core';
 import type { MatchDetail, PlayType, ShotZone } from '@bm27/schema';
 import { PLAY_TYPES, SHOT_ZONES } from '@bm27/schema';
 
@@ -160,7 +160,7 @@ function report(levelName: string, t: Totals, withTargets: boolean): string[] {
     ['Faltas personales', t.pf / g],
     ['% victorias locales', (100 * t.homeWins) / t.games],
   ];
-  const lines = [`### ${levelName} (${t.games} partidos de liga regular)`, ''];
+  const lines = [`### ${levelName} (${t.games} partidos de liga regular, 3 universos)`, ''];
   if (withTargets) {
     lines.push(
       '| Magnitud (por equipo y partido) | Medido | Banda de referencia | ¿Dentro? |',
@@ -207,27 +207,36 @@ function report(levelName: string, t: Totals, withTargets: boolean): string[] {
   return lines;
 }
 
-const universe = generateUniverse({ seed: SEED });
+// Three universes are averaged so that one lucky league does not decide a band.
+const SEEDS = [SEED, `${SEED}-b`, `${SEED}-c`];
+const universes = SEEDS.map((seed) => generateUniverse({ seed }));
 const out: string[] = [
-  '# Calibración del motor de partido v1 con jugadores que se desarrollan (T-004)',
+  '# Calibración del motor de partido v1 con mercado y jugadores que se desarrollan (T-005)',
   '',
   '> Archivo generado por `pnpm calibrate --write`. Cifras medidas simulando la liga regular de',
-  `> cada nivel del universo con semilla \`${SEED}\`. Las bandas de referencia son **aproximadas**:`,
-  '> proceden de conocimiento general de las medias de las grandes ligas europeas con reglas FIBA,',
-  '> no de un conjunto de datos verificado. Solo se exigen al nivel 1.',
+  `> cada nivel en ${SEEDS.length} universos (semillas \`${SEEDS.join('`, `')}\`) y promediando.`,
+  '> Las bandas de referencia son **aproximadas**: proceden de conocimiento general de las medias de',
+  '> las grandes ligas europeas con reglas FIBA, no de un conjunto de datos verificado. Solo se',
+  '> exigen al nivel 1.',
   '',
 ];
-for (const competition of [...universe.competitions].sort((a, b) => a.level - b.level)) {
+for (const level of [1, 2, 3, 4]) {
   const totals = emptyTotals();
-  simulateCompetitionSeason(universe, competition.id, { onMatch: (d) => collect(totals, d) });
-  out.push(
-    ...report(`Nivel ${competition.level} · ${competition.name}`, totals, competition.level === 1),
-  );
+  let name = '';
+  for (const universe of universes) {
+    const competition = universe.competitions.find((c) => c.level === level);
+    if (!competition) continue;
+    name = competition.name;
+    // The market closes when the season starts: play with the squads of that moment.
+    const opened = startSeason(universe);
+    simulateCompetitionSeason(opened, competition.id, { onMatch: (d) => collect(totals, d) });
+  }
+  if (totals.games > 0) out.push(...report(`Nivel ${level} · ${name}`, totals, level === 1));
 }
 console.log(out.join('\n'));
 if (process.argv.includes('--write')) {
   const here = dirname(fileURLToPath(import.meta.url));
-  const file = join(here, '..', '..', '..', 'docs', 'benchmarks', 'T-004-calibracion.md');
+  const file = join(here, '..', '..', '..', 'docs', 'benchmarks', 'T-005-calibracion.md');
   writeFileSync(file, out.join('\n'));
   console.log(`Escrito en ${file}`);
 }

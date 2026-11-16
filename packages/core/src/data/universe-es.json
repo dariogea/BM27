@@ -19,7 +19,10 @@
     "Andalucía",
     "Canarias"
   ],
-  "rosterSize": { "min": 12, "max": 15 },
+  "rosterSize": {
+    "min": 12,
+    "max": 15
+  },
   "levels": [
     {
       "competitionId": "es-l1",
@@ -31,10 +34,15 @@
       "format": {
         "groupCount": 1,
         "roundRobinLegs": 2,
-        "playoffs": { "qualifiersPerGroup": 8, "seriesBestOf": [3, 5, 5] }
+        "playoffs": {
+          "qualifiersPerGroup": 8,
+          "seriesBestOf": [3, 5, 5]
+        }
       },
       "promotionSlots": 0,
-      "relegationSlots": 2
+      "relegationSlots": 2,
+      "salaryCap": 4400000,
+      "minSalary": 40000
     },
     {
       "competitionId": "es-l2",
@@ -46,10 +54,15 @@
       "format": {
         "groupCount": 1,
         "roundRobinLegs": 2,
-        "playoffs": { "qualifiersPerGroup": 8, "seriesBestOf": [3, 3, 5] }
+        "playoffs": {
+          "qualifiersPerGroup": 8,
+          "seriesBestOf": [3, 3, 5]
+        }
       },
       "promotionSlots": 2,
-      "relegationSlots": 3
+      "relegationSlots": 3,
+      "salaryCap": 2000000,
+      "minSalary": 25000
     },
     {
       "competitionId": "es-l3",
@@ -61,10 +74,15 @@
       "format": {
         "groupCount": 2,
         "roundRobinLegs": 2,
-        "playoffs": { "qualifiersPerGroup": 4, "seriesBestOf": [3] }
+        "playoffs": {
+          "qualifiersPerGroup": 4,
+          "seriesBestOf": [3]
+        }
       },
       "promotionSlots": 3,
-      "relegationSlots": 6
+      "relegationSlots": 6,
+      "salaryCap": 1000000,
+      "minSalary": 15000
     },
     {
       "competitionId": "es-l4",
@@ -76,10 +94,15 @@
       "format": {
         "groupCount": 10,
         "roundRobinLegs": 2,
-        "playoffs": { "qualifiersPerGroup": 2, "seriesBestOf": [1] }
+        "playoffs": {
+          "qualifiersPerGroup": 2,
+          "seriesBestOf": [1]
+        }
       },
       "promotionSlots": 6,
-      "relegationSlots": 0
+      "relegationSlots": 0,
+      "salaryCap": 500000,
+      "minSalary": 10000
     }
   ]
 }

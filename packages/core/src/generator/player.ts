@@ -70,7 +70,8 @@ function clampAttr(value: number): number {
 
 export interface GeneratePlayerInput {
   id: string;
-  teamId: string;
+  /** Club of the player, or null for a free agent. */
+  teamId: string | null;
   /**
    * Target ability (average attribute, 1–99) of a typical player of this
    * kind in his prime. Younger and older players are generated below it.
@@ -158,6 +159,8 @@ export function generatePlayer(rng: Rng, names: NamePool, input: GeneratePlayerI
     attributes,
     potential,
     teamId: input.teamId,
+    // Contracts are agreed by whoever signs the player (the universe generator or the market).
+    contract: null,
     retired: false,
   };
   const targetAge = Math.max(

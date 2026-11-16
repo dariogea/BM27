@@ -1,5 +1,5 @@
 /**
- * Long-run stability check of the player development model. Run with:
+ * Long-run stability check of the player development model and the transfer market. Run with:
  *   pnpm stability [--seasons 30] [--write]
  * Simulates many consecutive seasons and reports, per season, how the quality
  * and age of the world evolve. A healthy model keeps all of them flat.
@@ -8,7 +8,14 @@ import { writeFileSync } from 'node:fs';
 import { cpus } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { generateUniverse, playerAbility, simulateSeason } from '@bm27/core';
+import {
+  freeAgents,
+  generateUniverse,
+  playerAbility,
+  simulateSeason,
+  startSeason,
+  teamPayroll,
+} from '@bm27/core';
 import type { Universe } from '@bm27/schema';
 
 function arg(name: string, fallback: string): string {
@@ -16,7 +23,7 @@ function arg(name: string, fallback: string): string {
   return index >= 0 ? (process.argv[index + 1] ?? fallback) : fallback;
 }
 const SEASONS = Number(arg('seasons', '30'));
-const SEED = 'stability-t004';
+const SEED = arg('seed', 'stability-t004');
 
 interface Row {
   season: number;
@@ -28,9 +35,25 @@ interface Row {
   retirements: number;
   potential: number;
   ms: number;
+  freeAgents: number;
+  /** Average payroll as a share of the cap, by level. */
+  payrollShare: number[];
+  signed: number;
+  expired: number;
+  renewed: number;
 }
 
 function measure(universe: Universe, season: number, retirements: number, ms: number): Row {
+  const payrollShare = [...universe.competitions]
+    .sort((a, b) => a.level - b.level)
+    .map(
+      (c) =>
+        c.teamIds.reduce((sum, id) => sum + teamPayroll(universe, id) / c.salaryCap, 0) /
+        c.teamIds.length,
+    );
+  const moves = (type: string): number =>
+    universe.transactions.filter((t) => t.seasonNumber === universe.seasonNumber && t.type === type)
+      .length;
   const players = new Map(universe.players.map((p) => [p.id, p]));
   const teams = new Map(universe.teams.map((t) => [t.id, t]));
   const levels = [...universe.competitions].sort((a, b) => a.level - b.level);
@@ -78,11 +101,17 @@ function measure(universe: Universe, season: number, retirements: number, ms: nu
     retirements,
     potential: potentialSum / count,
     ms,
+    freeAgents: freeAgents(universe).length,
+    payrollShare,
+    signed: moves('signed'),
+    expired: moves('expired'),
+    renewed: moves('renewed'),
   };
 }
 
 let universe = generateUniverse({ seed: SEED });
-const rows: Row[] = [measure(universe, 0, 0, 0)];
+// Everything is measured with the market closed (rosters as they are when the season starts).
+const rows: Row[] = [measure(startSeason(universe), 0, 0, 0)];
 let careerPeak = { age: 0, ability: 0 };
 /** Ability relative to the average of the player's own level, by age. */
 const byAge = new Map<number, { sum: number; n: number }>();
@@ -92,7 +121,7 @@ for (let i = 1; i <= SEASONS; i++) {
   universe = simulateSeason(universe).universe;
   const ms = performance.now() - start;
   const retired = universe.players.filter((p) => p.retired && before.has(p.id)).length;
-  rows.push(measure(universe, i, retired, ms));
+  rows.push(measure(startSeason(universe), i, retired, ms));
   process.stdout.write(`\rTemporada ${i}/${SEASONS}`);
 }
 process.stdout.write('\n');
@@ -129,7 +158,7 @@ const names = [...universe.competitions]
 const first = rows[0] as Row;
 const last = rows[rows.length - 1] as Row;
 const lines: string[] = [
-  '# Estabilidad del modelo de desarrollo de jugadores (T-004)',
+  '# Estabilidad del mundo: desarrollo de jugadores y mercado (T-005)',
   '',
   `> Generado por \`pnpm stability --write\`. Universo con semilla \`${SEED}\`, ${SEASONS} temporadas`,
   `> seguidas (con ascensos, descensos, retiradas y sustitución por jóvenes). Entorno: ${cpus()[0]?.model ?? 'desconocida'}, Node ${process.version}.`,
@@ -157,6 +186,9 @@ const lines: string[] = [
   `| % mayores de 32 | ${f1(first.over32)} | ${f1(last.over32)} | ${(last.over32 - first.over32).toFixed(1)} |`,
   `| Potencial medio | ${f1(first.potential)} | ${f1(last.potential)} | ${(last.potential - first.potential).toFixed(1)} |`,
   '',
+  `Mercado (media de las temporadas 1–${SEASONS}): ${f1(rows.slice(1).reduce((s, r) => s + r.expired, 0) / SEASONS)} contratos cumplidos y no renovados, ${f1(rows.slice(1).reduce((s, r) => s + r.renewed, 0) / SEASONS)} renovaciones y ${f1(rows.slice(1).reduce((s, r) => s + r.signed, 0) / SEASONS)} fichajes de agentes libres por temporada.`,
+  `Agentes libres al final de cada temporada: media ${f1(rows.slice(1).reduce((s, r) => s + r.freeAgents, 0) / SEASONS)} (mínimo ${Math.min(...rows.slice(1).map((r) => r.freeAgents))}, máximo ${Math.max(...rows.slice(1).map((r) => r.freeAgents))}).`,
+  `Masa salarial media respecto al tope, temporada 0 → ${SEASONS}: ${names.map((n, i) => `${n} ${(100 * (first.payrollShare[i] as number)).toFixed(0)} % → ${(100 * (last.payrollShare[i] as number)).toFixed(0)} %`).join(', ')}.`,
   `Retiradas por temporada (media de las temporadas 1–${SEASONS}): ${f1(rows.slice(1).reduce((s, r) => s + r.retirements, 0) / SEASONS)} jugadores de ${universe.teams.length} equipos.`,
   `Edad en la que la habilidad media es máxima (mundo final, edades con 15 o más jugadores): ${careerPeak.age} años.`,
   '',
@@ -172,18 +204,18 @@ const lines: string[] = [
   '',
   '## Evolución temporada a temporada',
   '',
-  `| Temp. | ${names.map((n) => `Hab. ${n}`).join(' | ')} | Edad | <22 % | >32 % | Retiros | Tiempo (ms) |`,
-  `| --- | ${names.map(() => '---').join(' | ')} | --- | --- | --- | --- | --- |`,
+  `| Temp. | ${names.map((n) => `Hab. ${n}`).join(' | ')} | Edad | <22 % | >32 % | Retiros | Agentes libres | Masa/tope N1 % | Tiempo (ms) |`,
+  `| --- | ${names.map(() => '---').join(' | ')} | --- | --- | --- | --- | --- | --- | --- |`,
   ...rows.map(
     (r) =>
-      `| ${r.season} | ${r.abilityByLevel.map(f1).join(' | ')} | ${f1(r.age)} | ${f1(r.under22)} | ${f1(r.over32)} | ${r.season ? r.retirements : '–'} | ${r.season ? Math.round(r.ms) : '–'} |`,
+      `| ${r.season} | ${r.abilityByLevel.map(f1).join(' | ')} | ${f1(r.age)} | ${f1(r.under22)} | ${f1(r.over32)} | ${r.season ? r.retirements : '–'} | ${r.freeAgents} | ${(100 * (r.payrollShare[0] as number)).toFixed(0)} | ${r.season ? Math.round(r.ms) : '–'} |`,
   ),
   '',
 ];
 console.log(lines.slice(0, 40).join('\n'));
 if (process.argv.includes('--write')) {
   const here = dirname(fileURLToPath(import.meta.url));
-  const file = join(here, '..', '..', '..', 'docs', 'benchmarks', 'T-004-estabilidad.md');
+  const file = join(here, '..', '..', '..', 'docs', 'benchmarks', 'T-005-estabilidad.md');
   writeFileSync(file, lines.join('\n'));
   console.log(`\nEscrito en ${file}`);
 }

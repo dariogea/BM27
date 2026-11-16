@@ -14,6 +14,8 @@ import type {
   Team,
   Universe,
 } from '@bm27/schema';
+import { closeMarket } from '../market/market';
+import { createRng } from '../rng';
 import { addStatLine, emptyStatLine, playMatch, prepareTeam, type PreparedTeam } from '../match';
 import { applyOffseason } from './offseason';
 import { bestOfForRound, bracketOrder, bracketSize } from './playoffs';
@@ -451,8 +453,10 @@ export function simulateCompetitionSeason(
 // ---------------------------------------------------------------------------
 
 /** Creates the calendar of every competition. The universe must be between seasons. */
-export function startSeason(universe: Universe): Universe {
-  if (universe.currentSeason) throw new Error('A season is already in progress');
+export function startSeason(input: Universe): Universe {
+  if (input.currentSeason) throw new Error('A season is already in progress');
+  // Starting the season closes the transfer market: contracts end and clubs sign free agents.
+  const universe = closeMarket(input, createRng(`${input.seed}/market/${input.seasonNumber}`));
   const ctx = makeContext(universe);
   const competitions = [...universe.competitions].sort((a, b) => a.level - b.level);
   const currentSeason: SeasonProgress = {
@@ -545,7 +549,11 @@ export function simulateSeason(
  * played (same squads, tactics and line-ups). Because every match has its own
  * seed, the replay is identical to the original, including the event log.
  */
-export function replayMatch(universeAtTheTime: Universe, result: MatchResult): MatchDetail {
+export function replayMatch(universeInput: Universe, result: MatchResult): MatchDetail {
+  // A universe still between seasons has not closed its market yet; the match was played after.
+  const universeAtTheTime = universeInput.currentSeason
+    ? universeInput
+    : startSeason(universeInput);
   if (result.seasonNumber !== universeAtTheTime.seasonNumber) {
     throw new Error(
       `Match ${result.id} belongs to season ${result.seasonNumber}, but the universe is at season ${universeAtTheTime.seasonNumber}`,

@@ -5,11 +5,14 @@ import {
   type Position,
   type Season,
   type Team,
+  type Transaction,
   type Universe,
 } from '@bm27/schema';
 import { DEFAULT_NAME_POOL } from '../data';
 import { developPlayer, retirementChance } from '../generator/development';
 import { generatePlayer, playerId } from '../generator/player';
+import { resolveContracts, withoutPlayer } from '../market/market';
+import { MARKET } from '../market/value';
 import { createRng } from '../rng';
 
 /**
@@ -17,11 +20,12 @@ import { createRng } from '../rng';
  * - Promotion / relegation from each competition's final ranking.
  * - Every player gets a year older and develops or declines (see
  *   `generator/development.ts`).
- * - Veterans retire with growing probability from 34.
- *
- * PLACEHOLDER: there is no market, contracts or youth academy yet. Each
- * retiree is simply replaced by a generated 18–20-year-old prospect of his
- * club's level, so squads keep their size.
+ * - Veterans retire with growing probability from 34; unsigned players of 29
+ *   or more retire too.
+ * - Each retirement is matched by a young free agent of the same level.
+ *   PLACEHOLDER: there is no youth academy yet.
+ * - Clubs renew or release the players whose contract ends (the user's club
+ *   decides by itself before the season starts).
  */
 export function applyOffseason(universe: Universe, season: Season): Universe {
   const rng = createRng(`${universe.seed}/offseason/${season.seasonNumber}`);
@@ -56,57 +60,98 @@ export function applyOffseason(universe: Universe, season: Season): Universe {
   const levelByTeam = new Map<string, number>();
   for (const c of competitions) for (const teamId of c.teamIds) levelByTeam.set(teamId, c.level);
 
-  // --- Ageing, retirement and replacement -----------------------------------
+  // --- Ageing, retirement and new talent ------------------------------------
+  const seasonNumber = season.seasonNumber + 1;
   let nextPlayerSeq = universe.nextPlayerSeq;
   const players: Player[] = [];
-  const replacements = new Map<string, Map<string, string>>(); // team → retired → new
+  const log: Transaction[] = [];
+  const teamLoses = new Map<string, Set<string>>(); // team → retired players
+  const prospects: Player[] = [];
+  let retiredFreeAgents = 0;
   for (const player of universe.players) {
     if (player.retired) {
       players.push(player);
       continue;
     }
     const aged = developPlayer(player, rng);
-    const retires = rng.chance(retirementChance(aged.age));
-    if (!retires || aged.teamId === null) {
+    // Unsigned players who are no longer young give up; the others keep waiting for an offer.
+    const retires =
+      aged.teamId === null
+        ? aged.age >= MARKET.freeAgentRetirementAge
+        : rng.chance(retirementChance(aged.age));
+    if (!retires) {
       players.push(aged);
       continue;
     }
-    const teamId = aged.teamId;
-    players.push({ ...aged, teamId: null, retired: true });
-    const level = levelByTeam.get(teamId) ?? 1;
-    const quality = universe.qualityByLevel[String(level)] ?? 50;
-    const youngster = generatePlayer(rng, DEFAULT_NAME_POOL, {
-      id: playerId(nextPlayerSeq++),
-      teamId,
-      quality,
-      position: aged.positions[0] ?? (POSITIONS[2] as Position),
-      minAge: 18,
-      maxAge: 20,
+    players.push({ ...aged, teamId: null, contract: null, retired: true });
+    log.push({
+      seasonNumber,
+      type: 'retired',
+      playerId: aged.id,
+      teamId: aged.teamId,
+      salary: null,
+      endSeason: null,
     });
-    players.push(youngster);
-    let forTeam = replacements.get(teamId);
-    if (!forTeam) replacements.set(teamId, (forTeam = new Map()));
-    forTeam.set(aged.id, youngster.id);
+    if (aged.teamId === null) {
+      retiredFreeAgents++;
+      continue;
+    }
+    let lost = teamLoses.get(aged.teamId);
+    if (!lost) teamLoses.set(aged.teamId, (lost = new Set()));
+    lost.add(aged.id);
+  }
+
+  // Every retirement is matched by a young free agent of the level the veteran played at, so
+  // the supply of talent of each level stays the same. PLACEHOLDER: there is no academy yet.
+  const lowestLevel = Math.max(...competitions.map((c) => c.level));
+  const retirements: { teamId: string | null; position: Position }[] = [];
+  for (const [teamId, lost] of teamLoses) {
+    for (const id of lost) {
+      const retiree = players.find((p) => p.id === id) as Player;
+      retirements.push({ teamId, position: retiree.positions[0] ?? (POSITIONS[2] as Position) });
+    }
+  }
+  for (let i = 0; i < retiredFreeAgents; i++)
+    retirements.push({ teamId: null, position: POSITIONS[rng.int(0, 4)] as Position });
+  for (const { teamId, position } of retirements) {
+    const level = teamId === null ? lowestLevel : (levelByTeam.get(teamId) ?? lowestLevel);
+    prospects.push(
+      generatePlayer(rng, DEFAULT_NAME_POOL, {
+        id: playerId(nextPlayerSeq++),
+        teamId: null,
+        quality: (universe.qualityByLevel[String(level)] ?? 50) + MARKET.prospectQualityOffset,
+        position,
+        minAge: 18,
+        maxAge: 20,
+      }),
+    );
   }
 
   const teams: Team[] = universe.teams.map((team) => {
-    const forTeam = replacements.get(team.id);
-    if (!forTeam) return team;
-    return {
-      ...team,
-      playerIds: team.playerIds.map((id) => forTeam.get(id) ?? id),
-      // A hand-picked line-up keeps its shape: the newcomer takes the retiree's spot.
-      rotation: team.rotation ? team.rotation.map((id) => forTeam.get(id) ?? id) : null,
-    };
+    const lost = teamLoses.get(team.id);
+    if (!lost) return team;
+    let updated = team;
+    for (const id of lost) updated = withoutPlayer(updated, id);
+    return updated;
   });
 
-  return {
+  // --- The clubs deal with expiring contracts ---------------------------------
+  const aged: Universe = {
     ...universe,
-    seasonNumber: universe.seasonNumber + 1,
+    seasonNumber,
     nextPlayerSeq,
     competitions,
     teams,
-    players,
+    players: [...players, ...prospects],
     history: [...universe.history, season],
+  };
+  const contracts = resolveContracts(aged, seasonNumber, rng);
+  return {
+    ...aged,
+    players: contracts.players,
+    teams: contracts.teams,
+    transactions: [...universe.transactions, ...log, ...contracts.log].filter(
+      (t) => t.seasonNumber > seasonNumber - 3,
+    ),
   };
 }

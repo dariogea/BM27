@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { CompetitionView } from './CompetitionView';
 import { BoxScoreView } from './MatchView';
 import type { Command, GameView, Reply } from './protocol';
+import { MarketPanel } from './MarketView';
 import { LineupEditor, OffseasonPanel, SquadTable, TacticsEditor } from './TeamView';
 
 type Pending = Command extends infer C ? (C extends { id: number } ? Omit<C, 'id'> : never) : never;
@@ -35,11 +36,12 @@ function useSimulation() {
     });
 }
 
-type Tab = 'team' | 'tactics' | 'lineup' | 'competition' | 'match';
+type Tab = 'team' | 'tactics' | 'lineup' | 'market' | 'competition' | 'match';
 const TABS: [Tab, string][] = [
   ['team', 'Mi equipo'],
   ['tactics', 'Tácticas'],
   ['lineup', 'Quinteto'],
+  ['market', 'Mercado'],
   ['competition', 'Competición'],
   ['match', 'Partido'],
 ];
@@ -126,7 +128,7 @@ export function App() {
   return (
     <main>
       <h1>
-        BM27 <span className="tag">motor de partido v1 · entrenador rival PLACEHOLDER</span>
+        BM27 <span className="tag">motor v1 · entrenadores y cantera PLACEHOLDER</span>
       </h1>
 
       <div className="bar">
@@ -217,7 +219,9 @@ export function App() {
                 key={id}
                 className={tab === id ? 'active' : ''}
                 onClick={() => setTab(id)}
-                disabled={(id === 'team' || id === 'tactics' || id === 'lineup') && !mine}
+                disabled={
+                  (id === 'team' || id === 'tactics' || id === 'lineup' || id === 'market') && !mine
+                }
               >
                 {label}
               </button>
@@ -279,6 +283,25 @@ export function App() {
             team={mine}
             busy={busy}
             onSave={(playerIds) => run({ type: 'setRotation', playerIds }, 'Guardando quinteto…')}
+          />
+        </section>
+      )}
+
+      {view && tab === 'market' && mine && view.market && (
+        <section>
+          <h2>Mercado de {mine.name}</h2>
+          <MarketPanel
+            team={mine}
+            market={view.market}
+            seasonNumber={view.seasonNumber}
+            busy={busy}
+            onSign={(playerId, years) =>
+              run({ type: 'signFreeAgent', playerId, years }, 'Fichando…')
+            }
+            onRenew={(playerId, years) =>
+              run({ type: 'renewContract', playerId, years }, 'Renovando…')
+            }
+            onRelease={(playerId) => run({ type: 'releasePlayer', playerId }, 'Liberando…')}
           />
         </section>
       )}

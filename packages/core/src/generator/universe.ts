@@ -13,6 +13,8 @@ import {
 } from '@bm27/schema';
 import { BUILTIN_RULESETS, DEFAULT_NAME_POOL, DEFAULT_UNIVERSE_CONFIG } from '../data';
 import { createRng, type Rng } from '../rng';
+import { askingSalary } from '../market/market';
+import { MARKET } from '../market/value';
 import { sampleCareerAge } from './development';
 import { generatePlayer, playerId } from './player';
 
@@ -84,6 +86,23 @@ export function generateUniverse(options: GenerateUniverseOptions): Universe {
         players.push(player);
         playerIds.push(player.id);
       }
+      // Contracts: asking salary with a little spread, scaled down if the club would exceed its cap.
+      const roster = players.slice(-rosterSize);
+      const asking = roster.map(
+        (p) =>
+          askingSalary(p, { minSalary: level.minSalary } as Competition) *
+          (0.92 + 0.16 * rng.next()),
+      );
+      const total = asking.reduce((a, b) => a + b, 0);
+      const scale = total > level.salaryCap * 0.97 ? (level.salaryCap * 0.97) / total : 1;
+      roster.forEach((p, i) => {
+        const salary = Math.max(
+          level.minSalary,
+          Math.round(((asking[i] as number) * scale) / 1000) * 1000,
+        );
+        // Contracts end between this season and three seasons from now.
+        p.contract = { salary, endSeason: 1 + rng.int(0, MARKET.maxYears - 1) };
+      });
       teams.push({
         id: teamId,
         name,
@@ -104,11 +123,33 @@ export function generateUniverse(options: GenerateUniverseOptions): Universe {
       promotionSlots: level.promotionSlots,
       relegationSlots: level.relegationSlots,
       teamIds,
+      salaryCap: level.salaryCap,
+      minSalary: level.minSalary,
+      rosterMin: config.rosterSize.min,
+      rosterMax: config.rosterSize.max,
     });
   }
 
   const qualityByLevel: Record<string, number> = {};
   for (const level of levels) qualityByLevel[String(level.level)] = level.averageQuality;
+
+  // A small pool of free agents, so the market is not empty on day one: about one for every
+  // four clubs of each level, of the quality of that level.
+  for (const level of levels) {
+    for (let i = 0; i < Math.round(level.teamCount / 4); i++) {
+      players.push(
+        generatePlayer(rng, names, {
+          id: playerId(playerSeq++),
+          teamId: null,
+          quality: level.averageQuality - 2,
+          position: rng.pick(POSITIONS),
+          minAge: 18,
+          maxAge: 18,
+          age: sampleCareerAge(rng),
+        }),
+      );
+    }
+  }
 
   return {
     schemaVersion: SCHEMA_VERSION,
@@ -122,6 +163,7 @@ export function generateUniverse(options: GenerateUniverseOptions): Universe {
     teams,
     players,
     history: [],
+    transactions: [],
     currentSeason: null,
     userTeamId: null,
   };

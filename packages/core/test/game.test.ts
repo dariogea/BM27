@@ -212,12 +212,13 @@ describe('managing a team', () => {
     expect(wins(upsideDown)).toBeLessThan(wins(fresh) - 3);
   });
 
-  it('the line-up survives retirements between seasons', () => {
+  it('the line-up survives retirements and transfers between seasons', () => {
     const team = fresh.teams[0]!;
     let universe = setTeamRotation(fresh, team.id, team.playerIds);
     for (let i = 0; i < 4; i++) universe = simulateSeason(universe).universe;
-    const after = universe.teams[0]!;
-    expect(after.rotation!.length).toBe(team.playerIds.length);
+    // Players leave and arrive when the market closes; the line-up always lists exactly the squad.
+    const after = startSeason(universe).teams[0]!;
+    expect(after.rotation).not.toBeNull();
     expect([...after.rotation!].sort()).toEqual([...after.playerIds].sort());
     expect(() => parseUniverse(universe)).not.toThrow();
   });

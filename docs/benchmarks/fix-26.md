@@ -16,7 +16,7 @@ en las medias de la liga; se ha medido para comprobarlo en vez de suponerlo.
   457,8 por temporada). Duración: 1 min 16 s.
 - `pnpm calibrate`: se ejecuta sin errores; el reparto de play types y zonas de tiro coincide con el
   informe `T-006-calibracion.md` (no se ha tocado el motor de partido).
-- `pnpm bench`: no se ha vuelto a ejecutar; el motor de partido no cambia y el informe de rendimiento
+- `pnpm bench`: ejecutado; ver `fix-26-rendimiento.md` (temporada completa del universo 2,16 s frente a 2,14 s en T-006; guardado a 10 temporadas idéntico, 16,77 MB).
   vigente sigue siendo el de T-006.
 
 ## Limitación

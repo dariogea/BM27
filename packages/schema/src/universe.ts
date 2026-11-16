@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { CompetitionSchema } from './competition';
+import { CompetitionSchema, EconomySchema } from './competition';
 import { PlayerSchema } from './player';
 import { RulesetSchema } from './ruleset';
 import { SeasonProgressSchema, SeasonSchema, TransactionSchema } from './season';
@@ -154,6 +154,7 @@ export const UniverseConfigSchema = z.object({
         relegationSlots: z.number().int().min(0),
         salaryCap: z.number().int().min(0),
         minSalary: z.number().int().min(0),
+        economy: EconomySchema,
       }),
     )
     .min(1),

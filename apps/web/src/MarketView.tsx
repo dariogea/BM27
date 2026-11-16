@@ -16,8 +16,8 @@ const seasonsLeft = (endSeason: number, seasonNumber: number): number =>
   Math.max(0, endSeason - seasonNumber + 1);
 
 function CapBar({ market }: { market: MarketData }) {
-  const share = Math.min(100, (100 * market.payrollNextSeason) / market.salaryCap);
-  const over = market.payrollNextSeason > market.salaryCap;
+  const share = Math.min(100, (100 * market.payrollNextSeason) / Math.max(1, market.salaryLimit));
+  const over = market.payrollNextSeason > market.salaryLimit;
   return (
     <div>
       <div className="bar-outer" title="Masa salarial de los contratos que siguen vigentes">
@@ -25,8 +25,10 @@ function CapBar({ market }: { market: MarketData }) {
       </div>
       <p className="note">
         Masa salarial que sigue vigente la próxima temporada:{' '}
-        <strong>{euros(market.payrollNextSeason)}</strong> de un tope de{' '}
-        <strong>{euros(market.salaryCap)}</strong> ({share.toFixed(0)} %).
+        <strong>{euros(market.payrollNextSeason)}</strong> de un límite de{' '}
+        <strong>{euros(market.salaryLimit)}</strong> ({share.toFixed(0)} %). El límite es el menor
+        de dos: el tope de la liga ({euros(market.salaryCap)}) y tu presupuesto salarial (
+        {market.wageSharePercent} % de tus ingresos: {euros(market.wageBudget)}).
         {market.payroll !== market.payrollNextSeason &&
           ` Con los contratos ya cumplidos serían ${euros(market.payroll)}.`}{' '}
         El tope limita fichajes y renovaciones; solo un contrato de {euros(market.minSalary)} (el
@@ -95,66 +97,70 @@ export function MarketPanel(props: {
             </tr>
           </thead>
           <tbody>
-            {team.squad.map(({ player: p, overall, contract, expired, renewalSalary }) => {
-              // Only players with a year or less left can be renewed.
-              const renewable = !!contract && contract.endSeason <= seasonNumber;
-              return (
-                <tr key={p.id} className={expired ? 'down' : ''}>
-                  <td className="name">
-                    {p.firstName} {p.lastName}
-                  </td>
-                  <td>{p.age}</td>
-                  <td>{overall.toFixed(0)}</td>
-                  <td>{p.potential}</td>
-                  <td>{contract ? euros(contract.salary) : '–'}</td>
-                  <td>
-                    {contract
-                      ? expired
-                        ? 'CUMPLIDO'
-                        : `hasta ${contract.endSeason} (${seasonsLeft(contract.endSeason, seasonNumber)} temp.)`
-                      : '–'}
-                  </td>
-                  <td className="name">
-                    <select
-                      aria-label={`Años de renovación de ${p.lastName}`}
-                      value={yearsFor(p.id, 2)}
-                      disabled={!market.open || !renewable}
-                      onChange={(e) => setYears({ ...years, [p.id]: Number(e.target.value) })}
-                    >
-                      {yearOptions.map((y) => (
-                        <option key={y} value={y}>
-                          {y} {y === 1 ? 'temporada' : 'temporadas'}
-                        </option>
-                      ))}
-                    </select>{' '}
-                    <button
-                      disabled={props.busy || !market.open || !renewable}
-                      title={
-                        renewable ? '' : 'Solo se renueva a quien tiene un año de contrato o menos'
-                      }
-                      onClick={() => props.onRenew(p.id, yearsFor(p.id, 2))}
-                    >
-                      Renovar a {euros(renewalSalary)}
-                    </button>
-                  </td>
-                  <td>
-                    <button
-                      disabled={props.busy || !market.open}
-                      onClick={() => props.onRelease(p.id)}
-                    >
-                      Liberar
-                    </button>
-                  </td>
-                </tr>
-              );
-            })}
+            {team.squad.map(
+              ({ player: p, overall, contract, expired, renewalSalary, releaseCost }) => {
+                // Only players with a year or less left can be renewed.
+                const renewable = !!contract && contract.endSeason <= seasonNumber;
+                return (
+                  <tr key={p.id} className={expired ? 'down' : ''}>
+                    <td className="name">
+                      {p.firstName} {p.lastName}
+                    </td>
+                    <td>{p.age}</td>
+                    <td>{overall.toFixed(0)}</td>
+                    <td>{p.potential}</td>
+                    <td>{contract ? euros(contract.salary) : '–'}</td>
+                    <td>
+                      {contract
+                        ? expired
+                          ? 'CUMPLIDO'
+                          : `hasta ${contract.endSeason} (${seasonsLeft(contract.endSeason, seasonNumber)} temp.)`
+                        : '–'}
+                    </td>
+                    <td className="name">
+                      <select
+                        aria-label={`Años de renovación de ${p.lastName}`}
+                        value={yearsFor(p.id, 2)}
+                        disabled={!market.open || !renewable}
+                        onChange={(e) => setYears({ ...years, [p.id]: Number(e.target.value) })}
+                      >
+                        {yearOptions.map((y) => (
+                          <option key={y} value={y}>
+                            {y} {y === 1 ? 'temporada' : 'temporadas'}
+                          </option>
+                        ))}
+                      </select>{' '}
+                      <button
+                        disabled={props.busy || !market.open || !renewable}
+                        title={
+                          renewable
+                            ? ''
+                            : 'Solo se renueva a quien tiene un año de contrato o menos'
+                        }
+                        onClick={() => props.onRenew(p.id, yearsFor(p.id, 2))}
+                      >
+                        Renovar a {euros(renewalSalary)}
+                      </button>
+                    </td>
+                    <td>
+                      <button
+                        disabled={props.busy || !market.open}
+                        onClick={() => props.onRelease(p.id)}
+                      >
+                        Liberar{releaseCost > 0 ? ` (${euros(releaseCost)})` : ''}
+                      </button>
+                    </td>
+                  </tr>
+                );
+              },
+            )}
           </tbody>
         </table>
       </div>
       <p className="note">
         En rojo: contratos cumplidos. Si no los renuevas antes de empezar la temporada, el jugador
-        se marcha. Liberar a un jugador no cuesta nada por ahora (<code>PLACEHOLDER</code>: no hay
-        finanzas).
+        se marcha. Liberar a un jugador con contrato en vigor cuesta una indemnización: la mitad del
+        salario de los años que le quedan (se paga al momento de la caja).
       </p>
 
       <h3>Agentes libres ({market.freeAgentCount} en el mercado)</h3>
@@ -269,6 +275,7 @@ export function MarketPanel(props: {
               <th className="name">Jugador</th>
               <th>Salario</th>
               <th>Hasta</th>
+              <th>Coste</th>
             </tr>
           </thead>
           <tbody>
@@ -279,6 +286,7 @@ export function MarketPanel(props: {
                 <td className="name">{m.playerName}</td>
                 <td>{m.salary === null ? '–' : euros(m.salary)}</td>
                 <td>{m.endSeason ?? '–'}</td>
+                <td>{m.cost ? euros(m.cost) : '–'}</td>
               </tr>
             ))}
           </tbody>

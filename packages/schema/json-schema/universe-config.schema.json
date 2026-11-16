@@ -138,6 +138,55 @@
             "type": "integer",
             "minimum": 0,
             "maximum": 9007199254740991
+          },
+          "economy": {
+            "type": "object",
+            "properties": {
+              "tvRevenue": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "sponsorRevenue": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "ticketPrice": {
+                "type": "number",
+                "minimum": 0
+              },
+              "averageAttendance": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "fixedCosts": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "wageShare": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "baseReputation": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 100
+              }
+            },
+            "required": [
+              "tvRevenue",
+              "sponsorRevenue",
+              "ticketPrice",
+              "averageAttendance",
+              "fixedCosts",
+              "wageShare",
+              "baseReputation"
+            ],
+            "additionalProperties": false
           }
         },
         "required": [
@@ -151,7 +200,8 @@
           "promotionSlots",
           "relegationSlots",
           "salaryCap",
-          "minSalary"
+          "minSalary",
+          "economy"
         ],
         "additionalProperties": false
       }

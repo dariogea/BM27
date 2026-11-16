@@ -4,6 +4,12 @@ import {
   askingSalary,
   clubRating,
   competitionOfTeam,
+  effectiveSalaryLimit,
+  expectedRevenue,
+  isFinanciallyRestricted,
+  overdraftLimit,
+  severanceCost,
+  wageBudget,
   freeAgents,
   isExpired,
   isMarketOpen,
@@ -28,6 +34,7 @@ import type { MatchDetail, MatchResult, Season, TeamTactics, Universe } from '@b
 import type {
   Command,
   CompetitionViewData,
+  FinanceView,
   GameView,
   MarketMove,
   MarketView,
@@ -150,6 +157,7 @@ function myTeamOf(u: Universe): MyTeamView | null {
         contract: player.contract,
         expired: isExpired(u, player),
         renewalSalary: askingSalary(player, competition, true),
+        releaseCost: isExpired(u, player) ? 0 : severanceCost(player, u.seasonNumber),
       };
     }),
     position,
@@ -183,6 +191,7 @@ function marketOf(u: Universe): MarketView | null {
       playerName: name(t.playerId),
       salary: t.salary,
       endSeason: t.endSeason,
+      cost: t.cost,
     }));
   return {
     open: isMarketOpen(u),
@@ -190,7 +199,10 @@ function marketOf(u: Universe): MarketView | null {
     payrollNextSeason: roster
       .filter((p) => !isExpired(u, p))
       .reduce((sum, p) => sum + (p.contract?.salary ?? 0), 0),
+    salaryLimit: effectiveSalaryLimit(team, competition),
     salaryCap: competition.salaryCap,
+    wageBudget: wageBudget(team, competition),
+    wageSharePercent: Math.round(100 * competition.economy.wageShare),
     minSalary: competition.minSalary,
     rosterMin: competition.rosterMin,
     rosterMax: competition.rosterMax,
@@ -203,6 +215,25 @@ function marketOf(u: Universe): MarketView | null {
     })),
     freeAgentCount: pool.length,
     moves,
+  };
+}
+
+function financeOf(u: Universe): FinanceView | null {
+  const team = u.teams.find((t) => t.id === u.userTeamId);
+  if (!team) return null;
+  const competition = competitionOfTeam(u, team.id);
+  return {
+    balance: team.finance.balance,
+    overdraftLimit: overdraftLimit(team),
+    restricted: isFinanciallyRestricted(team),
+    reputation: team.reputation,
+    typicalReputation: competition.economy.baseReputation,
+    lastRevenue: team.finance.lastRevenue,
+    wageBudget: wageBudget(team, competition),
+    payroll: teamPayroll(u, team.id),
+    fixedCosts: competition.economy.fixedCosts,
+    expectedRevenue: expectedRevenue(competition, team.reputation),
+    history: u.history.flatMap((s) => s.finance.filter((r) => r.teamId === team.id)).reverse(),
   };
 }
 
@@ -223,6 +254,7 @@ function viewOf(u: Universe): GameView {
     myTeam: myTeamOf(u),
     offseason: offseasonReport,
     market: marketOf(u),
+    finance: financeOf(u),
   };
 }
 

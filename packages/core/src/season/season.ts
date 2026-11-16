@@ -504,12 +504,10 @@ export function advanceSeason(
       competitions: competitions.map((c) =>
         finalizeCompetition(competitionsById.get(c.competitionId) as Competition, c),
       ),
+      finance: [], // filled in by the offseason, which closes the books
     };
-    return {
-      universe: applyOffseason({ ...started, currentSeason: null }, season),
-      played,
-      season,
-    };
+    const after = applyOffseason({ ...started, currentSeason: null }, season);
+    return { universe: after, played, season: after.history[after.history.length - 1] as Season };
   }
   return {
     universe: {

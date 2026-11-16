@@ -84,6 +84,24 @@ El año funciona así:
 El historial de movimientos (fichajes, renovaciones, bajas, retiradas) se guarda durante tres
 temporadas.
 
+## El dinero
+
+Cada club tiene una **caja** y una **reputación** (de 0 a 100). Cada competición define su
+economía en `universe-es.json`: televisión, patrocinio, precio y público de las entradas, costes
+fijos y qué parte de los ingresos se dedica a salarios.
+
+Al terminar cada temporada se cierran las cuentas de cada club:
+
+- **Ingresos** = televisión + patrocinio + entradas. El patrocinio y el público crecen con la
+  reputación; las entradas, con los partidos en casa.
+- **Gastos** = salarios + costes fijos.
+- **La reputación** se mueve hacia la que corresponde a su liga más lo que dé su posición final.
+  Ganar ayuda, pero la reputación tiende al valor típico de la liga.
+
+De los ingresos sale el **presupuesto salarial**: es lo máximo que un club asume en salarios, y
+nunca supera el tope de la liga. Un club que se pasa del descubierto permitido no puede asumir
+nuevos salarios. Liberar a un jugador con contrato en vigor cuesta una indemnización.
+
 ## Dónde están los datos
 
 - Reglamentos: `packages/core/src/data/rulesets.json` (`fiba` y `nba-like`).

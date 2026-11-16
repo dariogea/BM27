@@ -42,7 +42,16 @@
       "promotionSlots": 0,
       "relegationSlots": 2,
       "salaryCap": 4400000,
-      "minSalary": 40000
+      "minSalary": 40000,
+      "economy": {
+        "tvRevenue": 1300000,
+        "sponsorRevenue": 1700000,
+        "ticketPrice": 19,
+        "averageAttendance": 4000,
+        "fixedCosts": 1800000,
+        "wageShare": 0.7,
+        "baseReputation": 70
+      }
     },
     {
       "competitionId": "es-l2",
@@ -62,7 +71,16 @@
       "promotionSlots": 2,
       "relegationSlots": 3,
       "salaryCap": 2000000,
-      "minSalary": 25000
+      "minSalary": 25000,
+      "economy": {
+        "tvRevenue": 800000,
+        "sponsorRevenue": 950000,
+        "ticketPrice": 14,
+        "averageAttendance": 2400,
+        "fixedCosts": 1000000,
+        "wageShare": 0.7,
+        "baseReputation": 55
+      }
     },
     {
       "competitionId": "es-l3",
@@ -82,7 +100,16 @@
       "promotionSlots": 3,
       "relegationSlots": 6,
       "salaryCap": 1000000,
-      "minSalary": 15000
+      "minSalary": 15000,
+      "economy": {
+        "tvRevenue": 450000,
+        "sponsorRevenue": 560000,
+        "ticketPrice": 11,
+        "averageAttendance": 1400,
+        "fixedCosts": 360000,
+        "wageShare": 0.7,
+        "baseReputation": 40
+      }
     },
     {
       "competitionId": "es-l4",
@@ -102,7 +129,16 @@
       "promotionSlots": 6,
       "relegationSlots": 0,
       "salaryCap": 500000,
-      "minSalary": 10000
+      "minSalary": 10000,
+      "economy": {
+        "tvRevenue": 250000,
+        "sponsorRevenue": 280000,
+        "ticketPrice": 9,
+        "averageAttendance": 700,
+        "fixedCosts": 170000,
+        "wageShare": 0.7,
+        "baseReputation": 25
+      }
     }
   ]
 }

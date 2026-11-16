@@ -12,6 +12,7 @@ export * from './season/season';
 export * from './season/offseason';
 export * from './save/saveStore';
 export * from './game/manage';
+export * from './finance/economy';
 export * from './market/value';
 export * from './market/market';
 export * from './market/actions';

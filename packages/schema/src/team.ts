@@ -32,6 +32,15 @@ export const DEFAULT_TACTICS: TeamTactics = {
   rotationDepth: 10,
 };
 
+/** Money of a club. */
+export const TeamFinanceSchema = z.object({
+  /** Cash in euros. May be negative (the club is in debt). */
+  balance: z.number().int(),
+  /** Revenue of the last season played; the next wage budget is based on it. */
+  lastRevenue: z.number().int().min(0),
+});
+export type TeamFinance = z.infer<typeof TeamFinanceSchema>;
+
 export const TeamSchema = z.object({
   id: z.string().min(1),
   name: z.string().min(1),
@@ -46,5 +55,8 @@ export const TeamSchema = z.object({
    * Null means "let the coach decide".
    */
   rotation: z.array(z.string().min(1)).min(5).nullable(),
+  /** How well known and loved the club is (0–100). Drives crowds and sponsors. */
+  reputation: z.number().int().min(0).max(100),
+  finance: TeamFinanceSchema,
 });
 export type Team = z.infer<typeof TeamSchema>;

@@ -1,0 +1,13 @@
+# Etiquetas de coordinación. Las crea y mantiene .github/workflows/labels.yml.
+- name: agente:claude
+  color: D97757
+  description: De Claude Code, o encargado a Claude Code
+- name: agente:codex
+  color: 10A37F
+  description: De Codex, o encargado a Codex
+- name: en-curso
+  color: FBCA04
+  description: Alguien está trabajando en esto ahora mismo
+- name: contrato
+  color: B60205
+  description: Cambia packages/schema o la API pública del núcleo; avisar antes

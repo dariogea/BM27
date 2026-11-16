@@ -23,3 +23,9 @@ Leyenda: IDEA · PROPUESTA · APROBADA · DISEÑADA · IMPLEMENTADA · PROBADA �
 - Comprobar que las medias de la liga se mantienen tras muchas temporadas de envejecimiento.
 - Política de conservación del historial y formato definitivo de guardado (base de datos).
 - Calibrar rangos de plausibilidad con datos reales verificados.
+
+## Revisiones de Codex
+
+| Tarea     | Título                  | Estado  | Rama                  | Notas                                                                               |
+| --------- | ----------------------- | ------- | --------------------- | ----------------------------------------------------------------------------------- |
+| Codex 001 | Auditoría de main (#28) | PROBADA | `codex-001-auditoria` | Lint, tipos y 104 tests aprobados. Hallazgos #26 y #27; revisión cruzada pendiente. |

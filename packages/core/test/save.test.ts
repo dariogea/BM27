@@ -106,7 +106,17 @@ describe('migration of old saves', () => {
       delete team.tactics;
       delete team.rotation;
     }
-    for (const player of old.players) delete player.potential;
+    for (const player of old.players) {
+      delete player.potential;
+      delete player.contract;
+    }
+    for (const competition of old.competitions) {
+      delete competition.salaryCap;
+      delete competition.minSalary;
+      delete competition.rosterMin;
+      delete competition.rosterMax;
+    }
+    delete old.transactions;
     const payload = JSON.stringify(old);
     return `{"format":"bm27-save","schemaVersion":0,"checksum":"sha256:${sha256Hex(payload)}","payload":${payload}}`;
   }
@@ -121,6 +131,17 @@ describe('migration of old saves', () => {
     }
     expect(loaded.currentSeason).toBeNull();
     expect(loaded.userTeamId).toBeNull();
+    // v3 → v4: contracts for everybody with a club, caps and roster limits for competitions.
+    expect(loaded.transactions).toEqual([]);
+    for (const competition of loaded.competitions) {
+      expect(competition.salaryCap).toBeGreaterThan(0);
+      expect(competition.rosterMin).toBe(12);
+      expect(competition.rosterMax).toBe(15);
+    }
+    for (const player of loaded.players) {
+      if (player.teamId === null) expect(player.contract).toBeNull();
+      else expect(player.contract!.salary).toBeGreaterThanOrEqual(12_000);
+    }
     // Potential is estimated from ability and age: never below ability, with a gap for the young.
     const original = new Map(afterTwo.players.map((p) => [p.id, p]));
     let youngGap = 0;
@@ -133,8 +154,8 @@ describe('migration of old saves', () => {
         youngCount++;
       }
       // Everything except the new field is untouched.
-      const { potential: _ignored, ...rest } = original.get(player.id)!;
-      const { potential: _also, ...restLoaded } = player;
+      const { potential: _ignored, contract: _c1, ...rest } = original.get(player.id)!;
+      const { potential: _also, contract: _c2, ...restLoaded } = player;
       expect(restLoaded).toEqual(rest);
     }
     expect(youngGap / youngCount).toBeGreaterThan(2);

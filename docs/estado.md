@@ -2,17 +2,20 @@
 
 Leyenda: IDEA · PROPUESTA · APROBADA · DISEÑADA · IMPLEMENTADA · PROBADA · FINALIZADA
 
-| Tarea | Título                                                                                                         | Estado     | Rama                         | Notas                                                                                                                                     |
-| ----- | -------------------------------------------------------------------------------------------------------------- | ---------- | ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| T-001 | Fundación del repositorio y prueba técnica del núcleo                                                          | FINALIZADA | `t-001-fundacion`            | Aprobada y fusionada en `main` (PR 1).                                                                                                    |
-| T-002 | Motor de partido v1: tipos de jugada, tácticas con efecto comprobable y rotación                               | PROBADA    | `t-002-motor-partido`        | 58 tests en verde en local. Pasa a FINALIZADA cuando el propietario apruebe el Pull Request. El entrenador sigue siendo un `PLACEHOLDER`. |
-| T-003 | Partida jugable: equipo propio, tácticas, quinteto, jornada a jornada y guardado a mitad de temporada          | PROBADA    | `t-003-partida-jugable`      | 72 tests en verde en local. Construida sobre T-002.                                                                                       |
-| T-004 | Progresión de jugadores: potencial, desarrollo, declive físico y técnico, retirada y estabilidad a largo plazo | PROBADA    | `t-004-progresion-jugadores` | 83 tests en verde en local. Construida sobre T-003.                                                                                       |
+| Tarea | Título                                                                                                         | Estado     | Rama                         | Notas                                  |
+| ----- | -------------------------------------------------------------------------------------------------------------- | ---------- | ---------------------------- | -------------------------------------- |
+| T-001 | Fundación del repositorio y prueba técnica del núcleo                                                          | FINALIZADA | `t-001-fundacion`            | Aprobada y fusionada en `main` (PR 1). |
+| T-002 | Motor de partido v1: tipos de jugada, tácticas con efecto comprobable y rotación                               | FINALIZADA | `t-002-motor-partido`        | Aprobada y fusionada en `main`.        |
+| T-003 | Partida jugable: equipo propio, tácticas, quinteto, jornada a jornada y guardado a mitad de temporada          | FINALIZADA | `t-003-partida-jugable`      | Aprobada y fusionada en `main`.        |
+| T-004 | Progresión de jugadores: potencial, desarrollo, declive físico y técnico, retirada y estabilidad a largo plazo | FINALIZADA | `t-004-progresion-jugadores` | Aprobada y fusionada en `main`.        |
+| T-005 | Mercado básico: contratos, topes salariales, agentes libres, fichajes, renovaciones y bajas                    | PROBADA    | `t-005-mercado`              | 104 tests en verde en local.           |
 
 ## Pendiente conocido (para futuras tareas)
 
 - Tras cerrar y volver a cargar una partida, el detalle (box score) de los partidos ya jugados por el equipo del usuario puede no estar disponible si cambió tácticas después.
-- Mercado, contratos y cantera real (hoy cada retirado se sustituye por una promesa generada, `PLACEHOLDER`).
+- Finanzas (ingresos, gastos, indemnizaciones por liberar jugadores, traspasos entre clubes con dinero).
+- Traspasos entre clubes y negociación (hoy solo hay agentes libres y salario fijado por el jugador).
+- Cantera real (hoy cada retirada genera un agente libre joven, `PLACEHOLDER`).
 - Entrenamiento y lesiones como factores de desarrollo; el desarrollo actual solo depende de la edad y el potencial.
 - Contrastar la curva de carrera con datos reales cuando exista una fuente verificada.
 - Entrenador con criterio propio (quinteto, minutos, tiempos muertos, cambios tácticos en partido).

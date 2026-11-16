@@ -128,3 +128,27 @@ code {
   padding: 4px 12px 8px;
   margin: 12px 0;
 }
+.bar-outer {
+  height: 14px;
+  background: #e4e4e4;
+  border-radius: 7px;
+  overflow: hidden;
+  max-width: 520px;
+}
+.bar-inner {
+  height: 100%;
+  background: #4a8f4a;
+}
+.bar-inner.over {
+  background: #c0392b;
+}
+.warn {
+  background: #fdecea;
+  border: 1px solid #e5a7a0;
+  border-radius: 6px;
+  padding: 6px 12px;
+}
+td.bad {
+  color: #b00020;
+  font-weight: 700;
+}

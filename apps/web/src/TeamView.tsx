@@ -49,6 +49,8 @@ export function SquadTable({ squad }: { squad: SquadPlayer[] }) {
             <th title="Rebote defensivo">Reb</th>
             <th title="Velocidad">Vel</th>
             <th title="Resistencia">Res</th>
+            <th title="Salario anual">Salario</th>
+            <th title="Última temporada del contrato">Hasta</th>
             <th>PJ</th>
             <th>MIN</th>
             <th>PTS</th>
@@ -57,7 +59,7 @@ export function SquadTable({ squad }: { squad: SquadPlayer[] }) {
           </tr>
         </thead>
         <tbody>
-          {squad.map(({ player: p, overall, stats }, index) => {
+          {squad.map(({ player: p, overall, stats, contract, expired }, index) => {
             const a = p.attributes;
             const games = stats?.games ?? 0;
             return (
@@ -83,6 +85,10 @@ export function SquadTable({ squad }: { squad: SquadPlayer[] }) {
                 <td>{a.defensive.defensiveRebound}</td>
                 <td>{a.physical.speed}</td>
                 <td>{a.physical.stamina}</td>
+                <td>{contract ? `${Math.round(contract.salary / 1000)} k€` : '–'}</td>
+                <td className={expired ? 'bad' : ''}>
+                  {contract ? (expired ? `${contract.endSeason} ⚠` : contract.endSeason) : '–'}
+                </td>
                 <td>{games || '–'}</td>
                 <td>{stats && games ? minutes(Math.round(stats.seconds / games)) : '–'}</td>
                 <td>{per(stats?.points ?? 0, games)}</td>

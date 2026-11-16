@@ -9,6 +9,7 @@ import {
   hashValue,
   replayMatch,
   simulateSeason,
+  startSeason,
   type SeasonOutcome,
 } from '../src/index';
 
@@ -188,7 +189,8 @@ describe('season simulation', () => {
     expect(current.seasonNumber).toBe(5);
     expect(current.history.length).toBe(4);
     expect(() => parseUniverse(current)).not.toThrow();
-    for (const team of current.teams) {
+    // Squads are completed when the market closes, at the start of the next season.
+    for (const team of startSeason(current).teams) {
       expect(team.playerIds.length).toBeGreaterThanOrEqual(12);
       expect(team.playerIds.length).toBeLessThanOrEqual(15);
     }

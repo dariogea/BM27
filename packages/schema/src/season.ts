@@ -116,3 +116,22 @@ export const SeasonProgressSchema = z.object({
   competitions: z.array(CompetitionProgressSchema),
 });
 export type SeasonProgress = z.infer<typeof SeasonProgressSchema>;
+
+// ---------------------------------------------------------------------------
+// Market log
+// ---------------------------------------------------------------------------
+
+export const TRANSACTION_TYPES = ['signed', 'renewed', 'released', 'expired', 'retired'] as const;
+
+/** One move in the transfer market, kept for a few seasons so clubs can show their history. */
+export const TransactionSchema = z.object({
+  /** Season in which the move happened (the season being played or about to be played). */
+  seasonNumber: z.number().int().min(1),
+  type: z.enum(TRANSACTION_TYPES),
+  playerId: id,
+  /** Club involved; null when a free agent retires. */
+  teamId: id.nullable(),
+  salary: z.number().int().min(0).nullable(),
+  endSeason: z.number().int().min(1).nullable(),
+});
+export type Transaction = z.infer<typeof TransactionSchema>;

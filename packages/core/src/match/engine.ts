@@ -137,7 +137,7 @@ export const ENGINE = {
     'above-break3': 0.008,
   },
   assistCredit: 0.95,
-  freeThrowBase: 0.675,
+  freeThrowBase: 0.645,
 
   // --- Rebounding ------------------------------------------------------------
   offensiveReboundBase: 0.275,

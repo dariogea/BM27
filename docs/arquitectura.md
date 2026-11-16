@@ -64,6 +64,26 @@ Los jugadores del universo inicial se generan con este mismo modelo (como promes
 las que se hace evolucionar hasta su edad) y con el reparto de edades de equilibrio, para que el
 mundo no envejezca ni se rejuvenezca solo. La estabilidad se comprueba con `pnpm stability`.
 
+## El mercado
+
+Cada jugador con club tiene un **contrato** (salario anual y última temporada cubierta). Cada
+competición tiene su **tope salarial**, su **salario mínimo** y su **tamaño de plantilla**, todo en
+`universe-es.json`.
+
+El año funciona así:
+
+1. **Termina la temporada.** Ascensos, descensos, un año más de edad y retiradas. Cada retirada
+   genera un agente libre joven. Los clubes rivales renuevan a quien quieren conservar (sus diez
+   mejores y las promesas, si caben en el tope) y dejan libre al resto.
+2. **Mercado abierto.** El usuario puede fichar agentes libres, renovar contratos y liberar
+   jugadores, respetando el tope, el máximo de 15 jugadores y que, al empezar, haya al menos 12.
+3. **Empieza la temporada y el mercado se cierra.** Los contratos que el usuario no haya renovado
+   se cumplen y el jugador se marcha. Los clubes rivales completan su plantilla con agentes libres
+   y mejoran donde pueden. Los de nivel superior eligen primero.
+
+El historial de movimientos (fichajes, renovaciones, bajas, retiradas) se guarda durante tres
+temporadas.
+
 ## Dónde están los datos
 
 - Reglamentos: `packages/core/src/data/rulesets.json` (`fiba` y `nba-like`).

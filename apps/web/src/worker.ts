@@ -1,6 +1,17 @@
 /// <reference lib="webworker" />
 import {
   advanceSeason,
+  askingSalary,
+  clubRating,
+  competitionOfTeam,
+  freeAgents,
+  isExpired,
+  isMarketOpen,
+  marketProblem,
+  releasePlayer,
+  renewContract,
+  signFreeAgent,
+  teamPayroll,
   exportSave,
   generateUniverse,
   importSave,
@@ -18,6 +29,8 @@ import type {
   Command,
   CompetitionViewData,
   GameView,
+  MarketMove,
+  MarketView,
   MyTeamView,
   OffseasonReport,
   Reply,
@@ -130,13 +143,66 @@ function myTeamOf(u: Universe): MyTeamView | null {
     rotation: team.rotation,
     squad: order.map((id) => {
       const player = playersById.get(id)!;
-      return { player, overall: playerOverall(player), stats: statsById.get(id) ?? null };
+      return {
+        player,
+        overall: playerOverall(player),
+        stats: statsById.get(id) ?? null,
+        contract: player.contract,
+        expired: isExpired(u, player),
+        renewalSalary: askingSalary(player, competition, true),
+      };
     }),
     position,
     wins,
     losses,
     nextMatch,
     lastMatch,
+  };
+}
+
+function marketOf(u: Universe): MarketView | null {
+  const team = u.teams.find((t) => t.id === u.userTeamId);
+  if (!team) return null;
+  const competition = competitionOfTeam(u, team.id);
+  const byId = new Map(u.players.map((p) => [p.id, p]));
+  const name = (id: string): string => {
+    const p = byId.get(id);
+    return p ? `${p.firstName} ${p.lastName}` : id;
+  };
+  const roster = team.playerIds.map((id) => byId.get(id)!);
+  const pool = freeAgents(u)
+    .map((player) => ({ player, rating: clubRating(player) }))
+    .sort((a, b) => b.rating - a.rating || (a.player.id < b.player.id ? -1 : 1));
+  const moves: MarketMove[] = u.transactions
+    .filter((t) => t.teamId === team.id)
+    .slice(-40)
+    .reverse()
+    .map((t) => ({
+      seasonNumber: t.seasonNumber,
+      type: t.type,
+      playerName: name(t.playerId),
+      salary: t.salary,
+      endSeason: t.endSeason,
+    }));
+  return {
+    open: isMarketOpen(u),
+    payroll: teamPayroll(u, team.id),
+    payrollNextSeason: roster
+      .filter((p) => !isExpired(u, p))
+      .reduce((sum, p) => sum + (p.contract?.salary ?? 0), 0),
+    salaryCap: competition.salaryCap,
+    minSalary: competition.minSalary,
+    rosterMin: competition.rosterMin,
+    rosterMax: competition.rosterMax,
+    rosterSize: roster.length,
+    problem: isMarketOpen(u) ? marketProblem(u) : null,
+    freeAgents: pool.slice(0, 150).map(({ player }) => ({
+      player,
+      overall: playerOverall(player),
+      askingSalary: askingSalary(player, competition),
+    })),
+    freeAgentCount: pool.length,
+    moves,
   };
 }
 
@@ -156,6 +222,7 @@ function viewOf(u: Universe): GameView {
     tables: tablesOf(u),
     myTeam: myTeamOf(u),
     offseason: offseasonReport,
+    market: marketOf(u),
   };
 }
 
@@ -291,6 +358,25 @@ function handle(command: Command): Reply {
           ? 'Quinteto y rotación guardados. Se aplican desde el próximo partido.'
           : 'El entrenador vuelve a decidir el quinteto.',
       );
+    }
+    case 'signFreeAgent': {
+      universe = signFreeAgent(need(), command.playerId, command.years);
+      const p = universe.players.find((x) => x.id === command.playerId)!;
+      return state(
+        `Fichado ${p.firstName} ${p.lastName} por ${command.years} temporada(s) a ${p.contract!.salary.toLocaleString('es-ES')} € al año.`,
+      );
+    }
+    case 'renewContract': {
+      universe = renewContract(need(), command.playerId, command.years);
+      const p = universe.players.find((x) => x.id === command.playerId)!;
+      return state(
+        `Renovado ${p.firstName} ${p.lastName} hasta la temporada ${p.contract!.endSeason} a ${p.contract!.salary.toLocaleString('es-ES')} € al año.`,
+      );
+    }
+    case 'releasePlayer': {
+      const p = need().players.find((x) => x.id === command.playerId);
+      universe = releasePlayer(need(), command.playerId);
+      return state(`${p ? `${p.firstName} ${p.lastName}` : 'El jugador'} queda libre.`);
     }
     case 'advance': {
       offseasonReport = null;

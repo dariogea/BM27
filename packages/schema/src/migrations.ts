@@ -65,6 +65,61 @@ const MIGRATIONS: Record<number, (data: Json) => Json> = {
         })
       : data.players,
   }),
+  // v3 → v4 (T-005): contracts, salary caps, roster limits and the market log.
+  // The numbers below are frozen: they are what the game used when v4 was introduced.
+  3: (data) => {
+    const seasonNumber = typeof data.seasonNumber === 'number' ? data.seasonNumber : 1;
+    const CAPS: Record<number, number> = { 1: 4_400_000, 2: 2_000_000, 3: 1_000_000 };
+    return {
+      ...data,
+      schemaVersion: 4,
+      transactions: 'transactions' in data ? data.transactions : [],
+      competitions: Array.isArray(data.competitions)
+        ? data.competitions.map((c: unknown) => {
+            if (c === null || typeof c !== 'object' || 'salaryCap' in c) return c;
+            const level = (c as { level?: unknown }).level;
+            return {
+              ...c,
+              salaryCap: CAPS[level as number] ?? 500_000,
+              minSalary: 12_000,
+              rosterMin: 12,
+              rosterMax: 15,
+            };
+          })
+        : data.competitions,
+      players: Array.isArray(data.players)
+        ? data.players.map((player: unknown) => {
+            if (player === null || typeof player !== 'object' || 'contract' in player)
+              return player;
+            const p = player as { teamId?: unknown; retired?: unknown; attributes?: unknown };
+            if (p.teamId === null || p.teamId === undefined || p.retired === true) {
+              return { ...player, contract: null };
+            }
+            let sum = 0;
+            let count = 0;
+            if (p.attributes !== null && typeof p.attributes === 'object') {
+              for (const group of Object.values(p.attributes)) {
+                if (group === null || typeof group !== 'object') continue;
+                for (const value of Object.values(group)) {
+                  if (typeof value === 'number') {
+                    sum += value;
+                    count++;
+                  }
+                }
+              }
+            }
+            const ability = count > 0 ? sum / count : 50;
+            return {
+              ...player,
+              contract: {
+                salary: Math.max(12_000, Math.round(20_000 * Math.exp((ability - 45) / 12))),
+                endSeason: seasonNumber + 1,
+              },
+            };
+          })
+        : data.players,
+    };
+  },
 };
 
 export class MigrationError extends Error {

@@ -47,6 +47,15 @@ export const PlayerAttributesSchema = z.object({
 });
 export type PlayerAttributes = z.infer<typeof PlayerAttributesSchema>;
 
+/** What a club pays a player, and until when. */
+export const ContractSchema = z.object({
+  /** Euros per season. */
+  salary: z.number().int().min(0),
+  /** Last season covered by the contract (inclusive). */
+  endSeason: z.number().int().min(1),
+});
+export type Contract = z.infer<typeof ContractSchema>;
+
 export const PlayerSchema = z.object({
   id: z.string().min(1),
   firstName: z.string().min(1),
@@ -61,8 +70,10 @@ export const PlayerSchema = z.object({
    * develops fully. Hidden information: a scout would only estimate it.
    */
   potential: z.number().int().min(1).max(99),
-  /** Null when the player has no club (e.g. retired). */
+  /** Null when the player has no club (free agent or retired). */
   teamId: z.string().min(1).nullable(),
+  /** Null exactly when the player has no club. */
+  contract: ContractSchema.nullable(),
   retired: z.boolean(),
 });
 export type Player = z.infer<typeof PlayerSchema>;

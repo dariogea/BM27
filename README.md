@@ -6,7 +6,8 @@ ficticios.
 
 > **Estado actual:** ya se puede jugar una partida sencilla: dirigir un equipo, elegir tácticas y
 > quinteto, avanzar jornada a jornada y guardar. Los clubes rivales y los cambios durante el
-> partido los lleva todavía un entrenador provisional (`PLACEHOLDER`). No hay fichajes ni dinero.
+> partido los lleva todavía un entrenador provisional (`PLACEHOLDER`). Hay mercado de agentes libres
+> con contratos y topes salariales, pero todavía no hay traspasos entre clubes ni finanzas.
 
 ## Qué hay en cada carpeta
 
@@ -47,12 +48,14 @@ Abre en el navegador la dirección que aparece (normalmente <http://localhost:51
 3. En las pestañas **Tácticas** y **Quinteto** puedes cambiar cómo juega tu equipo y quién sale de
    titular. Los cambios se aplican desde el siguiente partido.
 4. Pulsa **Jugar jornada** para avanzar un partido, o **Simular hasta el final de la temporada**.
-5. En **Mi equipo** verás tu plantilla, tu próximo rival y tu último resultado; **Ver partido**
+5. En **Mercado** puedes fichar agentes libres, renovar contratos y liberar jugadores. Solo entre
+   temporadas, respetando el tope salarial y el tamaño de plantilla.
+6. En **Mi equipo** verás tu plantilla, tu próximo rival y tu último resultado; **Ver partido**
    abre el box score y la narración jugada a jugada.
-6. En **Competición** están las clasificaciones, los playoffs y todos los partidos.
-7. Al terminar la temporada, en **Mi equipo** aparece cómo han evolucionado tus jugadores (quién
+7. En **Competición** están las clasificaciones, los playoffs y todos los partidos.
+8. Al terminar la temporada, en **Mi equipo** aparece cómo han evolucionado tus jugadores (quién
    mejora, quién baja y quién se retira). La columna **POT** es el potencial de cada uno.
-8. **Guardar partida** descarga un archivo; **Cargar partida** lo recupera, también a mitad de
+9. **Guardar partida** descarga un archivo; **Cargar partida** lo recupera, también a mitad de
    temporada.
 
 La misma semilla produce siempre el mismo universo. Para cerrar la página, pulsa `Ctrl + C` en la
@@ -94,7 +97,7 @@ pnpm bench
 ```
 
 Ejecuta las pruebas B1–B4 (tarda en torno a un minuto) y escribe el resultado en
-[`docs/benchmarks/T-004.md`](docs/benchmarks/T-004.md).
+[`docs/benchmarks/T-005.md`](docs/benchmarks/T-005.md).
 
 ## Comprobar la calibración del motor
 
@@ -104,7 +107,7 @@ pnpm calibrate
 
 Simula la liga regular de cada nivel y compara las medias (puntos, posesiones, porcentajes,
 faltas…) con bandas de referencia. Con `pnpm calibrate --write` guarda el informe en
-[`docs/benchmarks/T-004-calibracion.md`](docs/benchmarks/T-004-calibracion.md).
+[`docs/benchmarks/T-005-calibracion.md`](docs/benchmarks/T-005-calibracion.md).
 
 ## Comprobar que el mundo es estable a largo plazo
 
@@ -114,7 +117,7 @@ pnpm stability
 
 Simula 30 temporadas seguidas y muestra cómo evolucionan el nivel de cada liga, la edad media y las
 retiradas. Con `pnpm stability --write` guarda el informe en
-[`docs/benchmarks/T-004-estabilidad.md`](docs/benchmarks/T-004-estabilidad.md). Tarda en torno a
+[`docs/benchmarks/T-005-estabilidad.md`](docs/benchmarks/T-005-estabilidad.md). Tarda en torno a
 un minuto y medio.
 
 ## Otros comandos

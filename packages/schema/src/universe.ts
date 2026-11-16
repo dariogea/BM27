@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { CompetitionSchema } from './competition';
 import { PlayerSchema } from './player';
 import { RulesetSchema } from './ruleset';
-import { SeasonProgressSchema, SeasonSchema } from './season';
+import { SeasonProgressSchema, SeasonSchema, TransactionSchema } from './season';
 import { TeamSchema } from './team';
 import { SCHEMA_VERSION } from './version';
 
@@ -27,6 +27,8 @@ export const UniverseSchema = z
     history: z.array(SeasonSchema),
     /** Season being played right now, or null between seasons. */
     currentSeason: SeasonProgressSchema.nullable(),
+    /** Moves in the transfer market during the last few seasons, oldest first. */
+    transactions: z.array(TransactionSchema),
     /** Team managed by the human player, or null to just watch. */
     userTeamId: z.string().min(1).nullable(),
   })
@@ -58,6 +60,32 @@ export const UniverseSchema = z
           });
           break;
         }
+      }
+    });
+    // Contracts and club membership must agree.
+    const teamOfPlayer = new Map<string, string>();
+    for (const t of u.teams) for (const pid of t.playerIds) teamOfPlayer.set(pid, t.id);
+    u.players.forEach((p, i) => {
+      const hasClub = p.teamId !== null;
+      if (p.retired && (hasClub || p.contract !== null)) {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['players', i],
+          message: `retired player "${p.id}" must have no club and no contract`,
+        });
+      } else if (hasClub !== (p.contract !== null)) {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['players', i, 'contract'],
+          message: `player "${p.id}" must have a contract exactly when he has a club`,
+        });
+      }
+      if ((teamOfPlayer.get(p.id) ?? null) !== p.teamId) {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['players', i, 'teamId'],
+          message: `player "${p.id}" says he plays for ${p.teamId ?? 'nobody'}, but the team lists disagree`,
+        });
       }
     });
     if (u.userTeamId !== null && !teamIds.has(u.userTeamId)) {
@@ -124,6 +152,8 @@ export const UniverseConfigSchema = z.object({
         format: CompetitionSchema.shape.format,
         promotionSlots: z.number().int().min(0),
         relegationSlots: z.number().int().min(0),
+        salaryCap: z.number().int().min(0),
+        minSalary: z.number().int().min(0),
       }),
     )
     .min(1),

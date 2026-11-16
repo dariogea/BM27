@@ -1,4 +1,5 @@
 import type {
+  Contract,
   GroupSeason,
   MatchDetail,
   MatchResult,
@@ -14,6 +15,9 @@ export type Command =
   | { id: number; type: 'chooseTeam'; teamId: string | null }
   | { id: number; type: 'setTactics'; tactics: TeamTactics }
   | { id: number; type: 'setRotation'; playerIds: string[] | null }
+  | { id: number; type: 'signFreeAgent'; playerId: string; years: number }
+  | { id: number; type: 'renewContract'; playerId: string; years: number }
+  | { id: number; type: 'releasePlayer'; playerId: string }
   | { id: number; type: 'advance' }
   | { id: number; type: 'finishSeason' }
   | { id: number; type: 'matchDetail'; matchId: string }
@@ -37,6 +41,44 @@ export interface SquadPlayer {
   overall: number;
   /** Season totals so far, if the player has played. */
   stats: PlayerSeasonStats | null;
+  contract: Contract | null;
+  /** The contract has run out: renew it before the season starts or the player leaves. */
+  expired: boolean;
+  /** Salary he would ask to renew. */
+  renewalSalary: number;
+}
+
+export interface FreeAgentRow {
+  player: Player;
+  overall: number;
+  askingSalary: number;
+}
+
+export interface MarketMove {
+  seasonNumber: number;
+  type: 'signed' | 'renewed' | 'released' | 'expired' | 'retired';
+  playerName: string;
+  salary: number | null;
+  endSeason: number | null;
+}
+
+export interface MarketView {
+  /** True between seasons: signings, renewals and releases are allowed. */
+  open: boolean;
+  payroll: number;
+  /** Contracts that stay next season (expired ones excluded). */
+  payrollNextSeason: number;
+  salaryCap: number;
+  minSalary: number;
+  rosterMin: number;
+  rosterMax: number;
+  rosterSize: number;
+  /** Why the season cannot start yet, or null. */
+  problem: string | null;
+  /** Best free agents (by what clubs think of them), at most 150. */
+  freeAgents: FreeAgentRow[];
+  freeAgentCount: number;
+  moves: MarketMove[];
 }
 
 export interface MyTeamView {
@@ -92,6 +134,7 @@ export interface GameView {
   myTeam: MyTeamView | null;
   /** Squad changes after the last finished season, until the next step is played. */
   offseason: OffseasonReport | null;
+  market: MarketView | null;
 }
 
 export type Reply =

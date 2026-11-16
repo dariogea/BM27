@@ -58,6 +58,8 @@ pequeña, **quién trabaja en qué** y el **porcentaje** de avance. GitHub la di
 
 - Los datos viven en [`roadmap/roadmap.json`](roadmap/roadmap.json). **No se edita `roadmap.md` a mano**: se genera con
   `pnpm roadmap`. Si los datos y el archivo no coinciden, la CI falla (test).
+- El desarrollo sigue las fases y tareas de esta hoja de ruta; no se amplía por iniciativa del agente fuera del trabajo autorizado por el propietario.
+- El README de la portada muestra un resumen visual generado desde esos mismos datos.
 - Cada PR que cambie el estado de algo **actualiza el JSON y regenera el archivo**, igual que `estado.md`.
 - Los dos agentes marcan en el JSON qué llevan (`"o": "claude"` o `"codex"`) y el Issue (`"i": 26`).
 - Los porcentajes de «en curso» son **estimaciones** de quien lo lleva; «hecho» solo cuando está fusionado y probado.

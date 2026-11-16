@@ -1152,11 +1152,11 @@
           "f": "F2"
         },
         {
-          "t": "Repeticiones verificables tras recargar",
+          "t": "Repeticiones verificadas y rechazo de detalles no verificables al cargar",
           "s": "hecho",
           "o": "codex",
           "i": 27,
-          "n": "Fusionado (PR #32 de Codex)."
+          "n": "PR #32 fusionado. Tras cargar se conservan resultados; el detalle anterior sin prueba se declara no disponible. Los partidos nuevos vuelven a tener detalle verificable."
         }
       ]
     },
@@ -1466,11 +1466,10 @@
         },
         {
           "t": "Auditoría independiente de main",
-          "s": "en-curso",
-          "p": 60,
+          "s": "hecho",
           "o": "codex",
           "i": 28,
-          "n": "Informe de Codex en revisión."
+          "n": "Auditoría fusionada en #30; hallazgos corregidos en #32 y #38."
         },
         {
           "t": "Pruebas de interfaz en navegador automatizado",
@@ -1525,7 +1524,7 @@
         {
           "t": "Fusión automática con la CI en verde",
           "s": "hecho",
-          "n": "Falta confirmar la primera fusión real con PR elegible (#38)."
+          "n": "Primera fusión automática comprobada: PR #32."
         },
         {
           "t": "Trabajo bajo autorización del propietario",
@@ -1536,7 +1535,9 @@
         {
           "t": "Esta hoja de ruta, generada y comprobada en CI",
           "s": "hecho",
-          "n": "PR #41."
+          "n": "Hoja completa #41 y resumen visual en README #42, generados desde los mismos datos con pnpm roadmap.",
+          "o": "codex",
+          "i": 42
         },
         {
           "t": "Política de fusión sin huecos conocidos",

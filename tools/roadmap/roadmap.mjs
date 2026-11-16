@@ -29,6 +29,7 @@ const here = dirname(fileURLToPath(import.meta.url));
 export const ROOT = join(here, '..', '..');
 export const SOURCE = join(ROOT, 'docs', 'roadmap', 'roadmap.json');
 export const OUTPUT = join(ROOT, 'docs', 'roadmap.md');
+export const README = join(ROOT, 'README.md');
 
 /** Percentage of a leaf: done = 100, in progress = its own estimate, the rest 0. */
 export function leafPercent(leaf) {
@@ -279,6 +280,55 @@ export function render(data) {
   );
 }
 
+/** Visual project overview shown directly on GitHub's repository landing page. */
+export function renderReadme(data) {
+  const sum = summarize(data);
+  const lines = [
+    '## Avance del desarrollo',
+    '',
+    `**Avance orientativo: ${pct(sum.total)}** \`${bar(sum.total, 30)}\``,
+    '',
+    `${sum.leaves} elementos organizados en ${sum.phases.length} fases. Cada elemento pesa lo mismo; el avance en curso es una estimación, no una fecha de entrega.`,
+    '',
+    '```mermaid',
+    'flowchart LR',
+  ];
+  for (const phase of sum.phases)
+    lines.push(`  ${phase.id}["${phase.id} ${phase.t}<br/>${pct(phase.percent)}"]`);
+  lines.push('  ' + sum.phases.map((p) => p.id).join(' --> '));
+  lines.push('```', '');
+  for (const phase of sum.phases)
+    lines.push(`- **${phase.id} · ${phase.t}**: ${pct(phase.percent)} \`${bar(phase.percent)}\``);
+  lines.push(
+    '',
+    '**[Ver el roadmap completo: tareas, responsables y pendientes](docs/roadmap.md)**',
+    '',
+  );
+  return lines.join('\n');
+}
+
+/** Replace only the generated section, preserving the rest of the README exactly. */
+export function updateReadme(current, data) {
+  const startMarker = '<!-- roadmap:start -->';
+  const endMarker = '<!-- roadmap:end -->';
+  const start = current.indexOf(startMarker);
+  const end = current.indexOf(endMarker);
+  if (
+    start < 0 ||
+    end < start ||
+    current.indexOf(startMarker, start + 1) >= 0 ||
+    current.indexOf(endMarker, end + 1) >= 0
+  )
+    throw new Error('README.md necesita un único bloque roadmap:start / roadmap:end.');
+  return (
+    current.slice(0, start + startMarker.length) +
+    '\n\n' +
+    renderReadme(data) +
+    '\n' +
+    current.slice(end)
+  );
+}
+
 export function load() {
   return JSON.parse(readFileSync(SOURCE, 'utf8'));
 }
@@ -291,6 +341,8 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
     process.exit(1);
   }
   const text = render(data);
+  const currentReadme = readFileSync(README, 'utf8');
+  const nextReadme = updateReadme(currentReadme, data);
   if (process.argv.includes('--check')) {
     let current = '';
     try {
@@ -298,13 +350,16 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
     } catch {
       /* missing */
     }
-    if (current !== text) {
-      console.error('docs/roadmap.md no está al día. Ejecuta «pnpm roadmap» y súbelo.');
+    if (current !== text || currentReadme !== nextReadme) {
+      console.error(
+        'El roadmap de docs/roadmap.md o README.md no está al día. Ejecuta «pnpm roadmap» y súbelo.',
+      );
       process.exit(1);
     }
-    console.log('docs/roadmap.md está al día.');
+    console.log('docs/roadmap.md y README.md están al día.');
   } else {
     writeFileSync(OUTPUT, text);
+    writeFileSync(README, nextReadme);
     const s = summarize(data);
     console.log(
       `docs/roadmap.md escrito. Avance global: ${s.total.toFixed(1)} % (${s.leaves} elementos).`,

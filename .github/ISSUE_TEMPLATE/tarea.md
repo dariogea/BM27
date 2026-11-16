@@ -1,23 +1,34 @@
 ---
 name: Tarea
-about: Nueva tarea T-### definida por Dirección General
+about: Nueva tarea T-### para cualquiera de los dos agentes
 title: 'T-###: '
-labels: tarea
+labels: ''
 ---
+
+<!-- Las tareas libres no llevan etiqueta de agente. Quien la coja pone su etiqueta
+(agente:claude o agente:codex) y "en-curso", y escribe abajo qué archivos va a tocar. -->
 
 ## Objetivo
 
-<!-- Qué se quiere conseguir y por qué, en una o dos frases. -->
+<!-- Qué se quiere conseguir y por qué, en una o dos frases, en lenguaje sencillo. -->
 
 ## Alcance
-
-<!-- Lista de lo que entra en la tarea. -->
 
 -
 
 ## Fuera de alcance
 
 -
+
+## Archivos que probablemente se tocan
+
+<!-- Para que el otro agente sepa si se pisa con algo. -->
+
+-
+
+## ¿Cambia el contrato de datos o la API pública del núcleo?
+
+<!-- Si sí: etiqueta "contrato" y avisar aquí antes de empezar. -->
 
 ## Criterios de aceptación
 
@@ -26,6 +37,10 @@ labels: tarea
 - [ ]
 - [ ] CI en verde.
 
-## Estado
+## Depende de / bloquea
 
-IDEA · PROPUESTA · APROBADA · DISEÑADA · IMPLEMENTADA · PROBADA · FINALIZADA
+-
+
+## Prioridad
+
+<!-- Orden del propietario / alta / media / baja -->

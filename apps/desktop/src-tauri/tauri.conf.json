@@ -13,7 +13,7 @@
     "windows": [
       {
         "label": "main",
-        "title": "BM27 — Basketball Manager 2027 (versión de prueba)",
+        "title": "BM27 — Basketball Manager 2027",
         "width": 1366,
         "height": 860,
         "minWidth": 1000,
@@ -34,7 +34,7 @@
       "icons/icon.icns",
       "icons/icon.ico"
     ],
-    "shortDescription": "Basketball Manager 2027 (título provisional)",
+    "shortDescription": "Basketball Manager 2027",
     "windows": {
       "nsis": {
         "installMode": "currentUser",

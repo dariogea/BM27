@@ -5,37 +5,44 @@
     {
       "id": "F0",
       "t": "Fundaciones",
-      "meta": "Núcleo determinista, motor de partido, mundo persistente, mercado y finanzas, y la forma de trabajar de los dos agentes."
+      "meta": "Núcleo determinista, motor de partido, mundo persistente, mercado y finanzas, y la forma de trabajar de los dos agentes.",
+      "peso": 5
     },
     {
       "id": "F1",
       "t": "Primera versión jugable",
-      "meta": "Que el propietario pueda jugar de principio a fin una temporada y varias más sin tocar una terminal, con consultas básicas del mundo."
+      "meta": "Que el propietario pueda jugar de principio a fin una temporada y varias más sin tocar una terminal, con consultas básicas del mundo.",
+      "peso": 10
     },
     {
       "id": "F2",
       "t": "Profundidad de gestión",
-      "meta": "Traspasos, cantera y ojeadores, economía con decisiones, entrenador rival con criterio, motor de partido completo."
+      "meta": "Traspasos, cantera y ojeadores, economía con decisiones, entrenador rival con criterio, motor de partido completo.",
+      "peso": 40
     },
     {
       "id": "F3",
       "t": "Mundo, datos y mods",
-      "meta": "Calibración con datos contrastados, paquetes de datos cargables, pirámide completa y otras competiciones."
+      "meta": "Calibración con datos contrastados, paquetes de datos cargables, pirámide completa y otras competiciones.",
+      "peso": 15
     },
     {
       "id": "F4",
       "t": "Presentación",
-      "meta": "Diseño visual, accesibilidad, partido en 2D, narración, sonido y varios idiomas."
+      "meta": "Diseño visual, accesibilidad, partido en 2D, narración, sonido y varios idiomas.",
+      "peso": 15
     },
     {
       "id": "F5",
       "t": "Distribución",
-      "meta": "Instalador de escritorio, versiones alfa y beta en GitHub, actualización automática, firma y otras plataformas."
+      "meta": "Instalador de escritorio, versiones alfa y beta en GitHub, actualización automática, firma y otras plataformas.",
+      "peso": 5
     },
     {
       "id": "F6",
       "t": "Pulido y lanzamiento",
-      "meta": "Tutorial, equilibrio final, documentación, comunidad y lanzamiento."
+      "meta": "Tutorial, equilibrio final, documentación, comunidad y lanzamiento.",
+      "peso": 10
     }
   ],
   "areas": [
@@ -58,8 +65,9 @@
           "s": "hecho"
         },
         {
-          "t": "Huella SHA-256 y JSON canónico",
-          "s": "hecho"
+          "t": "Huella SHA-256 e integridad del guardado",
+          "s": "hecho",
+          "n": "El checksum está implementado; no se afirma serialización canónica entre órdenes de claves distintos."
         },
         {
           "t": "Esquemas zod y JSON Schema exportados",
@@ -1633,7 +1641,8 @@
         },
         {
           "t": "Nombre definitivo del juego",
-          "s": "pendiente"
+          "s": "hecho",
+          "n": "El propietario fija BM27 — Basketball Manager 2027 como nombre definitivo (#46)."
         },
         {
           "t": "Licencia de código y de contenido",
@@ -2748,5 +2757,45 @@
         }
       ]
     }
-  ]
+  ],
+  "evaluacion": {
+    "objetivo": "Gestor de baloncesto comercial completo, con la profundidad de gestión como referencia de diseño. No es una medición de equivalencia con Football Manager.",
+    "criterios": [
+      {
+        "id": "R1",
+        "t": "Ciclo de gestión completo: fichajes entre clubes, plantilla, entrenamiento, salud y cantera",
+        "estado": "pendiente"
+      },
+      {
+        "id": "R2",
+        "t": "Entrenadores rivales y decisiones con profundidad, sin sustitutos provisionales esenciales",
+        "estado": "pendiente"
+      },
+      {
+        "id": "R3",
+        "t": "Mundo equilibrado a largo plazo y reglas de competición contrastadas",
+        "estado": "pendiente"
+      },
+      {
+        "id": "R4",
+        "t": "Interfaz accesible, ayuda y recorrido de varias temporadas validado con jugadores",
+        "estado": "pendiente"
+      },
+      {
+        "id": "R5",
+        "t": "Guardados internos, recuperación y migraciones probados",
+        "estado": "pendiente"
+      },
+      {
+        "id": "R6",
+        "t": "Instalación, actualizaciones y compatibilidad verificadas en los sistemas soportados",
+        "estado": "pendiente"
+      },
+      {
+        "id": "R7",
+        "t": "Equilibrio, rendimiento, licencias y criterios de lanzamiento cerrados",
+        "estado": "pendiente"
+      }
+    ]
+  }
 }

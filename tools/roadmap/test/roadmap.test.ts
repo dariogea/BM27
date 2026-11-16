@@ -104,7 +104,7 @@ describe('roadmap: archivo real', () => {
 describe('roadmap: portada del repositorio', () => {
   it('muestra el avance calculado y las fases con un enlace al detalle', () => {
     const text = r.renderReadme(mini);
-    expect(text).toContain('Avance orientativo: 38 %');
+    expect(text).toContain('Preparación estimada para lanzamiento: 38 %');
     expect(text).toContain('F0 A<br/>75 %');
     expect(text).toContain('F1 B<br/>0 %');
     expect(text).toContain('(docs/roadmap.md)');
@@ -123,5 +123,35 @@ describe('roadmap: portada del repositorio', () => {
   it('la portada real coincide con los mismos datos del roadmap completo', () => {
     const current = readFileSync(r.README, 'utf8');
     expect(current).toBe(r.updateReadme(current, r.load()));
+  });
+});
+
+describe('preparación comercial ponderada', () => {
+  const weighted = () => ({
+    ...mini,
+    fases: mini.fases.map((f, i) => ({ ...f, peso: i === 0 ? 10 : 90 })),
+    evaluacion: {
+      objetivo: 'Producto completo',
+      criterios: [{ id: 'R1', t: 'Validación', estado: 'pendiente' }],
+    },
+  });
+  it('no equipara una base técnica pequeña con el producto completo', () => {
+    expect(r.summarize(weighted()).total).toBeCloseTo(7.5);
+    expect(r.summarize(weighted()).coverage).toBeCloseTo(37.5);
+  });
+  it('impide el 100 % sin criterios validados y exige evidencia', () => {
+    const data = weighted();
+    for (const area of data.areas)
+      for (const node of area.c) {
+        if ('c' in node) for (const child of node.c) child.s = 'hecho';
+        else node.s = 'hecho';
+      }
+    expect(r.summarize(data).total).toBe(99);
+    data.evaluacion.criterios[0].estado = 'validado';
+    expect(r.validate(data).join(' ')).toContain('evidencia');
+    expect(r.validate({ ...weighted(), fases: mini.fases }).join(' ')).toContain('sumar 100');
+  });
+  it('mantiene el gráfico real sincronizado', () => {
+    expect(readFileSync(r.DASHBOARD, 'utf8')).toBe(r.renderDashboard(r.load()));
   });
 });

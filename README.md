@@ -1,53 +1,62 @@
-# BM27 · Basketball Manager 2027
+# BM27 — Basketball Manager 2027
 
 <p align="center">
-  <img src="docs/assets/bm27-cover.svg" alt="BM27: el club en tus manos. Identidad visual sobre una pista esquemática; no es una captura del juego." width="100%" />
+  <img src="docs/assets/bm27-cover.svg" alt="BM27 — El club en tus manos. Ilustración de identidad sobre una pista de baloncesto." width="100%" />
 </p>
 
-<p align="center"><strong>Una carrera en el banquillo. Un proyecto de club. Un mundo que sigue jugando.</strong></p>
+<p align="center"><strong>Gestiona baloncesto. Construye un club. Compite durante generaciones.</strong></p>
 
 <p align="center">
-  <a href="#qué-puedes-jugar-hoy">El juego hoy</a> ·
-  <a href="#avance-del-desarrollo">Avance</a> ·
-  <a href="docs/roadmap.md">Roadmap completo</a> ·
-  <a href="#cómo-probar-bm27">Cómo probarlo</a> ·
-  <a href="docs/desarrollo.md">Desarrollo</a>
+  <a href="#estado-real-del-juego">Estado real</a> ·
+  <a href="#avance-del-desarrollo">Preparación</a> ·
+  <a href="docs/roadmap.md">Plan completo</a> ·
+  <a href="#cómo-probar-bm27">Probar BM27</a> ·
+  <a href="docs/desarrollo.md">Desarrollar</a>
 </p>
 
-BM27 es un **simulador de gestión de baloncesto para PC**: eliges un equipo, decides cómo juega y
-construyes su futuro temporada a temporada. Clubes y jugadores ficticios en un mundo persistente.
-El objetivo es que cada decisión tenga consecuencias que puedas entender.
+**BM27 — Basketball Manager 2027** es el título definitivo de un simulador de gestión de baloncesto
+para PC. El proyecto combina decisiones deportivas, gestión de club y un mundo ficticio que evoluciona
+con las temporadas. El objetivo es un gestor deportivo profundo, explicable y duradero.
 
-> **En desarrollo · Prototipo jugable.** Basketball Manager 2027 es un nombre provisional.
-> Este repositorio es privado y comercial; consulta la [licencia](LICENSE).
-> La ilustración de portada representa la identidad del proyecto, no una pantalla disponible del juego.
+> **Prototipo temprano y jugable.** El nombre es definitivo; el producto aún está lejos de una versión
+> comercial completa. Repositorio privado y comercial: [licencia](LICENSE). La cabecera es una
+> ilustración de marca, no una captura del juego.
 
-## Qué puedes jugar hoy
+## Estado real del juego
 
-| En el banquillo                                                     | En el despacho                                                           | A lo largo de los años                                                |
-| ------------------------------------------------------------------- | ------------------------------------------------------------------------ | --------------------------------------------------------------------- |
-| Elige equipo, quinteto y tácticas.                                  | Ficha agentes libres, renueva y libera jugadores.                        | Avanza jornadas y temporadas en una pirámide de cuatro niveles.       |
-| Consulta el resultado, las estadísticas y la narración del partido. | Gestiona contratos con topes salariales y consulta las cuentas del club. | Sigue la evolución, el envejecimiento y la retirada de los jugadores. |
-| Tus ajustes afectan a los partidos futuros.                         | Revisa caja, reputación y presupuesto salarial.                          | Guarda y recupera tu partida, también a mitad de temporada.           |
+| Sistema        | Qué existe hoy                                                                      | Qué falta para el objetivo completo                                                              |
+| -------------- | ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| Partido        | Simulación por posesiones, tácticas con efecto y estadísticas derivadas de eventos. | Entrenadores con criterio, más reglas, lesiones, tiempos muertos y calibración contrastada.      |
+| Club y mercado | Equipo propio, quinteto, agentes libres, contratos, salarios y cuentas del club.    | Traspasos negociados, personal, instalaciones, patrocinadores y decisiones económicas profundas. |
+| Mundo          | Cuatro niveles, temporadas, ascensos, descensos, desarrollo y retiradas.            | Cantera real, ojeo, competiciones adicionales y mayor estabilidad contrastada.                   |
+| Experiencia    | Web funcional y compilación de instalador para Windows.                             | Interfaz pulida, ayuda, accesibilidad completa y pruebas de instalación real.                    |
+| Partidas       | Archivos con checksum, migraciones y guardado a mitad de temporada.                 | Guardados internos, recuperación y un historial más completo.                                    |
 
-**Una misma semilla, un mismo universo.** El azar del motor es reproducible. Las estadísticas se
-calculan desde lo ocurrido en la simulación, y los detalles de partido que no pueden verificarse se
-identifican como no disponibles.
+Los entrenadores y la entrada de jóvenes siguen usando reglas provisionales (`PLACEHOLDER`).
+Las escalas de salarios y las bandas estadísticas son aproximaciones. No se presentan como sistemas
+terminados de un juego comercial.
 
-### Hacia dónde va el juego
+## La referencia del 100 %
 
-La profundidad se desarrollará por fases: negociación de traspasos, entrenamientos, lesiones,
-vestuario, cantera, ojeo y entrenadores rivales con criterio. Son **trabajo pendiente**, no funciones
-que se anuncien como disponibles. El entrenador actual y la generación de jóvenes son provisionales
-(`PLACEHOLDER`). Las escalas económicas y las bandas de calibración aún usan aproximaciones.
+La referencia de diseño es la profundidad de gestión de **Football Manager**, adaptada al baloncesto:
+una carrera completa, decisiones conectadas, rivales competentes, un mundo sostenible y una experiencia
+lista para jugadores. No disponemos de una auditoría de su desarrollo interno para medir una paridad exacta.
+
+El índice de preparación de BM27 pondera las fases por su importancia para ese producto. El bloque
+de profundidad de gestión pesa un **40 %**; completar documentación o cimientos técnicos no equivale a
+terminar la experiencia. Los pesos son hipótesis de planificación publicadas, no horas medidas.
 
 <!-- roadmap:start -->
 
 ## Avance del desarrollo
 
-**Avance orientativo: 22 %** `██████░░░░░░░░░░░░░░░░░░░░░░░░`
+**Preparación estimada para lanzamiento: 9 %** `███░░░░░░░░░░░░░░░░░░░░░░░░░░░`
 
-475 elementos organizados en 7 fases y 34 áreas de desarrollo. Cada elemento pesa lo mismo; el avance en curso es una estimación, no una fecha de entrega.
+475 elementos organizados en 7 fases y 34 áreas de desarrollo. El índice pondera la profundidad y el producto terminado; no es una comparación medida con otro juego ni una fecha de entrega.
+
+![Preparación del producto por fases](docs/assets/development-progress.svg)
+
+Las barras de fase muestran cobertura del plan; el índice global usa pesos distintos. [Ver pesos y criterios del 100 %](docs/roadmap.md#objetivo-del-100-).
 
 ```mermaid
 flowchart LR
@@ -57,7 +66,7 @@ flowchart LR
   F3["F3 Mundo, datos y mods<br/>0 %"]
   F4["F4 Presentación<br/>0 %"]
   F5["F5 Distribución<br/>7 %"]
-  F6["F6 Pulido y lanzamiento<br/>0 %"]
+  F6["F6 Pulido y lanzamiento<br/>6 %"]
   F0 --> F1 --> F2 --> F3 --> F4 --> F5 --> F6
 ```
 
@@ -67,51 +76,50 @@ flowchart LR
 - **F3 · Mundo, datos y mods**: 0 % `░░░░░░░░░░░░░░░░░░░░`
 - **F4 · Presentación**: 0 % `░░░░░░░░░░░░░░░░░░░░`
 - **F5 · Distribución**: 7 % `█░░░░░░░░░░░░░░░░░░░`
-- **F6 · Pulido y lanzamiento**: 0 % `░░░░░░░░░░░░░░░░░░░░`
+- **F6 · Pulido y lanzamiento**: 6 % `█░░░░░░░░░░░░░░░░░░░`
 
 **[Ver el roadmap completo: tareas, responsables y pendientes](docs/roadmap.md)**
 
 <!-- roadmap:end -->
 
+## La experiencia que estamos construyendo
+
+Este es el ciclo objetivo. **Todavía está incompleto**: el entrenamiento, el ojeo y varias decisiones
+de club siguen pendientes en el roadmap.
+
+```mermaid
+flowchart LR
+  A["Planifica<br/>plantilla y presupuesto"] --> B["Prepara<br/>tácticas y entrenamiento"]
+  B --> C["Compite<br/>partidos y temporadas"]
+  C --> D["Analiza<br/>rendimiento y rivales"]
+  D --> E["Construye<br/>cantera, ojeo y club"]
+  E --> A
+```
+
 ## Cómo probar BM27
 
-### Quiero jugar en Windows
+**Windows:** hay una compilación de prueba en los artefactos de GitHub Actions; todavía no hay una
+Release publicada. Necesitas acceso al repositorio. La instalación y los diálogos nativos aún deben
+validarse en un Windows real.
 
-El instalador se ha compilado en Windows mediante GitHub Actions. **Todavía no hay una Release
-publicada en este repositorio**: la vía actual es descargar una compilación de prueba desde los
-artefactos de Actions, con acceso al repositorio.
+**[Guía de descarga e instalación →](docs/escritorio.md#probar-sin-esperar-a-una-versión-publicada)**
 
-**[Abrir la guía de instalación y descarga de prueba →](docs/escritorio.md#probar-sin-esperar-a-una-versión-publicada)**
+**Desarrollo:** con Node.js 22 o superior y pnpm puedes arrancar la web y probar el prototipo.
+La guía conserva los comandos, el recorrido de una partida y las comprobaciones.
 
-La instalación y los diálogos de guardado aún necesitan comprobarse en un Windows real. La guía
-explica qué se ha validado, los requisitos y el estado de las actualizaciones automáticas.
+**[Ejecutar y desarrollar BM27 →](docs/desarrollo.md)**
 
-### Quiero ejecutarlo o colaborar en el código
+## Explorar el proyecto
 
-Necesitas Node.js 22 o superior y pnpm. La [guía de desarrollo](docs/desarrollo.md) reúne la
-instalación, los comandos para arrancar la web, las pruebas y las herramientas de simulación.
-
-## Qué guía el proyecto
-
-- **Simulación con consecuencias.** Las tácticas y decisiones tienen efecto en el motor; lo provisional se identifica.
-- **Un mundo propio.** El contenido del juego utiliza identidades ficticias.
-- **Una partida explicable.** Resultados y estadísticas parten del mismo registro de eventos.
-- **Un plan visible.** El desarrollo sigue el roadmap, dentro del trabajo que autorice el propietario.
-
-## Explorar BM27
-
-| Quiero entender…                               | Ir a…                                        |
-| ---------------------------------------------- | -------------------------------------------- |
-| Todo lo previsto, por fases, áreas y subcampos | [Roadmap detallado](docs/roadmap.md)         |
-| Qué se ha entregado y qué está pendiente       | [Estado de las tareas](docs/estado.md)       |
-| Por qué se tomó cada decisión                  | [Registro de decisiones](docs/decisiones.md) |
-| Cómo funciona el motor y la aplicación         | [Arquitectura](docs/arquitectura.md)         |
-| Qué cambia cada táctica                        | [Tácticas](docs/tacticas.md)                 |
-| Cómo instalar, ejecutar y comprobar el código  | [Guía de desarrollo](docs/desarrollo.md)     |
-| Cómo se organiza el trabajo                    | [Coordinación](docs/coordinacion.md)         |
-| El resto de la documentación                   | [Índice de documentación](docs/README.md)    |
+| Producto y planificación                                 | Funcionamiento                                                                     | Desarrollo y seguimiento                 |
+| -------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------- |
+| [Roadmap completo](docs/roadmap.md)                      | [Arquitectura](docs/arquitectura.md)                                               | [Guía de desarrollo](docs/desarrollo.md) |
+| [Criterios del 100 %](docs/roadmap.md#objetivo-del-100-) | [Efecto de las tácticas](docs/tacticas.md)                                         | [Estado de entregas](docs/estado.md)     |
+| [Identidad y descripción](docs/identidad.md)             | [Aplicación de Windows](docs/escritorio.md)                                        | [Decisiones](docs/decisiones.md)         |
+| [Índice de documentación](docs/README.md)                | [Validación automática](https://github.com/dariogea/BM27/actions/workflows/ci.yml) | [Coordinación](docs/coordinacion.md)     |
 
 ---
 
-**BM27 está construyéndose.** La portada muestra el estado actual; el roadmap describe el alcance
-previsto. Una tarea pendiente no es una promesa de fecha ni una función ya implementada.
+El desarrollo sigue las fases y tareas del roadmap y actualiza sus estados con evidencia. Los próximos
+sistemas no se consideran implementados por estar descritos en el plan. Todo el contenido deportivo
+del juego utiliza identidades ficticias.

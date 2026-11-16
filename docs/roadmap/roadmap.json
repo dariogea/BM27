@@ -1,0 +1,1705 @@
+{
+  "version": 1,
+  "actualizado": "2026-11-16",
+  "fases": [
+    {
+      "id": "F0",
+      "t": "Fundaciones",
+      "meta": "Núcleo determinista, motor de partido, mundo persistente, mercado y finanzas, y la forma de trabajar de los dos agentes."
+    },
+    {
+      "id": "F1",
+      "t": "Primera versión jugable",
+      "meta": "Que el propietario pueda jugar de principio a fin una temporada y varias más sin tocar una terminal, con consultas básicas del mundo."
+    },
+    {
+      "id": "F2",
+      "t": "Profundidad de gestión",
+      "meta": "Traspasos, cantera y ojeadores, economía con decisiones, entrenador rival con criterio, motor de partido completo."
+    },
+    {
+      "id": "F3",
+      "t": "Mundo, datos y mods",
+      "meta": "Calibración con datos contrastados, paquetes de datos cargables, pirámide completa y otras competiciones."
+    },
+    {
+      "id": "F4",
+      "t": "Presentación",
+      "meta": "Diseño visual, accesibilidad, partido en 2D, narración, sonido y varios idiomas."
+    },
+    {
+      "id": "F5",
+      "t": "Distribución",
+      "meta": "Instalador de escritorio, versiones alfa y beta en GitHub, actualización automática, firma y otras plataformas."
+    },
+    {
+      "id": "F6",
+      "t": "Pulido y lanzamiento",
+      "meta": "Tutorial, equilibrio final, documentación, comunidad y lanzamiento."
+    }
+  ],
+  "areas": [
+    {
+      "t": "Núcleo y arquitectura",
+      "why": "La base técnica que hace fiable todo lo demás: reproducible, sin interfaz, validada por esquemas.",
+      "f": "F0",
+      "c": [
+        {
+          "t": "Núcleo sin interfaz (headless, sin DOM)",
+          "s": "hecho",
+          "n": "Pilar 3; lo comprueba ESLint y un test."
+        },
+        {
+          "t": "Generador de azar con semilla (xoshiro128**)",
+          "s": "hecho"
+        },
+        {
+          "t": "Semilla propia por partido, independiente del orden",
+          "s": "hecho"
+        },
+        {
+          "t": "Huella SHA-256 y JSON canónico",
+          "s": "hecho"
+        },
+        {
+          "t": "Esquemas zod y JSON Schema exportados",
+          "s": "hecho"
+        },
+        {
+          "t": "schemaVersion y migraciones encadenadas (v0 a v5)",
+          "s": "hecho"
+        },
+        {
+          "t": "API pública del núcleo estable y documentada",
+          "s": "en-curso",
+          "p": 40,
+          "n": "Hay API pero sin documento de referencia."
+        },
+        {
+          "t": "Prohibición de Math.random en el núcleo (test)",
+          "s": "hecho"
+        },
+        {
+          "t": "Errores del núcleo con códigos y mensajes legibles",
+          "s": "pendiente"
+        },
+        {
+          "t": "Simulación en paralelo con varios Workers",
+          "s": "pendiente",
+          "f": "F2",
+          "i": 18,
+          "n": "T-019."
+        },
+        {
+          "t": "Reducir copias del universo y coste por partido",
+          "s": "pendiente",
+          "f": "F2",
+          "i": 18
+        },
+        {
+          "t": "Registro (log) de depuración del núcleo",
+          "s": "pendiente"
+        },
+        {
+          "t": "Medición de memoria en las pruebas de rendimiento",
+          "s": "hecho"
+        },
+        {
+          "t": "Límites de tamaño del universo",
+          "s": "pendiente"
+        },
+        {
+          "t": "Cancelación y progreso de simulaciones largas",
+          "s": "pendiente",
+          "f": "F2"
+        },
+        {
+          "t": "Referencia de la API para quien haga mods",
+          "s": "pendiente",
+          "f": "F3"
+        }
+      ]
+    },
+    {
+      "t": "Motor de partido",
+      "why": "Que cada partido se juegue posesión a posesión con reglas de baloncesto reales y que las tácticas tengan efecto medible.",
+      "f": "F0",
+      "c": [
+        {
+          "t": "Estructura del partido",
+          "c": [
+            {
+              "t": "Simulación por posesiones",
+              "s": "hecho"
+            },
+            {
+              "t": "Cuatro periodos y reloj de partido",
+              "s": "hecho"
+            },
+            {
+              "t": "Reloj de posesión (24 s) y reinicio a 14 s",
+              "s": "hecho"
+            },
+            {
+              "t": "Prórrogas hasta desempatar",
+              "s": "hecho"
+            },
+            {
+              "t": "Registro de eventos por posesión (fuente de todo)",
+              "s": "hecho"
+            },
+            {
+              "t": "Box score derivado del registro",
+              "s": "hecho"
+            },
+            {
+              "t": "Saltos entre dos y posesión alterna",
+              "s": "pendiente",
+              "f": "F2",
+              "i": 11,
+              "n": "T-012."
+            },
+            {
+              "t": "Reglas de 8 y 5 segundos, campo atrás, tres segundos",
+              "s": "pendiente",
+              "f": "F2"
+            },
+            {
+              "t": "Interferencia y goaltending",
+              "s": "pendiente",
+              "f": "F2"
+            },
+            {
+              "t": "Revisión de jugadas arbitral (si el reglamento la admite)",
+              "s": "idea",
+              "f": "F3"
+            }
+          ]
+        },
+        {
+          "t": "Acciones de juego",
+          "c": [
+            {
+              "t": "Tipos de jugada (play types): pick and roll, aislamiento, poste, tiro tras pase, cortes, bloqueos sin balón, transición, rebote ofensivo",
+              "s": "hecho"
+            },
+            {
+              "t": "Zonas de tiro con coordenadas",
+              "s": "hecho"
+            },
+            {
+              "t": "Tiros de dos, de tres y tiros libres",
+              "s": "hecho"
+            },
+            {
+              "t": "Rebotes ofensivos y defensivos",
+              "s": "hecho"
+            },
+            {
+              "t": "Pérdidas, robos y tapones",
+              "s": "hecho"
+            },
+            {
+              "t": "Asistencias",
+              "s": "hecho"
+            },
+            {
+              "t": "Tiros con falta y canastas más uno",
+              "s": "hecho",
+              "n": "Versión simple; sin variedad de finalizaciones."
+            },
+            {
+              "t": "Contraataques con ventaja numérica",
+              "s": "pendiente",
+              "f": "F2"
+            },
+            {
+              "t": "Mates, bandejas y variedad de finalizaciones",
+              "s": "pendiente",
+              "f": "F2"
+            },
+            {
+              "t": "Posiciones reales de los jugadores en pista",
+              "s": "pendiente",
+              "f": "F4",
+              "n": "Necesario para un visualizador 2D fiel."
+            }
+          ]
+        },
+        {
+          "t": "Faltas y disciplina",
+          "c": [
+            {
+              "t": "Faltas personales y límite de faltas por jugador",
+              "s": "hecho"
+            },
+            {
+              "t": "Faltas de equipo y bonus",
+              "s": "hecho"
+            },
+            {
+              "t": "Faltas técnicas",
+              "s": "pendiente",
+              "f": "F2",
+              "i": 11
+            },
+            {
+              "t": "Faltas antideportivas y descalificantes",
+              "s": "pendiente",
+              "f": "F2",
+              "i": 11
+            },
+            {
+              "t": "Árbitros con criterio propio (estricto o permisivo)",
+              "s": "idea",
+              "f": "F3"
+            },
+            {
+              "t": "Sanciones y suspensiones fuera de la pista",
+              "s": "idea",
+              "f": "F3"
+            }
+          ]
+        },
+        {
+          "t": "Defensa y tácticas",
+          "c": [
+            {
+              "t": "Defensa individual y coberturas del bloqueo directo",
+              "s": "hecho"
+            },
+            {
+              "t": "Defensas en zona y presión",
+              "s": "hecho"
+            },
+            {
+              "t": "Ritmo de juego y plan ofensivo",
+              "s": "hecho"
+            },
+            {
+              "t": "Efecto de las tácticas verificado con tests de equilibrio",
+              "s": "hecho"
+            },
+            {
+              "t": "Ayudas defensivas y rotaciones",
+              "s": "pendiente",
+              "f": "F2"
+            },
+            {
+              "t": "Jugadas ensayadas y sistemas de ataque propios",
+              "s": "pendiente",
+              "f": "F2"
+            },
+            {
+              "t": "Ajustes tácticos durante el partido",
+              "s": "pendiente",
+              "f": "F2",
+              "i": 10,
+              "n": "T-011."
+            },
+            {
+              "t": "Planes específicos contra un rival",
+              "s": "pendiente",
+              "f": "F2"
+            }
+          ]
+        },
+        {
+          "t": "Rotaciones, energía y entrenador de partido",
+          "c": [
+            {
+              "t": "Quinteto inicial y plan de minutos",
+              "s": "hecho",
+              "n": "El entrenador es un PLACEHOLDER con reglas fijas."
+            },
+            {
+              "t": "Fatiga y recuperación en el banquillo",
+              "s": "hecho"
+            },
+            {
+              "t": "Cambios con reglas fijas (margen de rendimiento y faltas)",
+              "s": "en-curso",
+              "p": 50,
+              "n": "Parte del entrenador PLACEHOLDER."
+            },
+            {
+              "t": "Entrenador con criterio propio",
+              "s": "pendiente",
+              "f": "F2",
+              "i": 10,
+              "n": "T-011."
+            },
+            {
+              "t": "Tiempos muertos",
+              "s": "pendiente",
+              "f": "F2",
+              "i": 11
+            },
+            {
+              "t": "Lesiones durante el partido",
+              "s": "pendiente",
+              "f": "F2",
+              "i": 11
+            },
+            {
+              "t": "Rachas y momento del partido",
+              "s": "pendiente",
+              "f": "F2"
+            },
+            {
+              "t": "Ventaja de jugar en casa (bonus de tiro)",
+              "s": "hecho"
+            },
+            {
+              "t": "Efecto del público y del ambiente del pabellón",
+              "s": "pendiente",
+              "f": "F2"
+            }
+          ]
+        },
+        {
+          "t": "Estadísticas y calibración",
+          "c": [
+            {
+              "t": "Calibración con bandas de referencia (pnpm calibrate)",
+              "s": "hecho",
+              "n": "Las bandas son de conocimiento general, no datos verificados."
+            },
+            {
+              "t": "Estadísticas avanzadas (valoración, eficiencia, +/-)",
+              "s": "pendiente",
+              "f": "F2"
+            },
+            {
+              "t": "Calibración con datos reales verificados",
+              "s": "pendiente",
+              "f": "F3",
+              "i": 20,
+              "n": "T-021. Decisión de fuentes pendiente del propietario (#24)."
+            }
+          ]
+        },
+        {
+          "t": "Reglamentos distintos",
+          "c": [
+            {
+              "t": "Reglamento como dato validado por esquema",
+              "s": "hecho"
+            },
+            {
+              "t": "Variantes de reglamento por competición (tiempo, faltas, prórroga)",
+              "s": "en-curso",
+              "p": 50,
+              "n": "Hay dos reglamentos como datos."
+            },
+            {
+              "t": "Reglamento con cuartos de otra duración o con mitades",
+              "s": "pendiente",
+              "f": "F3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "t": "Jugadores",
+      "why": "Personas con atributos, carrera, potencial y personalidad que el usuario descubre y gestiona.",
+      "f": "F0",
+      "c": [
+        {
+          "t": "20 atributos técnicos, físicos y mentales",
+          "s": "hecho"
+        },
+        {
+          "t": "Posiciones y roles",
+          "s": "hecho"
+        },
+        {
+          "t": "Edad, desarrollo y declive",
+          "s": "hecho"
+        },
+        {
+          "t": "Potencial oculto",
+          "s": "hecho"
+        },
+        {
+          "t": "Retirada de los jugadores",
+          "s": "hecho"
+        },
+        {
+          "t": "Generación de jugadores con nombres ficticios",
+          "s": "hecho"
+        },
+        {
+          "t": "Contrato y salario",
+          "s": "hecho"
+        },
+        {
+          "t": "Estadísticas por temporada",
+          "s": "hecho"
+        },
+        {
+          "t": "Potencial mostrado como estimación (ojeadores)",
+          "s": "pendiente",
+          "f": "F2",
+          "i": 13,
+          "n": "T-014. Decisión pendiente del propietario (#24)."
+        },
+        {
+          "t": "Lesiones: tipos, duración y recaídas",
+          "s": "pendiente",
+          "f": "F2",
+          "i": 11
+        },
+        {
+          "t": "Personalidad y moral",
+          "s": "pendiente",
+          "f": "F2"
+        },
+        {
+          "t": "Ambición, lealtad y relación con el club",
+          "s": "pendiente",
+          "f": "F2"
+        },
+        {
+          "t": "Rasgos especiales (clutch, trabajador, frágil…)",
+          "s": "pendiente",
+          "f": "F2"
+        },
+        {
+          "t": "Entrenamiento individual y foco de mejora",
+          "s": "pendiente",
+          "f": "F2"
+        },
+        {
+          "t": "Desarrollo según minutos jugados",
+          "s": "pendiente",
+          "f": "F2"
+        },
+        {
+          "t": "Nacionalidad, cupos y jugadores extranjeros",
+          "s": "pendiente",
+          "f": "F3"
+        },
+        {
+          "t": "Altura con efecto real en el juego",
+          "s": "hecho"
+        },
+        {
+          "t": "Envergadura y físico fino",
+          "s": "pendiente",
+          "f": "F2"
+        },
+        {
+          "t": "Forma física entre partidos",
+          "s": "pendiente",
+          "f": "F2"
+        },
+        {
+          "t": "Compañeros de equipo y química",
+          "s": "idea",
+          "f": "F3"
+        },
+        {
+          "t": "Retirada del número y homenajes",
+          "s": "idea",
+          "f": "F6"
+        },
+        {
+          "t": "Salón de la fama",
+          "s": "pendiente",
+          "f": "F3"
+        },
+        {
+          "t": "Historial completo de la carrera de cada jugador",
+          "s": "pendiente",
+          "f": "F1",
+          "i": 14,
+          "n": "T-015."
+        }
+      ]
+    },
+    {
+      "t": "Clubes",
+      "why": "El club como organización: plantilla, reputación, afición, estadio y objetivos.",
+      "f": "F0",
+      "c": [
+        {
+          "t": "Plantilla con mínimo y máximo por competición",
+          "s": "hecho"
+        },
+        {
+          "t": "Reputación y su regresión a la media",
+          "s": "hecho"
+        },
+        {
+          "t": "Tácticas y alineación por club",
+          "s": "hecho"
+        },
+        {
+          "t": "Instalaciones del club",
+          "s": "pendiente",
+          "f": "F2",
+          "i": 12,
+          "n": "T-013."
+        },
+        {
+          "t": "Asistencia al pabellón según reputación",
+          "s": "hecho",
+          "n": "Versión simple."
+        },
+        {
+          "t": "Afición: fidelidad y crecimiento",
+          "s": "pendiente",
+          "f": "F2"
+        },
+        {
+          "t": "Estadio: aforo y ambiente",
+          "s": "pendiente",
+          "f": "F2"
+        },
+        {
+          "t": "Directiva con objetivos de temporada",
+          "s": "pendiente",
+          "f": "F2"
+        },
+        {
+          "t": "Confianza de la directiva y despido del entrenador",
+          "s": "pendiente",
+          "f": "F2"
+        },
+        {
+          "t": "Cantera propia por club",
+          "s": "pendiente",
+          "f": "F2",
+          "i": 13,
+          "n": "T-014."
+        },
+        {
+          "t": "Equipos filiales",
+          "s": "idea",
+          "f": "F3"
+        },
+        {
+          "t": "Rivalidades históricas",
+          "s": "pendiente",
+          "f": "F3"
+        },
+        {
+          "t": "Escudo, colores y equipación (datos)",
+          "s": "pendiente",
+          "f": "F4"
+        },
+        {
+          "t": "Historia del club: títulos, récords y leyendas",
+          "s": "pendiente",
+          "f": "F3"
+        },
+        {
+          "t": "Fundación, desaparición y fusión de clubes",
+          "s": "idea",
+          "f": "F3"
+        }
+      ]
+    },
+    {
+      "t": "Entrenadores y personal técnico",
+      "why": "Las personas que dirigen y apoyan al equipo, con efecto real en el juego.",
+      "f": "F2",
+      "c": [
+        {
+          "t": "Entrenador rival con criterio (sustituye al PLACEHOLDER)",
+          "s": "pendiente",
+          "i": 10,
+          "n": "T-011."
+        },
+        {
+          "t": "Entrenador como dato del equipo (atributos, filosofía)",
+          "s": "pendiente"
+        },
+        {
+          "t": "Ayudantes y especialistas",
+          "s": "pendiente"
+        },
+        {
+          "t": "Preparador físico: efecto en fatiga y lesiones",
+          "s": "pendiente"
+        },
+        {
+          "t": "Servicio médico: recuperación de lesiones",
+          "s": "pendiente"
+        },
+        {
+          "t": "Ojeadores: calidad y cobertura",
+          "s": "pendiente",
+          "i": 13
+        },
+        {
+          "t": "Mercado de entrenadores y contratos de personal",
+          "s": "pendiente",
+          "f": "F3"
+        },
+        {
+          "t": "Carrera del usuario como entrenador",
+          "s": "pendiente",
+          "f": "F3"
+        },
+        {
+          "t": "Ofertas de otros clubes al entrenador",
+          "s": "pendiente",
+          "f": "F3"
+        }
+      ]
+    },
+    {
+      "t": "Competiciones",
+      "why": "Pirámide masculina española en cuatro niveles como datos, ampliable sin tocar el motor.",
+      "f": "F0",
+      "c": [
+        {
+          "t": "Liga regular todos contra todos",
+          "s": "hecho"
+        },
+        {
+          "t": "Playoffs por el título",
+          "s": "hecho"
+        },
+        {
+          "t": "Ascensos y descensos entre niveles",
+          "s": "hecho"
+        },
+        {
+          "t": "Cuatro niveles con unos 200 equipos",
+          "s": "hecho"
+        },
+        {
+          "t": "Clasificación y desempates",
+          "s": "hecho"
+        },
+        {
+          "t": "Generador de calendario",
+          "s": "hecho"
+        },
+        {
+          "t": "Copa nacional",
+          "s": "pendiente",
+          "f": "F3"
+        },
+        {
+          "t": "Supercopa",
+          "s": "pendiente",
+          "f": "F3"
+        },
+        {
+          "t": "Competición continental de clubes",
+          "s": "pendiente",
+          "f": "F3"
+        },
+        {
+          "t": "Selecciones nacionales y ventanas internacionales",
+          "s": "pendiente",
+          "f": "F3"
+        },
+        {
+          "t": "Formatos mixtos (fase de grupos y eliminatoria)",
+          "s": "pendiente",
+          "f": "F3"
+        },
+        {
+          "t": "Ligas de otros países como paquetes de datos",
+          "s": "pendiente",
+          "f": "F3",
+          "i": 21
+        },
+        {
+          "t": "Niveles inferiores (amateur y formativos)",
+          "s": "idea",
+          "f": "F3"
+        },
+        {
+          "t": "Playoffs de ascenso con formato propio",
+          "s": "pendiente",
+          "n": "No verificado: hoy solo se confirma el playoff por el título."
+        },
+        {
+          "t": "Calendario con descansos y viajes",
+          "s": "pendiente",
+          "f": "F2"
+        },
+        {
+          "t": "Partidos aplazados y suspendidos",
+          "s": "idea",
+          "f": "F3"
+        },
+        {
+          "t": "Palmarés de cada competición",
+          "s": "pendiente",
+          "f": "F1",
+          "i": 14
+        }
+      ]
+    },
+    {
+      "t": "Mercado y contratos",
+      "why": "Cómo se mueven los jugadores y el dinero entre clubes, con reglas distintas según la liga.",
+      "f": "F0",
+      "c": [
+        {
+          "t": "Agentes libres: fichajes",
+          "s": "hecho"
+        },
+        {
+          "t": "Renovaciones y contratos cumplidos",
+          "s": "hecho"
+        },
+        {
+          "t": "Tope salarial y salario mínimo",
+          "s": "hecho"
+        },
+        {
+          "t": "Liberar jugadores con indemnización",
+          "s": "hecho",
+          "n": "Regla de indemnización pendiente de confirmar por el propietario (#24)."
+        },
+        {
+          "t": "Excepción del salario mínimo solo para llegar al mínimo de plantilla",
+          "s": "en-curso",
+          "p": 90,
+          "o": "claude",
+          "i": 26,
+          "n": "PR #38 abierto."
+        },
+        {
+          "t": "Mercado de la IA para los clubes rivales",
+          "s": "hecho"
+        },
+        {
+          "t": "Traspasos entre clubes con dinero y negociación",
+          "s": "pendiente",
+          "f": "F2",
+          "i": 8,
+          "n": "T-010."
+        },
+        {
+          "t": "Ofertas de rivales por jugadores del usuario",
+          "s": "pendiente",
+          "f": "F2",
+          "i": 8
+        },
+        {
+          "t": "Cláusulas de rescisión",
+          "s": "pendiente",
+          "f": "F2"
+        },
+        {
+          "t": "Cesiones",
+          "s": "pendiente",
+          "f": "F3"
+        },
+        {
+          "t": "Agentes de jugadores y comisiones",
+          "s": "idea",
+          "f": "F3"
+        },
+        {
+          "t": "Bonus por objetivos en los contratos",
+          "s": "pendiente",
+          "f": "F2"
+        },
+        {
+          "t": "Ventanas de mercado con fechas",
+          "s": "idea",
+          "f": "F3"
+        },
+        {
+          "t": "Rumores y noticias de fichajes",
+          "s": "pendiente",
+          "f": "F3"
+        },
+        {
+          "t": "Mercados distintos según la liga (topes, cupos, drafts)",
+          "s": "pendiente",
+          "f": "F3"
+        },
+        {
+          "t": "Draft de jóvenes (si el reglamento lo admite)",
+          "s": "idea",
+          "f": "F3"
+        }
+      ]
+    },
+    {
+      "t": "Finanzas",
+      "why": "El dinero como restricción real: ingresos, gastos, presupuestos y consecuencias de gestionar mal.",
+      "f": "F0",
+      "c": [
+        {
+          "t": "Ingresos: televisión, patrocinadores y entradas",
+          "s": "hecho"
+        },
+        {
+          "t": "Presupuesto salarial y descubierto",
+          "s": "hecho"
+        },
+        {
+          "t": "Contabilidad exacta de transacciones",
+          "s": "hecho"
+        },
+        {
+          "t": "Regresión de la reputación y efecto en ingresos",
+          "s": "hecho"
+        },
+        {
+          "t": "Escala monetaria realista",
+          "s": "pendiente",
+          "f": "F3",
+          "i": 20,
+          "n": "Las cifras actuales son inventadas (T-021)."
+        },
+        {
+          "t": "Precio de las entradas",
+          "s": "pendiente",
+          "f": "F2",
+          "i": 12,
+          "n": "T-013."
+        },
+        {
+          "t": "Patrocinadores con ofertas y condiciones",
+          "s": "pendiente",
+          "f": "F2",
+          "i": 12
+        },
+        {
+          "t": "Inversión en instalaciones y cantera",
+          "s": "pendiente",
+          "f": "F2",
+          "i": 12
+        },
+        {
+          "t": "Quiebra, licencias y sanciones",
+          "s": "pendiente",
+          "f": "F2",
+          "i": 12
+        },
+        {
+          "t": "Venta de camisetas y merchandising",
+          "s": "pendiente",
+          "f": "F3"
+        },
+        {
+          "t": "Reparto de derechos entre clubes",
+          "s": "pendiente",
+          "f": "F3"
+        },
+        {
+          "t": "Juego limpio financiero",
+          "s": "idea",
+          "f": "F3"
+        },
+        {
+          "t": "Informes de finanzas y previsión",
+          "s": "pendiente",
+          "f": "F2"
+        }
+      ]
+    },
+    {
+      "t": "Gestión del usuario",
+      "why": "Lo que el jugador puede hacer: decidir, delegar y entender las consecuencias.",
+      "f": "F1",
+      "c": [
+        {
+          "t": "Elegir equipo y empezar partida",
+          "s": "hecho"
+        },
+        {
+          "t": "Jugar jornadas y temporadas",
+          "s": "hecho"
+        },
+        {
+          "t": "Cambiar tácticas y alineación propias",
+          "s": "hecho"
+        },
+        {
+          "t": "Fichar, renovar y liberar",
+          "s": "hecho"
+        },
+        {
+          "t": "Ver finanzas del club",
+          "s": "hecho"
+        },
+        {
+          "t": "Avanzar día a día con calendario propio",
+          "s": "pendiente",
+          "f": "F1"
+        },
+        {
+          "t": "Bandeja de mensajes y noticias",
+          "s": "pendiente",
+          "f": "F2"
+        },
+        {
+          "t": "Delegar tareas en ayudantes",
+          "s": "pendiente",
+          "f": "F2"
+        },
+        {
+          "t": "Asistente que sugiere decisiones",
+          "s": "idea",
+          "f": "F3"
+        },
+        {
+          "t": "Objetivos y evaluación de la directiva",
+          "s": "pendiente",
+          "f": "F2"
+        },
+        {
+          "t": "Entrenamientos semanales",
+          "s": "pendiente",
+          "f": "F2"
+        },
+        {
+          "t": "Conversaciones con jugadores",
+          "s": "idea",
+          "f": "F3"
+        },
+        {
+          "t": "Modo carrera: cambiar de club",
+          "s": "pendiente",
+          "f": "F3"
+        },
+        {
+          "t": "Dificultad y asistencias configurables",
+          "s": "pendiente",
+          "f": "F6"
+        }
+      ]
+    },
+    {
+      "t": "Mundo persistente",
+      "why": "Un mundo que sigue vivo y estable durante decenas de temporadas, sin inflarse ni hundirse.",
+      "f": "F0",
+      "c": [
+        {
+          "t": "Temporada paso a paso con fase de mercado",
+          "s": "hecho"
+        },
+        {
+          "t": "Envejecimiento, retiradas y relevo con jóvenes",
+          "s": "hecho"
+        },
+        {
+          "t": "Estabilidad medida a 30 temporadas (pnpm stability)",
+          "s": "hecho"
+        },
+        {
+          "t": "Las estrellas del nivel uno no se aplanan con los años",
+          "s": "pendiente",
+          "f": "F2",
+          "i": 19,
+          "n": "T-020."
+        },
+        {
+          "t": "Historial de campeones, ascensos y descensos",
+          "s": "pendiente",
+          "f": "F1",
+          "i": 14
+        },
+        {
+          "t": "Récords históricos de liga y club",
+          "s": "pendiente",
+          "f": "F3"
+        },
+        {
+          "t": "Noticias del mundo (retiradas, récords, quiebras)",
+          "s": "pendiente",
+          "f": "F3"
+        },
+        {
+          "t": "Cantera real en lugar del relleno automático",
+          "s": "pendiente",
+          "f": "F2",
+          "i": 13
+        },
+        {
+          "t": "Estabilidad a 100 temporadas",
+          "s": "pendiente",
+          "f": "F3"
+        },
+        {
+          "t": "Evolución del juego (cambios de reglas con los años)",
+          "s": "idea",
+          "f": "F3"
+        }
+      ]
+    },
+    {
+      "t": "Datos, mods e idiomas",
+      "why": "Reglamentos, competiciones y contenido como datos: añadir una liga no debe tocar el motor.",
+      "f": "F3",
+      "c": [
+        {
+          "t": "Esquemas validados con zod y JSON Schema",
+          "s": "hecho",
+          "f": "F0"
+        },
+        {
+          "t": "Universo inicial de España masculina como datos",
+          "s": "hecho",
+          "f": "F0"
+        },
+        {
+          "t": "Cargador de paquetes de datos con errores legibles",
+          "s": "pendiente",
+          "i": 21,
+          "n": "T-022."
+        },
+        {
+          "t": "Versionado y compatibilidad de paquetes",
+          "s": "pendiente",
+          "i": 21
+        },
+        {
+          "t": "Elegir paquete al crear el universo (web y CLI)",
+          "s": "pendiente",
+          "i": 21
+        },
+        {
+          "t": "Ejemplo mínimo: liga de 8 equipos",
+          "s": "pendiente",
+          "i": 21
+        },
+        {
+          "t": "Guía para crear mods",
+          "s": "pendiente"
+        },
+        {
+          "t": "Editor de datos dentro del juego",
+          "s": "idea"
+        },
+        {
+          "t": "Generador de nombres por país y región",
+          "s": "pendiente"
+        },
+        {
+          "t": "Textos traducibles (i18n)",
+          "s": "pendiente",
+          "f": "F4"
+        },
+        {
+          "t": "Segundo idioma",
+          "s": "pendiente",
+          "f": "F4"
+        },
+        {
+          "t": "Importar datos propios del usuario sin traer datos reales",
+          "s": "idea"
+        },
+        {
+          "t": "Comprobación automática de nombres reales prohibidos",
+          "s": "pendiente"
+        }
+      ]
+    },
+    {
+      "t": "Guardado y persistencia",
+      "why": "Las partidas no se pierden, son compactas y se pueden recuperar.",
+      "f": "F1",
+      "c": [
+        {
+          "t": "Guardado en archivo JSON con comprobación",
+          "s": "hecho"
+        },
+        {
+          "t": "Interfaz SaveStore con migraciones",
+          "s": "hecho"
+        },
+        {
+          "t": "Guardar y cargar en el escritorio mediante diálogos",
+          "s": "hecho"
+        },
+        {
+          "t": "Varias ranuras con nombre dentro de la aplicación",
+          "s": "pendiente",
+          "i": 16,
+          "n": "T-017."
+        },
+        {
+          "t": "Guardado automático al cerrar temporada",
+          "s": "pendiente",
+          "i": 16
+        },
+        {
+          "t": "Política de historial y compactación",
+          "s": "pendiente",
+          "f": "F2",
+          "i": 17,
+          "n": "T-018. Decisión del propietario pendiente (#24)."
+        },
+        {
+          "t": "Compresión del archivo",
+          "s": "pendiente",
+          "f": "F2",
+          "i": 17
+        },
+        {
+          "t": "Recuperación ante archivo corrupto",
+          "s": "pendiente",
+          "i": 16
+        },
+        {
+          "t": "Copias de seguridad automáticas",
+          "s": "pendiente",
+          "f": "F2"
+        },
+        {
+          "t": "Repeticiones verificables tras recargar",
+          "s": "en-curso",
+          "p": 70,
+          "o": "codex",
+          "i": 27,
+          "n": "PR #32 de Codex."
+        }
+      ]
+    },
+    {
+      "t": "Interfaz web",
+      "why": "La cara del juego: clara, rápida y accesible.",
+      "f": "F1",
+      "c": [
+        {
+          "t": "Pantallas existentes",
+          "c": [
+            {
+              "t": "Generar universo y elegir equipo",
+              "s": "hecho"
+            },
+            {
+              "t": "Clasificación y calendario",
+              "s": "hecho"
+            },
+            {
+              "t": "Detalle del partido (box score y narración)",
+              "s": "hecho"
+            },
+            {
+              "t": "Plantilla y tácticas",
+              "s": "hecho"
+            },
+            {
+              "t": "Mercado de agentes libres",
+              "s": "hecho"
+            },
+            {
+              "t": "Finanzas",
+              "s": "hecho"
+            },
+            {
+              "t": "Guardar y cargar",
+              "s": "hecho"
+            }
+          ]
+        },
+        {
+          "t": "Pantallas por hacer",
+          "c": [
+            {
+              "t": "Plantilla y tácticas de cualquier equipo",
+              "s": "pendiente",
+              "i": 14
+            },
+            {
+              "t": "Ficha de jugador completa",
+              "s": "pendiente",
+              "i": 14
+            },
+            {
+              "t": "Líderes estadísticos",
+              "s": "pendiente",
+              "i": 14
+            },
+            {
+              "t": "Palmarés",
+              "s": "pendiente",
+              "i": 14
+            },
+            {
+              "t": "Buscador de jugadores y equipos",
+              "s": "pendiente",
+              "i": 14
+            },
+            {
+              "t": "Pantalla de inicio que explique cómo se juega",
+              "s": "pendiente",
+              "f": "F4",
+              "i": 23
+            },
+            {
+              "t": "Mercado de traspasos",
+              "s": "pendiente",
+              "f": "F2",
+              "i": 8
+            },
+            {
+              "t": "Cantera y ojeadores",
+              "s": "pendiente",
+              "f": "F2",
+              "i": 13
+            },
+            {
+              "t": "Bandeja de mensajes",
+              "s": "pendiente",
+              "f": "F2"
+            },
+            {
+              "t": "Instalaciones y patrocinadores",
+              "s": "pendiente",
+              "f": "F2",
+              "i": 12
+            },
+            {
+              "t": "Ajustes del juego",
+              "s": "pendiente",
+              "f": "F4"
+            },
+            {
+              "t": "Ayuda y glosario",
+              "s": "pendiente",
+              "f": "F4"
+            }
+          ]
+        },
+        {
+          "t": "Calidad de la interfaz",
+          "f": "F4",
+          "c": [
+            {
+              "t": "Sistema de diseño con modo claro y oscuro",
+              "s": "pendiente",
+              "i": 23,
+              "n": "T-024."
+            },
+            {
+              "t": "Adaptación a móvil",
+              "s": "pendiente",
+              "i": 23
+            },
+            {
+              "t": "Accesibilidad (contraste, teclado, lectores de pantalla)",
+              "s": "pendiente",
+              "i": 23
+            },
+            {
+              "t": "Tablas ordenables y filtros",
+              "s": "pendiente"
+            },
+            {
+              "t": "Atajos de teclado",
+              "s": "pendiente"
+            },
+            {
+              "t": "Explicaciones emergentes (tooltips) de cada atributo",
+              "s": "pendiente"
+            },
+            {
+              "t": "Gráficos de evolución (jugador, club, finanzas)",
+              "s": "pendiente"
+            },
+            {
+              "t": "Rendimiento con miles de filas",
+              "s": "pendiente"
+            }
+          ]
+        },
+        {
+          "t": "Versión jugable sin instalar nada (página única)",
+          "s": "pendiente",
+          "f": "F1",
+          "i": 9,
+          "n": "T-009. Plan B: la web ya se puede abrir; falta el archivo único."
+        }
+      ]
+    },
+    {
+      "t": "Visualización del partido",
+      "why": "Ver el partido, no solo leerlo, derivado siempre del registro de eventos.",
+      "f": "F4",
+      "c": [
+        {
+          "t": "Narración textual jugada a jugada",
+          "s": "hecho",
+          "f": "F0"
+        },
+        {
+          "t": "Pista 2D con los diez jugadores",
+          "s": "pendiente",
+          "i": 15,
+          "n": "T-016."
+        },
+        {
+          "t": "Mapa de tiros del partido",
+          "s": "pendiente",
+          "i": 15
+        },
+        {
+          "t": "Control de velocidad, pausa y salto de periodo",
+          "s": "pendiente",
+          "i": 15
+        },
+        {
+          "t": "Modo ver en directo con opción de saltar",
+          "s": "pendiente",
+          "i": 15
+        },
+        {
+          "t": "Estadísticas en vivo durante la reproducción",
+          "s": "pendiente"
+        },
+        {
+          "t": "Repeticiones de jugadas destacadas",
+          "s": "pendiente"
+        },
+        {
+          "t": "Sonido y ambiente",
+          "s": "idea"
+        },
+        {
+          "t": "Visualización 3D",
+          "s": "idea",
+          "n": "Fuera del alcance inicial."
+        }
+      ]
+    },
+    {
+      "t": "Aplicación de escritorio y distribución",
+      "why": "Que el propietario instale y actualice el juego sin pasar por GitHub.",
+      "f": "F5",
+      "c": [
+        {
+          "t": "Envoltorio Tauri 2 con instalador para Windows",
+          "s": "hecho",
+          "o": "claude",
+          "i": 22,
+          "n": "Se compila en el Windows de GitHub; nadie lo ha ejecutado aún en un Windows real."
+        },
+        {
+          "t": "Publicación en Releases de GitHub (preversión)",
+          "s": "en-curso",
+          "p": 60,
+          "o": "claude",
+          "i": 22
+        },
+        {
+          "t": "Versión 0.1.0-alpha.1 publicada",
+          "s": "pendiente",
+          "o": "claude",
+          "n": "Esperando autorización del propietario."
+        },
+        {
+          "t": "Canales alfa y beta",
+          "s": "pendiente"
+        },
+        {
+          "t": "Actualización automática desde el propio juego",
+          "s": "bloqueado",
+          "n": "Depende de decidir si hay repositorio público solo para instaladores (#22)."
+        },
+        {
+          "t": "Firma de código del instalador",
+          "s": "pendiente",
+          "n": "Sin firma Windows avisa (SmartScreen)."
+        },
+        {
+          "t": "La etiqueta de la Release corresponde al código compilado",
+          "s": "pendiente",
+          "o": "claude",
+          "i": 39,
+          "n": "Hallazgo de Codex."
+        },
+        {
+          "t": "Versión para macOS",
+          "s": "pendiente"
+        },
+        {
+          "t": "Versión para Linux",
+          "s": "pendiente"
+        },
+        {
+          "t": "Icono, pantalla de carga y nombre definitivos",
+          "s": "pendiente",
+          "f": "F6"
+        },
+        {
+          "t": "Informe de fallos opcional y respetuoso con la privacidad",
+          "s": "idea",
+          "f": "F6"
+        },
+        {
+          "t": "Publicación en una tienda",
+          "s": "idea",
+          "f": "F6"
+        }
+      ]
+    },
+    {
+      "t": "Calidad, pruebas y herramientas",
+      "why": "Poder fiarse de lo construido y detectar a tiempo lo que se rompe.",
+      "f": "F0",
+      "c": [
+        {
+          "t": "Integración continua (lint, formato, tipos, tests, compilación)",
+          "s": "hecho"
+        },
+        {
+          "t": "Más de 160 tests en Vitest",
+          "s": "hecho"
+        },
+        {
+          "t": "Tests de determinismo y de equilibrio táctico",
+          "s": "hecho"
+        },
+        {
+          "t": "Herramientas de línea de comandos: sim, bench, calibrar, estabilidad",
+          "s": "hecho"
+        },
+        {
+          "t": "Informes de mediciones en docs/benchmarks",
+          "s": "hecho"
+        },
+        {
+          "t": "Auditoría independiente de main",
+          "s": "en-curso",
+          "p": 60,
+          "o": "codex",
+          "i": 28,
+          "n": "Informe de Codex en revisión."
+        },
+        {
+          "t": "Pruebas de interfaz en navegador automatizado",
+          "s": "pendiente",
+          "f": "F1"
+        },
+        {
+          "t": "Pruebas de accesibilidad automáticas",
+          "s": "pendiente",
+          "f": "F4"
+        },
+        {
+          "t": "Medición de cobertura de tests",
+          "s": "pendiente"
+        },
+        {
+          "t": "Pruebas de generación aleatoria (fuzzing) del motor",
+          "s": "idea"
+        },
+        {
+          "t": "Pruebas de regresión de los informes (comparación automática)",
+          "s": "pendiente",
+          "n": "Hoy las cifras se comparan a mano."
+        },
+        {
+          "t": "Pruebas de rendimiento con umbral en CI",
+          "s": "idea"
+        },
+        {
+          "t": "Estabilidad a varias semillas en CI",
+          "s": "pendiente"
+        }
+      ]
+    },
+    {
+      "t": "Proceso y coordinación",
+      "why": "Que dos agentes y un propietario no programador trabajen sin estorbarse.",
+      "f": "F0",
+      "c": [
+        {
+          "t": "Reglas permanentes en CLAUDE.md y AGENTS.md",
+          "s": "hecho"
+        },
+        {
+          "t": "Tareas como Issues y etiquetas de agente",
+          "s": "hecho"
+        },
+        {
+          "t": "Revisión cruzada entre agentes",
+          "s": "hecho"
+        },
+        {
+          "t": "Fusión automática con la CI en verde",
+          "s": "hecho",
+          "n": "Falta confirmar la primera fusión real con PR elegible (#38)."
+        },
+        {
+          "t": "Trabajo bajo autorización del propietario",
+          "s": "en-curso",
+          "p": 80,
+          "o": "claude",
+          "n": "PR de reglas pendiente de fusión manual."
+        },
+        {
+          "t": "Esta hoja de ruta, generada y comprobada en CI",
+          "s": "en-curso",
+          "p": 70,
+          "o": "claude"
+        },
+        {
+          "t": "Política de fusión sin huecos conocidos",
+          "s": "pendiente",
+          "o": "claude",
+          "i": 36,
+          "n": "Hallazgos de Codex en #29."
+        },
+        {
+          "t": "Protección de la rama main",
+          "s": "bloqueado",
+          "i": 24,
+          "n": "Paso del propietario en GitHub."
+        },
+        {
+          "t": "Entorno de Codex en la nube",
+          "s": "bloqueado",
+          "i": 24,
+          "n": "Paso del propietario."
+        },
+        {
+          "t": "Registro de decisiones al día",
+          "s": "hecho"
+        }
+      ]
+    },
+    {
+      "t": "Documentación y comunidad",
+      "why": "Que cualquiera entienda el juego, el proyecto y cómo ampliarlo.",
+      "f": "F6",
+      "c": [
+        {
+          "t": "Documentación técnica (arquitectura, tácticas, escritorio)",
+          "s": "hecho",
+          "f": "F0"
+        },
+        {
+          "t": "Estado del proyecto y decisiones",
+          "s": "hecho",
+          "f": "F0"
+        },
+        {
+          "t": "README con cómo probarlo",
+          "s": "en-curso",
+          "p": 50,
+          "f": "F1"
+        },
+        {
+          "t": "Guía del jugador",
+          "s": "pendiente"
+        },
+        {
+          "t": "Tutorial dentro del juego",
+          "s": "pendiente"
+        },
+        {
+          "t": "Guía de mods",
+          "s": "pendiente",
+          "f": "F3"
+        },
+        {
+          "t": "Registro de cambios (changelog) por versión",
+          "s": "pendiente",
+          "f": "F5"
+        },
+        {
+          "t": "Licencia del proyecto",
+          "s": "pendiente"
+        },
+        {
+          "t": "Página web del proyecto",
+          "s": "idea"
+        },
+        {
+          "t": "Canal de comunidad para pruebas y comentarios",
+          "s": "idea"
+        },
+        {
+          "t": "Capturas y vídeo de presentación",
+          "s": "idea"
+        }
+      ]
+    },
+    {
+      "t": "Producto, legal y negocio",
+      "why": "Decisiones que no son código pero condicionan el lanzamiento.",
+      "f": "F6",
+      "c": [
+        {
+          "t": "Nombres reales prohibidos (pilar 7)",
+          "s": "hecho",
+          "f": "F0"
+        },
+        {
+          "t": "Nombre definitivo del juego",
+          "s": "pendiente"
+        },
+        {
+          "t": "Licencia de código y de contenido",
+          "s": "pendiente"
+        },
+        {
+          "t": "Política de privacidad (si hay informes de fallos)",
+          "s": "idea"
+        },
+        {
+          "t": "Modelo de distribución (gratuito, de pago, tienda)",
+          "s": "idea"
+        },
+        {
+          "t": "Acuerdos con datos o marcas reales",
+          "s": "idea",
+          "n": "Hoy se evita por diseño."
+        },
+        {
+          "t": "Accesibilidad como requisito de lanzamiento",
+          "s": "pendiente"
+        }
+      ]
+    },
+    {
+      "t": "Ideas sin clasificar",
+      "why": "Aparcamiento de ideas que aún no son tareas. No cuentan en el porcentaje.",
+      "aparte": true,
+      "f": "F6",
+      "c": [
+        {
+          "t": "Modo multijugador en la misma partida",
+          "s": "idea"
+        },
+        {
+          "t": "Mundo en línea compartido",
+          "s": "idea"
+        },
+        {
+          "t": "Aplicación para móvil",
+          "s": "idea"
+        },
+        {
+          "t": "Retos y escenarios (salvar un club en quiebra)",
+          "s": "idea"
+        },
+        {
+          "t": "Logros",
+          "s": "idea"
+        },
+        {
+          "t": "Modo espectador: ver una liga sin gestionar",
+          "s": "idea"
+        },
+        {
+          "t": "Exportar estadísticas a hoja de cálculo",
+          "s": "idea"
+        },
+        {
+          "t": "Escenarios históricos jugables",
+          "s": "idea"
+        }
+      ]
+    }
+  ]
+}

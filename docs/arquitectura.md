@@ -49,6 +49,21 @@ El usuario puede elegir un equipo, cambiar sus tácticas y ordenar su quinteto y
 una de esas decisiones crea un universo nuevo y solo afecta a los partidos que aún no se han
 jugado. Se puede guardar en cualquier momento, también a mitad de temporada.
 
+## Cómo evolucionan los jugadores
+
+Cada jugador tiene 20 atributos y un **potencial** oculto, que es el techo de su habilidad media.
+Al terminar cada temporada cumple un año y se desarrolla:
+
+- **Jóvenes:** cierran una parte de la distancia que les separa de su potencial.
+- **Entre unos 26 y 28 años:** se mantienen.
+- **Veteranos:** pierden primero físico (desde los 29), luego técnica (desde los 32) y por último
+  el tiro (desde los 34). La parte mental no baja.
+- **Retirada:** desde los 34 años con probabilidad creciente; a los 40 es segura.
+
+Los jugadores del universo inicial se generan con este mismo modelo (como promesas de 18 años a
+las que se hace evolucionar hasta su edad) y con el reparto de edades de equilibrio, para que el
+mundo no envejezca ni se rejuvenezca solo. La estabilidad se comprueba con `pnpm stability`.
+
 ## Dónde están los datos
 
 - Reglamentos: `packages/core/src/data/rulesets.json` (`fiba` y `nba-like`).

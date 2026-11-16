@@ -15,8 +15,8 @@ import {
   simulateSeason,
 } from '@bm27/core';
 
-const TASK = 'T-002';
-const ENGINE_LABEL = 'v1 (T-002), con entrenador PLACEHOLDER';
+const TASK = 'T-004';
+const ENGINE_LABEL = 'v1 con jugadores que se desarrollan (T-004), entrenador PLACEHOLDER';
 const SEED = 'bench-t001';
 const SEASONS = 10;
 const REPEATS = 5;
@@ -142,19 +142,19 @@ const lines = [
   '- Qué contiene: equipos, jugadores (incluidos los retirados), competiciones y, por cada temporada, clasificaciones, resultado de cada partido, series de playoff y estadísticas acumuladas por jugador.',
   '- Qué NO contiene: el registro de eventos ni el box score de cada partido. Se pueden reconstruir de forma idéntica re-simulando el partido con su semilla mientras la temporada esté en curso, pero no se guardan. JSON sin comprimir ni sangrado.',
   '',
-  '## Comparación con T-001 (motor provisional)',
+  '## Comparación con tareas anteriores',
   '',
-  '| Prueba | T-001 | Ahora |',
-  '| --- | --- | --- |',
-  `| B1 · temporada del nivel 1 | 143 ms | ${f0(median(b1Runs))} ms |`,
-  `| B2 · temporada de todo el universo | 1260 ms | ${f0(median(b2Runs))} ms |`,
-  `| B3 · 10 temporadas | 12,14 s | ${f2(seasonMs.reduce((a, b) => a + b, 0) / 1000)} s |`,
-  `| B3 · memoria al final | 28,2 MB | ${f1(heapEnd)} MB |`,
-  `| B4 · guardado tras 10 temporadas | 13,89 MB | ${f2(saveBytes / 1024 / 1024)} MB |`,
+  '| Prueba | T-001 | T-002 | Ahora |',
+  '| --- | --- | --- | --- |',
+  `| B1 · temporada del nivel 1 | 143 ms | 209 ms | ${f0(median(b1Runs))} ms |`,
+  `| B2 · temporada de todo el universo | 1260 ms | 1732 ms | ${f0(median(b2Runs))} ms |`,
+  `| B3 · 10 temporadas | 12,14 s | 19,32 s | ${f2(seasonMs.reduce((a, b) => a + b, 0) / 1000)} s |`,
+  `| B3 · memoria al final | 28,2 MB | 29,7 MB | ${f1(heapEnd)} MB |`,
+  `| B4 · guardado tras 10 temporadas | 13,89 MB | 15,60 MB | ${f2(saveBytes / 1024 / 1024)} MB |`,
   '',
-  'Las cifras de T-001 son las registradas en `T-001.md`, medidas en un contenedor equivalente pero en otra ejecución; la comparación es orientativa.',
+  'Las cifras de T-001 y T-002 son las registradas en `T-001.md` y `T-002.md`, medidas en un contenedor equivalente pero en otra ejecución; la comparación es orientativa. T-002 es anterior a la temporada paso a paso (T-003) y a la progresión de jugadores (T-004).',
   '',
-  'La calibración del motor (medias de liga frente a bandas de referencia) está en `T-002-calibracion.md`.',
+  'La calibración del motor (medias de liga frente a bandas de referencia) está en `T-004-calibracion.md`, y la estabilidad a largo plazo del mundo en `T-004-estabilidad.md`.',
   '',
 ];
 

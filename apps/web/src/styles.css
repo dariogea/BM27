@@ -121,3 +121,10 @@ code {
   background: #eee;
   padding: 0 4px;
 }
+.panel {
+  background: #fffbe6;
+  border: 1px solid #e6d98c;
+  border-radius: 6px;
+  padding: 4px 12px 8px;
+  margin: 12px 0;
+}

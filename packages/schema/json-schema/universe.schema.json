@@ -4,7 +4,7 @@
   "properties": {
     "schemaVersion": {
       "type": "number",
-      "const": 2
+      "const": 3
     },
     "seed": {
       "type": "string"
@@ -537,6 +537,11 @@
             ],
             "additionalProperties": false
           },
+          "potential": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 99
+          },
           "teamId": {
             "anyOf": [
               {
@@ -560,6 +565,7 @@
           "heightCm",
           "positions",
           "attributes",
+          "potential",
           "teamId",
           "retired"
         ],

@@ -208,7 +208,8 @@ describe('sensitivity: attributes matter', () => {
  */
 describe('plausibility (FIBA rules, top-level quality)', () => {
   it('averages fall inside professional reference bands', () => {
-    const games = 600;
+    // Six different squads, every ordered pair, so that no single squad decides the result.
+    const league = ['a', 'b', 'c', 'd', 'e', 'f'].map((id) => makeTestTeam(id, 70, `plaus-${id}`));
     const t = {
       pts: 0,
       poss: 0,
@@ -226,25 +227,32 @@ describe('plausibility (FIBA rules, top-level quality)', () => {
       blk: 0,
       pf: 0,
     };
-    for (let i = 0; i < games; i++) {
-      const { boxScore } = playMatch(teamA, teamB, fiba, `plaus-${i}`);
-      for (const team of [boxScore.home, boxScore.away]) {
-        const s = team.totals;
-        t.pts += team.points;
-        t.poss += team.possessions;
-        t.fga += s.fieldGoalsAttempted;
-        t.fgm += s.fieldGoalsMade;
-        t.tpa += s.threePointersAttempted;
-        t.tpm += s.threePointersMade;
-        t.fta += s.freeThrowsAttempted;
-        t.ftm += s.freeThrowsMade;
-        t.tov += s.turnovers;
-        t.orb += s.offensiveRebounds;
-        t.drb += s.defensiveRebounds;
-        t.ast += s.assists;
-        t.stl += s.steals;
-        t.blk += s.blocks;
-        t.pf += s.fouls;
+    let games = 0;
+    for (const home of league) {
+      for (const away of league) {
+        if (home === away) continue;
+        for (let rep = 0; rep < 20; rep++) {
+          games++;
+          const { boxScore } = playMatch(home, away, fiba, `plaus-${games}`);
+          for (const team of [boxScore.home, boxScore.away]) {
+            const s = team.totals;
+            t.pts += team.points;
+            t.poss += team.possessions;
+            t.fga += s.fieldGoalsAttempted;
+            t.fgm += s.fieldGoalsMade;
+            t.tpa += s.threePointersAttempted;
+            t.tpm += s.threePointersMade;
+            t.fta += s.freeThrowsAttempted;
+            t.ftm += s.freeThrowsMade;
+            t.tov += s.turnovers;
+            t.orb += s.offensiveRebounds;
+            t.drb += s.defensiveRebounds;
+            t.ast += s.assists;
+            t.stl += s.steals;
+            t.blk += s.blocks;
+            t.pf += s.fouls;
+          }
+        }
       }
     }
     const perTeam = (value: number): number => value / (games * 2);

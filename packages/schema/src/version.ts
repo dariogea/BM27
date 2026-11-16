@@ -6,5 +6,6 @@
  *   0 — T-001: first contract.
  *   1 — T-002: teams gain `tactics`.
  *   2 — T-003: teams gain `rotation`; universe gains `userTeamId` and `currentSeason`.
+ *   3 — T-004: players gain `potential`.
  */
-export const SCHEMA_VERSION = 2 as const;
+export const SCHEMA_VERSION = 3 as const;

@@ -13,6 +13,7 @@ import {
 } from '@bm27/schema';
 import { BUILTIN_RULESETS, DEFAULT_NAME_POOL, DEFAULT_UNIVERSE_CONFIG } from '../data';
 import { createRng, type Rng } from '../rng';
+import { sampleCareerAge } from './development';
 import { generatePlayer, playerId } from './player';
 
 export interface GenerateUniverseOptions {
@@ -75,8 +76,10 @@ export function generateUniverse(options: GenerateUniverseOptions): Universe {
           teamId,
           quality: teamQuality,
           position,
-          minAge: 19,
-          maxAge: 34,
+          minAge: 18,
+          maxAge: 18,
+          // Steady-state age mix, so the world does not age (or rejuvenate) over time.
+          age: sampleCareerAge(rng),
         });
         players.push(player);
         playerIds.push(player.id);

@@ -4,7 +4,7 @@
  * writes) league averages next to their reference targets.
  *
  *   pnpm calibrate            → prints the report
- *   pnpm calibrate --write    → also writes docs/benchmarks/T-002-calibracion.md
+ *   pnpm calibrate --write    → also writes docs/benchmarks/T-004-calibracion.md
  */
 import { writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -13,7 +13,7 @@ import { generateUniverse, simulateCompetitionSeason } from '@bm27/core';
 import type { MatchDetail, PlayType, ShotZone } from '@bm27/schema';
 import { PLAY_TYPES, SHOT_ZONES } from '@bm27/schema';
 
-const SEED = 'calibration-t002';
+const SEED = 'calibration-t002'; // same universe seed as in T-002, to compare
 
 /**
  * Reference values per team per 40 minutes for top-level FIBA-rules leagues.
@@ -209,7 +209,7 @@ function report(levelName: string, t: Totals, withTargets: boolean): string[] {
 
 const universe = generateUniverse({ seed: SEED });
 const out: string[] = [
-  '# Calibración del motor de partido v1 (T-002)',
+  '# Calibración del motor de partido v1 con jugadores que se desarrollan (T-004)',
   '',
   '> Archivo generado por `pnpm calibrate --write`. Cifras medidas simulando la liga regular de',
   `> cada nivel del universo con semilla \`${SEED}\`. Las bandas de referencia son **aproximadas**:`,
@@ -227,7 +227,7 @@ for (const competition of [...universe.competitions].sort((a, b) => a.level - b.
 console.log(out.join('\n'));
 if (process.argv.includes('--write')) {
   const here = dirname(fileURLToPath(import.meta.url));
-  const file = join(here, '..', '..', '..', 'docs', 'benchmarks', 'T-002-calibracion.md');
+  const file = join(here, '..', '..', '..', 'docs', 'benchmarks', 'T-004-calibracion.md');
   writeFileSync(file, out.join('\n'));
   console.log(`Escrito en ${file}`);
 }

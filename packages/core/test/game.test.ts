@@ -197,7 +197,9 @@ describe('managing a team', () => {
   });
 
   it('a worse line-up loses more: benching the five best players hurts', () => {
-    const teamId = fresh.competitions[0]!.teamIds[4]!;
+    // A good team (third in level 1) has room to fall; a bottom team would not.
+    const baseline = simulateSeason(fresh).season.competitions[0]!.groups[0]!.standings;
+    const teamId = baseline[2]!.teamId;
     const team = fresh.teams.find((t) => t.id === teamId)!;
     const playersById = new Map(fresh.players.map((p) => [p.id, p]));
     const best = prepareTeam(team, playersById).players.map((p) => p.id);

@@ -45,3 +45,9 @@ Reglas en [`coordinacion.md`](coordinacion.md).
 | Tarea | Título                                               | Estado  | Rama                            | Notas                                                                              |
 | ----- | ---------------------------------------------------- | ------- | ------------------------------- | ---------------------------------------------------------------------------------- |
 | #27   | Repeticiones verificadas con las entradas originales | PROBADA | `codex-027-repeticiones-fieles` | 126 tests aprobados; revisión cruzada pendiente. No cambia el formato de guardado. |
+
+## Revisiones de Codex
+
+| Tarea     | Título                  | Estado  | Rama                  | Notas                                                                               |
+| --------- | ----------------------- | ------- | --------------------- | ----------------------------------------------------------------------------------- |
+| Codex 001 | Auditoría de main (#28) | PROBADA | `codex-001-auditoria` | Lint, tipos y 104 tests aprobados. Hallazgos #26 y #27; revisión cruzada pendiente. |

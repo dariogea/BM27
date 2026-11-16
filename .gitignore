@@ -9,3 +9,6 @@ coverage/
 .vite/
 # Local saves produced by the CLI
 saves/
+# Rust / Tauri build output
+target/
+apps/desktop/src-tauri/gen/

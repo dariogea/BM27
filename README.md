@@ -63,6 +63,13 @@ Abre en el navegador la dirección que aparece (normalmente <http://localhost:51
 La misma semilla produce siempre el mismo universo. Para cerrar la página, pulsa `Ctrl + C` en la
 terminal.
 
+## Instalar el juego en Windows (.exe)
+
+Hay un instalador para Windows en la pestaña **Releases** del repositorio (con tu sesión de GitHub
+abierta). Descarga el `.exe`, ejecútalo y, si Windows avisa de que no reconoce al editor, pulsa
+**«Más información»** y **«Ejecutar de todos modos»**. Detalles y límites en
+[`docs/escritorio.md`](docs/escritorio.md).
+
 ## Ejecutar los tests
 
 ```bash

@@ -50,7 +50,9 @@ Abre en el navegador la dirección que aparece (normalmente <http://localhost:51
 5. En **Mi equipo** verás tu plantilla, tu próximo rival y tu último resultado; **Ver partido**
    abre el box score y la narración jugada a jugada.
 6. En **Competición** están las clasificaciones, los playoffs y todos los partidos.
-7. **Guardar partida** descarga un archivo; **Cargar partida** lo recupera, también a mitad de
+7. Al terminar la temporada, en **Mi equipo** aparece cómo han evolucionado tus jugadores (quién
+   mejora, quién baja y quién se retira). La columna **POT** es el potencial de cada uno.
+8. **Guardar partida** descarga un archivo; **Cargar partida** lo recupera, también a mitad de
    temporada.
 
 La misma semilla produce siempre el mismo universo. Para cerrar la página, pulsa `Ctrl + C` en la
@@ -92,7 +94,7 @@ pnpm bench
 ```
 
 Ejecuta las pruebas B1–B4 (tarda en torno a un minuto) y escribe el resultado en
-[`docs/benchmarks/T-002.md`](docs/benchmarks/T-002.md).
+[`docs/benchmarks/T-004.md`](docs/benchmarks/T-004.md).
 
 ## Comprobar la calibración del motor
 
@@ -102,7 +104,18 @@ pnpm calibrate
 
 Simula la liga regular de cada nivel y compara las medias (puntos, posesiones, porcentajes,
 faltas…) con bandas de referencia. Con `pnpm calibrate --write` guarda el informe en
-[`docs/benchmarks/T-002-calibracion.md`](docs/benchmarks/T-002-calibracion.md).
+[`docs/benchmarks/T-004-calibracion.md`](docs/benchmarks/T-004-calibracion.md).
+
+## Comprobar que el mundo es estable a largo plazo
+
+```bash
+pnpm stability
+```
+
+Simula 30 temporadas seguidas y muestra cómo evolucionan el nivel de cada liga, la edad media y las
+retiradas. Con `pnpm stability --write` guarda el informe en
+[`docs/benchmarks/T-004-estabilidad.md`](docs/benchmarks/T-004-estabilidad.md). Tarda en torno a
+un minuto y medio.
 
 ## Otros comandos
 

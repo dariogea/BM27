@@ -57,6 +57,24 @@ export interface MyTeamView {
   lastMatch: MatchResult | null;
 }
 
+/** How the user's squad changed at the end of a season. */
+export interface OffseasonReport {
+  /** Season that has just finished. */
+  seasonNumber: number;
+  rows: {
+    playerId: string;
+    name: string;
+    /** Age during the season that finished. */
+    age: number;
+    abilityBefore: number;
+    abilityAfter: number;
+    potential: number;
+    retired: boolean;
+  }[];
+  /** Youngsters who joined to replace retirees. */
+  arrivals: { playerId: string; name: string; age: number; ability: number; potential: number }[];
+}
+
 /** Everything the UI needs to draw the current state of the game. */
 export interface GameView {
   seed: string;
@@ -72,6 +90,8 @@ export interface GameView {
   /** Tables of the season in progress, or of the last finished one. */
   tables: CompetitionViewData[];
   myTeam: MyTeamView | null;
+  /** Squad changes after the last finished season, until the next step is played. */
+  offseason: OffseasonReport | null;
 }
 
 export type Reply =

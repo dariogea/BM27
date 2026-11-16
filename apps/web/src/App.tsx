@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { CompetitionView } from './CompetitionView';
 import { BoxScoreView } from './MatchView';
 import type { Command, GameView, Reply } from './protocol';
-import { LineupEditor, SquadTable, TacticsEditor } from './TeamView';
+import { LineupEditor, OffseasonPanel, SquadTable, TacticsEditor } from './TeamView';
 
 type Pending = Command extends infer C ? (C extends { id: number } ? Omit<C, 'id'> : never) : never;
 
@@ -254,6 +254,7 @@ export function App() {
               </>
             )}
           </p>
+          {view.offseason && <OffseasonPanel report={view.offseason} />}
           <SquadTable squad={mine.squad} />
         </section>
       )}

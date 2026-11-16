@@ -3,6 +3,7 @@ export * from './hash';
 export * from './data';
 export * from './generator/universe';
 export * from './generator/player';
+export * from './generator/development';
 export * from './match';
 export * from './season/schedule';
 export * from './season/standings';

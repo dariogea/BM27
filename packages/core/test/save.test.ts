@@ -15,6 +15,7 @@ import {
   generateUniverse,
   hashValue,
   importSave,
+  playerAbility,
   sha256Hex,
   simulateSeason,
   type SaveStore,
@@ -92,21 +93,51 @@ describe('JSON export / import with checksum', () => {
 });
 
 describe('migration of old saves', () => {
-  /** Rebuilds what a T-001 (contract v0) save looked like: no tactics on teams. */
+  /**
+   * Rebuilds what a T-001 (contract v0) save looked like: no tactics, no
+   * line-ups, no user team, no season in progress and no player potential.
+   */
   function asVersion0(universe: Universe): string {
     const old = JSON.parse(JSON.stringify(universe));
     old.schemaVersion = 0;
-    for (const team of old.teams) delete team.tactics;
+    delete old.currentSeason;
+    delete old.userTeamId;
+    for (const team of old.teams) {
+      delete team.tactics;
+      delete team.rotation;
+    }
+    for (const player of old.players) delete player.potential;
     const payload = JSON.stringify(old);
     return `{"format":"bm27-save","schemaVersion":0,"checksum":"sha256:${sha256Hex(payload)}","payload":${payload}}`;
   }
 
-  it('opens a version-0 save, adds default tactics and keeps everything else', () => {
+  it('opens a version-0 save, upgrades it step by step and keeps everything else', () => {
     const loaded = importSave(asVersion0(afterTwo));
     expect(loaded.schemaVersion).toBe(SCHEMA_VERSION);
     expect(loaded.teams.length).toBe(afterTwo.teams.length);
-    for (const team of loaded.teams) expect(team.tactics).toEqual(DEFAULT_TACTICS);
-    expect(hashValue(loaded.players)).toBe(hashValue(afterTwo.players));
+    for (const team of loaded.teams) {
+      expect(team.tactics).toEqual(DEFAULT_TACTICS);
+      expect(team.rotation).toBeNull();
+    }
+    expect(loaded.currentSeason).toBeNull();
+    expect(loaded.userTeamId).toBeNull();
+    // Potential is estimated from ability and age: never below ability, with a gap for the young.
+    const original = new Map(afterTwo.players.map((p) => [p.id, p]));
+    let youngGap = 0;
+    let youngCount = 0;
+    for (const player of loaded.players) {
+      const ability = playerAbility(player);
+      expect(player.potential).toBeGreaterThanOrEqual(Math.round(ability) - 1);
+      if (player.age <= 21) {
+        youngGap += player.potential - ability;
+        youngCount++;
+      }
+      // Everything except the new field is untouched.
+      const { potential: _ignored, ...rest } = original.get(player.id)!;
+      const { potential: _also, ...restLoaded } = player;
+      expect(restLoaded).toEqual(rest);
+    }
+    expect(youngGap / youngCount).toBeGreaterThan(2);
     expect(hashValue(loaded.history)).toBe(hashValue(afterTwo.history));
     // And the migrated universe can keep being simulated.
     expect(simulateSeason(loaded).universe.seasonNumber).toBe(afterTwo.seasonNumber + 1);

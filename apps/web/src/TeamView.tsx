@@ -1,7 +1,7 @@
 import type { Position, TeamTactics } from '@bm27/schema';
 import { useState } from 'react';
 import { TACTIC_LABELS, minutes } from './MatchView';
-import type { MyTeamView, SquadPlayer } from './protocol';
+import type { MyTeamView, OffseasonReport, SquadPlayer } from './protocol';
 
 const POSITION_LABELS: Record<Position, string> = {
   PG: 'Base',
@@ -36,6 +36,9 @@ export function SquadTable({ squad }: { squad: SquadPlayer[] }) {
             <th>Edad</th>
             <th>Alt</th>
             <th title="Valoración global">VAL</th>
+            <th title="Techo de habilidad si se desarrolla del todo (solo lo ves en tu equipo)">
+              POT
+            </th>
             <th title="Tiro cerca del aro">Aro</th>
             <th title="Media distancia">Med</th>
             <th title="Triple">Tri</th>
@@ -69,6 +72,7 @@ export function SquadTable({ squad }: { squad: SquadPlayer[] }) {
                 <td>
                   <strong>{overall.toFixed(0)}</strong>
                 </td>
+                <td>{p.potential}</td>
                 <td>{a.offensive.closeShot}</td>
                 <td>{a.offensive.midRange}</td>
                 <td>{a.offensive.threePoint}</td>
@@ -95,6 +99,73 @@ export function SquadTable({ squad }: { squad: SquadPlayer[] }) {
         * titular en el próximo partido. Atributos de 1 a 99. Las medias (MIN, PTS, REB, AS) son por
         partido en la temporada en curso.
       </p>
+    </div>
+  );
+}
+
+const signed = (n: number): string => (n > 0 ? `+${n.toFixed(1)}` : n.toFixed(1));
+
+/** Who improved, who declined and who retired when the season ended. */
+export function OffseasonPanel({ report }: { report: OffseasonReport }) {
+  const stayed = report.rows
+    .filter((r) => !r.retired)
+    .map((r) => ({ ...r, change: r.abilityAfter - r.abilityBefore }))
+    .sort((a, b) => b.change - a.change);
+  const retired = report.rows.filter((r) => r.retired);
+  return (
+    <div className="panel" data-testid="offseason">
+      <h3>Fin de la temporada {report.seasonNumber}: evolución de tu plantilla</h3>
+      <p className="note">
+        Habilidad = media de los 20 atributos. Los jóvenes mejoran hacia su potencial y los
+        veteranos pierden primero físico y luego técnica.
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th className="name">Jugador</th>
+            <th>Edad</th>
+            <th>Antes</th>
+            <th>Ahora</th>
+            <th>Cambio</th>
+            <th>POT</th>
+          </tr>
+        </thead>
+        <tbody>
+          {stayed.map((r) => (
+            <tr key={r.playerId} className={r.change >= 1 ? 'up' : r.change <= -1 ? 'down' : ''}>
+              <td className="name">{r.name}</td>
+              <td>{r.age + 1}</td>
+              <td>{r.abilityBefore.toFixed(1)}</td>
+              <td>{r.abilityAfter.toFixed(1)}</td>
+              <td>
+                <strong>{signed(r.change)}</strong>
+              </td>
+              <td>{r.potential}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      {retired.length > 0 && (
+        <p>
+          <strong>Se retiran:</strong>{' '}
+          {retired
+            .map((r) => `${r.name} (${r.age + 1} años, habilidad ${r.abilityAfter.toFixed(0)})`)
+            .join(', ')}
+          .
+        </p>
+      )}
+      {report.arrivals.length > 0 && (
+        <p>
+          <strong>Llegan jóvenes a la plantilla:</strong>{' '}
+          {report.arrivals
+            .map(
+              (a) =>
+                `${a.name} (${a.age} años, habilidad ${a.ability.toFixed(0)}, potencial ${a.potential})`,
+            )
+            .join(', ')}
+          .
+        </p>
+      )}
     </div>
   );
 }

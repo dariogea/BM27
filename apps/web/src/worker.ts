@@ -4,6 +4,7 @@ import {
   exportSave,
   generateUniverse,
   importSave,
+  playerAbility,
   playerOverall,
   prepareTeam,
   replayMatch,
@@ -13,7 +14,14 @@ import {
   standingsOf,
 } from '@bm27/core';
 import type { MatchDetail, MatchResult, Season, TeamTactics, Universe } from '@bm27/schema';
-import type { Command, CompetitionViewData, GameView, MyTeamView, Reply } from './protocol';
+import type {
+  Command,
+  CompetitionViewData,
+  GameView,
+  MyTeamView,
+  OffseasonReport,
+  Reply,
+} from './protocol';
 
 // The whole game state lives here, off the UI thread.
 let universe: Universe | null = null;
@@ -23,6 +31,8 @@ let replayUniverse: Universe | null = null;
  * Full detail of the user team's matches. They are kept because the user can
  * change tactics or line-up afterwards, which would make a replay differ.
  */
+/** What happened to the user's squad when the last season ended. */
+let offseasonReport: OffseasonReport | null = null;
 const myMatches = new Map<string, { detail: MatchDetail; tactics: Record<string, TeamTactics> }>();
 
 function tablesOf(u: Universe): CompetitionViewData[] {
@@ -145,6 +155,7 @@ function viewOf(u: Universe): GameView {
     teamNames: Object.fromEntries(u.teams.map((t) => [t.id, t.name])),
     tables: tablesOf(u),
     myTeam: myTeamOf(u),
+    offseason: offseasonReport,
   };
 }
 
@@ -171,7 +182,63 @@ function step(): { season: Season | null; played: MatchResult[] } {
   // After the last step the universe has aged; keep the pre-offseason one for replays.
   replayUniverse = outcome.season ? before : outcome.universe;
   universe = outcome.universe;
+  offseasonReport = null;
+  if (outcome.season && userTeamId) {
+    offseasonReport = buildOffseasonReport(
+      before,
+      outcome.universe,
+      userTeamId,
+      before.seasonNumber,
+    );
+  }
   return { season: outcome.season, played: outcome.played };
+}
+
+function buildOffseasonReport(
+  before: Universe,
+  after: Universe,
+  teamId: string,
+  seasonNumber: number,
+): OffseasonReport {
+  const team = before.teams.find((t) => t.id === teamId);
+  const newTeam = after.teams.find((t) => t.id === teamId);
+  const was = new Map(before.players.map((p) => [p.id, p]));
+  const now = new Map(after.players.map((p) => [p.id, p]));
+  const fullName = (p: { firstName: string; lastName: string }): string =>
+    `${p.firstName} ${p.lastName}`;
+  const rows = (team?.playerIds ?? []).flatMap((id) => {
+    const a = was.get(id);
+    const b = now.get(id);
+    if (!a || !b) return [];
+    return [
+      {
+        playerId: id,
+        name: fullName(a),
+        age: a.age,
+        abilityBefore: playerAbility(a),
+        abilityAfter: playerAbility(b),
+        potential: b.potential,
+        retired: b.retired,
+      },
+    ];
+  });
+  const arrivals = (newTeam?.playerIds ?? [])
+    .filter((id) => !was.has(id) || !(team?.playerIds ?? []).includes(id))
+    .flatMap((id) => {
+      const p = now.get(id);
+      return p
+        ? [
+            {
+              playerId: id,
+              name: fullName(p),
+              age: p.age,
+              ability: playerAbility(p),
+              potential: p.potential,
+            },
+          ]
+        : [];
+    });
+  return { seasonNumber, rows, arrivals };
 }
 
 function describeMine(played: MatchResult[], u: Universe, before: string | null): string {
@@ -197,6 +264,7 @@ function handle(command: Command): Reply {
   switch (command.type) {
     case 'generate': {
       universe = generateUniverse({ seed: command.seed });
+      offseasonReport = null;
       replayUniverse = universe;
       myMatches.clear();
       return state(
@@ -225,6 +293,7 @@ function handle(command: Command): Reply {
       );
     }
     case 'advance': {
+      offseasonReport = null;
       const userTeamId = need().userTeamId;
       const seasonNumber = need().seasonNumber;
       const { season, played } = step();
@@ -236,6 +305,7 @@ function handle(command: Command): Reply {
       );
     }
     case 'finishSeason': {
+      offseasonReport = null;
       const seasonNumber = need().seasonNumber;
       let matches = 0;
       for (;;) {
@@ -314,6 +384,7 @@ function handle(command: Command): Reply {
     }
     case 'importSave': {
       universe = importSave(command.json);
+      offseasonReport = null;
       replayUniverse = universe;
       myMatches.clear();
       return state(

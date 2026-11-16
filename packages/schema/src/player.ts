@@ -56,6 +56,11 @@ export const PlayerSchema = z.object({
   /** First entry is the primary position. */
   positions: z.array(PositionSchema).min(1).max(3),
   attributes: PlayerAttributesSchema,
+  /**
+   * Ceiling of the player's ability (the average of all his attributes) if he
+   * develops fully. Hidden information: a scout would only estimate it.
+   */
+  potential: z.number().int().min(1).max(99),
   /** Null when the player has no club (e.g. retired). */
   teamId: z.string().min(1).nullable(),
   retired: z.boolean(),

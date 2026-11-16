@@ -34,6 +34,37 @@ const MIGRATIONS: Record<number, (data: Json) => Json> = {
         )
       : data.teams,
   }),
+  // v2 → v3 (T-004): players get a potential, estimated from ability and age.
+  2: (data) => ({
+    ...data,
+    schemaVersion: 3,
+    players: Array.isArray(data.players)
+      ? data.players.map((player: unknown) => {
+          if (player === null || typeof player !== 'object' || 'potential' in player) return player;
+          const p = player as { age?: unknown; attributes?: unknown };
+          let sum = 0;
+          let count = 0;
+          if (p.attributes !== null && typeof p.attributes === 'object') {
+            for (const group of Object.values(p.attributes)) {
+              if (group === null || typeof group !== 'object') continue;
+              for (const value of Object.values(group)) {
+                if (typeof value === 'number') {
+                  sum += value;
+                  count++;
+                }
+              }
+            }
+          }
+          const ability = count > 0 ? sum / count : 50;
+          const age = typeof p.age === 'number' ? p.age : 27;
+          const headroom = Math.max(0, 26 - age) * 0.9;
+          return {
+            ...player,
+            potential: Math.max(1, Math.min(99, Math.round(ability + headroom))),
+          };
+        })
+      : data.players,
+  }),
 };
 
 export class MigrationError extends Error {

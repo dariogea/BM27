@@ -7,7 +7,8 @@
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "sim": "tsx src/sim.ts",
     "bench": "node --expose-gc --import tsx src/bench.ts",
-    "calibrate": "tsx src/calibrate.ts"
+    "calibrate": "tsx src/calibrate.ts",
+    "stability": "tsx src/stability.ts"
   },
   "dependencies": {
     "@bm27/core": "workspace:*",

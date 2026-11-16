@@ -79,6 +79,8 @@ La CI ejecuta exactamente eso en cada PR. **Un PR solo está listo si todo eso p
 
 ## Puntos donde es fácil estorbarse
 
+- **Hoja de ruta:** si cambia el estado de algo, actualiza `docs/roadmap/roadmap.json` y ejecuta
+  `pnpm roadmap` (nunca edites `docs/roadmap.md` a mano; un test lo comprueba).
 - **`docs/estado.md`:** lo actualiza cada PR. Edita **solo las filas de tus tareas** y, si hay
   conflicto al fusionar, resuélvelo fusionando `main` en tu rama (nunca reescribas el historial).
 - **`packages/schema`:** ver la regla 3. Solo un cambio de contrato en vuelo a la vez.

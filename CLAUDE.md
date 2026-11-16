@@ -27,7 +27,7 @@ TypeScript estricto · pnpm workspaces · `packages/core` · `packages/schema` (
 - Código, identificadores y comentarios en inglés. Documentación, PR y partes en español.
 - Cambios en `packages/schema` = cambios de contrato: justifícalos en el parte e incluye migración si afectan a datos guardados.
 - Una tarea solo está terminada si cumple sus criterios de aceptación y la CI está en verde.
-- Actualiza `docs/estado.md` en cada PR.
+- Actualiza `docs/estado.md` en cada PR y, si cambia el estado de algo, `docs/roadmap/roadmap.json` (luego `pnpm roadmap`; no edites `docs/roadmap.md` a mano).
 - Si algo te bloquea, no inventes: termina lo posible y explícalo en el parte.
 
 ## Trabajo con Codex

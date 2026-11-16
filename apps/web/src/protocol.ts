@@ -1,4 +1,4 @@
-import type { MatchDetail, Season } from '@bm27/schema';
+import type { MatchDetail, Season, TeamTactics } from '@bm27/schema';
 
 /** Commands the UI sends to the simulation worker. The UI never runs the core itself. */
 export type Command =
@@ -24,6 +24,8 @@ export type Reply =
       type: 'matchDetail';
       detail: MatchDetail;
       playerNames: Record<string, string>;
+      /** Tactics each team used in this match, by team id. */
+      tactics: Record<string, TeamTactics>;
       ms: number;
     }
   | { id: number; type: 'error'; message: string };

@@ -1,5 +1,37 @@
 import { z } from 'zod';
 
+/**
+ * Team tactics. Every option has a real, tested effect in the match engine
+ * (see packages/core/test/tactics.test.ts). Nothing here is decorative.
+ */
+export const TeamTacticsSchema = z.object({
+  /** How quickly the team looks for a shot and how much it runs. */
+  pace: z.enum(['slow', 'normal', 'fast']),
+  /** Where the offense tries to get its shots. */
+  offenseFocus: z.enum(['inside', 'balanced', 'perimeter']),
+  /** Man-to-man or zone defense. */
+  defenseScheme: z.enum(['man', 'zone']),
+  /** How the defense plays the pick and roll (only used in man-to-man). */
+  pickAndRollCoverage: z.enum(['drop', 'switch', 'hedge', 'blitz']),
+  /** Defensive pressure on the ball. */
+  pressure: z.enum(['low', 'normal', 'high']),
+  /** Send players to the offensive glass, or get back on defense. */
+  offensiveRebounding: z.enum(['get-back', 'normal', 'crash']),
+  /** How many players are in the regular rotation. */
+  rotationDepth: z.number().int().min(7).max(12),
+});
+export type TeamTactics = z.infer<typeof TeamTacticsSchema>;
+
+export const DEFAULT_TACTICS: TeamTactics = {
+  pace: 'normal',
+  offenseFocus: 'balanced',
+  defenseScheme: 'man',
+  pickAndRollCoverage: 'hedge',
+  pressure: 'normal',
+  offensiveRebounding: 'normal',
+  rotationDepth: 10,
+};
+
 export const TeamSchema = z.object({
   id: z.string().min(1),
   name: z.string().min(1),
@@ -7,5 +39,6 @@ export const TeamSchema = z.object({
   /** Geographic region, used to build regional groups. */
   region: z.string().min(1),
   playerIds: z.array(z.string().min(1)),
+  tactics: TeamTacticsSchema,
 });
 export type Team = z.infer<typeof TeamSchema>;

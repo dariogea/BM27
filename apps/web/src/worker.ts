@@ -1,6 +1,6 @@
 /// <reference lib="webworker" />
 import { generateUniverse, replayMatch, simulateSeason } from '@bm27/core';
-import type { Season, Universe } from '@bm27/schema';
+import type { Season, TeamTactics, Universe } from '@bm27/schema';
 import type { Command, Reply, UniverseSummary } from './protocol';
 
 // The whole simulation state lives here, off the UI thread.
@@ -63,7 +63,11 @@ function handle(command: Command): Reply {
       for (const p of universeBeforeLastSeason.players) {
         if (ids.has(p.id)) playerNames[p.id] = `${p.firstName} ${p.lastName}`;
       }
-      return { id: command.id, type: 'matchDetail', detail, playerNames, ms: ms() };
+      const tactics: Record<string, TeamTactics> = {};
+      for (const t of universeBeforeLastSeason.teams) {
+        if (t.id === result.homeTeamId || t.id === result.awayTeamId) tactics[t.id] = t.tactics;
+      }
+      return { id: command.id, type: 'matchDetail', detail, playerNames, tactics, ms: ms() };
     }
   }
 }

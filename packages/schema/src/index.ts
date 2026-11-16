@@ -8,5 +8,6 @@ export * from './match';
 export * from './season';
 export * from './universe';
 export * from './save';
+export * from './migrations';
 export * from './validate';
 export * from './jsonSchema';

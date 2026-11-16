@@ -6,13 +6,14 @@ import { PlayerSchema } from './player';
 import { RulesetSchema } from './ruleset';
 import { SaveEnvelopeSchema } from './save';
 import { SeasonSchema } from './season';
-import { TeamSchema } from './team';
+import { TeamSchema, TeamTacticsSchema } from './team';
 import { NamePoolSchema, UniverseConfigSchema, UniverseSchema } from './universe';
 
 /** Every public contract, by file name, for JSON Schema export (used by mods/tools). */
 export const CONTRACTS = {
   player: PlayerSchema,
   team: TeamSchema,
+  'team-tactics': TeamTacticsSchema,
   ruleset: RulesetSchema,
   competition: CompetitionSchema,
   event: MatchEventSchema,

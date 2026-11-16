@@ -1,5 +1,5 @@
-import type { Player, Position, Team } from '@bm27/schema';
-import { POSITIONS } from '@bm27/schema';
+import type { Player, Position, Team, TeamTactics } from '@bm27/schema';
+import { DEFAULT_TACTICS, POSITIONS } from '@bm27/schema';
 import {
   DEFAULT_NAME_POOL,
   createRng,
@@ -9,7 +9,12 @@ import {
 } from '../src/index';
 
 /** Builds a 12-player team of the given average quality for engine tests. */
-export function makeTestTeam(teamId: string, quality: number, seed: string): PreparedTeam {
+export function makeTestTeam(
+  teamId: string,
+  quality: number,
+  seed: string,
+  tactics: Partial<TeamTactics> = {},
+): PreparedTeam {
   const rng = createRng(seed);
   const players: Player[] = [];
   for (let i = 0; i < 12; i++) {
@@ -30,6 +35,7 @@ export function makeTestTeam(teamId: string, quality: number, seed: string): Pre
     city: 'Test',
     region: 'Test',
     playerIds: players.map((p) => p.id),
+    tactics: { ...DEFAULT_TACTICS, ...tactics },
   };
   return prepareTeam(team, new Map(players.map((p) => [p.id, p])));
 }

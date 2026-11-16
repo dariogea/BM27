@@ -32,6 +32,72 @@ describe('event log', () => {
     expect(events[0]?.type).toBe('period_start');
     expect(events[events.length - 1]?.type).toBe('game_end');
   });
+
+  it('shots carry a play type, a zone and a location inside the half court', () => {
+    const playTypes = new Set<string>();
+    const zones = new Set<string>();
+    for (let i = 0; i < 40; i++) {
+      for (const event of simulateMatch({
+        home: teamA,
+        away: teamB,
+        ruleset: fiba,
+        seed: `loc-${i}`,
+      })) {
+        if (event.type !== 'shot') continue;
+        playTypes.add(event.playType);
+        zones.add(event.zone);
+        expect(event.x).toBeGreaterThanOrEqual(0);
+        expect(event.x).toBeLessThanOrEqual(15);
+        expect(event.y).toBeGreaterThanOrEqual(0);
+        expect(event.y).toBeLessThanOrEqual(14);
+        const distance = Math.hypot(event.x - 7.5, event.y - 1.575);
+        if (event.zone === 'restricted') expect(distance).toBeLessThanOrEqual(1.3);
+        if (event.zone === 'above-break3') expect(distance).toBeGreaterThanOrEqual(6.75);
+        expect(event.shotType === 'three').toBe(event.zone.endsWith('3'));
+        expect(event.points).toBe(event.made ? (event.shotType === 'three' ? 3 : 2) : 0);
+      }
+    }
+    expect(playTypes.size).toBe(8); // every play type appears
+    expect(zones.size).toBe(5);
+  });
+
+  it('substitutions only happen while the ball is dead', () => {
+    const events = simulateMatch({ home: teamA, away: teamB, ruleset: fiba, seed: 'subs' });
+    let subs = 0;
+    events.forEach((event, index) => {
+      if (event.type !== 'substitution') return;
+      subs++;
+      // Walk back over other substitutions to the event that stopped play.
+      let k = index - 1;
+      while (events[k]?.type === 'substitution') k--;
+      const before = events[k]!;
+      const dead =
+        before.type === 'foul' ||
+        before.type === 'period_start' ||
+        (before.type === 'turnover' && before.stealPlayerId === undefined);
+      expect(dead, `substitution after a live "${before.type}"`).toBe(true);
+    });
+    expect(subs).toBeGreaterThan(10);
+  });
+
+  it('trailing teams foul on purpose at the end of close games', () => {
+    let intentional = 0;
+    for (let i = 0; i < 200; i++) {
+      for (const event of simulateMatch({
+        home: teamA,
+        away: teamB,
+        ruleset: fiba,
+        seed: `late-${i}`,
+      })) {
+        if (event.type !== 'foul' || !event.intentional) continue;
+        intentional++;
+        expect(event.period).toBeGreaterThanOrEqual(fiba.periods);
+        expect(event.clock).toBeLessThanOrEqual(35);
+        expect(event.teamId).not.toBe(event.offenseTeamId); // the defense fouls
+      }
+    }
+    expect(intentional).toBeGreaterThan(20);
+  });
 });
 
 describe.each<[string, Ruleset]>([
@@ -81,6 +147,9 @@ describe.each<[string, Ruleset]>([
       expect(home.totals.steals).toBeLessThanOrEqual(away.totals.turnovers);
       expect(away.totals.steals).toBeLessThanOrEqual(home.totals.turnovers);
       expect(home.totals.assists).toBeLessThanOrEqual(home.totals.fieldGoalsMade);
+      expect(home.totals.blocks).toBeLessThanOrEqual(
+        away.totals.fieldGoalsAttempted - away.totals.fieldGoalsMade,
+      );
       expect(Math.abs(home.possessions - away.possessions)).toBeLessThanOrEqual(
         2 * (ruleset.periods + overtimePeriods),
       );
@@ -132,55 +201,70 @@ describe('sensitivity: attributes matter', () => {
 });
 
 /**
- * PROVISIONAL plausibility ranges (documented in docs/benchmarks/T-001.md).
- * They are wide on purpose: the engine is a PLACEHOLDER. Reference values are
- * approximate public averages of top European FIBA-rules leagues in recent
- * seasons (about 78–86 points and 70–75 possessions per team per 40 minutes).
- * They come from general knowledge, not from a verified dataset.
+ * Plausibility bands. Reference: APPROXIMATE averages of top European
+ * FIBA-rules leagues in recent seasons (per team, per 40 minutes). They come
+ * from general knowledge, not from a verified dataset; see
+ * docs/benchmarks/T-002-calibracion.md for the full calibration report.
  */
-describe('provisional plausibility (FIBA rules, top-level quality)', () => {
-  it('averages fall inside reasonable professional ranges', () => {
-    const games = 500;
-    const total = {
-      points: 0,
-      possessions: 0,
+describe('plausibility (FIBA rules, top-level quality)', () => {
+  it('averages fall inside professional reference bands', () => {
+    const games = 600;
+    const t = {
+      pts: 0,
+      poss: 0,
       fga: 0,
       fgm: 0,
       tpa: 0,
       tpm: 0,
       fta: 0,
+      ftm: 0,
       tov: 0,
-      reb: 0,
+      orb: 0,
+      drb: 0,
+      ast: 0,
+      stl: 0,
+      blk: 0,
+      pf: 0,
     };
     for (let i = 0; i < games; i++) {
       const { boxScore } = playMatch(teamA, teamB, fiba, `plaus-${i}`);
       for (const team of [boxScore.home, boxScore.away]) {
-        total.points += team.points;
-        total.possessions += team.possessions;
-        total.fga += team.totals.fieldGoalsAttempted;
-        total.fgm += team.totals.fieldGoalsMade;
-        total.tpa += team.totals.threePointersAttempted;
-        total.tpm += team.totals.threePointersMade;
-        total.fta += team.totals.freeThrowsAttempted;
-        total.tov += team.totals.turnovers;
-        total.reb += team.totals.offensiveRebounds + team.totals.defensiveRebounds;
+        const s = team.totals;
+        t.pts += team.points;
+        t.poss += team.possessions;
+        t.fga += s.fieldGoalsAttempted;
+        t.fgm += s.fieldGoalsMade;
+        t.tpa += s.threePointersAttempted;
+        t.tpm += s.threePointersMade;
+        t.fta += s.freeThrowsAttempted;
+        t.ftm += s.freeThrowsMade;
+        t.tov += s.turnovers;
+        t.orb += s.offensiveRebounds;
+        t.drb += s.defensiveRebounds;
+        t.ast += s.assists;
+        t.stl += s.steals;
+        t.blk += s.blocks;
+        t.pf += s.fouls;
       }
     }
     const perTeam = (value: number): number => value / (games * 2);
-    expect(perTeam(total.points)).toBeGreaterThan(70);
-    expect(perTeam(total.points)).toBeLessThan(92);
-    expect(perTeam(total.possessions)).toBeGreaterThan(66);
-    expect(perTeam(total.possessions)).toBeLessThan(78);
-    expect(total.fgm / total.fga).toBeGreaterThan(0.42);
-    expect(total.fgm / total.fga).toBeLessThan(0.52);
-    expect(total.tpm / total.tpa).toBeGreaterThan(0.3);
-    expect(total.tpm / total.tpa).toBeLessThan(0.42);
-    expect(perTeam(total.fta)).toBeGreaterThan(10);
-    expect(perTeam(total.fta)).toBeLessThan(26);
-    expect(perTeam(total.tov)).toBeGreaterThan(9);
-    expect(perTeam(total.tov)).toBeLessThan(17);
-    expect(perTeam(total.reb)).toBeGreaterThan(28);
-    expect(perTeam(total.reb)).toBeLessThan(42);
+    const within = (value: number, low: number, high: number): void => {
+      expect(value).toBeGreaterThanOrEqual(low);
+      expect(value).toBeLessThanOrEqual(high);
+    };
+    within(perTeam(t.poss), 69, 75);
+    within(perTeam(t.pts), 75, 88);
+    within(t.fgm / t.fga, 0.44, 0.49);
+    within(t.tpm / t.tpa, 0.335, 0.385);
+    within(t.tpa / t.fga, 0.36, 0.46);
+    within(perTeam(t.fta), 15, 21);
+    within(t.ftm / t.fta, 0.72, 0.8);
+    within(t.orb / (t.orb + t.drb), 0.26, 0.32);
+    within(perTeam(t.ast), 15.5, 21);
+    within(perTeam(t.stl), 5.5, 8);
+    within(perTeam(t.blk), 2, 3.6);
+    within(perTeam(t.tov), 11.5, 14.5);
+    within(perTeam(t.pf), 17.5, 22);
   });
 
   it('a longer game (nba-like, 4x12) produces proportionally more points', () => {

@@ -23,6 +23,35 @@ export const SHOT_TYPES = ['rim', 'mid', 'three'] as const;
 export const ShotTypeSchema = z.enum(SHOT_TYPES);
 export type ShotType = z.infer<typeof ShotTypeSchema>;
 
+/** Area of the court a shot is taken from. */
+export const SHOT_ZONES = ['restricted', 'paint', 'midrange', 'corner3', 'above-break3'] as const;
+export const ShotZoneSchema = z.enum(SHOT_ZONES);
+export type ShotZone = z.infer<typeof ShotZoneSchema>;
+
+/** The action the offense ran to create the shot or commit the turnover. */
+export const PLAY_TYPES = [
+  'pick-and-roll',
+  'isolation',
+  'post-up',
+  'spot-up',
+  'cut',
+  'off-screen',
+  'transition',
+  'putback',
+] as const;
+export const PlayTypeSchema = z.enum(PLAY_TYPES);
+export type PlayType = z.infer<typeof PlayTypeSchema>;
+
+export const TURNOVER_KINDS = [
+  'bad-pass',
+  'lost-ball',
+  'travel',
+  'offensive-foul',
+  'shot-clock',
+] as const;
+export const TurnoverKindSchema = z.enum(TURNOVER_KINDS);
+export type TurnoverKind = z.infer<typeof TurnoverKindSchema>;
+
 export const MatchEventSchema = z.discriminatedUnion('type', [
   z.object({ ...base, type: z.literal('lineup'), teamId: id, playerIds: z.array(id).length(5) }),
   z.object({ ...base, type: z.literal('period_start'), periodSeconds: z.number().int().min(1) }),
@@ -39,6 +68,16 @@ export const MatchEventSchema = z.discriminatedUnion('type', [
     type: z.literal('shot'),
     playerId: id,
     shotType: ShotTypeSchema,
+    zone: ShotZoneSchema,
+    playType: PlayTypeSchema,
+    /**
+     * Where the shot was taken, in metres, on a half court: `x` across the
+     * court (0–15, basket at 7.5) and `y` away from the baseline (basket at 1.575).
+     */
+    x: z.number(),
+    y: z.number(),
+    /** How open the shooter was: -1 smothered … +1 wide open. */
+    openness: z.number().min(-1).max(1),
     made: z.boolean(),
     points: z.number().int().min(0).max(3),
     assistPlayerId: id.optional(),
@@ -52,15 +91,25 @@ export const MatchEventSchema = z.discriminatedUnion('type', [
     teamId: id,
     kind: z.enum(['offensive', 'defensive']),
   }),
-  z.object({ ...base, type: z.literal('turnover'), playerId: id, stealPlayerId: id.optional() }),
+  z.object({
+    ...base,
+    type: z.literal('turnover'),
+    playerId: id,
+    kind: TurnoverKindSchema,
+    playType: PlayTypeSchema,
+    stealPlayerId: id.optional(),
+  }),
   z.object({
     ...base,
     type: z.literal('foul'),
-    /** Player who commits the foul (always a defender in this prototype). */
+    /** Player who commits the foul. */
     playerId: id,
+    /** Team of the player who commits the foul. */
     teamId: id,
     drawnByPlayerId: id,
-    kind: z.enum(['personal', 'shooting']),
+    kind: z.enum(['personal', 'shooting', 'offensive']),
+    /** True for a deliberate foul to stop the clock late in the game. */
+    intentional: z.boolean(),
     /** Free throws awarded by this foul. */
     freeThrows: z.number().int().min(0).max(3),
     fouledOut: z.boolean(),

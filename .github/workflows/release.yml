@@ -11,8 +11,6 @@ name: Publicar versión (Windows)
 on:
   push:
     tags: ['v*']
-    # TEMPORAL (solo para probar la compilación en Windows durante T-023): se quita antes de fusionar.
-    branches: ['t-023-escritorio']
   workflow_dispatch:
     inputs:
       tag:

@@ -18,6 +18,12 @@ de tu disco. Esta página explica cómo se publica y qué se puede esperar.
 Las partidas se guardan con **«Guardar partida»**: te deja elegir dónde (por ejemplo, en Documentos), y
 **«Cargar partida»** abre ese archivo.
 
+## Probar sin esperar a una versión publicada
+
+Cada compilación manual deja el instalador como **artefacto** de la ejecución (14 días): _Actions →
+Publicar versión (Windows) → la ejecución → Artifacts → `bm27-windows-instalador`_. Es un `.zip` con el
+`.exe` dentro.
+
 ## Cómo se publica una versión
 
 Una versión es una **etiqueta** de Git con la forma `v0.1.0-alpha.1`:
@@ -35,9 +41,10 @@ Una versión es una **etiqueta** de Git con la forma `v0.1.0-alpha.1`:
 
 ## Qué NO está comprobado
 
-- **Nadie ha ejecutado todavía el instalador en un Windows real.** La compilación se valida en un
-  entorno Linux y en el Windows de GitHub, pero no se ha podido probar el instalador instalado ni el
-  guardado con los diálogos nativos de Windows hasta que alguien lo abra.
+- **Nadie ha ejecutado todavía el instalador en un Windows real.** Está comprobado que **se compila y
+  se genera en el Windows de GitHub** (los tests pasan allí y el instalador pesa 1,4 MB), y que el
+  proyecto Rust compila en Linux, pero no se ha podido probar el instalador instalado ni el guardado
+  con los diálogos nativos de Windows hasta que alguien lo abra.
 - La ventana usa **WebView2** de Microsoft (viene con Windows 11 y con Windows 10 actualizado). Si falta,
   el instalador lo descarga.
 

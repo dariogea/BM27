@@ -19,7 +19,9 @@
     "bench": "pnpm --filter @bm27/cli bench",
     "schema:export": "pnpm --filter @bm27/schema export-json-schema",
     "calibrate": "pnpm --filter @bm27/cli calibrate",
-    "stability": "pnpm --filter @bm27/cli stability"
+    "stability": "pnpm --filter @bm27/cli stability",
+    "roadmap": "node tools/roadmap/roadmap.mjs",
+    "roadmap:check": "node tools/roadmap/roadmap.mjs --check"
   },
   "devDependencies": {
     "@eslint/js": "^9.0.0",

@@ -9,6 +9,8 @@ ficticios.
 > partido los lleva todavía un entrenador provisional (`PLACEHOLDER`). Hay mercado de agentes libres
 > con contratos, topes salariales y finanzas de club, pero todavía no hay traspasos entre clubes.
 
+**Hoja de ruta con porcentajes y quién trabaja en qué:** [`docs/roadmap.md`](docs/roadmap.md).
+
 ## Qué hay en cada carpeta
 
 | Carpeta           | Qué es                                                                                                                                                                                   |

@@ -51,6 +51,18 @@ Desde el 16-11-2026 los agentes **no encadenan tareas por su cuenta**. Al termin
 Así controlas el gasto de crédito. Dentro de una tarea autorizada sí arreglan lo que haga falta para
 cerrarla (CI roja, revisiones de su propio PR). **Tus órdenes pasan siempre por delante.**
 
+## La hoja de ruta
+
+[`roadmap.md`](roadmap.md) muestra el proyecto de principio a fin: **fases**, **áreas**, el detalle de cada cosa
+pequeña, **quién trabaja en qué** y el **porcentaje** de avance. GitHub la dibuja con gráficos y barras.
+
+- Los datos viven en [`roadmap/roadmap.json`](roadmap/roadmap.json). **No se edita `roadmap.md` a mano**: se genera con
+  `pnpm roadmap`. Si los datos y el archivo no coinciden, la CI falla (test).
+- Cada PR que cambie el estado de algo **actualiza el JSON y regenera el archivo**, igual que `estado.md`.
+- Los dos agentes marcan en el JSON qué llevan (`"o": "claude"` o `"codex"`) y el Issue (`"i": 26`).
+- Los porcentajes de «en curso» son **estimaciones** de quien lo lleva; «hecho» solo cuando está fusionado y probado.
+- «Ideas sin clasificar» recoge lo que aún no es tarea y no cuenta en el porcentaje.
+
 ## Qué haces tú
 
 - **Fijar prioridades.** Díselo a Claude en el chat, o escribe en un Issue un comentario que empiece

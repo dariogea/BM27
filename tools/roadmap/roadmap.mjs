@@ -288,7 +288,7 @@ export function renderReadme(data) {
     '',
     `**Avance orientativo: ${pct(sum.total)}** \`${bar(sum.total, 30)}\``,
     '',
-    `${sum.leaves} elementos organizados en ${sum.phases.length} fases. Cada elemento pesa lo mismo; el avance en curso es una estimación, no una fecha de entrega.`,
+    `${sum.leaves} elementos organizados en ${sum.phases.length} fases y ${sum.areas.filter((a) => !a.aparte).length} áreas de desarrollo. Cada elemento pesa lo mismo; el avance en curso es una estimación, no una fecha de entrega.`,
     '',
     '```mermaid',
     'flowchart LR',

@@ -8,13 +8,13 @@
 
 ## Resumen
 
-**Avance global: 35 %** `██████████░░░░░░░░░░░░░░░░░░░░`  (295 elementos)
+**Avance global: 22 %** `██████░░░░░░░░░░░░░░░░░░░░░░░░`  (475 elementos)
 
 ```mermaid
 pie showData title Elementos por estado
   "Hecho" : 100
   "En curso" : 5
-  "Pendiente" : 157
+  "Pendiente" : 337
   "Bloqueado" : 3
   "Idea" : 30
 ```
@@ -23,12 +23,12 @@ pie showData title Elementos por estado
 
 ```mermaid
 flowchart LR
-  F0["F0 Fundaciones<br/>86 %"]
-  F1["F1 Primera versión jugable<br/>53 %"]
+  F0["F0 Fundaciones<br/>77 %"]
+  F1["F1 Primera versión jugable<br/>38 %"]
   F2["F2 Profundidad de gestión<br/>0 %"]
   F3["F3 Mundo, datos y mods<br/>0 %"]
   F4["F4 Presentación<br/>0 %"]
-  F5["F5 Distribución<br/>16 %"]
+  F5["F5 Distribución<br/>7 %"]
   F6["F6 Pulido y lanzamiento<br/>0 %"]
   F0 --> F1 --> F2 --> F3 --> F4 --> F5 --> F6
   classDef hecho fill:#2da44e,color:#fff,stroke:#1a7f37;
@@ -45,12 +45,12 @@ flowchart LR
 
 | Fase | Avance | | Hecho | Qué significa |
 | --- | ---: | --- | ---: | --- |
-| **F0 Fundaciones** | 86 % | `█████████████████░░░` | 83/98 | Núcleo determinista, motor de partido, mundo persistente, mercado y finanzas, y la forma de trabajar de los dos agentes. |
-| **F1 Primera versión jugable** | 53 % | `███████████░░░░░░░░░` | 16/31 | Que el propietario pueda jugar de principio a fin una temporada y varias más sin tocar una terminal, con consultas básicas del mundo. |
-| **F2 Profundidad de gestión** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0/64 | Traspasos, cantera y ojeadores, economía con decisiones, entrenador rival con criterio, motor de partido completo. |
-| **F3 Mundo, datos y mods** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0/51 | Calibración con datos contrastados, paquetes de datos cargables, pirámide completa y otras competiciones. |
-| **F4 Presentación** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0/24 | Diseño visual, accesibilidad, partido en 2D, narración, sonido y varios idiomas. |
-| **F5 Distribución** | 16 % | `███░░░░░░░░░░░░░░░░░` | 1/10 | Instalador de escritorio, versiones alfa y beta en GitHub, actualización automática, firma y otras plataformas. |
+| **F0 Fundaciones** | 77 % | `███████████████░░░░░` | 83/110 | Núcleo determinista, motor de partido, mundo persistente, mercado y finanzas, y la forma de trabajar de los dos agentes. |
+| **F1 Primera versión jugable** | 38 % | `████████░░░░░░░░░░░░` | 16/43 | Que el propietario pueda jugar de principio a fin una temporada y varias más sin tocar una terminal, con consultas básicas del mundo. |
+| **F2 Profundidad de gestión** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0/184 | Traspasos, cantera y ojeadores, economía con decisiones, entrenador rival con criterio, motor de partido completo. |
+| **F3 Mundo, datos y mods** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0/63 | Calibración con datos contrastados, paquetes de datos cargables, pirámide completa y otras competiciones. |
+| **F4 Presentación** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0/36 | Diseño visual, accesibilidad, partido en 2D, narración, sonido y varios idiomas. |
+| **F5 Distribución** | 7 % | `█░░░░░░░░░░░░░░░░░░░` | 1/22 | Instalador de escritorio, versiones alfa y beta en GitHub, actualización automática, firma y otras plataformas. |
 | **F6 Pulido y lanzamiento** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0/17 | Tutorial, equilibrio final, documentación, comunidad y lanzamiento. |
 
 ## Áreas del juego
@@ -76,6 +76,21 @@ flowchart LR
 | **Proceso y coordinación** | 70 % | `██████████████░░░░░░` | 7 | 0 | 1 | 2 | 0 | Que dos agentes y un propietario no programador trabajen sin estorbarse. |
 | **Documentación y comunidad** | 23 % | `█████░░░░░░░░░░░░░░░` | 2 | 1 | 5 | 0 | 3 | Que cualquiera entienda el juego, el proyecto y cómo ampliarlo. |
 | **Producto, legal y negocio** | 14 % | `███░░░░░░░░░░░░░░░░░` | 1 | 0 | 3 | 0 | 3 | Decisiones que no son código pero condicionan el lanzamiento. |
+| **Entrenamiento y planificación** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Convertir el trabajo semanal en decisiones con coste, seguimiento y efecto medible. |
+| **Salud y disponibilidad** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Gestionar la disponibilidad con incertidumbre y sin convertir las lesiones en castigos arbitrarios. |
+| **Vestuario y relaciones** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Dar consecuencias observables a la convivencia sin sustituir las decisiones deportivas por azar opaco. |
+| **Cantera y formación** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Desarrollar un sistema de formación con entradas, recursos y salidas, más allá del relevo automático. |
+| **Ojeo y reclutamiento** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Convertir la búsqueda de jugadores en información adquirida, contrastable y con límites. |
+| **Carrera del entrenador** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Permitir una trayectoria profesional con reputación y responsabilidades separadas del club. |
+| **Análisis estadístico y toma de decisiones** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Transformar los registros del motor en información útil, contextualizada y verificable. |
+| **Inscripción y administración deportiva** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Hacer explícitas las condiciones para competir y fichar, manteniendo las reglas como datos. |
+| **Calendario y logística deportiva** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Que los desplazamientos, descansos y cambios de fecha tengan una planificación coherente. |
+| **Instalaciones y operaciones del club** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Gestionar mejoras materiales con capacidad, plazos, mantenimiento y efectos concretos. |
+| **Medios y vínculo con la afición** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Representar la relación pública del club a partir de hechos del mundo simulado. |
+| **Experiencia inicial y aprendizaje** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Ayudar a empezar y comprender el juego sin exigir conocimientos técnicos ni de todas sus reglas. |
+| **Accesibilidad y preferencias de uso** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Permitir seguir y gestionar la partida con distintas capacidades, dispositivos y preferencias. |
+| **Seguridad y mantenimiento técnico** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Proteger partidas, distribución y dependencias sin introducir servicios externos innecesarios. |
+| **Compatibilidad y calidad de distribución** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Definir dónde funciona el juego y validar la instalación, actualización y retirada del producto. |
 | **Ideas sin clasificar _(no cuenta)_** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 0 | 0 | 8 | Aparcamiento de ideas que aún no son tareas. No cuentan en el porcentaje. |
 
 ## Quién trabaja en qué ahora
@@ -508,7 +523,7 @@ _Que dos agentes y un propietario no programador trabajen sin estorbarse._
 - ✅ Revisión cruzada entre agentes (`F0`)
 - ✅ Fusión automática con la CI en verde (`F0`) — _Primera fusión automática comprobada: PR #32._
 - ✅ Trabajo bajo autorización del propietario (`F0` · @claude) — _Fusionado (PR #40)._
-- ✅ Esta hoja de ruta, generada y comprobada en CI (`F0` · @codex · [#42](https://github.com/dariogea/BM27/issues/42)) — _Hoja completa #41 y resumen visual en README #42, generados desde los mismos datos con pnpm roadmap._
+- ✅ Esta hoja de ruta, generada y comprobada en CI (`F0` · @codex · [#42](https://github.com/dariogea/BM27/issues/42)) — _Hoja completa #41, resumen de portada #42 y ampliación/landing #44. Generados con pnpm roadmap._
 - ⬜ Política de fusión sin huecos conocidos (`F0` · @claude · [#36](https://github.com/dariogea/BM27/issues/36)) — _Hallazgos de Codex en #29._
 - ⛔ Protección de la rama main (`F0` · [#24](https://github.com/dariogea/BM27/issues/24)) — _Paso del propietario en GitHub._
 - ⛔ Entorno de Codex en la nube (`F0` · [#24](https://github.com/dariogea/BM27/issues/24)) — _Paso del propietario._
@@ -545,6 +560,336 @@ _Decisiones que no son código pero condicionan el lanzamiento._
 - 💡 Modelo de distribución (gratuito, de pago, tienda) (`F6`)
 - 💡 Acuerdos con datos o marcas reales (`F6`) — _Hoy se evita por diseño._
 - ⬜ Accesibilidad como requisito de lanzamiento (`F6`)
+
+</details>
+
+<details><summary><b>Entrenamiento y planificación</b> — 0 % `░░░░░░░░░░░░`</summary>
+
+_Convertir el trabajo semanal en decisiones con coste, seguimiento y efecto medible._
+
+- **Microciclo semanal** — 0 %
+  - ⬜ Distribuir sesiones entre partidos y días de descanso (`F2`)
+  - ⬜ Planificar cargas según la densidad del calendario (`F2`)
+  - ⬜ Preparar sesiones específicas para el siguiente rival (`F2`)
+  - ⬜ Guardar y aplicar plantillas de semanas de entrenamiento (`F2`)
+- **Desarrollo y especialización** — 0 %
+  - ⬜ Definir objetivos técnicos individuales por periodo (`F2`)
+  - ⬜ Diferenciar aprendizaje de una habilidad y mantenimiento (`F2`)
+  - ⬜ Entrenar la adaptación a una posición secundaria (`F2`)
+  - ⬜ Medir familiaridad con sistemas ofensivos y defensivos (`F2`)
+- **Seguimiento de la carga** — 0 %
+  - ⬜ Registrar carga acumulada de entrenamientos y partidos (`F2`)
+  - ⬜ Ajustar recomendaciones al estado de cada jugador (`F2`)
+  - ⬜ Explicar beneficios y costes esperados antes de confirmar (`F2`)
+  - ⬜ Comparar evolución prevista con evolución observada (`F2`)
+
+</details>
+
+<details><summary><b>Salud y disponibilidad</b> — 0 % `░░░░░░░░░░░░`</summary>
+
+_Gestionar la disponibilidad con incertidumbre y sin convertir las lesiones en castigos arbitrarios._
+
+- **Prevención** — 0 %
+  - ⬜ Relacionar riesgo físico con carga y recuperación (`F2`)
+  - ⬜ Modelar historial de lesiones por zona corporal (`F2`)
+  - ⬜ Programar revisiones médicas y detectar molestias (`F2`)
+  - ⬜ Ajustar prevención a edad y capacidad física (`F2`)
+- **Diagnóstico y recuperación** — 0 %
+  - ⬜ Separar diagnóstico inicial y pronóstico revisado (`F2`)
+  - ⬜ Ofrecer tratamientos con coste y duración diferenciados (`F2`)
+  - ⬜ Planificar rehabilitación y readaptación deportiva (`F2`)
+  - ⬜ Representar restricciones de participación por lesión (`F2`)
+- **Regreso a la competición** — 0 %
+  - ⬜ Limitar minutos en el regreso de una lesión (`F2`)
+  - ⬜ Modelar recaídas ligadas a una vuelta prematura (`F2`)
+  - ⬜ Distinguir alta médica de recuperación de ritmo (`F2`)
+  - ⬜ Mostrar partes médicos y previsiones al usuario (`F2`)
+
+</details>
+
+<details><summary><b>Vestuario y relaciones</b> — 0 % `░░░░░░░░░░░░`</summary>
+
+_Dar consecuencias observables a la convivencia sin sustituir las decisiones deportivas por azar opaco._
+
+- **Jerarquía del grupo** — 0 %
+  - ⬜ Designar capitanes y responsabilidades del vestuario (`F2`)
+  - ⬜ Representar liderazgo e influencia entre compañeros (`F2`)
+  - ⬜ Integrar nuevas incorporaciones en la dinámica del grupo (`F2`)
+  - ⬜ Detectar grupos enfrentados dentro de la plantilla (`F2`)
+- **Confianza y compromisos** — 0 %
+  - ⬜ Registrar promesas al jugador con fecha y condición (`F2`)
+  - ⬜ Resolver desacuerdos sobre minutos y rol deportivo (`F2`)
+  - ⬜ Explicar cambios de confianza hacia el entrenador (`F2`)
+  - ⬜ Aplicar respuestas coherentes al incumplir compromisos (`F2`)
+- **Comunicación interna** — 0 %
+  - ⬜ Preparar reuniones individuales y de grupo (`F2`)
+  - ⬜ Elegir mensajes de descanso con efecto contextual (`F2`)
+  - ⬜ Delegar conversaciones en un ayudante (`F2`)
+  - ⬜ Conservar un historial de acuerdos y conflictos (`F2`)
+
+</details>
+
+<details><summary><b>Cantera y formación</b> — 0 % `░░░░░░░░░░░░`</summary>
+
+_Desarrollar un sistema de formación con entradas, recursos y salidas, más allá del relevo automático._
+
+- **Captación e ingreso** — 0 %
+  - ⬜ Generar promociones juveniles según el entorno del club (`F2`)
+  - ⬜ Definir pruebas de acceso y periodos de evaluación (`F2`)
+  - ⬜ Respetar edades de incorporación configuradas por competición (`F2`)
+  - ⬜ Asignar recursos a cobertura territorial de captación (`F2`)
+- **Itinerario formativo** — 0 %
+  - ⬜ Organizar categorías y grupos de formación (`F2`)
+  - ⬜ Coordinar objetivos deportivos y necesidades educativas (`F2`)
+  - ⬜ Planificar tutorías entre juveniles y veteranos (`F2`)
+  - ⬜ Evaluar el progreso de cada promoción juvenil (`F2`)
+- **Paso al primer equipo** — 0 %
+  - ⬜ Convocar juveniles sin romper reglas de inscripción (`F2`)
+  - ⬜ Gestionar contratos de formación y su vencimiento (`F2`)
+  - ⬜ Comparar minutos en filial y primer equipo (`F2`)
+  - ⬜ Medir cuántos jugadores formados llegan al profesionalismo (`F2`)
+
+</details>
+
+<details><summary><b>Ojeo y reclutamiento</b> — 0 % `░░░░░░░░░░░░`</summary>
+
+_Convertir la búsqueda de jugadores en información adquirida, contrastable y con límites._
+
+- **Red de observación** — 0 %
+  - ⬜ Asignar zonas y competiciones a cada observador (`F2`)
+  - ⬜ Presupuestar viajes y tiempo de seguimiento (`F2`)
+  - ⬜ Programar observaciones sobre perfiles concretos (`F2`)
+  - ⬜ Compartir conocimiento entre miembros del equipo de ojeo (`F2`)
+- **Informes e incertidumbre** — 0 %
+  - ⬜ Separar atributos observados de estimaciones (`F2`)
+  - ⬜ Actualizar la confianza del informe con nuevas observaciones (`F2`)
+  - ⬜ Mostrar la antigüedad y procedencia de cada informe (`F2`)
+  - ⬜ Detectar discrepancias entre dos observadores (`F2`)
+- **Decisiones de contratación** — 0 %
+  - ⬜ Construir listas cortas con prioridades y alternativas (`F2`)
+  - ⬜ Comparar candidatos dentro de un presupuesto común (`F2`)
+  - ⬜ Evaluar encaje deportivo además de valoración global (`F2`)
+  - ⬜ Revisar el acierto de las recomendaciones tras un fichaje (`F2`)
+
+</details>
+
+<details><summary><b>Carrera del entrenador</b> — 0 % `░░░░░░░░░░░░`</summary>
+
+_Permitir una trayectoria profesional con reputación y responsabilidades separadas del club._
+
+- **Perfil y reputación profesional** — 0 %
+  - ⬜ Crear un perfil inicial con experiencia configurable (`F2`)
+  - ⬜ Distinguir reputación del entrenador y del club (`F2`)
+  - ⬜ Definir especialidades y formación del entrenador (`F2`)
+  - ⬜ Registrar logros y resultados de cada etapa (`F2`)
+- **Empleo y contrato** — 0 %
+  - ⬜ Presentar candidaturas a vacantes de entrenador (`F2`)
+  - ⬜ Participar en entrevistas con expectativas explícitas (`F2`)
+  - ⬜ Negociar duración y condiciones del contrato técnico (`F2`)
+  - ⬜ Continuar una partida tras un despido o dimisión (`F2`)
+- **Relación con la directiva** — 0 %
+  - ⬜ Pactar objetivos deportivos y económicos compatibles (`F2`)
+  - ⬜ Revisar objetivos cuando cambia el contexto del club (`F2`)
+  - ⬜ Explicar el nivel de confianza de la directiva (`F2`)
+  - ⬜ Resolver un cambio de club sin duplicar responsabilidades (`F2`)
+
+</details>
+
+<details><summary><b>Análisis estadístico y toma de decisiones</b> — 0 % `░░░░░░░░░░░░`</summary>
+
+_Transformar los registros del motor en información útil, contextualizada y verificable._
+
+- **Métricas deportivas** — 0 %
+  - ⬜ Normalizar estadísticas por posesión y por minuto (`F2`)
+  - ⬜ Calcular eficiencia de tiro y uso de posesiones (`F2`)
+  - ⬜ Distinguir rendimiento individual y contexto del equipo (`F2`)
+  - ⬜ Advertir cuando una muestra es demasiado pequeña (`F2`)
+- **Quintetos y enfrentamientos** — 0 %
+  - ⬜ Comparar rendimiento de combinaciones de cinco jugadores (`F2`)
+  - ⬜ Analizar perfiles de rivales con el mismo criterio (`F2`)
+  - ⬜ Desglosar resultados por tipo de jugada y zona (`F2`)
+  - ⬜ Relacionar ajustes tácticos con cambios de rendimiento (`F2`)
+- **Herramientas de consulta** — 0 %
+  - ⬜ Guardar filtros y comparaciones frecuentes (`F2`)
+  - ⬜ Mostrar evolución temporal sin mezclar temporadas (`F2`)
+  - ⬜ Exportar consultas estadísticas con sus unidades (`F2`)
+  - ⬜ Enlazar cada cifra de partido con los eventos de origen (`F2`)
+
+</details>
+
+<details><summary><b>Inscripción y administración deportiva</b> — 0 % `░░░░░░░░░░░░`</summary>
+
+_Hacer explícitas las condiciones para competir y fichar, manteniendo las reglas como datos._
+
+- **Elegibilidad de jugadores** — 0 %
+  - ⬜ Configurar fechas y límites de inscripción por torneo (`F3`)
+  - ⬜ Validar cupos por edad y condición de formación (`F3`)
+  - ⬜ Diferenciar plantilla contractual y lista de competición (`F3`)
+  - ⬜ Explicar el motivo exacto de una inscripción rechazada (`F3`)
+- **Gestión de competiciones** — 0 %
+  - ⬜ Registrar sanciones y partidos de suspensión (`F3`)
+  - ⬜ Gestionar plazos de recursos y resolución deportiva (`F3`)
+  - ⬜ Aplicar licencias de club y requisitos de participación (`F3`)
+  - ⬜ Conservar cambios reglamentarios con fecha de vigencia (`F3`)
+- **Integridad de los datos** — 0 %
+  - ⬜ Validar compatibilidad entre formatos y calendarios (`F3`)
+  - ⬜ Detectar clubes inscritos dos veces en el mismo torneo (`F3`)
+  - ⬜ Comprobar ascensos y descensos antes de cerrar la temporada (`F3`)
+  - ⬜ Documentar reglas excepcionales y sus prioridades (`F3`)
+
+</details>
+
+<details><summary><b>Calendario y logística deportiva</b> — 0 % `░░░░░░░░░░░░`</summary>
+
+_Que los desplazamientos, descansos y cambios de fecha tengan una planificación coherente._
+
+- **Planificación de viajes** — 0 %
+  - ⬜ Calcular distancias entre sedes ficticias (`F2`)
+  - ⬜ Planificar desplazamientos según horario del encuentro (`F2`)
+  - ⬜ Incluir recuperación por viajes sin duplicar fatiga (`F2`)
+  - ⬜ Reflejar el coste logístico en la previsión económica (`F2`)
+- **Restricciones del calendario** — 0 %
+  - ⬜ Evitar encuentros simultáneos para un mismo equipo (`F2`)
+  - ⬜ Resolver coincidencias de uso de un pabellón (`F2`)
+  - ⬜ Reubicar partidos suspendidos respetando descansos mínimos (`F2`)
+  - ⬜ Detectar calendarios imposibles antes de generarlos (`F2`)
+- **Agenda del club** — 0 %
+  - ⬜ Unificar partidos, entrenamientos y compromisos del club (`F2`)
+  - ⬜ Mostrar cambios de horario y su motivo (`F2`)
+  - ⬜ Avisar de periodos de alta concentración de partidos (`F2`)
+  - ⬜ Aplicar preferencias de calendario compatibles con el reglamento (`F2`)
+
+</details>
+
+<details><summary><b>Instalaciones y operaciones del club</b> — 0 % `░░░░░░░░░░░░`</summary>
+
+_Gestionar mejoras materiales con capacidad, plazos, mantenimiento y efectos concretos._
+
+- **Pabellón y explotación** — 0 %
+  - ⬜ Planificar obras sin aumentar el aforo de inmediato (`F2`)
+  - ⬜ Presupuestar mantenimiento y servicios de partido (`F2`)
+  - ⬜ Gestionar sectores, accesos y capacidad utilizable (`F2`)
+  - ⬜ Separar ocupación, entradas vendidas y recaudación (`F2`)
+- **Instalaciones deportivas** — 0 %
+  - ⬜ Dimensionar espacios de entrenamiento según usuarios (`F2`)
+  - ⬜ Evaluar mejoras médicas y de recuperación (`F2`)
+  - ⬜ Asignar instalaciones a cantera y primer equipo (`F2`)
+  - ⬜ Registrar desgaste y necesidades de renovación (`F2`)
+- **Proyectos e inversión** — 0 %
+  - ⬜ Comparar alternativas de inversión antes de aprobarlas (`F2`)
+  - ⬜ Gestionar plazos, hitos y pagos de un proyecto (`F2`)
+  - ⬜ Mostrar el impacto de cada mejora ya terminada (`F2`)
+  - ⬜ Permitir aplazar proyectos con consecuencias explícitas (`F2`)
+
+</details>
+
+<details><summary><b>Medios y vínculo con la afición</b> — 0 % `░░░░░░░░░░░░`</summary>
+
+_Representar la relación pública del club a partir de hechos del mundo simulado._
+
+- **Información del mundo** — 0 %
+  - ⬜ Generar noticias desde eventos deportivos verificables (`F2`)
+  - ⬜ Ordenar noticias por relevancia para el usuario (`F2`)
+  - ⬜ Agrupar información repetida del mismo acontecimiento (`F2`)
+  - ⬜ Distinguir una información confirmada de un rumor (`F2`)
+- **Comunicación pública** — 0 %
+  - ⬜ Elegir respuestas de prensa con consecuencias definidas (`F2`)
+  - ⬜ Contextualizar expectativas según categoría y recursos (`F2`)
+  - ⬜ Relacionar identidad deportiva y percepción de la afición (`F2`)
+  - ⬜ Gestionar anuncios públicos de decisiones del club (`F2`)
+- **Comunidad del club** — 0 %
+  - ⬜ Seguir satisfacción de grupos de aficionados (`F2`)
+  - ⬜ Medir el efecto de precios y resultados en la asistencia (`F2`)
+  - ⬜ Reconocer hitos y aniversarios de la historia ficticia (`F2`)
+  - ⬜ Conservar la memoria de rivalidades y encuentros destacados (`F2`)
+
+</details>
+
+<details><summary><b>Experiencia inicial y aprendizaje</b> — 0 % `░░░░░░░░░░░░`</summary>
+
+_Ayudar a empezar y comprender el juego sin exigir conocimientos técnicos ni de todas sus reglas._
+
+- **Primera partida** — 0 %
+  - ⬜ Explicar qué decisiones controla el usuario al empezar (`F1`)
+  - ⬜ Ofrecer recomendaciones para elegir un club inicial (`F1`)
+  - ⬜ Guiar la primera elección de quinteto (`F1`)
+  - ⬜ Acompañar el primer avance de jornada (`F1`)
+- **Ayuda contextual** — 0 %
+  - ⬜ Presentar términos de baloncesto con ejemplos claros (`F1`)
+  - ⬜ Explicar consecuencias antes de una decisión irreversible (`F1`)
+  - ⬜ Mostrar por qué una acción está deshabilitada (`F1`)
+  - ⬜ Permitir retomar una ayuda cerrada previamente (`F1`)
+- **Progresión del aprendizaje** — 0 %
+  - ⬜ Introducir sistemas avanzados de forma gradual (`F1`)
+  - ⬜ Ofrecer una partida de demostración con datos ficticios (`F1`)
+  - ⬜ Comprobar que una persona nueva puede completar una temporada (`F1`)
+  - ⬜ Recoger puntos de confusión de las pruebas de uso (`F1`)
+
+</details>
+
+<details><summary><b>Accesibilidad y preferencias de uso</b> — 0 % `░░░░░░░░░░░░`</summary>
+
+_Permitir seguir y gestionar la partida con distintas capacidades, dispositivos y preferencias._
+
+- **Navegación y lectura** — 0 %
+  - ⬜ Completar acciones principales usando solo teclado (`F4`)
+  - ⬜ Mantener un orden de foco coherente entre pantallas (`F4`)
+  - ⬜ Anunciar actualizaciones relevantes a lectores de pantalla (`F4`)
+  - ⬜ Ofrecer resúmenes textuales de gráficos deportivos (`F4`)
+- **Presentación adaptable** — 0 %
+  - ⬜ Distinguir estados sin depender únicamente del color (`F4`)
+  - ⬜ Permitir ampliar textos sin perder controles (`F4`)
+  - ⬜ Respetar la preferencia de movimiento reducido (`F4`)
+  - ⬜ Verificar contraste en estados de foco, error y selección (`F4`)
+- **Preferencias persistentes** — 0 %
+  - ⬜ Guardar preferencias de accesibilidad entre sesiones (`F4`)
+  - ⬜ Configurar formatos de números, moneda y fechas (`F4`)
+  - ⬜ Elegir densidad de tablas y tamaño de interfaz (`F4`)
+  - ⬜ Restaurar ajustes sin borrar partidas (`F4`)
+
+</details>
+
+<details><summary><b>Seguridad y mantenimiento técnico</b> — 0 % `░░░░░░░░░░░░`</summary>
+
+_Proteger partidas, distribución y dependencias sin introducir servicios externos innecesarios._
+
+- **Archivos y paquetes externos** — 0 %
+  - ⬜ Limitar tamaño y profundidad de archivos importados (`F0`)
+  - ⬜ Rechazar rutas peligrosas al extraer paquetes de datos (`F0`)
+  - ⬜ Validar contenido antes de modificar una partida abierta (`F0`)
+  - ⬜ Evitar ejecución de código en mods de datos (`F0`)
+- **Cadena de suministro** — 0 %
+  - ⬜ Revisar permisos de los flujos de construcción (`F0`)
+  - ⬜ Verificar procedencia y versiones de dependencias (`F0`)
+  - ⬜ Registrar y resolver avisos de dependencias vulnerables (`F0`)
+  - ⬜ Relacionar cada instalador con su commit y sus comprobaciones (`F0`)
+- **Recuperación y diagnóstico** — 0 %
+  - ⬜ Conservar datos al fallar una actualización (`F0`)
+  - ⬜ Ocultar datos sensibles en diagnósticos compartidos (`F0`)
+  - ⬜ Documentar la respuesta ante una versión defectuosa (`F0`)
+  - ⬜ Comprobar integridad antes de restaurar una copia de seguridad (`F0`)
+
+</details>
+
+<details><summary><b>Compatibilidad y calidad de distribución</b> — 0 % `░░░░░░░░░░░░`</summary>
+
+_Definir dónde funciona el juego y validar la instalación, actualización y retirada del producto._
+
+- **Requisitos y entorno** — 0 %
+  - ⬜ Publicar requisitos mínimos comprobados con una partida representativa (`F5`)
+  - ⬜ Detectar dependencias del sistema antes de instalar (`F5`)
+  - ⬜ Validar funcionamiento sin conexión tras la instalación (`F5`)
+  - ⬜ Comprobar rutas de usuario con espacios y caracteres internacionales (`F5`)
+- **Ciclo de instalación** — 0 %
+  - ⬜ Probar instalación desde una cuenta sin privilegios elevados (`F5`)
+  - ⬜ Actualizar conservando partidas y preferencias (`F5`)
+  - ⬜ Comprobar recuperación cuando una descarga se interrumpe (`F5`)
+  - ⬜ Desinstalar sin eliminar partidas sin consentimiento (`F5`)
+- **Compatibilidad y soporte** — 0 %
+  - ⬜ Mantener una matriz de sistemas y versiones verificadas (`F5`)
+  - ⬜ Probar escalado de pantalla y varios monitores (`F5`)
+  - ⬜ Recoger diagnósticos voluntarios con consentimiento (`F5`)
+  - ⬜ Preparar instrucciones para recuperar una instalación dañada (`F5`)
 
 </details>
 

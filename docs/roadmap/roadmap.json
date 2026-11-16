@@ -1535,7 +1535,7 @@
         {
           "t": "Esta hoja de ruta, generada y comprobada en CI",
           "s": "hecho",
-          "n": "Hoja completa #41 y resumen visual en README #42, generados desde los mismos datos con pnpm roadmap.",
+          "n": "Hoja completa #41, resumen de portada #42 y ampliación/landing #44. Generados con pnpm roadmap.",
           "o": "codex",
           "i": 42
         },
@@ -1655,6 +1655,1056 @@
         {
           "t": "Accesibilidad como requisito de lanzamiento",
           "s": "pendiente"
+        }
+      ]
+    },
+    {
+      "t": "Entrenamiento y planificación",
+      "why": "Convertir el trabajo semanal en decisiones con coste, seguimiento y efecto medible.",
+      "f": "F2",
+      "c": [
+        {
+          "t": "Microciclo semanal",
+          "c": [
+            {
+              "t": "Distribuir sesiones entre partidos y días de descanso",
+              "s": "pendiente"
+            },
+            {
+              "t": "Planificar cargas según la densidad del calendario",
+              "s": "pendiente"
+            },
+            {
+              "t": "Preparar sesiones específicas para el siguiente rival",
+              "s": "pendiente"
+            },
+            {
+              "t": "Guardar y aplicar plantillas de semanas de entrenamiento",
+              "s": "pendiente"
+            }
+          ]
+        },
+        {
+          "t": "Desarrollo y especialización",
+          "c": [
+            {
+              "t": "Definir objetivos técnicos individuales por periodo",
+              "s": "pendiente"
+            },
+            {
+              "t": "Diferenciar aprendizaje de una habilidad y mantenimiento",
+              "s": "pendiente"
+            },
+            {
+              "t": "Entrenar la adaptación a una posición secundaria",
+              "s": "pendiente"
+            },
+            {
+              "t": "Medir familiaridad con sistemas ofensivos y defensivos",
+              "s": "pendiente"
+            }
+          ]
+        },
+        {
+          "t": "Seguimiento de la carga",
+          "c": [
+            {
+              "t": "Registrar carga acumulada de entrenamientos y partidos",
+              "s": "pendiente"
+            },
+            {
+              "t": "Ajustar recomendaciones al estado de cada jugador",
+              "s": "pendiente"
+            },
+            {
+              "t": "Explicar beneficios y costes esperados antes de confirmar",
+              "s": "pendiente"
+            },
+            {
+              "t": "Comparar evolución prevista con evolución observada",
+              "s": "pendiente"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "t": "Salud y disponibilidad",
+      "why": "Gestionar la disponibilidad con incertidumbre y sin convertir las lesiones en castigos arbitrarios.",
+      "f": "F2",
+      "c": [
+        {
+          "t": "Prevención",
+          "c": [
+            {
+              "t": "Relacionar riesgo físico con carga y recuperación",
+              "s": "pendiente"
+            },
+            {
+              "t": "Modelar historial de lesiones por zona corporal",
+              "s": "pendiente"
+            },
+            {
+              "t": "Programar revisiones médicas y detectar molestias",
+              "s": "pendiente"
+            },
+            {
+              "t": "Ajustar prevención a edad y capacidad física",
+              "s": "pendiente"
+            }
+          ]
+        },
+        {
+          "t": "Diagnóstico y recuperación",
+          "c": [
+            {
+              "t": "Separar diagnóstico inicial y pronóstico revisado",
+              "s": "pendiente"
+            },
+            {
+              "t": "Ofrecer tratamientos con coste y duración diferenciados",
+              "s": "pendiente"
+            },
+            {
+              "t": "Planificar rehabilitación y readaptación deportiva",
+              "s": "pendiente"
+            },
+            {
+              "t": "Representar restricciones de participación por lesión",
+              "s": "pendiente"
+            }
+          ]
+        },
+        {
+          "t": "Regreso a la competición",
+          "c": [
+            {
+              "t": "Limitar minutos en el regreso de una lesión",
+              "s": "pendiente"
+            },
+            {
+              "t": "Modelar recaídas ligadas a una vuelta prematura",
+              "s": "pendiente"
+            },
+            {
+              "t": "Distinguir alta médica de recuperación de ritmo",
+              "s": "pendiente"
+            },
+            {
+              "t": "Mostrar partes médicos y previsiones al usuario",
+              "s": "pendiente"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "t": "Vestuario y relaciones",
+      "why": "Dar consecuencias observables a la convivencia sin sustituir las decisiones deportivas por azar opaco.",
+      "f": "F2",
+      "c": [
+        {
+          "t": "Jerarquía del grupo",
+          "c": [
+            {
+              "t": "Designar capitanes y responsabilidades del vestuario",
+              "s": "pendiente"
+            },
+            {
+              "t": "Representar liderazgo e influencia entre compañeros",
+              "s": "pendiente"
+            },
+            {
+              "t": "Integrar nuevas incorporaciones en la dinámica del grupo",
+              "s": "pendiente"
+            },
+            {
+              "t": "Detectar grupos enfrentados dentro de la plantilla",
+              "s": "pendiente"
+            }
+          ]
+        },
+        {
+          "t": "Confianza y compromisos",
+          "c": [
+            {
+              "t": "Registrar promesas al jugador con fecha y condición",
+              "s": "pendiente"
+            },
+            {
+              "t": "Resolver desacuerdos sobre minutos y rol deportivo",
+              "s": "pendiente"
+            },
+            {
+              "t": "Explicar cambios de confianza hacia el entrenador",
+              "s": "pendiente"
+            },
+            {
+              "t": "Aplicar respuestas coherentes al incumplir compromisos",
+              "s": "pendiente"
+            }
+          ]
+        },
+        {
+          "t": "Comunicación interna",
+          "c": [
+            {
+              "t": "Preparar reuniones individuales y de grupo",
+              "s": "pendiente"
+            },
+            {
+              "t": "Elegir mensajes de descanso con efecto contextual",
+              "s": "pendiente"
+            },
+            {
+              "t": "Delegar conversaciones en un ayudante",
+              "s": "pendiente"
+            },
+            {
+              "t": "Conservar un historial de acuerdos y conflictos",
+              "s": "pendiente"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "t": "Cantera y formación",
+      "why": "Desarrollar un sistema de formación con entradas, recursos y salidas, más allá del relevo automático.",
+      "f": "F2",
+      "c": [
+        {
+          "t": "Captación e ingreso",
+          "c": [
+            {
+              "t": "Generar promociones juveniles según el entorno del club",
+              "s": "pendiente"
+            },
+            {
+              "t": "Definir pruebas de acceso y periodos de evaluación",
+              "s": "pendiente"
+            },
+            {
+              "t": "Respetar edades de incorporación configuradas por competición",
+              "s": "pendiente"
+            },
+            {
+              "t": "Asignar recursos a cobertura territorial de captación",
+              "s": "pendiente"
+            }
+          ]
+        },
+        {
+          "t": "Itinerario formativo",
+          "c": [
+            {
+              "t": "Organizar categorías y grupos de formación",
+              "s": "pendiente"
+            },
+            {
+              "t": "Coordinar objetivos deportivos y necesidades educativas",
+              "s": "pendiente"
+            },
+            {
+              "t": "Planificar tutorías entre juveniles y veteranos",
+              "s": "pendiente"
+            },
+            {
+              "t": "Evaluar el progreso de cada promoción juvenil",
+              "s": "pendiente"
+            }
+          ]
+        },
+        {
+          "t": "Paso al primer equipo",
+          "c": [
+            {
+              "t": "Convocar juveniles sin romper reglas de inscripción",
+              "s": "pendiente"
+            },
+            {
+              "t": "Gestionar contratos de formación y su vencimiento",
+              "s": "pendiente"
+            },
+            {
+              "t": "Comparar minutos en filial y primer equipo",
+              "s": "pendiente"
+            },
+            {
+              "t": "Medir cuántos jugadores formados llegan al profesionalismo",
+              "s": "pendiente"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "t": "Ojeo y reclutamiento",
+      "why": "Convertir la búsqueda de jugadores en información adquirida, contrastable y con límites.",
+      "f": "F2",
+      "c": [
+        {
+          "t": "Red de observación",
+          "c": [
+            {
+              "t": "Asignar zonas y competiciones a cada observador",
+              "s": "pendiente"
+            },
+            {
+              "t": "Presupuestar viajes y tiempo de seguimiento",
+              "s": "pendiente"
+            },
+            {
+              "t": "Programar observaciones sobre perfiles concretos",
+              "s": "pendiente"
+            },
+            {
+              "t": "Compartir conocimiento entre miembros del equipo de ojeo",
+              "s": "pendiente"
+            }
+          ]
+        },
+        {
+          "t": "Informes e incertidumbre",
+          "c": [
+            {
+              "t": "Separar atributos observados de estimaciones",
+              "s": "pendiente"
+            },
+            {
+              "t": "Actualizar la confianza del informe con nuevas observaciones",
+              "s": "pendiente"
+            },
+            {
+              "t": "Mostrar la antigüedad y procedencia de cada informe",
+              "s": "pendiente"
+            },
+            {
+              "t": "Detectar discrepancias entre dos observadores",
+              "s": "pendiente"
+            }
+          ]
+        },
+        {
+          "t": "Decisiones de contratación",
+          "c": [
+            {
+              "t": "Construir listas cortas con prioridades y alternativas",
+              "s": "pendiente"
+            },
+            {
+              "t": "Comparar candidatos dentro de un presupuesto común",
+              "s": "pendiente"
+            },
+            {
+              "t": "Evaluar encaje deportivo además de valoración global",
+              "s": "pendiente"
+            },
+            {
+              "t": "Revisar el acierto de las recomendaciones tras un fichaje",
+              "s": "pendiente"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "t": "Carrera del entrenador",
+      "why": "Permitir una trayectoria profesional con reputación y responsabilidades separadas del club.",
+      "f": "F2",
+      "c": [
+        {
+          "t": "Perfil y reputación profesional",
+          "c": [
+            {
+              "t": "Crear un perfil inicial con experiencia configurable",
+              "s": "pendiente"
+            },
+            {
+              "t": "Distinguir reputación del entrenador y del club",
+              "s": "pendiente"
+            },
+            {
+              "t": "Definir especialidades y formación del entrenador",
+              "s": "pendiente"
+            },
+            {
+              "t": "Registrar logros y resultados de cada etapa",
+              "s": "pendiente"
+            }
+          ]
+        },
+        {
+          "t": "Empleo y contrato",
+          "c": [
+            {
+              "t": "Presentar candidaturas a vacantes de entrenador",
+              "s": "pendiente"
+            },
+            {
+              "t": "Participar en entrevistas con expectativas explícitas",
+              "s": "pendiente"
+            },
+            {
+              "t": "Negociar duración y condiciones del contrato técnico",
+              "s": "pendiente"
+            },
+            {
+              "t": "Continuar una partida tras un despido o dimisión",
+              "s": "pendiente"
+            }
+          ]
+        },
+        {
+          "t": "Relación con la directiva",
+          "c": [
+            {
+              "t": "Pactar objetivos deportivos y económicos compatibles",
+              "s": "pendiente"
+            },
+            {
+              "t": "Revisar objetivos cuando cambia el contexto del club",
+              "s": "pendiente"
+            },
+            {
+              "t": "Explicar el nivel de confianza de la directiva",
+              "s": "pendiente"
+            },
+            {
+              "t": "Resolver un cambio de club sin duplicar responsabilidades",
+              "s": "pendiente"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "t": "Análisis estadístico y toma de decisiones",
+      "why": "Transformar los registros del motor en información útil, contextualizada y verificable.",
+      "f": "F2",
+      "c": [
+        {
+          "t": "Métricas deportivas",
+          "c": [
+            {
+              "t": "Normalizar estadísticas por posesión y por minuto",
+              "s": "pendiente"
+            },
+            {
+              "t": "Calcular eficiencia de tiro y uso de posesiones",
+              "s": "pendiente"
+            },
+            {
+              "t": "Distinguir rendimiento individual y contexto del equipo",
+              "s": "pendiente"
+            },
+            {
+              "t": "Advertir cuando una muestra es demasiado pequeña",
+              "s": "pendiente"
+            }
+          ]
+        },
+        {
+          "t": "Quintetos y enfrentamientos",
+          "c": [
+            {
+              "t": "Comparar rendimiento de combinaciones de cinco jugadores",
+              "s": "pendiente"
+            },
+            {
+              "t": "Analizar perfiles de rivales con el mismo criterio",
+              "s": "pendiente"
+            },
+            {
+              "t": "Desglosar resultados por tipo de jugada y zona",
+              "s": "pendiente"
+            },
+            {
+              "t": "Relacionar ajustes tácticos con cambios de rendimiento",
+              "s": "pendiente"
+            }
+          ]
+        },
+        {
+          "t": "Herramientas de consulta",
+          "c": [
+            {
+              "t": "Guardar filtros y comparaciones frecuentes",
+              "s": "pendiente"
+            },
+            {
+              "t": "Mostrar evolución temporal sin mezclar temporadas",
+              "s": "pendiente"
+            },
+            {
+              "t": "Exportar consultas estadísticas con sus unidades",
+              "s": "pendiente"
+            },
+            {
+              "t": "Enlazar cada cifra de partido con los eventos de origen",
+              "s": "pendiente"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "t": "Inscripción y administración deportiva",
+      "why": "Hacer explícitas las condiciones para competir y fichar, manteniendo las reglas como datos.",
+      "f": "F3",
+      "c": [
+        {
+          "t": "Elegibilidad de jugadores",
+          "c": [
+            {
+              "t": "Configurar fechas y límites de inscripción por torneo",
+              "s": "pendiente"
+            },
+            {
+              "t": "Validar cupos por edad y condición de formación",
+              "s": "pendiente"
+            },
+            {
+              "t": "Diferenciar plantilla contractual y lista de competición",
+              "s": "pendiente"
+            },
+            {
+              "t": "Explicar el motivo exacto de una inscripción rechazada",
+              "s": "pendiente"
+            }
+          ]
+        },
+        {
+          "t": "Gestión de competiciones",
+          "c": [
+            {
+              "t": "Registrar sanciones y partidos de suspensión",
+              "s": "pendiente"
+            },
+            {
+              "t": "Gestionar plazos de recursos y resolución deportiva",
+              "s": "pendiente"
+            },
+            {
+              "t": "Aplicar licencias de club y requisitos de participación",
+              "s": "pendiente"
+            },
+            {
+              "t": "Conservar cambios reglamentarios con fecha de vigencia",
+              "s": "pendiente"
+            }
+          ]
+        },
+        {
+          "t": "Integridad de los datos",
+          "c": [
+            {
+              "t": "Validar compatibilidad entre formatos y calendarios",
+              "s": "pendiente"
+            },
+            {
+              "t": "Detectar clubes inscritos dos veces en el mismo torneo",
+              "s": "pendiente"
+            },
+            {
+              "t": "Comprobar ascensos y descensos antes de cerrar la temporada",
+              "s": "pendiente"
+            },
+            {
+              "t": "Documentar reglas excepcionales y sus prioridades",
+              "s": "pendiente"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "t": "Calendario y logística deportiva",
+      "why": "Que los desplazamientos, descansos y cambios de fecha tengan una planificación coherente.",
+      "f": "F2",
+      "c": [
+        {
+          "t": "Planificación de viajes",
+          "c": [
+            {
+              "t": "Calcular distancias entre sedes ficticias",
+              "s": "pendiente"
+            },
+            {
+              "t": "Planificar desplazamientos según horario del encuentro",
+              "s": "pendiente"
+            },
+            {
+              "t": "Incluir recuperación por viajes sin duplicar fatiga",
+              "s": "pendiente"
+            },
+            {
+              "t": "Reflejar el coste logístico en la previsión económica",
+              "s": "pendiente"
+            }
+          ]
+        },
+        {
+          "t": "Restricciones del calendario",
+          "c": [
+            {
+              "t": "Evitar encuentros simultáneos para un mismo equipo",
+              "s": "pendiente"
+            },
+            {
+              "t": "Resolver coincidencias de uso de un pabellón",
+              "s": "pendiente"
+            },
+            {
+              "t": "Reubicar partidos suspendidos respetando descansos mínimos",
+              "s": "pendiente"
+            },
+            {
+              "t": "Detectar calendarios imposibles antes de generarlos",
+              "s": "pendiente"
+            }
+          ]
+        },
+        {
+          "t": "Agenda del club",
+          "c": [
+            {
+              "t": "Unificar partidos, entrenamientos y compromisos del club",
+              "s": "pendiente"
+            },
+            {
+              "t": "Mostrar cambios de horario y su motivo",
+              "s": "pendiente"
+            },
+            {
+              "t": "Avisar de periodos de alta concentración de partidos",
+              "s": "pendiente"
+            },
+            {
+              "t": "Aplicar preferencias de calendario compatibles con el reglamento",
+              "s": "pendiente"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "t": "Instalaciones y operaciones del club",
+      "why": "Gestionar mejoras materiales con capacidad, plazos, mantenimiento y efectos concretos.",
+      "f": "F2",
+      "c": [
+        {
+          "t": "Pabellón y explotación",
+          "c": [
+            {
+              "t": "Planificar obras sin aumentar el aforo de inmediato",
+              "s": "pendiente"
+            },
+            {
+              "t": "Presupuestar mantenimiento y servicios de partido",
+              "s": "pendiente"
+            },
+            {
+              "t": "Gestionar sectores, accesos y capacidad utilizable",
+              "s": "pendiente"
+            },
+            {
+              "t": "Separar ocupación, entradas vendidas y recaudación",
+              "s": "pendiente"
+            }
+          ]
+        },
+        {
+          "t": "Instalaciones deportivas",
+          "c": [
+            {
+              "t": "Dimensionar espacios de entrenamiento según usuarios",
+              "s": "pendiente"
+            },
+            {
+              "t": "Evaluar mejoras médicas y de recuperación",
+              "s": "pendiente"
+            },
+            {
+              "t": "Asignar instalaciones a cantera y primer equipo",
+              "s": "pendiente"
+            },
+            {
+              "t": "Registrar desgaste y necesidades de renovación",
+              "s": "pendiente"
+            }
+          ]
+        },
+        {
+          "t": "Proyectos e inversión",
+          "c": [
+            {
+              "t": "Comparar alternativas de inversión antes de aprobarlas",
+              "s": "pendiente"
+            },
+            {
+              "t": "Gestionar plazos, hitos y pagos de un proyecto",
+              "s": "pendiente"
+            },
+            {
+              "t": "Mostrar el impacto de cada mejora ya terminada",
+              "s": "pendiente"
+            },
+            {
+              "t": "Permitir aplazar proyectos con consecuencias explícitas",
+              "s": "pendiente"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "t": "Medios y vínculo con la afición",
+      "why": "Representar la relación pública del club a partir de hechos del mundo simulado.",
+      "f": "F2",
+      "c": [
+        {
+          "t": "Información del mundo",
+          "c": [
+            {
+              "t": "Generar noticias desde eventos deportivos verificables",
+              "s": "pendiente"
+            },
+            {
+              "t": "Ordenar noticias por relevancia para el usuario",
+              "s": "pendiente"
+            },
+            {
+              "t": "Agrupar información repetida del mismo acontecimiento",
+              "s": "pendiente"
+            },
+            {
+              "t": "Distinguir una información confirmada de un rumor",
+              "s": "pendiente"
+            }
+          ]
+        },
+        {
+          "t": "Comunicación pública",
+          "c": [
+            {
+              "t": "Elegir respuestas de prensa con consecuencias definidas",
+              "s": "pendiente"
+            },
+            {
+              "t": "Contextualizar expectativas según categoría y recursos",
+              "s": "pendiente"
+            },
+            {
+              "t": "Relacionar identidad deportiva y percepción de la afición",
+              "s": "pendiente"
+            },
+            {
+              "t": "Gestionar anuncios públicos de decisiones del club",
+              "s": "pendiente"
+            }
+          ]
+        },
+        {
+          "t": "Comunidad del club",
+          "c": [
+            {
+              "t": "Seguir satisfacción de grupos de aficionados",
+              "s": "pendiente"
+            },
+            {
+              "t": "Medir el efecto de precios y resultados en la asistencia",
+              "s": "pendiente"
+            },
+            {
+              "t": "Reconocer hitos y aniversarios de la historia ficticia",
+              "s": "pendiente"
+            },
+            {
+              "t": "Conservar la memoria de rivalidades y encuentros destacados",
+              "s": "pendiente"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "t": "Experiencia inicial y aprendizaje",
+      "why": "Ayudar a empezar y comprender el juego sin exigir conocimientos técnicos ni de todas sus reglas.",
+      "f": "F1",
+      "c": [
+        {
+          "t": "Primera partida",
+          "c": [
+            {
+              "t": "Explicar qué decisiones controla el usuario al empezar",
+              "s": "pendiente"
+            },
+            {
+              "t": "Ofrecer recomendaciones para elegir un club inicial",
+              "s": "pendiente"
+            },
+            {
+              "t": "Guiar la primera elección de quinteto",
+              "s": "pendiente"
+            },
+            {
+              "t": "Acompañar el primer avance de jornada",
+              "s": "pendiente"
+            }
+          ]
+        },
+        {
+          "t": "Ayuda contextual",
+          "c": [
+            {
+              "t": "Presentar términos de baloncesto con ejemplos claros",
+              "s": "pendiente"
+            },
+            {
+              "t": "Explicar consecuencias antes de una decisión irreversible",
+              "s": "pendiente"
+            },
+            {
+              "t": "Mostrar por qué una acción está deshabilitada",
+              "s": "pendiente"
+            },
+            {
+              "t": "Permitir retomar una ayuda cerrada previamente",
+              "s": "pendiente"
+            }
+          ]
+        },
+        {
+          "t": "Progresión del aprendizaje",
+          "c": [
+            {
+              "t": "Introducir sistemas avanzados de forma gradual",
+              "s": "pendiente"
+            },
+            {
+              "t": "Ofrecer una partida de demostración con datos ficticios",
+              "s": "pendiente"
+            },
+            {
+              "t": "Comprobar que una persona nueva puede completar una temporada",
+              "s": "pendiente"
+            },
+            {
+              "t": "Recoger puntos de confusión de las pruebas de uso",
+              "s": "pendiente"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "t": "Accesibilidad y preferencias de uso",
+      "why": "Permitir seguir y gestionar la partida con distintas capacidades, dispositivos y preferencias.",
+      "f": "F4",
+      "c": [
+        {
+          "t": "Navegación y lectura",
+          "c": [
+            {
+              "t": "Completar acciones principales usando solo teclado",
+              "s": "pendiente"
+            },
+            {
+              "t": "Mantener un orden de foco coherente entre pantallas",
+              "s": "pendiente"
+            },
+            {
+              "t": "Anunciar actualizaciones relevantes a lectores de pantalla",
+              "s": "pendiente"
+            },
+            {
+              "t": "Ofrecer resúmenes textuales de gráficos deportivos",
+              "s": "pendiente"
+            }
+          ]
+        },
+        {
+          "t": "Presentación adaptable",
+          "c": [
+            {
+              "t": "Distinguir estados sin depender únicamente del color",
+              "s": "pendiente"
+            },
+            {
+              "t": "Permitir ampliar textos sin perder controles",
+              "s": "pendiente"
+            },
+            {
+              "t": "Respetar la preferencia de movimiento reducido",
+              "s": "pendiente"
+            },
+            {
+              "t": "Verificar contraste en estados de foco, error y selección",
+              "s": "pendiente"
+            }
+          ]
+        },
+        {
+          "t": "Preferencias persistentes",
+          "c": [
+            {
+              "t": "Guardar preferencias de accesibilidad entre sesiones",
+              "s": "pendiente"
+            },
+            {
+              "t": "Configurar formatos de números, moneda y fechas",
+              "s": "pendiente"
+            },
+            {
+              "t": "Elegir densidad de tablas y tamaño de interfaz",
+              "s": "pendiente"
+            },
+            {
+              "t": "Restaurar ajustes sin borrar partidas",
+              "s": "pendiente"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "t": "Seguridad y mantenimiento técnico",
+      "why": "Proteger partidas, distribución y dependencias sin introducir servicios externos innecesarios.",
+      "f": "F0",
+      "c": [
+        {
+          "t": "Archivos y paquetes externos",
+          "c": [
+            {
+              "t": "Limitar tamaño y profundidad de archivos importados",
+              "s": "pendiente"
+            },
+            {
+              "t": "Rechazar rutas peligrosas al extraer paquetes de datos",
+              "s": "pendiente"
+            },
+            {
+              "t": "Validar contenido antes de modificar una partida abierta",
+              "s": "pendiente"
+            },
+            {
+              "t": "Evitar ejecución de código en mods de datos",
+              "s": "pendiente"
+            }
+          ]
+        },
+        {
+          "t": "Cadena de suministro",
+          "c": [
+            {
+              "t": "Revisar permisos de los flujos de construcción",
+              "s": "pendiente"
+            },
+            {
+              "t": "Verificar procedencia y versiones de dependencias",
+              "s": "pendiente"
+            },
+            {
+              "t": "Registrar y resolver avisos de dependencias vulnerables",
+              "s": "pendiente"
+            },
+            {
+              "t": "Relacionar cada instalador con su commit y sus comprobaciones",
+              "s": "pendiente"
+            }
+          ]
+        },
+        {
+          "t": "Recuperación y diagnóstico",
+          "c": [
+            {
+              "t": "Conservar datos al fallar una actualización",
+              "s": "pendiente"
+            },
+            {
+              "t": "Ocultar datos sensibles en diagnósticos compartidos",
+              "s": "pendiente"
+            },
+            {
+              "t": "Documentar la respuesta ante una versión defectuosa",
+              "s": "pendiente"
+            },
+            {
+              "t": "Comprobar integridad antes de restaurar una copia de seguridad",
+              "s": "pendiente"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "t": "Compatibilidad y calidad de distribución",
+      "why": "Definir dónde funciona el juego y validar la instalación, actualización y retirada del producto.",
+      "f": "F5",
+      "c": [
+        {
+          "t": "Requisitos y entorno",
+          "c": [
+            {
+              "t": "Publicar requisitos mínimos comprobados con una partida representativa",
+              "s": "pendiente"
+            },
+            {
+              "t": "Detectar dependencias del sistema antes de instalar",
+              "s": "pendiente"
+            },
+            {
+              "t": "Validar funcionamiento sin conexión tras la instalación",
+              "s": "pendiente"
+            },
+            {
+              "t": "Comprobar rutas de usuario con espacios y caracteres internacionales",
+              "s": "pendiente"
+            }
+          ]
+        },
+        {
+          "t": "Ciclo de instalación",
+          "c": [
+            {
+              "t": "Probar instalación desde una cuenta sin privilegios elevados",
+              "s": "pendiente"
+            },
+            {
+              "t": "Actualizar conservando partidas y preferencias",
+              "s": "pendiente"
+            },
+            {
+              "t": "Comprobar recuperación cuando una descarga se interrumpe",
+              "s": "pendiente"
+            },
+            {
+              "t": "Desinstalar sin eliminar partidas sin consentimiento",
+              "s": "pendiente"
+            }
+          ]
+        },
+        {
+          "t": "Compatibilidad y soporte",
+          "c": [
+            {
+              "t": "Mantener una matriz de sistemas y versiones verificadas",
+              "s": "pendiente"
+            },
+            {
+              "t": "Probar escalado de pantalla y varios monitores",
+              "s": "pendiente"
+            },
+            {
+              "t": "Recoger diagnósticos voluntarios con consentimiento",
+              "s": "pendiente"
+            },
+            {
+              "t": "Preparar instrucciones para recuperar una instalación dañada",
+              "s": "pendiente"
+            }
+          ]
         }
       ]
     },

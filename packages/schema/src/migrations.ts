@@ -120,6 +120,94 @@ const MIGRATIONS: Record<number, (data: Json) => Json> = {
         : data.players,
     };
   },
+  // v4 → v5 (T-006): money. Frozen numbers: what the game used when v5 was introduced.
+  4: (data) => {
+    const ECONOMY: Record<number, Record<string, number>> = {
+      1: {
+        tvRevenue: 1_400_000,
+        sponsorRevenue: 1_900_000,
+        ticketPrice: 20,
+        averageAttendance: 4_000,
+        fixedCosts: 1_100_000,
+        wageShare: 0.7,
+        baseReputation: 70,
+      },
+      2: {
+        tvRevenue: 650_000,
+        sponsorRevenue: 900_000,
+        ticketPrice: 15,
+        averageAttendance: 2_600,
+        fixedCosts: 500_000,
+        wageShare: 0.7,
+        baseReputation: 55,
+      },
+      3: {
+        tvRevenue: 330_000,
+        sponsorRevenue: 450_000,
+        ticketPrice: 11,
+        averageAttendance: 1_400,
+        fixedCosts: 260_000,
+        wageShare: 0.7,
+        baseReputation: 40,
+      },
+      4: {
+        tvRevenue: 160_000,
+        sponsorRevenue: 220_000,
+        ticketPrice: 8,
+        averageAttendance: 700,
+        fixedCosts: 130_000,
+        wageShare: 0.7,
+        baseReputation: 25,
+      },
+    };
+    const levelOf = new Map<string, number>();
+    if (Array.isArray(data.competitions)) {
+      for (const c of data.competitions) {
+        const comp = c as { level?: unknown; teamIds?: unknown };
+        if (Array.isArray(comp.teamIds)) {
+          for (const id of comp.teamIds) levelOf.set(String(id), Number(comp.level) || 4);
+        }
+      }
+    }
+    return {
+      ...data,
+      schemaVersion: 5,
+      competitions: Array.isArray(data.competitions)
+        ? data.competitions.map((c: unknown) =>
+            c !== null && typeof c === 'object' && !('economy' in c)
+              ? { ...c, economy: ECONOMY[Number((c as { level?: unknown }).level)] ?? ECONOMY[4] }
+              : c,
+          )
+        : data.competitions,
+      teams: Array.isArray(data.teams)
+        ? data.teams.map((team: unknown) => {
+            if (team === null || typeof team !== 'object' || 'finance' in team) return team;
+            const level = levelOf.get(String((team as { id?: unknown }).id)) ?? 4;
+            const economy = ECONOMY[level] ?? ECONOMY[4];
+            const revenue = Math.round(
+              (economy?.tvRevenue ?? 0) +
+                (economy?.sponsorRevenue ?? 0) +
+                15 * (economy?.averageAttendance ?? 0) * (economy?.ticketPrice ?? 0),
+            );
+            return {
+              ...team,
+              reputation: economy?.baseReputation ?? 25,
+              finance: { balance: Math.round(revenue * 0.05), lastRevenue: revenue },
+            };
+          })
+        : data.teams,
+      transactions: Array.isArray(data.transactions)
+        ? data.transactions.map((t: unknown) =>
+            t !== null && typeof t === 'object' && !('cost' in t) ? { ...t, cost: null } : t,
+          )
+        : data.transactions,
+      history: Array.isArray(data.history)
+        ? data.history.map((s: unknown) =>
+            s !== null && typeof s === 'object' && !('finance' in s) ? { ...s, finance: [] } : s,
+          )
+        : data.history,
+    };
+  },
 };
 
 export class MigrationError extends Error {

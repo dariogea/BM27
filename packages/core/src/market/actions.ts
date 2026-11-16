@@ -1,4 +1,11 @@
-import type { Player, Team, Transaction, Universe } from '@bm27/schema';
+import type { Competition, Player, Team, Transaction, Universe } from '@bm27/schema';
+import {
+  FINANCE,
+  effectiveSalaryLimit,
+  isFinanciallyRestricted,
+  overdraftLimit,
+  severanceCost,
+} from '../finance/economy';
 import {
   askingSalary,
   competitionOfTeam,
@@ -36,6 +43,24 @@ function context(universe: Universe): { team: Team; player: (id: string) => Play
   };
 }
 
+/** The error for a signing or renewal that does not fit the club's salary limit. */
+function overBudget(team: Team, competition: Competition, salary: number, payroll: number): Error {
+  const euro = (n: number): string => `${Math.round(n).toLocaleString('es-ES')} €`;
+  if (isFinanciallyRestricted(team)) {
+    return new Error(
+      `Tu club está en números rojos (${euro(team.finance.balance)}, más allá del descubierto permitido de ${euro(overdraftLimit(team))}) y no puede asumir nuevos salarios.`,
+    );
+  }
+  const limit = effectiveSalaryLimit(team, competition);
+  const why =
+    limit < competition.salaryCap
+      ? `tu presupuesto salarial es de ${euro(limit)} (el ${Math.round(100 * competition.economy.wageShare)} % de tus ingresos; el tope de la liga es ${euro(competition.salaryCap)})`
+      : `el tope salarial de la liga es de ${euro(limit)}`;
+  return new Error(
+    `No cabe: pide ${euro(salary)} y ${why}; te quedan ${euro(Math.max(0, limit - payroll))} de margen.`,
+  );
+}
+
 function checkYears(years: number): void {
   if (!Number.isInteger(years) || years < 1 || years > MARKET.maxYears) {
     throw new Error(`Un contrato dura entre 1 y ${MARKET.maxYears} temporadas.`);
@@ -49,6 +74,7 @@ function transaction(
   teamId: string,
   salary: number | null,
   endSeason: number | null,
+  cost: number | null = null,
 ): Transaction {
   return {
     seasonNumber: universe.seasonNumber,
@@ -57,6 +83,7 @@ function transaction(
     teamId,
     salary,
     endSeason,
+    cost,
   };
 }
 
@@ -66,7 +93,7 @@ export function offerFor(universe: Universe, playerId: string): { salary: number
   const competition = competitionOfTeam(universe, team.id);
   return {
     salary: askingSalary(player(playerId), competition),
-    room: competition.salaryCap - teamPayroll(universe, team.id),
+    room: effectiveSalaryLimit(team, competition) - teamPayroll(universe, team.id),
   };
 }
 
@@ -86,10 +113,11 @@ export function signFreeAgent(universe: Universe, playerId: string, years: numbe
   }
   const salary = askingSalary(target, competition);
   const payroll = teamPayroll(universe, team.id) - expiringSalaries(universe, team);
-  if (payroll + salary > competition.salaryCap && salary > competition.minSalary) {
-    throw new Error(
-      `No cabe bajo el tope salarial: pide ${salary.toLocaleString('es-ES')} € y te quedan ${Math.max(0, competition.salaryCap - payroll).toLocaleString('es-ES')} € de margen.`,
-    );
+  if (
+    payroll + salary > effectiveSalaryLimit(team, competition) &&
+    salary > competition.minSalary
+  ) {
+    throw overBudget(team, competition, salary, payroll);
   }
   const endSeason = universe.seasonNumber + years - 1;
   return patchUniverse(universe, {
@@ -130,10 +158,8 @@ export function renewContract(universe: Universe, playerId: string, years: numbe
     target.contract.salary -
     expiringSalaries(universe, team) +
     (isExpired(universe, target) ? target.contract.salary : 0);
-  if (others + salary > competition.salaryCap && salary > competition.minSalary) {
-    throw new Error(
-      `No cabe bajo el tope salarial: pide ${salary.toLocaleString('es-ES')} € y te quedan ${Math.max(0, competition.salaryCap - others).toLocaleString('es-ES')} € de margen.`,
-    );
+  if (others + salary > effectiveSalaryLimit(team, competition) && salary > competition.minSalary) {
+    throw overBudget(team, competition, salary, others);
   }
   const endSeason = universe.seasonNumber + years - 1;
   return patchUniverse(universe, {
@@ -143,8 +169,10 @@ export function renewContract(universe: Universe, playerId: string, years: numbe
 }
 
 /**
- * Releases a player to the free-agent pool. PLACEHOLDER: there are no
- * finances yet, so a release costs nothing; later tasks will add severance.
+ * Releases a player to the free-agent pool. The club pays severance: a share
+ * of the salary of the seasons left on his contract (nothing if the contract
+ * has already run out). The club needs the cash: it cannot go beyond its
+ * permitted overdraft to pay it.
  */
 export function releasePlayer(universe: Universe, playerId: string): Universe {
   const { team, player } = context(universe);
@@ -153,10 +181,24 @@ export function releasePlayer(universe: Universe, playerId: string): Universe {
     throw new Error(`${target.firstName} ${target.lastName} no es de tu equipo.`);
   if (team.playerIds.length <= 5)
     throw new Error('Una plantilla no puede quedarse con menos de 5 jugadores.');
+  const cost = isExpired(universe, target) ? 0 : severanceCost(target, universe.seasonNumber);
+  if (team.finance.balance - cost < -overdraftLimit(team)) {
+    throw new Error(
+      `No puedes pagar la indemnización de ${cost.toLocaleString('es-ES')} € (el ${Math.round(100 * FINANCE.severanceShare)} % del salario de los años que le quedan): tu caja es de ${team.finance.balance.toLocaleString('es-ES')} € y el descubierto permitido llega a ${(-overdraftLimit(team)).toLocaleString('es-ES')} €.`,
+    );
+  }
   return patchUniverse(universe, {
     players: new Map([[target.id, { ...target, teamId: null, contract: null }]]),
-    teams: new Map([[team.id, withoutPlayer(team, target.id)]]),
-    log: [transaction(universe, 'released', target, team.id, null, null)],
+    teams: new Map([
+      [
+        team.id,
+        {
+          ...withoutPlayer(team, target.id),
+          finance: { ...team.finance, balance: team.finance.balance - cost },
+        },
+      ],
+    ]),
+    log: [transaction(universe, 'released', target, team.id, null, null, cost)],
   });
 }
 

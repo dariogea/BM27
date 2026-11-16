@@ -9,5 +9,7 @@
  *   3 — T-004: players gain `potential`.
  *   4 — T-005: players gain `contract`; competitions gain salary cap and roster limits;
  *       universe gains `transactions`.
+ *   5 — T-006: teams gain `reputation` and `finance`; competitions gain `economy`; seasons gain
+ *       `finance`; transactions gain `cost`.
  */
-export const SCHEMA_VERSION = 4 as const;
+export const SCHEMA_VERSION = 5 as const;

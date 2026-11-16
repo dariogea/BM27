@@ -389,11 +389,93 @@
         ],
         "additionalProperties": false
       }
+    },
+    "finance": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "teamId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "competitionId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "tv": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "sponsors": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "tickets": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "homeGames": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "averageCrowd": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "wages": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "fixedCosts": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "result": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "balanceEnd": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "reputationEnd": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          }
+        },
+        "required": [
+          "teamId",
+          "competitionId",
+          "tv",
+          "sponsors",
+          "tickets",
+          "homeGames",
+          "averageCrowd",
+          "wages",
+          "fixedCosts",
+          "result",
+          "balanceEnd",
+          "reputationEnd"
+        ],
+        "additionalProperties": false
+      }
     }
   },
   "required": [
     "seasonNumber",
-    "competitions"
+    "competitions",
+    "finance"
   ],
   "additionalProperties": false
 }

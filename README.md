@@ -9,7 +9,37 @@ ficticios.
 > partido los lleva todavía un entrenador provisional (`PLACEHOLDER`). Hay mercado de agentes libres
 > con contratos, topes salariales y finanzas de club, pero todavía no hay traspasos entre clubes.
 
-**Hoja de ruta con porcentajes y quién trabaja en qué:** [`docs/roadmap.md`](docs/roadmap.md).
+<!-- roadmap:start -->
+
+## Avance del desarrollo
+
+**Avance orientativo: 35 %** `██████████░░░░░░░░░░░░░░░░░░░░`
+
+295 elementos organizados en 7 fases. Cada elemento pesa lo mismo; el avance en curso es una estimación, no una fecha de entrega.
+
+```mermaid
+flowchart LR
+  F0["F0 Fundaciones<br/>86 %"]
+  F1["F1 Primera versión jugable<br/>53 %"]
+  F2["F2 Profundidad de gestión<br/>0 %"]
+  F3["F3 Mundo, datos y mods<br/>0 %"]
+  F4["F4 Presentación<br/>0 %"]
+  F5["F5 Distribución<br/>16 %"]
+  F6["F6 Pulido y lanzamiento<br/>0 %"]
+  F0 --> F1 --> F2 --> F3 --> F4 --> F5 --> F6
+```
+
+- **F0 · Fundaciones**: 86 % `█████████████████░░░`
+- **F1 · Primera versión jugable**: 53 % `███████████░░░░░░░░░`
+- **F2 · Profundidad de gestión**: 0 % `░░░░░░░░░░░░░░░░░░░░`
+- **F3 · Mundo, datos y mods**: 0 % `░░░░░░░░░░░░░░░░░░░░`
+- **F4 · Presentación**: 0 % `░░░░░░░░░░░░░░░░░░░░`
+- **F5 · Distribución**: 16 % `███░░░░░░░░░░░░░░░░░`
+- **F6 · Pulido y lanzamiento**: 0 % `░░░░░░░░░░░░░░░░░░░░`
+
+**[Ver el roadmap completo: tareas, responsables y pendientes](docs/roadmap.md)**
+
+<!-- roadmap:end -->
 
 ## Qué hay en cada carpeta
 

@@ -100,3 +100,28 @@ describe('roadmap: archivo real', () => {
     for (const l of r.leaves(r.load())) if (l.i !== undefined) expect(l.i).toBeLessThan(1000);
   });
 });
+
+describe('roadmap: portada del repositorio', () => {
+  it('muestra el avance calculado y las fases con un enlace al detalle', () => {
+    const text = r.renderReadme(mini);
+    expect(text).toContain('Avance orientativo: 38 %');
+    expect(text).toContain('F0 A<br/>75 %');
+    expect(text).toContain('F1 B<br/>0 %');
+    expect(text).toContain('(docs/roadmap.md)');
+  });
+
+  it('preserva el texto ajeno al bloque y rechaza marcadores ausentes o duplicados', () => {
+    const source = 'Antes\n<!-- roadmap:start -->\nviejo\n<!-- roadmap:end -->\nDespués\n';
+    const result = r.updateReadme(source, mini);
+    expect(result.startsWith('Antes\n<!-- roadmap:start -->')).toBe(true);
+    expect(result.endsWith('<!-- roadmap:end -->\nDespués\n')).toBe(true);
+    expect(result).not.toContain('viejo');
+    expect(() => r.updateReadme('sin bloque', mini)).toThrow('único bloque');
+    expect(() => r.updateReadme(source + '<!-- roadmap:start -->', mini)).toThrow('único bloque');
+  });
+
+  it('la portada real coincide con los mismos datos del roadmap completo', () => {
+    const current = readFileSync(r.README, 'utf8');
+    expect(current).toBe(r.updateReadme(current, r.load()));
+  });
+});

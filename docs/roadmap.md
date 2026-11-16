@@ -12,8 +12,8 @@
 
 ```mermaid
 pie showData title Elementos por estado
-  "Hecho" : 99
-  "En curso" : 6
+  "Hecho" : 100
+  "En curso" : 5
   "Pendiente" : 157
   "Bloqueado" : 3
   "Idea" : 30
@@ -45,7 +45,7 @@ flowchart LR
 
 | Fase | Avance | | Hecho | Qué significa |
 | --- | ---: | --- | ---: | --- |
-| **F0 Fundaciones** | 86 % | `█████████████████░░░` | 82/98 | Núcleo determinista, motor de partido, mundo persistente, mercado y finanzas, y la forma de trabajar de los dos agentes. |
+| **F0 Fundaciones** | 86 % | `█████████████████░░░` | 83/98 | Núcleo determinista, motor de partido, mundo persistente, mercado y finanzas, y la forma de trabajar de los dos agentes. |
 | **F1 Primera versión jugable** | 53 % | `███████████░░░░░░░░░` | 16/31 | Que el propietario pueda jugar de principio a fin una temporada y varias más sin tocar una terminal, con consultas básicas del mundo. |
 | **F2 Profundidad de gestión** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0/64 | Traspasos, cantera y ojeadores, economía con decisiones, entrenador rival con criterio, motor de partido completo. |
 | **F3 Mundo, datos y mods** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0/51 | Calibración con datos contrastados, paquetes de datos cargables, pirámide completa y otras competiciones. |
@@ -72,7 +72,7 @@ flowchart LR
 | **Interfaz web** | 25 % | `█████░░░░░░░░░░░░░░░` | 7 | 0 | 21 | 0 | 0 | La cara del juego: clara, rápida y accesible. |
 | **Visualización del partido** | 11 % | `██░░░░░░░░░░░░░░░░░░` | 1 | 0 | 6 | 0 | 2 | Ver el partido, no solo leerlo, derivado siempre del registro de eventos. |
 | **Aplicación de escritorio y distribución** | 13 % | `███░░░░░░░░░░░░░░░░░` | 1 | 1 | 7 | 1 | 2 | Que el propietario instale y actualice el juego sin pasar por GitHub. |
-| **Calidad, pruebas y herramientas** | 43 % | `█████████░░░░░░░░░░░` | 5 | 1 | 5 | 0 | 2 | Poder fiarse de lo construido y detectar a tiempo lo que se rompe. |
+| **Calidad, pruebas y herramientas** | 46 % | `█████████░░░░░░░░░░░` | 6 | 0 | 5 | 0 | 2 | Poder fiarse de lo construido y detectar a tiempo lo que se rompe. |
 | **Proceso y coordinación** | 70 % | `██████████████░░░░░░` | 7 | 0 | 1 | 2 | 0 | Que dos agentes y un propietario no programador trabajen sin estorbarse. |
 | **Documentación y comunidad** | 23 % | `█████░░░░░░░░░░░░░░░` | 2 | 1 | 5 | 0 | 3 | Que cualquiera entienda el juego, el proyecto y cómo ampliarlo. |
 | **Producto, legal y negocio** | 14 % | `███░░░░░░░░░░░░░░░░░` | 1 | 0 | 3 | 0 | 3 | Decisiones que no son código pero condicionan el lanzamiento. |
@@ -90,12 +90,6 @@ Los agentes solo trabajan cuando el propietario lo autoriza (D-052); esto reflej
 | ⬜ Pendiente | Versión 0.1.0-alpha.1 publicada | Aplicación de escritorio y distribución | — | — |
 | ⬜ Pendiente | La etiqueta de la Release corresponde al código compilado | Aplicación de escritorio y distribución | — | [#39](https://github.com/dariogea/BM27/issues/39) |
 | ⬜ Pendiente | Política de fusión sin huecos conocidos | Proceso y coordinación | — | [#36](https://github.com/dariogea/BM27/issues/36) |
-
-### Codex
-
-| Estado | Elemento | Área | Avance | Enlace |
-| --- | --- | --- | ---: | --- |
-| 🔄 En curso | Auditoría independiente de main | Calidad, pruebas y herramientas | 60 % | [#28](https://github.com/dariogea/BM27/issues/28) |
 
 ### En curso sin dueño asignado
 
@@ -408,7 +402,7 @@ _Las partidas no se pierden, son compactas y se pueden recuperar._
 - ⬜ Compresión del archivo (`F2` · [#17](https://github.com/dariogea/BM27/issues/17))
 - ⬜ Recuperación ante archivo corrupto (`F1` · [#16](https://github.com/dariogea/BM27/issues/16))
 - ⬜ Copias de seguridad automáticas (`F2`)
-- ✅ Repeticiones verificables tras recargar (`F1` · @codex · [#27](https://github.com/dariogea/BM27/issues/27)) — _Fusionado (PR #32 de Codex)._
+- ✅ Repeticiones verificadas y rechazo de detalles no verificables al cargar (`F1` · @codex · [#27](https://github.com/dariogea/BM27/issues/27)) — _PR #32 fusionado. Tras cargar se conservan resultados; el detalle anterior sin prueba se declara no disponible. Los partidos nuevos vuelven a tener detalle verificable._
 
 </details>
 
@@ -485,7 +479,7 @@ _Que el propietario instale y actualice el juego sin pasar por GitHub._
 
 </details>
 
-<details><summary><b>Calidad, pruebas y herramientas</b> — 43 % `█████░░░░░░░`</summary>
+<details><summary><b>Calidad, pruebas y herramientas</b> — 46 % `██████░░░░░░`</summary>
 
 _Poder fiarse de lo construido y detectar a tiempo lo que se rompe._
 
@@ -494,7 +488,7 @@ _Poder fiarse de lo construido y detectar a tiempo lo que se rompe._
 - ✅ Tests de determinismo y de equilibrio táctico (`F0`)
 - ✅ Herramientas de línea de comandos: sim, bench, calibrar, estabilidad (`F0`)
 - ✅ Informes de mediciones en docs/benchmarks (`F0`)
-- 🔄 Auditoría independiente de main (`F0` · 60 % · @codex · [#28](https://github.com/dariogea/BM27/issues/28)) — _Informe de Codex en revisión._
+- ✅ Auditoría independiente de main (`F0` · @codex · [#28](https://github.com/dariogea/BM27/issues/28)) — _Auditoría fusionada en #30; hallazgos corregidos en #32 y #38._
 - ⬜ Pruebas de interfaz en navegador automatizado (`F1`)
 - ⬜ Pruebas de accesibilidad automáticas (`F4`)
 - ⬜ Medición de cobertura de tests (`F0`)
@@ -512,9 +506,9 @@ _Que dos agentes y un propietario no programador trabajen sin estorbarse._
 - ✅ Reglas permanentes en CLAUDE.md y AGENTS.md (`F0`)
 - ✅ Tareas como Issues y etiquetas de agente (`F0`)
 - ✅ Revisión cruzada entre agentes (`F0`)
-- ✅ Fusión automática con la CI en verde (`F0`) — _Falta confirmar la primera fusión real con PR elegible (#38)._
+- ✅ Fusión automática con la CI en verde (`F0`) — _Primera fusión automática comprobada: PR #32._
 - ✅ Trabajo bajo autorización del propietario (`F0` · @claude) — _Fusionado (PR #40)._
-- ✅ Esta hoja de ruta, generada y comprobada en CI (`F0`) — _PR #41._
+- ✅ Esta hoja de ruta, generada y comprobada en CI (`F0` · @codex · [#42](https://github.com/dariogea/BM27/issues/42)) — _Hoja completa #41 y resumen visual en README #42, generados desde los mismos datos con pnpm roadmap._
 - ⬜ Política de fusión sin huecos conocidos (`F0` · @claude · [#36](https://github.com/dariogea/BM27/issues/36)) — _Hallazgos de Codex en #29._
 - ⛔ Protección de la rama main (`F0` · [#24](https://github.com/dariogea/BM27/issues/24)) — _Paso del propietario en GitHub._
 - ⛔ Entorno de Codex en la nube (`F0` · [#24](https://github.com/dariogea/BM27/issues/24)) — _Paso del propietario._

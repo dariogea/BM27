@@ -27,7 +27,7 @@ TypeScript estricto · pnpm workspaces · `packages/core` · `packages/schema` (
 - Código, identificadores y comentarios en inglés. Documentación, PR y partes en español.
 - Cambios en `packages/schema` = cambios de contrato: justifícalos en el parte e incluye migración si afectan a datos guardados.
 - Una tarea solo está terminada si cumple sus criterios de aceptación y la CI está en verde.
-- Actualiza `docs/estado.md` en cada PR.
+- Actualiza `docs/estado.md` en cada PR y, si cambia el estado de algo, `docs/roadmap/roadmap.json` (luego `pnpm roadmap`; no edites `docs/roadmap.md` a mano).
 - Si algo te bloquea, no inventes: termina lo posible y explícalo en el parte.
 
 ## Trabajo con Codex
@@ -58,10 +58,12 @@ Explicación para el propietario: `docs/coordinacion.md`. Instrucciones de Codex
    (etiqueta `agente:claude`) y respóndelos.
 8. **Máximo 2 rondas de ida y vuelta por tema.** Si no hay acuerdo, decide el propietario.
 
-**Autonomía:** al terminar una tarea, coge la siguiente de mayor prioridad que esté libre: primero lo
-que pida el propietario, después los Issues pendientes, después `docs/estado.md`. Si no queda nada,
-crea tú los Issues de lo siguiente que necesita el proyecto. Las órdenes del propietario pasan
-siempre por delante.
+**Trabajo bajo autorización (desde el 16-11-2026):** el propietario autoriza cada tarea. Al terminar
+una tarea, **para**: entrega el PR con su parte, informa al propietario de lo hecho y de lo que sigue
+pendiente, y **no coge otra tarea, no abre Issues ni PR nuevos ni responde a revisiones del otro agente
+hasta que el propietario diga «continúa»** (o le asigne algo concreto). Así no se gasta crédito sin
+permiso. Dentro de una tarea autorizada sí vale lo necesario para cerrarla (corregir la CI, atender las
+revisiones de su propio PR). Las órdenes del propietario pasan siempre por delante.
 
 **Convenciones para no estorbarse:** en `docs/estado.md` edita solo las filas de tus tareas; no
 sobrescribas informes de `docs/benchmarks/` de otras tareas; el número `T-###` lo asigna quien crea
@@ -78,4 +80,5 @@ IDEA · PROPUESTA · APROBADA · DISEÑADA · IMPLEMENTADA · PROBADA · FINALIZ
 - Universo inicial España masculina niveles 1–4, estructura real como datos, contenido ficticio.
 - Motor de partido por posesiones; sin 3D en el alcance inicial.
 - Claude Code y Codex trabajan en paralelo con las mismas reglas; las tareas son Issues de GitHub.
+- Los agentes trabajan **solo bajo autorización del propietario** y paran al terminar cada tarea.
 - Reglas permanentes en este archivo.

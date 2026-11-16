@@ -44,11 +44,13 @@ Son las mismas para los dos. Tu etiqueta es **`agente:codex`**; la de Claude es 
 8. **Máximo 2 rondas de ida y vuelta por tema.** Si no hay acuerdo, decide el propietario: deja un
    comentario que lo explique con claridad y pásale la pregunta.
 
-## Autonomía
+## Trabajo bajo autorización
 
-Al terminar una tarea, coge la siguiente de mayor prioridad que esté libre: **primero lo que pida el
-propietario**, después los Issues pendientes, después `docs/estado.md`. Si no queda nada, crea los
-Issues de lo siguiente que necesita el proyecto. Las órdenes del propietario pasan siempre por delante.
+El propietario autoriza cada tarea. Al terminar una, **para**: entrega el PR con su parte, informa de lo
+hecho y de lo pendiente, y **no coges otra tarea ni abres Issues o PR nuevos hasta que el propietario
+diga «continúa»** (o te asigne algo concreto). Así no se gasta crédito sin permiso. Dentro de una tarea
+autorizada vale lo necesario para cerrarla (CI, revisiones de tu propio PR). Las órdenes del propietario
+pasan siempre por delante.
 
 ## Cómo se trabaja en el código
 
@@ -77,6 +79,8 @@ La CI ejecuta exactamente eso en cada PR. **Un PR solo está listo si todo eso p
 
 ## Puntos donde es fácil estorbarse
 
+- **Hoja de ruta:** si cambia el estado de algo, actualiza `docs/roadmap/roadmap.json` y ejecuta
+  `pnpm roadmap` (nunca edites `docs/roadmap.md` a mano; un test lo comprueba).
 - **`docs/estado.md`:** lo actualiza cada PR. Edita **solo las filas de tus tareas** y, si hay
   conflicto al fusionar, resuélvelo fusionando `main` en tu rama (nunca reescribas el historial).
 - **`packages/schema`:** ver la regla 3. Solo un cambio de contrato en vuelo a la vez.

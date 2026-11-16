@@ -30,6 +30,7 @@ export const ROOT = join(here, '..', '..');
 export const SOURCE = join(ROOT, 'docs', 'roadmap', 'roadmap.json');
 export const OUTPUT = join(ROOT, 'docs', 'roadmap.md');
 export const README = join(ROOT, 'README.md');
+export const DASHBOARD = join(ROOT, 'docs', 'assets', 'development-progress.svg');
 
 /** Percentage of a leaf: done = 100, in progress = its own estimate, the rest 0. */
 export function leafPercent(leaf) {
@@ -73,6 +74,24 @@ export function validate(data) {
     if (area.f === undefined) errors.push(`${area.t}: falta «f».`);
     visit(area, 'Área', true);
   }
+  if (data.evaluacion) {
+    const weights = (data.fases ?? []).map((f) => f.peso);
+    if (
+      weights.some((w) => !Number.isFinite(w) || w <= 0) ||
+      weights.reduce((a, b) => a + b, 0) !== 100
+    )
+      errors.push('Los pesos de las fases deben ser positivos y sumar 100.');
+    const criteria = data.evaluacion.criterios;
+    if (!Array.isArray(criteria) || criteria.length === 0)
+      errors.push('Faltan criterios de lanzamiento.');
+    else
+      for (const c of criteria) {
+        if (!c.t || !['pendiente', 'validado'].includes(c.estado))
+          errors.push('Criterio de lanzamiento no válido.');
+        if (c.estado === 'validado' && !c.evidencia)
+          errors.push('Un criterio validado necesita evidencia.');
+      }
+  }
   return errors;
 }
 
@@ -101,8 +120,9 @@ export function summarize(data) {
   const byStatus = Object.fromEntries(
     STATUSES.map((s) => [s, counted.filter((l) => l.s === s).length]),
   );
-  return {
+  const result = {
     total: percentOf(counted),
+    coverage: percentOf(counted),
     leaves: counted.length,
     byStatus,
     phases: data.fases.map((f) => {
@@ -128,6 +148,12 @@ export function summarize(data) {
       };
     }),
   };
+  if (data.evaluacion) {
+    const weighted = result.phases.reduce((sum, f) => sum + (f.percent * f.peso) / 100, 0);
+    const ready = data.evaluacion.criterios.every((c) => c.estado === 'validado' && c.evidencia);
+    result.total = ready ? weighted : Math.min(99, weighted);
+  }
+  return result;
 }
 
 const pct = (n) => `${Math.round(n)} %`;
@@ -173,13 +199,13 @@ export function render(data) {
   );
   L.push('>');
   L.push(
-    '> **Cómo leer los porcentajes.** Cada tarea pequeña vale lo mismo. «Hecho» cuenta 100 %, «Pendiente» 0 % y «En curso» lo que estimen quien la lleva (es una **estimación**, no una medición). Las ideas y lo bloqueado cuentan 0 %. «Ideas sin clasificar» no entra en el total.',
+    '> **Cómo leer los porcentajes.** El índice de preparación pondera las fases por su importancia para el producto completo. La cobertura interna de cada fase cuenta sus tareas por igual: es un inventario, no una medición de calidad o esfuerzo. Los pesos son decisiones de planificación publicadas, no datos de un competidor. El 100 % exige además validar todos los criterios de lanzamiento con evidencia. «En curso» sigue siendo una estimación; ideas y bloqueos valen cero.',
   );
   L.push('');
   L.push('## Resumen');
   L.push('');
   L.push(
-    `**Avance global: ${pct(sum.total)}** \`${bar(sum.total, 30)}\`  (${sum.leaves} elementos)`,
+    `**Preparación estimada para lanzamiento: ${pct(sum.total)}** \`${bar(sum.total, 30)}\`  (${sum.leaves} elementos)`,
   );
   L.push('');
   L.push('```mermaid');
@@ -188,6 +214,32 @@ export function render(data) {
     if (sum.byStatus[s] > 0) L.push(`  "${STATUS_LABEL[s]}" : ${sum.byStatus[s]}`);
   L.push('```');
   L.push('');
+  L.push(
+    '## Objetivo del 100 %',
+    '',
+    data.evaluacion?.objetivo ?? 'Completar el plan definido.',
+    '',
+  );
+  if (data.evaluacion) {
+    L.push('| Fase | Peso en el producto |', '| --- | ---: |');
+    for (const f of sum.phases) L.push(`| ${f.id} ${f.t} | ${f.peso} % |`);
+    L.push(
+      '',
+      '**Criterios de salida** (todos deben estar validados para declarar un lanzamiento completo):',
+      '',
+    );
+    for (const c of data.evaluacion.criterios)
+      L.push(
+        `- ${c.estado === 'validado' ? '✅' : '⬜'} **${c.id}** ${c.t}${c.evidencia ? ` — ${c.evidencia}` : ''}`,
+      );
+    L.push(
+      '',
+      'La cobertura del inventario es ' +
+        pct(sum.coverage) +
+        '; no debe confundirse con preparación comercial.',
+      '',
+    );
+  }
   L.push('## Fases (del punto A al Z)');
   L.push('');
   L.push('```mermaid');
@@ -286,9 +338,13 @@ export function renderReadme(data) {
   const lines = [
     '## Avance del desarrollo',
     '',
-    `**Avance orientativo: ${pct(sum.total)}** \`${bar(sum.total, 30)}\``,
+    `**Preparación estimada para lanzamiento: ${pct(sum.total)}** \`${bar(sum.total, 30)}\``,
     '',
-    `${sum.leaves} elementos organizados en ${sum.phases.length} fases y ${sum.areas.filter((a) => !a.aparte).length} áreas de desarrollo. Cada elemento pesa lo mismo; el avance en curso es una estimación, no una fecha de entrega.`,
+    `${sum.leaves} elementos organizados en ${sum.phases.length} fases y ${sum.areas.filter((a) => !a.aparte).length} áreas de desarrollo. El índice pondera la profundidad y el producto terminado; no es una comparación medida con otro juego ni una fecha de entrega.`,
+    '',
+    '![Preparación del producto por fases](docs/assets/development-progress.svg)',
+    '',
+    'Las barras de fase muestran cobertura del plan; el índice global usa pesos distintos. [Ver pesos y criterios del 100 %](docs/roadmap.md#objetivo-del-100-).',
     '',
     '```mermaid',
     'flowchart LR',
@@ -329,6 +385,18 @@ export function updateReadme(current, data) {
   );
 }
 
+/** Generated visual: explicit weights and phase coverage, without invented delivery dates. */
+export function renderDashboard(data) {
+  const sum = summarize(data);
+  const esc = (text) =>
+    String(text).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
+  const rows = sum.phases.map((f, i) => {
+    const y = 118 + i * 48;
+    return `<text x="32" y="${y}" fill="#dce5ee" font-size="16">${esc(f.id + ' · ' + f.t)}</text><rect x="430" y="${y - 15}" width="420" height="16" rx="8" fill="#25384b"/><rect x="430" y="${y - 15}" width="${(420 * f.percent) / 100}" height="16" rx="8" fill="#f7b548"/><text x="874" y="${y}" fill="#f7b548" font-size="16">${pct(f.percent)}</text><text x="1020" y="${y}" fill="#aabccc" font-size="14">Peso ${f.peso ?? '—'} %</text>`;
+  });
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 480" role="img" aria-labelledby="title desc"><title id="title">Preparación del producto: ${pct(sum.total)}</title><desc id="desc">Cobertura del plan por fases y peso de cada fase. La profundidad de gestión tiene el mayor peso. Es una estimación de planificación.</desc><rect width="1200" height="480" rx="16" fill="#0b1423"/><g font-family="Arial, Helvetica, sans-serif"><text x="32" y="44" fill="#f7b548" font-size="25" font-weight="700">BM27 · Preparación estimada: ${pct(sum.total)}</text><text x="32" y="76" fill="#aabccc" font-size="15">Objetivo: producto completo. El 100 % exige todos los criterios de lanzamiento validados.</text>${rows.join('')}<text x="32" y="464" fill="#aabccc" font-size="13">Las barras muestran cobertura de tareas de cada fase, no paridad verificada con otro producto.</text></g></svg>\n`;
+}
+
 export function load() {
   return JSON.parse(readFileSync(SOURCE, 'utf8'));
 }
@@ -341,6 +409,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
     process.exit(1);
   }
   const text = render(data);
+  const dashboard = renderDashboard(data);
   const currentReadme = readFileSync(README, 'utf8');
   const nextReadme = updateReadme(currentReadme, data);
   if (process.argv.includes('--check')) {
@@ -350,7 +419,11 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
     } catch {
       /* missing */
     }
-    if (current !== text || currentReadme !== nextReadme) {
+    if (
+      current !== text ||
+      currentReadme !== nextReadme ||
+      readFileSync(DASHBOARD, 'utf8') !== dashboard
+    ) {
       console.error(
         'El roadmap de docs/roadmap.md o README.md no está al día. Ejecuta «pnpm roadmap» y súbelo.',
       );
@@ -360,6 +433,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
   } else {
     writeFileSync(OUTPUT, text);
     writeFileSync(README, nextReadme);
+    writeFileSync(DASHBOARD, dashboard);
     const s = summarize(data);
     console.log(
       `docs/roadmap.md escrito. Avance global: ${s.total.toFixed(1)} % (${s.leaves} elementos).`,

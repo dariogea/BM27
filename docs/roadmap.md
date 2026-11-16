@@ -4,20 +4,46 @@
 
 > Actualizada: 2026-11-16. Se genera con `pnpm roadmap` a partir de [`roadmap/roadmap.json`](roadmap/roadmap.json); la CI falla si este archivo no coincide con los datos.
 >
-> **Cómo leer los porcentajes.** Cada tarea pequeña vale lo mismo. «Hecho» cuenta 100 %, «Pendiente» 0 % y «En curso» lo que estimen quien la lleva (es una **estimación**, no una medición). Las ideas y lo bloqueado cuentan 0 %. «Ideas sin clasificar» no entra en el total.
+> **Cómo leer los porcentajes.** El índice de preparación pondera las fases por su importancia para el producto completo. La cobertura interna de cada fase cuenta sus tareas por igual: es un inventario, no una medición de calidad o esfuerzo. Los pesos son decisiones de planificación publicadas, no datos de un competidor. El 100 % exige además validar todos los criterios de lanzamiento con evidencia. «En curso» sigue siendo una estimación; ideas y bloqueos valen cero.
 
 ## Resumen
 
-**Avance global: 22 %** `██████░░░░░░░░░░░░░░░░░░░░░░░░`  (475 elementos)
+**Preparación estimada para lanzamiento: 9 %** `███░░░░░░░░░░░░░░░░░░░░░░░░░░░`  (475 elementos)
 
 ```mermaid
 pie showData title Elementos por estado
-  "Hecho" : 100
+  "Hecho" : 101
   "En curso" : 5
-  "Pendiente" : 337
+  "Pendiente" : 336
   "Bloqueado" : 3
   "Idea" : 30
 ```
+
+## Objetivo del 100 %
+
+Gestor de baloncesto comercial completo, con la profundidad de gestión como referencia de diseño. No es una medición de equivalencia con Football Manager.
+
+| Fase | Peso en el producto |
+| --- | ---: |
+| F0 Fundaciones | 5 % |
+| F1 Primera versión jugable | 10 % |
+| F2 Profundidad de gestión | 40 % |
+| F3 Mundo, datos y mods | 15 % |
+| F4 Presentación | 15 % |
+| F5 Distribución | 5 % |
+| F6 Pulido y lanzamiento | 10 % |
+
+**Criterios de salida** (todos deben estar validados para declarar un lanzamiento completo):
+
+- ⬜ **R1** Ciclo de gestión completo: fichajes entre clubes, plantilla, entrenamiento, salud y cantera
+- ⬜ **R2** Entrenadores rivales y decisiones con profundidad, sin sustitutos provisionales esenciales
+- ⬜ **R3** Mundo equilibrado a largo plazo y reglas de competición contrastadas
+- ⬜ **R4** Interfaz accesible, ayuda y recorrido de varias temporadas validado con jugadores
+- ⬜ **R5** Guardados internos, recuperación y migraciones probados
+- ⬜ **R6** Instalación, actualizaciones y compatibilidad verificadas en los sistemas soportados
+- ⬜ **R7** Equilibrio, rendimiento, licencias y criterios de lanzamiento cerrados
+
+La cobertura del inventario es 22 %; no debe confundirse con preparación comercial.
 
 ## Fases (del punto A al Z)
 
@@ -29,7 +55,7 @@ flowchart LR
   F3["F3 Mundo, datos y mods<br/>0 %"]
   F4["F4 Presentación<br/>0 %"]
   F5["F5 Distribución<br/>7 %"]
-  F6["F6 Pulido y lanzamiento<br/>0 %"]
+  F6["F6 Pulido y lanzamiento<br/>6 %"]
   F0 --> F1 --> F2 --> F3 --> F4 --> F5 --> F6
   classDef hecho fill:#2da44e,color:#fff,stroke:#1a7f37;
   classDef curso fill:#bf8700,color:#fff,stroke:#7d4e00;
@@ -40,7 +66,7 @@ flowchart LR
   class F3 pendiente;
   class F4 pendiente;
   class F5 curso;
-  class F6 pendiente;
+  class F6 curso;
 ```
 
 | Fase | Avance | | Hecho | Qué significa |
@@ -51,7 +77,7 @@ flowchart LR
 | **F3 Mundo, datos y mods** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0/63 | Calibración con datos contrastados, paquetes de datos cargables, pirámide completa y otras competiciones. |
 | **F4 Presentación** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0/36 | Diseño visual, accesibilidad, partido en 2D, narración, sonido y varios idiomas. |
 | **F5 Distribución** | 7 % | `█░░░░░░░░░░░░░░░░░░░` | 1/22 | Instalador de escritorio, versiones alfa y beta en GitHub, actualización automática, firma y otras plataformas. |
-| **F6 Pulido y lanzamiento** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0/17 | Tutorial, equilibrio final, documentación, comunidad y lanzamiento. |
+| **F6 Pulido y lanzamiento** | 6 % | `█░░░░░░░░░░░░░░░░░░░` | 1/17 | Tutorial, equilibrio final, documentación, comunidad y lanzamiento. |
 
 ## Áreas del juego
 
@@ -75,7 +101,7 @@ flowchart LR
 | **Calidad, pruebas y herramientas** | 46 % | `█████████░░░░░░░░░░░` | 6 | 0 | 5 | 0 | 2 | Poder fiarse de lo construido y detectar a tiempo lo que se rompe. |
 | **Proceso y coordinación** | 70 % | `██████████████░░░░░░` | 7 | 0 | 1 | 2 | 0 | Que dos agentes y un propietario no programador trabajen sin estorbarse. |
 | **Documentación y comunidad** | 23 % | `█████░░░░░░░░░░░░░░░` | 2 | 1 | 5 | 0 | 3 | Que cualquiera entienda el juego, el proyecto y cómo ampliarlo. |
-| **Producto, legal y negocio** | 14 % | `███░░░░░░░░░░░░░░░░░` | 1 | 0 | 3 | 0 | 3 | Decisiones que no son código pero condicionan el lanzamiento. |
+| **Producto, legal y negocio** | 29 % | `██████░░░░░░░░░░░░░░` | 2 | 0 | 2 | 0 | 3 | Decisiones que no son código pero condicionan el lanzamiento. |
 | **Entrenamiento y planificación** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Convertir el trabajo semanal en decisiones con coste, seguimiento y efecto medible. |
 | **Salud y disponibilidad** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Gestionar la disponibilidad con incertidumbre y sin convertir las lesiones en castigos arbitrarios. |
 | **Vestuario y relaciones** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Dar consecuencias observables a la convivencia sin sustituir las decisiones deportivas por azar opaco. |
@@ -132,7 +158,7 @@ _La base técnica que hace fiable todo lo demás: reproducible, sin interfaz, va
 - ✅ Núcleo sin interfaz (headless, sin DOM) (`F0`) — _Pilar 3; lo comprueba ESLint y un test._
 - ✅ Generador de azar con semilla (xoshiro128**) (`F0`)
 - ✅ Semilla propia por partido, independiente del orden (`F0`)
-- ✅ Huella SHA-256 y JSON canónico (`F0`)
+- ✅ Huella SHA-256 e integridad del guardado (`F0`) — _El checksum está implementado; no se afirma serialización canónica entre órdenes de claves distintos._
 - ✅ Esquemas zod y JSON Schema exportados (`F0`)
 - ✅ schemaVersion y migraciones encadenadas (v0 a v5) (`F0`)
 - 🔄 API pública del núcleo estable y documentada (`F0` · 40 %) — _Hay API pero sin documento de referencia._
@@ -549,12 +575,12 @@ _Que cualquiera entienda el juego, el proyecto y cómo ampliarlo._
 
 </details>
 
-<details><summary><b>Producto, legal y negocio</b> — 14 % `██░░░░░░░░░░`</summary>
+<details><summary><b>Producto, legal y negocio</b> — 29 % `███░░░░░░░░░`</summary>
 
 _Decisiones que no son código pero condicionan el lanzamiento._
 
 - ✅ Nombres reales prohibidos (pilar 7) (`F0`)
-- ⬜ Nombre definitivo del juego (`F6`)
+- ✅ Nombre definitivo del juego (`F6`) — _El propietario fija BM27 — Basketball Manager 2027 como nombre definitivo (#46)._
 - ⬜ Licencia de código y de contenido (`F6`)
 - 💡 Política de privacidad (si hay informes de fallos) (`F6`)
 - 💡 Modelo de distribución (gratuito, de pago, tienda) (`F6`)

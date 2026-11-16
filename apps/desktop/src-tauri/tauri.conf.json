@@ -37,7 +37,7 @@
     "shortDescription": "Basketball Manager 2027 (título provisional)",
     "windows": {
       "nsis": {
-        "installMode": "perUser",
+        "installMode": "currentUser",
         "languages": ["Spanish"],
         "displayLanguageSelector": false
       }

@@ -36,6 +36,7 @@ export function makeTestTeam(
     region: 'Test',
     playerIds: players.map((p) => p.id),
     tactics: { ...DEFAULT_TACTICS, ...tactics },
+    rotation: null,
   };
   return prepareTeam(team, new Map(players.map((p) => [p.id, p])));
 }

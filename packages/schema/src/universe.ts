@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { CompetitionSchema } from './competition';
 import { PlayerSchema } from './player';
 import { RulesetSchema } from './ruleset';
-import { SeasonSchema } from './season';
+import { SeasonProgressSchema, SeasonSchema } from './season';
 import { TeamSchema } from './team';
 import { SCHEMA_VERSION } from './version';
 
@@ -25,6 +25,10 @@ export const UniverseSchema = z
     players: z.array(PlayerSchema),
     /** Completed seasons, oldest first. */
     history: z.array(SeasonSchema),
+    /** Season being played right now, or null between seasons. */
+    currentSeason: SeasonProgressSchema.nullable(),
+    /** Team managed by the human player, or null to just watch. */
+    userTeamId: z.string().min(1).nullable(),
   })
   .superRefine((u, ctx) => {
     const rulesetIds = new Set(u.rulesets.map((r) => r.id));
@@ -56,7 +60,39 @@ export const UniverseSchema = z
         }
       }
     });
+    if (u.userTeamId !== null && !teamIds.has(u.userTeamId)) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['userTeamId'],
+        message: `unknown team "${u.userTeamId}"`,
+      });
+    }
+    if (u.currentSeason && u.currentSeason.seasonNumber !== u.seasonNumber) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['currentSeason', 'seasonNumber'],
+        message: 'the season in progress does not match the universe season number',
+      });
+    }
     u.teams.forEach((t, i) => {
+      if (t.rotation) {
+        const roster = new Set(t.playerIds);
+        if (new Set(t.rotation).size !== t.rotation.length) {
+          ctx.addIssue({
+            code: 'custom',
+            path: ['teams', i, 'rotation'],
+            message: 'a player appears twice in the rotation',
+          });
+        }
+        const stranger = t.rotation.find((p) => !roster.has(p));
+        if (stranger) {
+          ctx.addIssue({
+            code: 'custom',
+            path: ['teams', i, 'rotation'],
+            message: `player "${stranger}" is not in this team`,
+          });
+        }
+      }
       for (const p of t.playerIds) {
         if (!playerIds.has(p)) {
           ctx.addIssue({

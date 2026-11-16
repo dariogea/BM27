@@ -5,7 +5,7 @@ import { MatchDetailSchema, MatchResultSchema } from './match';
 import { PlayerSchema } from './player';
 import { RulesetSchema } from './ruleset';
 import { SaveEnvelopeSchema } from './save';
-import { SeasonSchema } from './season';
+import { SeasonProgressSchema, SeasonSchema } from './season';
 import { TeamSchema, TeamTacticsSchema } from './team';
 import { NamePoolSchema, UniverseConfigSchema, UniverseSchema } from './universe';
 
@@ -20,6 +20,7 @@ export const CONTRACTS = {
   'match-result': MatchResultSchema,
   'match-detail': MatchDetailSchema,
   season: SeasonSchema,
+  'season-progress': SeasonProgressSchema,
   universe: UniverseSchema,
   'universe-config': UniverseConfigSchema,
   'name-pool': NamePoolSchema,

@@ -1,0 +1,175 @@
+import { useMemo, useState } from 'react';
+import type { CompetitionViewData } from './protocol';
+
+export function CompetitionView(props: {
+  competition: CompetitionViewData;
+  userTeamId: string | null;
+  name: (teamId: string) => string;
+  selectedMatchId: string;
+  onMatch: (matchId: string) => void;
+}) {
+  const { competition, name } = props;
+  const [stage, setStage] = useState<'regular' | 'playoff'>('regular');
+  // null = follow the latest round played
+  const [chosenRound, setRound] = useState<number | null>(null);
+  const promoted = new Set(competition.promotedTeamIds);
+  const relegated = new Set(competition.relegatedTeamIds);
+  const inPlayoffs = new Set(
+    competition.playoffSeries.flatMap((s) => [s.highSeedTeamId, s.lowSeedTeamId ?? '']),
+  );
+
+  const rounds = useMemo(() => {
+    const set = new Set(competition.matches.filter((m) => m.stage === stage).map((m) => m.round));
+    return [...set].sort((a, b) => a - b);
+  }, [competition, stage]);
+  const round = chosenRound ?? rounds[rounds.length - 1] ?? 1;
+  const matches = competition.matches.filter((m) => m.stage === stage && m.round === round);
+
+  return (
+    <section>
+      <h2>
+        Temporada {competition.seasonNumber} ·{' '}
+        {competition.championTeamId
+          ? `Campeón: ${name(competition.championTeamId)}`
+          : competition.phase === 'playoffs'
+            ? 'Playoffs en juego'
+            : `Liga regular, jornada ${Math.max(1, ...competition.matches.filter((m) => m.stage === 'regular').map((m) => m.round))}`}
+      </h2>
+      <p className="note">
+        <span className="up">Verde</span>: asciende · <span className="down">Rojo</span>: desciende
+        · <span className="playoff">Azul</span>: juega playoffs. Desempates: victorias,
+        enfrentamientos directos, diferencia de puntos.
+      </p>
+      <div className="columns">
+        {competition.groups.map((group) => (
+          <div key={group.name} className="scroll">
+            <h3>Clasificación · {group.name}</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th className="name">Equipo</th>
+                  <th>PJ</th>
+                  <th>G</th>
+                  <th>P</th>
+                  <th>PF</th>
+                  <th>PC</th>
+                  <th>Dif</th>
+                </tr>
+              </thead>
+              <tbody>
+                {group.standings.map((row) => (
+                  <tr
+                    key={row.teamId}
+                    className={
+                      (row.teamId === props.userTeamId ? 'mine ' : '') +
+                      (promoted.has(row.teamId)
+                        ? 'up'
+                        : relegated.has(row.teamId)
+                          ? 'down'
+                          : inPlayoffs.has(row.teamId)
+                            ? 'playoff'
+                            : '')
+                    }
+                  >
+                    <td>{row.position}</td>
+                    <td className="name">{name(row.teamId)}</td>
+                    <td>{row.played}</td>
+                    <td>{row.wins}</td>
+                    <td>{row.losses}</td>
+                    <td>{row.pointsFor}</td>
+                    <td>{row.pointsAgainst}</td>
+                    <td>{row.pointsFor - row.pointsAgainst}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ))}
+      </div>
+
+      {competition.playoffSeries.length > 0 && (
+        <>
+          <h3>Playoffs</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Ronda</th>
+                <th className="name">Mejor clasificado</th>
+                <th>Resultado</th>
+                <th className="name">Rival</th>
+                <th className="name">Pasa</th>
+              </tr>
+            </thead>
+            <tbody>
+              {competition.playoffSeries.map((s, i) => (
+                <tr key={i}>
+                  <td>{s.round}</td>
+                  <td className="name">
+                    ({s.highSeed}) {name(s.highSeedTeamId)}
+                  </td>
+                  <td>{s.lowSeedTeamId ? `${s.highSeedWins}–${s.lowSeedWins}` : 'exento'}</td>
+                  <td className="name">{s.lowSeedTeamId ? name(s.lowSeedTeamId) : '—'}</td>
+                  <td className="name">{s.winnerTeamId ? name(s.winnerTeamId) : 'en juego'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </>
+      )}
+
+      <h3>Partidos</h3>
+      <div className="bar">
+        <select
+          value={stage}
+          onChange={(e) => {
+            setStage(e.target.value as 'regular' | 'playoff');
+            setRound(null);
+          }}
+          aria-label="Fase"
+        >
+          <option value="regular">Liga regular</option>
+          <option value="playoff">Playoffs</option>
+        </select>
+        <select
+          value={round}
+          onChange={(e) => setRound(Number(e.target.value))}
+          aria-label="Jornada"
+        >
+          {rounds.map((r) => (
+            <option key={r} value={r}>
+              {stage === 'regular' ? 'Jornada' : 'Ronda'} {r}
+            </option>
+          ))}
+        </select>
+        <span className="note">Pulsa un partido para ver su box score.</span>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th className="name">Local</th>
+            <th>Pts</th>
+            <th>Pts</th>
+            <th className="name">Visitante</th>
+            <th>Prórrogas</th>
+          </tr>
+        </thead>
+        <tbody>
+          {matches.map((m) => (
+            <tr
+              key={m.id}
+              className={`clickable ${m.id === props.selectedMatchId ? 'selected' : ''}`}
+              onClick={() => props.onMatch(m.id)}
+            >
+              <td className="name">{name(m.homeTeamId)}</td>
+              <td>{m.homeScore}</td>
+              <td>{m.awayScore}</td>
+              <td className="name">{name(m.awayTeamId)}</td>
+              <td>{m.overtimePeriods || ''}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </section>
+  );
+}

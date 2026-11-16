@@ -34,10 +34,20 @@ partido sin haberlo guardado: basta con re-simularlo.
 
 ## Cómo se simula una temporada
 
-Para cada competición: se reparten los equipos en grupos (por regiones), se crea el calendario de
-ida y vuelta, se juegan los partidos, se calcula la clasificación, se juegan los playoffs y se
-ordena a todos los equipos en una clasificación final. Después: ascensos, descensos y un año más
-de edad para cada jugador.
+La temporada avanza **paso a paso**. Al empezar se reparten los equipos en grupos (por regiones) y
+se crea todo el calendario de ida y vuelta. Cada paso juega una jornada de cada liga; cuando una
+liga termina se calcula la clasificación y arrancan sus playoffs, que avanzan un partido por paso.
+Cuando todas las competiciones han terminado se ordena a los equipos en una clasificación final y
+se aplican ascensos, descensos y un año más de edad para cada jugador.
+
+«Simular la temporada entera» es simplemente repetir pasos hasta el final, así que jugar jornada a
+jornada o de golpe da exactamente el mismo resultado.
+
+## Cómo juega el usuario
+
+El usuario puede elegir un equipo, cambiar sus tácticas y ordenar su quinteto y su banquillo. Cada
+una de esas decisiones crea un universo nuevo y solo afecta a los partidos que aún no se han
+jugado. Se puede guardar en cualquier momento, también a mitad de temporada.
 
 ## Dónde están los datos
 

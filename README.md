@@ -4,8 +4,9 @@ Simulador de gestión de baloncesto para PC: mundo persistente, simulación por 
 de mods. Proyecto **privado y comercial** (ver `LICENSE`). Todos los clubes y jugadores son
 ficticios.
 
-> **Estado actual:** motor de partido v1 (tarea T-002) con tipos de jugada y tácticas. El
-> entrenador (quinteto, minutos y cambios) es todavía provisional (`PLACEHOLDER`).
+> **Estado actual:** ya se puede jugar una partida sencilla: dirigir un equipo, elegir tácticas y
+> quinteto, avanzar jornada a jornada y guardar. Los clubes rivales y los cambios durante el
+> partido los lleva todavía un entrenador provisional (`PLACEHOLDER`). No hay fichajes ni dinero.
 
 ## Qué hay en cada carpeta
 
@@ -42,13 +43,18 @@ pnpm web
 Abre en el navegador la dirección que aparece (normalmente <http://localhost:5173>). Después:
 
 1. Escribe una semilla (cualquier texto) y pulsa **Generar universo**.
-2. Pulsa **Simular temporada**.
-3. Elige una competición en el desplegable para ver su clasificación y sus playoffs.
-4. Pulsa cualquier partido de la lista para ver su **box score**, las tácticas de cada equipo y
-   la narración **jugada a jugada**.
+2. Elige un equipo en el desplegable y pulsa **Dirigir este equipo**.
+3. En las pestañas **Tácticas** y **Quinteto** puedes cambiar cómo juega tu equipo y quién sale de
+   titular. Los cambios se aplican desde el siguiente partido.
+4. Pulsa **Jugar jornada** para avanzar un partido, o **Simular hasta el final de la temporada**.
+5. En **Mi equipo** verás tu plantilla, tu próximo rival y tu último resultado; **Ver partido**
+   abre el box score y la narración jugada a jugada.
+6. En **Competición** están las clasificaciones, los playoffs y todos los partidos.
+7. **Guardar partida** descarga un archivo; **Cargar partida** lo recupera, también a mitad de
+   temporada.
 
-La misma semilla produce siempre el mismo universo y los mismos resultados. Para cerrar la página,
-pulsa `Ctrl + C` en la terminal.
+La misma semilla produce siempre el mismo universo. Para cerrar la página, pulsa `Ctrl + C` en la
+terminal.
 
 ## Ejecutar los tests
 
@@ -56,7 +62,7 @@ pulsa `Ctrl + C` en la terminal.
 pnpm test
 ```
 
-Deben salir todos en verde (tarda unos 25 segundos). Otras comprobaciones, las mismas que hace
+Deben salir todos en verde (tarda en torno a medio minuto). Otras comprobaciones, las mismas que hace
 GitHub automáticamente en cada Pull Request:
 
 ```bash

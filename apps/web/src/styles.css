@@ -88,3 +88,36 @@ tr.selected {
   flex-wrap: wrap;
   gap: 24px;
 }
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  border-bottom: 2px solid #c8c8c8;
+  margin: 12px 0;
+}
+.tabs button {
+  border: 1px solid #c8c8c8;
+  border-bottom: none;
+  background: #eee;
+  border-radius: 6px 6px 0 0;
+  cursor: pointer;
+}
+.tabs button.active {
+  background: #fff;
+  font-weight: 700;
+}
+tr.starter td {
+  background: #f3f8ff;
+}
+tr.mine td {
+  font-weight: 700;
+  outline: 1px solid #333;
+}
+td.note {
+  white-space: normal;
+  max-width: 420px;
+}
+code {
+  background: #eee;
+  padding: 0 4px;
+}

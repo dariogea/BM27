@@ -88,7 +88,12 @@ export function applyOffseason(universe: Universe, season: Season): Universe {
   const teams: Team[] = universe.teams.map((team) => {
     const forTeam = replacements.get(team.id);
     if (!forTeam) return team;
-    return { ...team, playerIds: team.playerIds.map((id) => forTeam.get(id) ?? id) };
+    return {
+      ...team,
+      playerIds: team.playerIds.map((id) => forTeam.get(id) ?? id),
+      // A hand-picked line-up keeps its shape: the newcomer takes the retiree's spot.
+      rotation: team.rotation ? team.rotation.map((id) => forTeam.get(id) ?? id) : null,
+    };
   });
 
   return {

@@ -167,23 +167,43 @@ export function prepareTeam(team: Team, playersById: ReadonlyMap<string, Player>
   // Stable order: by overall, ties broken by id so results never depend on input order.
   roster.sort((a, b) => b.overall - a.overall || (a.id < b.id ? -1 : 1));
 
-  const used = new Set<SimPlayer>();
-  const starters: SimPlayer[] = [];
-  for (let slot = 0; slot < 5; slot++) {
-    const natural = roster.find((p) => !used.has(p) && p.slotFit[slot] === 1);
-    const chosen = natural ?? roster.find((p) => !used.has(p));
-    if (!chosen) throw new Error('unreachable: roster has at least 5 players');
-    used.add(chosen);
-    starters.push(chosen);
+  let starters: SimPlayer[] = [];
+  let bench: SimPlayer[];
+  if (team.rotation) {
+    // Hand-picked line-up: the first five start at PG..C exactly as listed
+    // (even out of position); the rest follow in the given order.
+    const byId = new Map(roster.map((p) => [p.id, p]));
+    const listed: SimPlayer[] = [];
+    for (const id of team.rotation) {
+      const player = byId.get(id);
+      if (player && !listed.includes(player)) listed.push(player);
+    }
+    if (listed.length < 5) {
+      throw new Error(`Team ${team.id}: the rotation needs at least 5 players of the squad`);
+    }
+    starters = listed.slice(0, 5);
+    const rest = roster.filter((p) => !listed.includes(p));
+    bench = [...listed.slice(5), ...rest];
+  } else {
+    const used = new Set<SimPlayer>();
+    for (let slot = 0; slot < 5; slot++) {
+      const natural = roster.find((p) => !used.has(p) && p.slotFit[slot] === 1);
+      const chosen = natural ?? roster.find((p) => !used.has(p));
+      if (!chosen) throw new Error('unreachable: roster has at least 5 players');
+      used.add(chosen);
+      starters.push(chosen);
+    }
+    bench = roster.filter((p) => !used.has(p));
   }
-  const bench = roster.filter((p) => !used.has(p));
   const tactics = team.tactics ?? DEFAULT_TACTICS;
 
   // Starters get the starter shares ordered by quality, not by court slot.
   const players = [...starters, ...bench];
   const shares = minuteShares(players.length, tactics.rotationDepth);
   const starterOrder = [0, 1, 2, 3, 4].sort(
-    (a, b) => (players[b] as SimPlayer).overall - (players[a] as SimPlayer).overall,
+    (a, b) =>
+      (players[b] as SimPlayer).overall - (players[a] as SimPlayer).overall ||
+      ((players[a] as SimPlayer).id < (players[b] as SimPlayer).id ? -1 : 1),
   );
   const minuteShare = shares.slice();
   starterOrder.forEach((playerIndex, rank) => {

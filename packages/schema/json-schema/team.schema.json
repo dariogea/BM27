@@ -92,6 +92,21 @@
         "rotationDepth"
       ],
       "additionalProperties": false
+    },
+    "rotation": {
+      "anyOf": [
+        {
+          "minItems": 5,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        {
+          "type": "null"
+        }
+      ]
     }
   },
   "required": [
@@ -100,7 +115,8 @@
     "city",
     "region",
     "playerIds",
-    "tactics"
+    "tactics",
+    "rotation"
   ],
   "additionalProperties": false
 }

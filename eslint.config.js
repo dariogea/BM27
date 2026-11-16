@@ -12,6 +12,13 @@ export default tseslint.config(
     ],
   },
   js.configs.recommended,
+  {
+    // Plain Node scripts (they run inside GitHub Actions).
+    files: ['**/*.mjs'],
+    languageOptions: {
+      globals: { process: 'readonly', console: 'readonly', setTimeout: 'readonly' },
+    },
+  },
   ...tseslint.configs.recommended,
   {
     rules: {

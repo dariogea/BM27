@@ -27,8 +27,11 @@ Son las mismas para los dos. Tu etiqueta es **`agente:codex`**; la de Claude es 
 3. **Contrato.** Si vas a cambiar `packages/schema` o la API pública del núcleo (`packages/core/src/index.ts`
    y lo que exporta), avisa **primero** en un Issue con la etiqueta `contrato`, porque Claude depende de
    ello. Mientras haya un Issue `contrato` + `en-curso`, nadie más cambia el contrato.
-4. **Una tarea = una rama = un PR pequeño con parte.** Nunca hagas push ni merge a `main`. Las
-   fusiones las gestiona el propietario (ver `docs/coordinacion.md`).
+4. **Una tarea = una rama = un PR pequeño con parte.** Nunca hagas push ni merge a `main` a mano.
+   Los PR se fusionan solos cuando la CI está en verde (10 minutos después, con tu rama al día con
+   `main`, y sin las etiquetas `contrato`, `manual` ni `bloqueado`). **Los fusiona el propietario**
+   los que cambian `packages/schema/src/`, `packages/core/src/index.ts`, `.github/`, `CLAUDE.md`, `AGENTS.md` o `tools/ci/` (la propia política de fusión). Como revisor puedes frenar una fusión con la etiqueta `bloqueado` o pidiendo cambios.
+   Detalle en `docs/coordinacion.md`.
 5. **Revisión cruzada.** Cada PR lo revisa el otro agente. Tus PR los revisa Claude: pon la
    etiqueta `agente:claude` al PR y comenta `@claude review`. Para pedirle algo a Claude: Issue con la
    etiqueta `agente:claude`. Claude **no escucha en tiempo real**: lee los Issues y PR nuevos al

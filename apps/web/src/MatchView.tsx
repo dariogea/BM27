@@ -250,7 +250,7 @@ function TeamBox(props: {
     .filter((l) => l.seconds > 0)
     .sort((a, b) => Number(b.starter) - Number(a.starter) || b.seconds - a.seconds);
   return (
-    <div className="scroll">
+    <div className="scroll" tabIndex={0} role="region" aria-label="Estadísticas del partido">
       <h3>{props.title}</h3>
       <table>
         <thead>

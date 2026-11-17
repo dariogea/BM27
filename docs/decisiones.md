@@ -3,7 +3,7 @@
 ## Decisiones vigentes (resumen)
 
 - Stack TypeScript web primero; app de escritorio (Tauri) más adelante.
-- Universo inicial España masculina niveles 1–4, estructura real como datos, contenido ficticio.
+- Objetivo actualizado: España como base real contrastada; la demo actual usa datos generados. Ver [política de datos](datos/espana.md).
 - Motor de partido por posesiones; sin 3D en el alcance inicial.
 - Una sesión de Claude Code por tarea; reglas permanentes en `CLAUDE.md`.
 
@@ -102,3 +102,11 @@ Tomadas por Claude Code dentro del alcance de la tarea. Dirección General puede
 ## Identidad y preparación del producto (#46)
 
 El propietario fija **BM27 — Basketball Manager 2027** como título definitivo. El objetivo del 100 % es un gestor deportivo comercial completo; la profundidad de Football Manager es una referencia de diseño, no una comparación técnica verificada. La preparación usa pesos de fase publicados (5/10/40/15/15/5/10) y exige evidencias de los criterios de lanzamiento. Contar tareas pequeñas terminadas no mide por sí solo la madurez comercial. Los pesos son una hipótesis explícita de planificación, revisable al cambiar el alcance.
+
+## Partidas internas (#16)
+
+IndexedDB es el almacén local de ranuras para la web y el frontend Tauri; se conserva la interfaz SaveStore y el formato JSON v5. El Worker es el único propietario del universo y serializa todas sus órdenes, incluidas las operaciones de almacenamiento. Los metadatos se separan de los contenidos para listar sin leer todas las partidas. Contenido y metadatos se escriben en una misma transacción. La carga valida checksum, migración y esquema antes de sustituir el estado abierto. Un fallo de autoguardado no revierte ni descarta una temporada completada. La base local depende del origen de la aplicación; los archivos siguen siendo la copia portable y no hay sincronización de dispositivos. Esto no decide una futura política de compactación ni introduce SQLite o un servidor.
+
+## Dirección de la demo y base española (17-11-2026, propietario)
+
+La prioridad es una demo jugable y visualmente cuidada, con España como referencia real de estructura, clubes y jugadores. Esta orden sustituye la ficción total de la decisión inicial/pilar 7. Se separan identidades contrastadas, alias visibles y estimaciones; cambiar nombres no acredita derechos sobre datos o activos. La demo generada actual se mantiene identificada hasta disponer de un catálogo verificado. El manifiesto de investigación y el orden de incorporación están en docs/datos/espana.md. No se alteran participantes o formatos usando cifras de una temporada sin contrastar.

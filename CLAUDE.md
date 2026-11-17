@@ -1,7 +1,7 @@
 # BM27 — Reglas para Claude Code
 
 ## Proyecto
-Basketball Manager 2027 (título provisional): simulador de gestión de baloncesto para PC, inspirado en la profundidad de Football Manager pero con identidad propia. Mundo persistente, simulación por posesiones, tácticas con efecto verificable, soporte de mods. Universo inicial: pirámide masculina española (4 niveles, ~200 equipos) con clubes y jugadores ficticios.
+Basketball Manager 2027 (BM27, título definitivo): simulador de gestión de baloncesto para PC, inspirado en la profundidad de Football Manager pero con identidad propia. Mundo persistente, simulación por posesiones, tácticas con efecto verificable, soporte de mods. Universo objetivo: baloncesto español con estructura y datos deportivos reales contrastados. La demo actual genera clubes y jugadores; ver `docs/datos/espana.md`.
 
 ## Roles
 - Propietario: no es programador. Lanza tareas, prueba y aprueba los PR. Explícale todo en español sencillo.
@@ -17,7 +17,7 @@ Basketball Manager 2027 (título provisional): simulador de gestión de balonces
 4. Determinismo: todo azar pasa por el RNG con semilla del núcleo. Prohibido `Math.random` en el núcleo.
 5. El motor de partido produce un registro de eventos por posesión; las estadísticas y cualquier visualización futura (2D/3D) se derivan de él.
 6. Datos, reglamentos y competiciones son datos validados por esquema (`packages/schema`), no código. Añadir una competición no debe requerir tocar el motor.
-7. Prohibidos los nombres reales de jugadores, clubes, patrocinadores y competiciones en el repositorio.
+7. **Base real como objetivo (orden del propietario, 17-11-2026):** representar el baloncesto español mediante identidades y datos deportivos contrastados, separando fuentes, estimaciones y alias de demostración. La demo generada se identifica como tal. No copiar bases privadas ni incorporar activos sin procedencia y condiciones de uso; un alias no acredita derechos. Ver `docs/datos/espana.md`.
 
 ## Stack
 TypeScript estricto · pnpm workspaces · `packages/core` · `packages/schema` (zod + JSON Schema, campo `schemaVersion`) · `apps/web` (React + Vite, núcleo en Web Worker) · `tools/cli` · Vitest · GitHub Actions.
@@ -70,14 +70,14 @@ sobrescribas informes de `docs/benchmarks/` de otras tareas; el número `T-###` 
 el Issue (mira antes cuál es el último); un lockfile en conflicto se regenera tras fusionar `main`.
 
 ## Límites
-No borrar el repositorio, no hacerlo público, no reescribir el historial, no contratar servicios de pago, no subir secretos ni datos personales reales.
+No borrar el repositorio, no hacerlo público, no reescribir el historial, no contratar servicios de pago, no subir secretos ni datos personales privados.
 
 ## Leyenda de estados
 IDEA · PROPUESTA · APROBADA · DISEÑADA · IMPLEMENTADA · PROBADA · FINALIZADA
 
 ## Decisiones vigentes (resumen)
 - Stack TypeScript web primero; app de escritorio (Tauri) más adelante.
-- Universo inicial España masculina niveles 1–4, estructura real como datos, contenido ficticio.
+- Universo objetivo España masculina; estructura y datos reales contrastados. La demo generada aún no equivale a una temporada oficial.
 - Motor de partido por posesiones; sin 3D en el alcance inicial.
 - Claude Code y Codex trabajan en paralelo con las mismas reglas; las tareas son Issues de GitHub.
 - Los agentes trabajan **solo bajo autorización del propietario** y paran al terminar cada tarea.

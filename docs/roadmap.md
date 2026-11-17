@@ -2,19 +2,19 @@
 
 # Hoja de ruta de BM27
 
-> Actualizada: 2026-11-16. Se genera con `pnpm roadmap` a partir de [`roadmap/roadmap.json`](roadmap/roadmap.json); la CI falla si este archivo no coincide con los datos.
+> Actualizada: 2026-11-17. Se genera con `pnpm roadmap` a partir de [`roadmap/roadmap.json`](roadmap/roadmap.json); la CI falla si este archivo no coincide con los datos.
 >
 > **Cómo leer los porcentajes.** El índice de preparación pondera las fases por su importancia para el producto completo. La cobertura interna de cada fase cuenta sus tareas por igual: es un inventario, no una medición de calidad o esfuerzo. Los pesos son decisiones de planificación publicadas, no datos de un competidor. El 100 % exige además validar todos los criterios de lanzamiento con evidencia. «En curso» sigue siendo una estimación; ideas y bloqueos valen cero.
 
 ## Resumen
 
-**Preparación estimada para lanzamiento: 9 %** `███░░░░░░░░░░░░░░░░░░░░░░░░░░░`  (475 elementos)
+**Preparación estimada para lanzamiento: 11 %** `███░░░░░░░░░░░░░░░░░░░░░░░░░░░`  (475 elementos)
 
 ```mermaid
 pie showData title Elementos por estado
-  "Hecho" : 101
-  "En curso" : 6
-  "Pendiente" : 335
+  "Hecho" : 105
+  "En curso" : 8
+  "Pendiente" : 329
   "Bloqueado" : 3
   "Idea" : 30
 ```
@@ -43,17 +43,17 @@ Gestor de baloncesto comercial completo, con la profundidad de gestión como ref
 - ⬜ **R6** Instalación, actualizaciones y compatibilidad verificadas en los sistemas soportados
 - ⬜ **R7** Equilibrio, rendimiento, licencias y criterios de lanzamiento cerrados
 
-La cobertura del inventario es 22 %; no debe confundirse con preparación comercial.
+La cobertura del inventario es 23 %; no debe confundirse con preparación comercial.
 
 ## Fases (del punto A al Z)
 
 ```mermaid
 flowchart LR
-  F0["F0 Fundaciones<br/>77 %"]
-  F1["F1 Primera versión jugable<br/>38 %"]
+  F0["F0 Fundaciones<br/>76 %"]
+  F1["F1 Primera versión jugable<br/>43 %"]
   F2["F2 Profundidad de gestión<br/>0 %"]
   F3["F3 Mundo, datos y mods<br/>0 %"]
-  F4["F4 Presentación<br/>0 %"]
+  F4["F4 Presentación<br/>10 %"]
   F5["F5 Distribución<br/>11 %"]
   F6["F6 Pulido y lanzamiento<br/>6 %"]
   F0 --> F1 --> F2 --> F3 --> F4 --> F5 --> F6
@@ -64,18 +64,18 @@ flowchart LR
   class F1 curso;
   class F2 pendiente;
   class F3 pendiente;
-  class F4 pendiente;
+  class F4 curso;
   class F5 curso;
   class F6 curso;
 ```
 
 | Fase | Avance | | Hecho | Qué significa |
 | --- | ---: | --- | ---: | --- |
-| **F0 Fundaciones** | 77 % | `███████████████░░░░░` | 83/110 | Núcleo determinista, motor de partido, mundo persistente, mercado y finanzas, y la forma de trabajar de los dos agentes. |
-| **F1 Primera versión jugable** | 38 % | `████████░░░░░░░░░░░░` | 16/43 | Que el propietario pueda jugar de principio a fin una temporada y varias más sin tocar una terminal, con consultas básicas del mundo. |
+| **F0 Fundaciones** | 76 % | `███████████████░░░░░` | 82/110 | Núcleo determinista, motor de partido, mundo persistente, mercado y finanzas, y la forma de trabajar de los dos agentes. |
+| **F1 Primera versión jugable** | 43 % | `█████████░░░░░░░░░░░` | 18/43 | Que el propietario pueda jugar de principio a fin una temporada y varias más sin tocar una terminal, con consultas básicas del mundo. |
 | **F2 Profundidad de gestión** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0/184 | Traspasos, cantera y ojeadores, economía con decisiones, entrenador rival con criterio, motor de partido completo. |
 | **F3 Mundo, datos y mods** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0/63 | Calibración con datos contrastados, paquetes de datos cargables, pirámide completa y otras competiciones. |
-| **F4 Presentación** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0/36 | Diseño visual, accesibilidad, partido en 2D, narración, sonido y varios idiomas. |
+| **F4 Presentación** | 10 % | `██░░░░░░░░░░░░░░░░░░` | 3/36 | Diseño visual, accesibilidad, partido en 2D, narración, sonido y varios idiomas. |
 | **F5 Distribución** | 11 % | `██░░░░░░░░░░░░░░░░░░` | 1/22 | Instalador de escritorio, versiones alfa y beta en GitHub, actualización automática, firma y otras plataformas. |
 | **F6 Pulido y lanzamiento** | 6 % | `█░░░░░░░░░░░░░░░░░░░` | 1/17 | Tutorial, equilibrio final, documentación, comunidad y lanzamiento. |
 
@@ -94,14 +94,14 @@ flowchart LR
 | **Gestión del usuario** | 36 % | `███████░░░░░░░░░░░░░` | 5 | 0 | 7 | 0 | 2 | Lo que el jugador puede hacer: decidir, delegar y entender las consecuencias. |
 | **Mundo persistente** | 30 % | `██████░░░░░░░░░░░░░░` | 3 | 0 | 6 | 0 | 1 | Un mundo que sigue vivo y estable durante decenas de temporadas, sin inflarse ni hundirse. |
 | **Datos, mods e idiomas** | 15 % | `███░░░░░░░░░░░░░░░░░` | 2 | 0 | 9 | 0 | 2 | Reglamentos, competiciones y contenido como datos: añadir una liga no debe tocar el motor. |
-| **Guardado y persistencia** | 40 % | `████████░░░░░░░░░░░░` | 4 | 0 | 6 | 0 | 0 | Las partidas no se pierden, son compactas y se pueden recuperar. |
-| **Interfaz web** | 25 % | `█████░░░░░░░░░░░░░░░` | 7 | 0 | 21 | 0 | 0 | La cara del juego: clara, rápida y accesible. |
+| **Guardado y persistencia** | 60 % | `████████████░░░░░░░░` | 6 | 0 | 4 | 0 | 0 | Las partidas no se pierden, son compactas y se pueden recuperar. |
+| **Interfaz web** | 38 % | `████████░░░░░░░░░░░░` | 10 | 1 | 17 | 0 | 0 | La cara del juego: clara, rápida y accesible. |
 | **Visualización del partido** | 11 % | `██░░░░░░░░░░░░░░░░░░` | 1 | 0 | 6 | 0 | 2 | Ver el partido, no solo leerlo, derivado siempre del registro de eventos. |
 | **Aplicación de escritorio y distribución** | 21 % | `████░░░░░░░░░░░░░░░░` | 1 | 2 | 6 | 1 | 2 | Que el propietario instale y actualice el juego sin pasar por GitHub. |
 | **Calidad, pruebas y herramientas** | 46 % | `█████████░░░░░░░░░░░` | 6 | 0 | 5 | 0 | 2 | Poder fiarse de lo construido y detectar a tiempo lo que se rompe. |
 | **Proceso y coordinación** | 70 % | `██████████████░░░░░░` | 7 | 0 | 1 | 2 | 0 | Que dos agentes y un propietario no programador trabajen sin estorbarse. |
 | **Documentación y comunidad** | 23 % | `█████░░░░░░░░░░░░░░░` | 2 | 1 | 5 | 0 | 3 | Que cualquiera entienda el juego, el proyecto y cómo ampliarlo. |
-| **Producto, legal y negocio** | 29 % | `██████░░░░░░░░░░░░░░` | 2 | 0 | 2 | 0 | 3 | Decisiones que no son código pero condicionan el lanzamiento. |
+| **Producto, legal y negocio** | 16 % | `███░░░░░░░░░░░░░░░░░` | 1 | 1 | 2 | 0 | 3 | Decisiones que no son código pero condicionan el lanzamiento. |
 | **Entrenamiento y planificación** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Convertir el trabajo semanal en decisiones con coste, seguimiento y efecto medible. |
 | **Salud y disponibilidad** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Gestionar la disponibilidad con incertidumbre y sin convertir las lesiones en castigos arbitrarios. |
 | **Vestuario y relaciones** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Dar consecuencias observables a la convivencia sin sustituir las decisiones deportivas por azar opaco. |
@@ -132,6 +132,12 @@ Los agentes solo trabajan cuando el propietario lo autoriza (D-052); esto reflej
 | 🔄 En curso | La etiqueta de la Release corresponde al código compilado | Aplicación de escritorio y distribución | 90 % | [#39](https://github.com/dariogea/BM27/issues/39) |
 | ⬜ Pendiente | Política de fusión sin huecos conocidos | Proceso y coordinación | — | [#36](https://github.com/dariogea/BM27/issues/36) |
 
+### Codex
+
+| Estado | Elemento | Área | Avance | Enlace |
+| --- | --- | --- | ---: | --- |
+| 🔄 En curso | Accesibilidad (contraste, teclado, lectores de pantalla) | Interfaz web | 50 % | [#23](https://github.com/dariogea/BM27/issues/23) |
+
 ### En curso sin dueño asignado
 
 | Estado | Elemento | Área | Avance | Enlace |
@@ -140,6 +146,7 @@ Los agentes solo trabajan cuando el propietario lo autoriza (D-052); esto reflej
 | 🔄 En curso | Cambios con reglas fijas (margen de rendimiento y faltas) | Motor de partido | 50 % | — |
 | 🔄 En curso | Variantes de reglamento por competición (tiempo, faltas, prórroga) | Motor de partido | 50 % | — |
 | 🔄 En curso | README con cómo probarlo | Documentación y comunidad | 50 % | — |
+| 🔄 En curso | Procedencia y condiciones de uso de datos reales y alias | Producto, legal y negocio | 15 % | — |
 
 ### Bloqueado (necesita una decisión o un paso del propietario)
 
@@ -425,20 +432,20 @@ _Reglamentos, competiciones y contenido como datos: añadir una liga no debe toc
 - ⬜ Generador de nombres por país y región (`F3`)
 - ⬜ Textos traducibles (i18n) (`F4`)
 - ⬜ Segundo idioma (`F4`)
-- 💡 Importar datos propios del usuario sin traer datos reales (`F3`)
-- ⬜ Comprobación automática de nombres reales prohibidos (`F3`)
+- 💡 Importar datos propios del usuario con procedencia declarada (`F3`)
+- ⬜ Comprobación automática de procedencia y etiquetado de datos (`F3`)
 
 </details>
 
-<details><summary><b>Guardado y persistencia</b> — 40 % `█████░░░░░░░`</summary>
+<details><summary><b>Guardado y persistencia</b> — 60 % `███████░░░░░`</summary>
 
 _Las partidas no se pierden, son compactas y se pueden recuperar._
 
 - ✅ Guardado en archivo JSON con comprobación (`F1`)
 - ✅ Interfaz SaveStore con migraciones (`F1`)
 - ✅ Guardar y cargar en el escritorio mediante diálogos (`F1`)
-- ⬜ Varias ranuras con nombre dentro de la aplicación (`F1` · [#16](https://github.com/dariogea/BM27/issues/16)) — _T-017._
-- ⬜ Guardado automático al cerrar temporada (`F1` · [#16](https://github.com/dariogea/BM27/issues/16))
+- ✅ Varias ranuras con nombre dentro de la aplicación (`F1` · @codex · [#16](https://github.com/dariogea/BM27/issues/16)) — _IndexedDB local con nombres, metadatos, renombrado y protección de otras ranuras; autoguardado de fin de temporada configurable. Archivos como copia portable._
+- ✅ Guardado automático al cerrar temporada (`F1` · @codex · [#16](https://github.com/dariogea/BM27/issues/16)) — _IndexedDB local con nombres, metadatos, renombrado y protección de otras ranuras; autoguardado de fin de temporada configurable. Archivos como copia portable._
 - ⬜ Política de historial y compactación (`F2` · [#17](https://github.com/dariogea/BM27/issues/17)) — _T-018. Decisión del propietario pendiente (#24)._
 - ⬜ Compresión del archivo (`F2` · [#17](https://github.com/dariogea/BM27/issues/17))
 - ⬜ Recuperación ante archivo corrupto (`F1` · [#16](https://github.com/dariogea/BM27/issues/16))
@@ -447,7 +454,7 @@ _Las partidas no se pierden, son compactas y se pueden recuperar._
 
 </details>
 
-<details><summary><b>Interfaz web</b> — 25 % `███░░░░░░░░░`</summary>
+<details><summary><b>Interfaz web</b> — 38 % `█████░░░░░░░`</summary>
 
 _La cara del juego: clara, rápida y accesible._
 
@@ -459,23 +466,23 @@ _La cara del juego: clara, rápida y accesible._
   - ✅ Mercado de agentes libres (`F1`)
   - ✅ Finanzas (`F1`)
   - ✅ Guardar y cargar (`F1`)
-- **Pantallas por hacer** — 0 %
+- **Pantallas por hacer** — 8 %
   - ⬜ Plantilla y tácticas de cualquier equipo (`F1` · [#14](https://github.com/dariogea/BM27/issues/14))
   - ⬜ Ficha de jugador completa (`F1` · [#14](https://github.com/dariogea/BM27/issues/14))
   - ⬜ Líderes estadísticos (`F1` · [#14](https://github.com/dariogea/BM27/issues/14))
   - ⬜ Palmarés (`F1` · [#14](https://github.com/dariogea/BM27/issues/14))
   - ⬜ Buscador de jugadores y equipos (`F1` · [#14](https://github.com/dariogea/BM27/issues/14))
-  - ⬜ Pantalla de inicio que explique cómo se juega (`F4` · [#23](https://github.com/dariogea/BM27/issues/23))
+  - ✅ Pantalla de inicio que explique cómo se juega (`F4` · @codex · [#23](https://github.com/dariogea/BM27/issues/23)) — _Demo visual con temas persistentes, inicio guiado y tablas desplazables; comprobación de accesibilidad y pantallas en el PR._
   - ⬜ Mercado de traspasos (`F2` · [#8](https://github.com/dariogea/BM27/issues/8))
   - ⬜ Cantera y ojeadores (`F2` · [#13](https://github.com/dariogea/BM27/issues/13))
   - ⬜ Bandeja de mensajes (`F2`)
   - ⬜ Instalaciones y patrocinadores (`F2` · [#12](https://github.com/dariogea/BM27/issues/12))
   - ⬜ Ajustes del juego (`F4`)
   - ⬜ Ayuda y glosario (`F4`)
-- **Calidad de la interfaz** — 0 %
-  - ⬜ Sistema de diseño con modo claro y oscuro (`F4` · [#23](https://github.com/dariogea/BM27/issues/23)) — _T-024._
-  - ⬜ Adaptación a móvil (`F4` · [#23](https://github.com/dariogea/BM27/issues/23))
-  - ⬜ Accesibilidad (contraste, teclado, lectores de pantalla) (`F4` · [#23](https://github.com/dariogea/BM27/issues/23))
+- **Calidad de la interfaz** — 31 %
+  - ✅ Sistema de diseño con modo claro y oscuro (`F4` · @codex · [#23](https://github.com/dariogea/BM27/issues/23)) — _Demo visual con temas persistentes, inicio guiado y tablas desplazables; comprobación de accesibilidad y pantallas en el PR._
+  - ✅ Adaptación a móvil (`F4` · @codex · [#23](https://github.com/dariogea/BM27/issues/23)) — _Demo visual con temas persistentes, inicio guiado y tablas desplazables; comprobación de accesibilidad y pantallas en el PR._
+  - 🔄 Accesibilidad (contraste, teclado, lectores de pantalla) (`F4` · 50 % · @codex · [#23](https://github.com/dariogea/BM27/issues/23)) — _Mejoras en controles, foco y avisos. Falta validar todos los recorridos y tecnologías asistivas._
   - ⬜ Tablas ordenables y filtros (`F4`)
   - ⬜ Atajos de teclado (`F4`)
   - ⬜ Explicaciones emergentes (tooltips) de cada atributo (`F4`)
@@ -575,11 +582,11 @@ _Que cualquiera entienda el juego, el proyecto y cómo ampliarlo._
 
 </details>
 
-<details><summary><b>Producto, legal y negocio</b> — 29 % `███░░░░░░░░░`</summary>
+<details><summary><b>Producto, legal y negocio</b> — 16 % `██░░░░░░░░░░`</summary>
 
 _Decisiones que no son código pero condicionan el lanzamiento._
 
-- ✅ Nombres reales prohibidos (pilar 7) (`F0`)
+- 🔄 Procedencia y condiciones de uso de datos reales y alias (`F0` · 15 %) — _La orden del propietario de 17-11-2026 sustituye la ficción total; catálogo de investigación sin plantillas importadas._
 - ✅ Nombre definitivo del juego (`F6`) — _El propietario fija BM27 — Basketball Manager 2027 como nombre definitivo (#46)._
 - ⬜ Licencia de código y de contenido (`F6`)
 - 💡 Política de privacidad (si hay informes de fallos) (`F6`)
@@ -770,7 +777,7 @@ _Hacer explícitas las condiciones para competir y fichar, manteniendo las regla
 _Que los desplazamientos, descansos y cambios de fecha tengan una planificación coherente._
 
 - **Planificación de viajes** — 0 %
-  - ⬜ Calcular distancias entre sedes ficticias (`F2`)
+  - ⬜ Calcular distancias entre sedes de los clubes (`F2`)
   - ⬜ Planificar desplazamientos según horario del encuentro (`F2`)
   - ⬜ Incluir recuperación por viajes sin duplicar fatiga (`F2`)
   - ⬜ Reflejar el coste logístico en la previsión económica (`F2`)
@@ -826,7 +833,7 @@ _Representar la relación pública del club a partir de hechos del mundo simulad
 - **Comunidad del club** — 0 %
   - ⬜ Seguir satisfacción de grupos de aficionados (`F2`)
   - ⬜ Medir el efecto de precios y resultados en la asistencia (`F2`)
-  - ⬜ Reconocer hitos y aniversarios de la historia ficticia (`F2`)
+  - ⬜ Reconocer hitos y aniversarios de la historia de la partida (`F2`)
   - ⬜ Conservar la memoria de rivalidades y encuentros destacados (`F2`)
 
 </details>

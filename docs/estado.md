@@ -66,3 +66,7 @@ Reglas en [`coordinacion.md`](coordinacion.md).
 | #44   | PROBADA | Roadmap ampliado conservando fases y tareas existentes; landing de GitHub con identidad visual, navegación y acceso a guías. Nuevas tareas pendientes, sin implementar funciones del juego. |
 
 | #46 | PROBADA | Título definitivo, About y preparación comercial ponderada con criterios de salida y gráfico generado. |
+
+| #16 | PROBADA | Ranuras internas en IndexedDB, metadatos, renombrado, borrado y autoguardado configurable; archivos portables conservados. |
+
+| #23 | PROBADA | Demo con inicio guiado, jerarquía visual, temas claro/oscuro y adaptación móvil. Base española real como objetivo; catálogo oficial pendiente de contraste. |

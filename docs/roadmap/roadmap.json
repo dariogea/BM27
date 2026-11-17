@@ -1121,7 +1121,11 @@
         },
         {
           "t": "Comprobación automática de procedencia y etiquetado de datos",
-          "s": "pendiente"
+          "s": "en-curso",
+          "p": 25,
+          "i": 61,
+          "o": "codex",
+          "n": "Adaptador de semilla: referencias, recuentos, alias, IDs y fechas validados; contraste independiente y condiciones de uso pendientes."
         }
       ]
     },

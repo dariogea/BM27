@@ -121,3 +121,9 @@ La prioridad es una demo jugable y visualmente cuidada, con España como referen
 Se adopta la estructura de las capturas aportadas: cabecera azul, navegación en dos niveles, paneles densos y fondo oscuro con acentos morados/rosas. La marca, la pista ilustrativa y las iniciales de clubes son propias de BM27; no se incorporan fotografías ni escudos de las capturas. El portal se deriva del GameView existente, sin cambios del protocolo ni del núcleo. La actividad no es prensa simulada: refleja resultados, movimientos y avisos reales. Las clasificaciones y resultados conservan la temporada de sus datos, también después de un ascenso. El presupuesto es salarial anual, no una cifra de traspasos inexistente. Las preferencias de tema y densidad no cambian la simulación.
 
 El propietario confirma después que el producto es **solo PC**. Se retiran los layouts y artefactos móviles; el roadmap cambia ese objetivo por adaptación a resoluciones de escritorio y elimina la app móvil del banco de ideas.
+
+## Continuación autónoma y catálogo español (#61, 17-11-2026)
+
+El propietario autoriza en esta sesión continuar de forma autónoma y mantener informado a Claude, hasta el límite de créditos. Esta orden permite encadenar las tareas autorizadas del roadmap durante la sesión.
+
+La semilla se prepara primero como catálogo de investigación independiente del contrato de la partida. Identidades estables dentro de la semilla, alias y evidencia quedan separados. Las conferencias de Tercera FEB no se convierten en subgrupos de calendario sin evidencia. Una URL de regla no catalogada se conserva como obstáculo y no se declara verificada. La integración activa depende del cargador #21 y de sus acuerdos de grupos explícitos.

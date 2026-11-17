@@ -70,3 +70,7 @@ de investigación del propietario con fecha de corte 17-11-2026.
   se conserva un literal con posible errata; los cupos de Primera FEB no se han inventado.
 - **Todavía no se usa en la partida.** Integrarla exige el cargador de paquetes de datos (#21) y,
   probablemente, grupos explícitos en el universo (contrato). Un test (`seed-data.test.ts`) vigila las cifras.
+
+## Mapeo e integración
+
+El [adaptador del catálogo (#61)](catalogo-semilla.md) valida identidades, alias, fuentes y agrupaciones sin modificar la partida. Conserva separadas las conferencias de los grupos de calendario y documenta los obstáculos del cargador.

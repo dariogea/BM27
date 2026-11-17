@@ -22,3 +22,5 @@ La [portada del proyecto](../README.md) presenta el juego y el resumen visual de
 - [Verificación visual de la demo y capturas reales (#23)](revisiones/demo-visual-23.md).
 
 - [Portal de gestión basado en las capturas del propietario (#52)](revisiones/portal-52.md).
+
+- [Adaptador y validación de la semilla española (#61)](datos/catalogo-semilla.md).

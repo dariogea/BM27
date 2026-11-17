@@ -8,13 +8,13 @@
 
 ## Resumen
 
-**Preparación estimada para lanzamiento: 12 %** `████░░░░░░░░░░░░░░░░░░░░░░░░░░`  (475 elementos)
+**Preparación estimada para lanzamiento: 13 %** `████░░░░░░░░░░░░░░░░░░░░░░░░░░`  (475 elementos)
 
 ```mermaid
 pie showData title Elementos por estado
   "Hecho" : 110
-  "En curso" : 15
-  "Pendiente" : 318
+  "En curso" : 16
+  "Pendiente" : 317
   "Bloqueado" : 2
   "Idea" : 30
 ```
@@ -63,7 +63,7 @@ flowchart LR
   class F0 curso;
   class F1 curso;
   class F2 curso;
-  class F3 pendiente;
+  class F3 curso;
   class F4 curso;
   class F5 curso;
   class F6 curso;
@@ -93,7 +93,7 @@ flowchart LR
 | **Finanzas** | 31 % | `██████░░░░░░░░░░░░░░` | 4 | 0 | 8 | 0 | 1 | El dinero como restricción real: ingresos, gastos, presupuestos y consecuencias de gestionar mal. |
 | **Gestión del usuario** | 36 % | `███████░░░░░░░░░░░░░` | 5 | 0 | 7 | 0 | 2 | Lo que el jugador puede hacer: decidir, delegar y entender las consecuencias. |
 | **Mundo persistente** | 30 % | `██████░░░░░░░░░░░░░░` | 3 | 0 | 6 | 0 | 1 | Un mundo que sigue vivo y estable durante decenas de temporadas, sin inflarse ni hundirse. |
-| **Datos, mods e idiomas** | 15 % | `███░░░░░░░░░░░░░░░░░` | 2 | 0 | 9 | 0 | 2 | Reglamentos, competiciones y contenido como datos: añadir una liga no debe tocar el motor. |
+| **Datos, mods e idiomas** | 17 % | `███░░░░░░░░░░░░░░░░░` | 2 | 1 | 8 | 0 | 2 | Reglamentos, competiciones y contenido como datos: añadir una liga no debe tocar el motor. |
 | **Guardado y persistencia** | 60 % | `████████████░░░░░░░░` | 6 | 0 | 4 | 0 | 0 | Las partidas no se pierden, son compactas y se pueden recuperar. |
 | **Interfaz web** | 38 % | `████████░░░░░░░░░░░░` | 10 | 2 | 16 | 0 | 0 | La cara del juego: clara, rápida y accesible. |
 | **Visualización del partido** | 11 % | `██░░░░░░░░░░░░░░░░░░` | 1 | 0 | 6 | 0 | 2 | Ver el partido, no solo leerlo, derivado siempre del registro de eventos. |
@@ -139,6 +139,7 @@ Los agentes solo trabajan cuando el propietario lo autoriza (D-052); esto reflej
 
 | Estado | Elemento | Área | Avance | Enlace |
 | --- | --- | --- | ---: | --- |
+| 🔄 En curso | Comprobación automática de procedencia y etiquetado de datos | Datos, mods e idiomas | 25 % | [#61](https://github.com/dariogea/BM27/issues/61) |
 | 🔄 En curso | Accesibilidad (contraste, teclado, lectores de pantalla) | Interfaz web | 50 % | [#23](https://github.com/dariogea/BM27/issues/23) |
 | 🔄 En curso | Tablas ordenables y filtros | Interfaz web | 15 % | [#52](https://github.com/dariogea/BM27/issues/52) |
 | 🔄 En curso | Elegir densidad de tablas y tamaño de interfaz | Accesibilidad y preferencias de uso | 40 % | [#52](https://github.com/dariogea/BM27/issues/52) |
@@ -422,7 +423,7 @@ _Un mundo que sigue vivo y estable durante decenas de temporadas, sin inflarse n
 
 </details>
 
-<details><summary><b>Datos, mods e idiomas</b> — 15 % `██░░░░░░░░░░`</summary>
+<details><summary><b>Datos, mods e idiomas</b> — 17 % `██░░░░░░░░░░`</summary>
 
 _Reglamentos, competiciones y contenido como datos: añadir una liga no debe tocar el motor._
 
@@ -438,7 +439,7 @@ _Reglamentos, competiciones y contenido como datos: añadir una liga no debe toc
 - ⬜ Textos traducibles (i18n) (`F4`)
 - ⬜ Segundo idioma (`F4`)
 - 💡 Importar datos propios del usuario con procedencia declarada (`F3`)
-- ⬜ Comprobación automática de procedencia y etiquetado de datos (`F3`)
+- 🔄 Comprobación automática de procedencia y etiquetado de datos (`F3` · 25 % · @codex · [#61](https://github.com/dariogea/BM27/issues/61)) — _Adaptador de semilla: referencias, recuentos, alias, IDs y fechas validados; contraste independiente y condiciones de uso pendientes._
 
 </details>
 

@@ -21,7 +21,9 @@ with sync_playwright() as p:
     for width,label in [(1280,'desktop'),(390,'mobile')]:
         page.set_viewport_size({'width':width,'height':900 if width==1280 else 844})
         for theme in ['dark','light']:
-            page.evaluate('(theme)=>{document.documentElement.dataset.theme=theme}',theme)
+
+            if page.evaluate('document.documentElement.dataset.theme') != theme:
+                page.get_by_role('button',name='☀ Modo claro' if theme == 'light' else '☾ Modo oscuro',exact=True).click()
             audit('welcome-'+label+'-'+theme)
             page.screenshot(path=f'{output_dir}/welcome-{label}-{theme}.png',full_page=True)
     page.set_viewport_size({'width':1280,'height':900})
@@ -34,7 +36,9 @@ with sync_playwright() as p:
     for width,label in [(1280,'desktop'),(390,'mobile')]:
         page.set_viewport_size({'width':width,'height':900 if width==1280 else 844})
         for theme in ['dark','light']:
-            page.evaluate('(theme)=>{document.documentElement.dataset.theme=theme}',theme)
+
+            if page.evaluate('document.documentElement.dataset.theme') != theme:
+                page.get_by_role('button',name='☀ Modo claro' if theme == 'light' else '☾ Modo oscuro',exact=True).click()
             for tab in ['Mi equipo','Tácticas','Quinteto','Mercado','Finanzas','Competición','Partido','Partidas']:
                 page.get_by_role('navigation').get_by_role('button',name=tab,exact=True).click()
                 page.wait_for_timeout(100)
@@ -48,12 +52,13 @@ with sync_playwright() as p:
                         assert region.evaluate('(e)=>e.scrollLeft')>0
                         region.evaluate('(e)=>{e.scrollLeft=0}')
                 if tab=='Mi equipo': page.screenshot(path=f'{output_dir}/team-{label}-{theme}.png',full_page=True)
-    # Reset DOM theme to match React state, then test actual toggle persistence.
-    page.evaluate("document.documentElement.dataset.theme=localStorage.getItem('bm27-theme')")
-    page.get_by_role('button',name='☀ Modo claro',exact=True).click()
+    # Verify the final selected light theme survives a page reload.
     page.reload(wait_until='domcontentloaded')
     assert page.evaluate('document.documentElement.dataset.theme')=='light'
-    page.get_by_role('button',name='☾ Modo oscuro',exact=True).wait_for()
+    page.get_by_role('button',name='☾ Modo oscuro',exact=True).click()
+    page.reload(wait_until='domcontentloaded')
+    page.get_by_role('button',name='☀ Modo claro',exact=True).wait_for()
+    assert page.evaluate('document.documentElement.dataset.theme')=='dark'
     # Keyboard focus must remain visible.
     page.keyboard.press('Tab')
     focus=page.evaluate('getComputedStyle(document.activeElement).outlineStyle')

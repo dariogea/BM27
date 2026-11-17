@@ -41,3 +41,7 @@ una limpieza del sistema o un cambio de dirección de la aplicación.
 
 La instalación y el guardado nativo en un Windows real siguen pendientes de validación; las pruebas
 de esta entrega cubren el adaptador y el Worker, además del recorrido de navegador indicado en el PR.
+
+## Acceso desde el portal
+
+«Partidas» en la navegación superior o «Partidas de este dispositivo» abre las ranuras internas. Los botones para importar/exportar archivos están en «Gestión de partida», bajo la cabecera.

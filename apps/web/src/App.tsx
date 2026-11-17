@@ -1,3 +1,6 @@
+import { ManagerHeader } from './ManagerHeader';
+import { PortalView } from './PortalView';
+import type { Tab } from './navigation';
 import { SavesPanel } from './SavesPanel';
 import type { SlotSummary } from './slotStore';
 import type { MatchDetail, TeamTactics } from '@bm27/schema';
@@ -40,18 +43,6 @@ function useSimulation() {
     });
 }
 
-type Tab = 'team' | 'tactics' | 'lineup' | 'market' | 'finance' | 'competition' | 'match' | 'saves';
-const TABS: [Tab, string][] = [
-  ['team', 'Mi equipo'],
-  ['tactics', 'Tácticas'],
-  ['lineup', 'Quinteto'],
-  ['market', 'Mercado'],
-  ['finance', 'Finanzas'],
-  ['competition', 'Competición'],
-  ['match', 'Partido'],
-  ['saves', 'Partidas'],
-];
-
 interface ShownMatch {
   detail: MatchDetail;
   playerNames: Record<string, string>;
@@ -75,9 +66,24 @@ export function App() {
       /* Settings persistence is optional. */
     }
   }, [theme]);
+  const [compact, setCompact] = useState(() => {
+    try {
+      return localStorage.getItem('bm27-compact') === 'true';
+    } catch {
+      return false;
+    }
+  });
+  useEffect(() => {
+    document.documentElement.dataset.density = compact ? 'compact' : 'comfortable';
+    try {
+      localStorage.setItem('bm27-compact', String(compact));
+    } catch {
+      /* Optional preference. */
+    }
+  }, [compact]);
   const [seed, setSeed] = useState('bm27');
   const [view, setView] = useState<GameView | null>(null);
-  const [tab, setTab] = useState<Tab>('competition');
+  const [tab, setTab] = useState<Tab>('portal');
   const [competitionId, setCompetitionId] = useState('');
   const [teamChoice, setTeamChoice] = useState('');
   const [match, setMatch] = useState<ShownMatch | null>(null);
@@ -119,11 +125,11 @@ export function App() {
           setMatch(null);
           setCompetitionId(mine?.competitionId ?? reply.view.competitions[0]?.id ?? '');
           setTeamChoice(reply.view.userTeamId ?? reply.view.competitions[0]?.teamIds[0] ?? '');
-          setTab(mine ? 'team' : 'competition');
+          setTab('portal');
         }
         if (command.type === 'chooseTeam' && mine) {
           setCompetitionId(mine.competitionId);
-          setTab('team');
+          setTab('portal');
         }
         if (command.type === 'finishSeason' || command.type === 'advance') {
           // After promotion or relegation the team may have changed competition.
@@ -156,6 +162,11 @@ export function App() {
     }
   };
 
+  const navigate = (next: Tab): void => {
+    setTab(next);
+    if (next === 'saves') void run({ type: 'listSlots' }, 'Abriendo partidas…');
+  };
+
   const name = (teamId: string): string => view?.teamNames[teamId] ?? teamId;
   const table = view?.tables.find((c) => c.competitionId === competitionId);
   const mine = view?.myTeam ?? null;
@@ -164,376 +175,385 @@ export function App() {
 
   return (
     <main className="app-shell">
-      <header className="app-header">
-        <div className="brand">
-          <div className="brand-mark" aria-hidden="true">
-            B27
-          </div>
-          <div>
-            <h1>Basketball Manager 2027</h1>
-            <p>Dirección deportiva · BM27</p>
-          </div>
-        </div>
-        <div className="header-actions">
-          <span className="status-pill">Demo en desarrollo</span>
-          <button onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
-            {theme === 'dark' ? '☀ Modo claro' : '☾ Modo oscuro'}
-          </button>
-        </div>
-      </header>
-      {!view && (
-        <section className="welcome">
-          <div>
-            <span className="eyebrow">Tu próximo proyecto deportivo</span>
-            <h2>El club empieza por tus decisiones.</h2>
-            <p>
-              Prepara tu quinteto, encuentra refuerzos y avanza una temporada en la que cada partido
-              deja huella.
-            </p>
-            <ol className="welcome-steps">
-              <li>Genera una partida o recupera un guardado del dispositivo.</li>
-              <li>Elige un equipo y ajusta su quinteto y sus tácticas.</li>
-              <li>Juega jornadas, consulta resultados y construye tu plantilla.</li>
-            </ol>
-          </div>
-          <div className="welcome-court" aria-hidden="true" />
-        </section>
-      )}
-      <p className="data-note">
-        Base de demostración: clubes y jugadores generados. El objetivo es representar el baloncesto
-        español con datos contrastados; estas plantillas aún no son las oficiales.
-      </p>
-      <div className="bar command-bar">
-        <label>
-          Semilla{' '}
-          <input value={seed} onChange={(e) => setSeed(e.target.value)} aria-label="Semilla" />
-        </label>
-        <button disabled={busy} onClick={() => run({ type: 'generate', seed }, 'Generando…')}>
-          Generar universo
-        </button>
-        <button disabled={busy || !view} onClick={() => run({ type: 'exportSave' }, 'Guardando…')}>
-          Guardar partida
-        </button>
-        <button
-          disabled={busy}
-          onClick={async () => {
-            if (!isDesktop()) {
-              fileInput.current?.click();
-              return;
-            }
-            try {
-              const json = await pickTextFile();
-              if (json !== null) await run({ type: 'importSave', json }, 'Cargando…');
-            } catch (error) {
-              setError(
-                `No se pudo abrir el archivo: ${error instanceof Error ? error.message : String(error)}`,
-              );
-            }
-          }}
-        >
-          Cargar partida
-        </button>
-        <input
-          ref={fileInput}
-          type="file"
-          accept="application/json,.json"
-          hidden
-          data-testid="load-file"
-          onChange={async (e) => {
-            const file = e.target.files?.[0];
-            e.target.value = '';
-            if (file) await run({ type: 'importSave', json: await file.text() }, 'Cargando…');
-          }}
-        />
-      </div>
+      <ManagerHeader
+        view={view}
+        active={tab}
+        busy={busy}
+        theme={theme}
+        compact={compact}
+        onTheme={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+        onCompact={setCompact}
+        onNavigate={navigate}
+        onAdvance={() => {
+          void run({ type: 'advance' }, 'Jugando jornada…');
+        }}
+      />
+      <div className="workspace-content" id="workspace">
+        {!view && (
+          <section className="welcome">
+            <div>
+              <span className="eyebrow">Tu próximo proyecto deportivo</span>
+              <h1>El club empieza por tus decisiones.</h1>
+              <p>
+                Prepara tu quinteto, encuentra refuerzos y avanza una temporada en la que cada
+                partido deja huella.
+              </p>
+              <ol className="welcome-steps">
+                <li>Genera una partida o recupera un guardado del dispositivo.</li>
+                <li>Elige un equipo y ajusta su quinteto y sus tácticas.</li>
+                <li>Juega jornadas, consulta resultados y construye tu plantilla.</li>
+              </ol>
+            </div>
+            <div className="welcome-court" aria-hidden="true" />
+          </section>
+        )}
+        <p className="data-note">
+          Base de demostración: clubes y jugadores generados. El objetivo es representar el
+          baloncesto español con datos contrastados; estas plantillas aún no son las oficiales.
+        </p>
+        <div className={`workspace-actions ${view ? 'playing' : ''}`}>
+          <details className="game-tools" open={!view}>
+            <summary>Gestión de partida · crear, importar y exportar</summary>
+            <div className="bar command-bar">
+              <label>
+                Semilla{' '}
+                <input
+                  value={seed}
+                  onChange={(e) => setSeed(e.target.value)}
+                  aria-label="Semilla"
+                />
+              </label>
+              <button disabled={busy} onClick={() => run({ type: 'generate', seed }, 'Generando…')}>
+                Generar universo
+              </button>
+              <button
+                disabled={busy || !view}
+                onClick={() => run({ type: 'exportSave' }, 'Guardando…')}
+              >
+                Guardar partida
+              </button>
+              <button
+                disabled={busy}
+                onClick={async () => {
+                  if (!isDesktop()) {
+                    fileInput.current?.click();
+                    return;
+                  }
+                  try {
+                    const json = await pickTextFile();
+                    if (json !== null) await run({ type: 'importSave', json }, 'Cargando…');
+                  } catch (error) {
+                    setError(
+                      `No se pudo abrir el archivo: ${error instanceof Error ? error.message : String(error)}`,
+                    );
+                  }
+                }}
+              >
+                Cargar partida
+              </button>
+              <input
+                ref={fileInput}
+                type="file"
+                accept="application/json,.json"
+                hidden
+                data-testid="load-file"
+                onChange={async (e) => {
+                  const file = e.target.files?.[0];
+                  e.target.value = '';
+                  if (file) await run({ type: 'importSave', json: await file.text() }, 'Cargando…');
+                }}
+              />
+            </div>
+          </details>
 
-      {view && (
-        <section className="overview" aria-label="Resumen de la partida">
-          <article>
-            <span>Temporada</span>
-            <strong>{view.seasonNumber}</strong>
-            <span>{view.seasonInProgress ? `Jornada ${view.step}` : 'Preparación y mercado'}</span>
-          </article>
-          <article>
-            <span>Tu equipo</span>
-            <strong>{view.myTeam?.name ?? 'Sin equipo'}</strong>
-            <span>{view.myTeam?.competitionName ?? 'Elige un club para empezar'}</span>
-          </article>
-          <article>
-            <span>Competiciones</span>
-            <strong>{view.competitions.length} niveles</strong>
-            <span>Calendario, clasificación y playoffs</span>
-          </article>
-          <article>
-            <span>Mundo de la partida</span>
-            <strong>{view.teamCount} clubes</strong>
-            <span>{view.playerCount} jugadores en activo</span>
-          </article>
-        </section>
-      )}
-      {view && (
-        <div className="bar">
-          <label>
-            Equipo{' '}
-            <select
-              value={teamChoice}
-              onChange={(e) => setTeamChoice(e.target.value)}
-              aria-label="Equipo"
-            >
-              {view.competitions.map((c) => (
-                <optgroup key={c.id} label={`Nivel ${c.level} · ${c.name}`}>
-                  {[...c.teamIds]
-                    .sort((a, b) => name(a).localeCompare(name(b), 'es'))
-                    .map((teamId) => (
-                      <option key={teamId} value={teamId}>
-                        {name(teamId)}
-                      </option>
+          {view && tab !== 'portal' && (
+            <section className="club-ribbon" aria-label="Resumen de la partida">
+              <div className="club-monogram" aria-hidden="true">
+                {mine?.name
+                  .split(' ')
+                  .map((word) => word[0])
+                  .slice(0, 2)
+                  .join('') ?? 'BM'}
+              </div>
+              <div className="club-ribbon-title">
+                <span className="eyebrow">Tu centro de gestión</span>
+                <h1>{mine?.name ?? 'Elige tu próximo club'}</h1>
+                <p>{mine?.competitionName ?? 'España · Base de demostración'}</p>
+              </div>
+              <div className="ribbon-stat">
+                <span>Temporada</span>
+                <strong>{view.seasonNumber}</strong>
+              </div>
+              <div className="ribbon-stat">
+                <span>Balance deportivo</span>
+                <strong>{mine ? `${mine.wins} V · ${mine.losses} D` : 'Sin equipo'}</strong>
+              </div>
+              <div className="ribbon-stat">
+                <span>Mundo de la partida</span>
+                <strong>{view.teamCount} clubes</strong>
+                <small>{view.playerCount} jugadores</small>
+              </div>
+            </section>
+          )}
+          {view && (
+            <details className="team-management" open={!mine}>
+              <summary>Cambiar de club · simular temporada</summary>
+              <div className="bar team-toolbar">
+                <label>
+                  Equipo{' '}
+                  <select
+                    value={teamChoice}
+                    onChange={(e) => setTeamChoice(e.target.value)}
+                    aria-label="Equipo"
+                  >
+                    {view.competitions.map((c) => (
+                      <optgroup key={c.id} label={`Nivel ${c.level} · ${c.name}`}>
+                        {[...c.teamIds]
+                          .sort((a, b) => name(a).localeCompare(name(b), 'es'))
+                          .map((teamId) => (
+                            <option key={teamId} value={teamId}>
+                              {name(teamId)}
+                            </option>
+                          ))}
+                      </optgroup>
                     ))}
-                </optgroup>
-              ))}
-            </select>
-          </label>
-          <button
-            disabled={busy || !teamChoice || teamChoice === view.userTeamId}
-            onClick={() => run({ type: 'chooseTeam', teamId: teamChoice }, 'Cambiando de equipo…')}
-          >
-            Dirigir este equipo
-          </button>
-          <button disabled={busy} onClick={() => run({ type: 'advance' }, 'Jugando jornada…')}>
-            Jugar jornada
-          </button>
+                  </select>
+                </label>
+                <button
+                  disabled={busy || !teamChoice || teamChoice === view.userTeamId}
+                  onClick={() =>
+                    run({ type: 'chooseTeam', teamId: teamChoice }, 'Cambiando de equipo…')
+                  }
+                >
+                  Dirigir este equipo
+                </button>
+                <button
+                  disabled={busy}
+                  onClick={() => run({ type: 'finishSeason' }, 'Simulando hasta el final…')}
+                >
+                  Simular hasta el final de la temporada
+                </button>
+              </div>
+            </details>
+          )}
+
           <button
             disabled={busy}
-            onClick={() => run({ type: 'finishSeason' }, 'Simulando hasta el final…')}
+            onClick={() => {
+              setTab('saves');
+              void run({ type: 'listSlots' }, 'Abriendo partidas…');
+            }}
           >
-            Simular hasta el final de la temporada
+            Partidas de este dispositivo
           </button>
+          <p className="status-line" role="status" aria-live="polite" data-testid="status">
+            {status}
+          </p>
         </div>
-      )}
-
-      <button
-        disabled={busy}
-        onClick={() => {
-          setTab('saves');
-          void run({ type: 'listSlots' }, 'Abriendo partidas…');
-        }}
-      >
-        Partidas de este dispositivo
-      </button>
-      <p className="status-line" role="status" aria-live="polite" data-testid="status">
-        {status}
-      </p>
-      {error && (
-        <p className="error" role="alert">
-          Error: {error}
-        </p>
-      )}
-
-      {view && (
-        <>
-          <p className="note" data-testid="summary">
-            Temporada {view.seasonNumber}
-            {view.seasonInProgress
-              ? ` · en curso (${view.step} jornadas jugadas)`
-              : ' · sin empezar'}
-            {mine
-              ? ` · Diriges a ${mine.name} (nivel ${mine.level})${mine.position ? ` · ${mine.position}º, ${mine.wins} victorias y ${mine.losses} derrotas` : ''}`
-              : ' · No diriges ningún equipo'}
+        {error && (
+          <p className="error" role="alert">
+            Error: {error}
           </p>
-          <nav className="tabs" aria-label="Secciones de la partida">
-            {TABS.map(([id, label]) => (
-              <button
-                key={id}
-                className={tab === id ? 'active' : ''}
-                aria-pressed={tab === id}
-                onClick={() => {
-                  setTab(id);
-                  if (id === 'saves') void run({ type: 'listSlots' }, 'Abriendo partidas…');
-                }}
-                disabled={
-                  (id === 'team' || id === 'tactics' || id === 'lineup' || id === 'market') && !mine
-                }
-              >
-                {label}
-              </button>
-            ))}
-          </nav>
-        </>
-      )}
+        )}
 
-      {tab === 'saves' && (
-        <SavesPanel
-          slots={slots}
-          busy={busy}
-          canSave={view !== null}
-          autosave={autosave}
-          onRefresh={() => {
-            void run({ type: 'listSlots' }, 'Actualizando partidas…');
-          }}
-          onSave={(name) => {
-            if (
-              !slots?.some((s) => s.name === name.trim()) ||
-              window.confirm(
-                'Ya existe ese guardado. ¿Quieres sobrescribirlo con la partida abierta?',
+        {view && (
+          <>
+            <p className="note" data-testid="summary">
+              Temporada {view.seasonNumber}
+              {view.seasonInProgress
+                ? ` · en curso (${view.step} jornadas jugadas)`
+                : ' · sin empezar'}
+              {mine
+                ? ` · Diriges a ${mine.name} (nivel ${mine.level})${mine.position ? ` · ${mine.position}º, ${mine.wins} victorias y ${mine.losses} derrotas` : ''}`
+                : ' · No diriges ningún equipo'}
+            </p>
+          </>
+        )}
+
+        {view && tab === 'portal' && (
+          <PortalView
+            view={view}
+            competitionId={competitionId}
+            onCompetition={setCompetitionId}
+            onNavigate={navigate}
+            onMatch={openMatch}
+            busy={busy}
+          />
+        )}
+        {tab === 'saves' && (
+          <SavesPanel
+            slots={slots}
+            busy={busy}
+            canSave={view !== null}
+            autosave={autosave}
+            onRefresh={() => {
+              void run({ type: 'listSlots' }, 'Actualizando partidas…');
+            }}
+            onSave={(name) => {
+              if (
+                !slots?.some((s) => s.name === name.trim()) ||
+                window.confirm(
+                  'Ya existe ese guardado. ¿Quieres sobrescribirlo con la partida abierta?',
+                )
               )
-            )
-              void run({ type: 'saveSlot', name }, 'Guardando en este dispositivo…');
-          }}
-          onLoad={(name) => {
-            if (
-              !view ||
-              window.confirm(
-                'Cargar sustituirá la partida abierta. Guarda antes los cambios que quieras conservar. ¿Continuar?',
+                void run({ type: 'saveSlot', name }, 'Guardando en este dispositivo…');
+            }}
+            onLoad={(name) => {
+              if (
+                !view ||
+                window.confirm(
+                  'Cargar sustituirá la partida abierta. Guarda antes los cambios que quieras conservar. ¿Continuar?',
+                )
               )
-            )
-              void run({ type: 'loadSlot', name }, 'Cargando del dispositivo…');
-          }}
-          onDelete={(name) => {
-            if (
-              window.confirm(
-                '¿Eliminar este guardado del dispositivo? Los archivos exportados no se modifican.',
+                void run({ type: 'loadSlot', name }, 'Cargando del dispositivo…');
+            }}
+            onDelete={(name) => {
+              if (
+                window.confirm(
+                  '¿Eliminar este guardado del dispositivo? Los archivos exportados no se modifican.',
+                )
               )
-            )
-              void run({ type: 'deleteSlot', name }, 'Eliminando guardado…');
-          }}
-          onRename={(name, newName) => {
-            void run({ type: 'renameSlot', name, newName }, 'Renombrando…');
-          }}
-          onAutosave={(enabled) => {
-            void run({ type: 'setAutosave', enabled }, 'Actualizando preferencia…');
-          }}
-        />
-      )}
-      {view && tab === 'team' && mine && (
-        <section>
-          <h2>
-            {mine.name} · {mine.competitionName}
-          </h2>
-          <p>
-            {mine.nextMatch ? (
-              <>
-                <strong>Próximo partido:</strong>{' '}
-                {mine.nextMatch.home ? 'en casa contra' : 'fuera contra'}{' '}
-                {name(mine.nextMatch.opponentId)}.{' '}
-              </>
-            ) : view.seasonInProgress ? (
-              <>Tu equipo no tiene más partidos esta temporada. </>
+                void run({ type: 'deleteSlot', name }, 'Eliminando guardado…');
+            }}
+            onRename={(name, newName) => {
+              void run({ type: 'renameSlot', name, newName }, 'Renombrando…');
+            }}
+            onAutosave={(enabled) => {
+              void run({ type: 'setAutosave', enabled }, 'Actualizando preferencia…');
+            }}
+          />
+        )}
+        {view && tab === 'team' && mine && (
+          <section>
+            <h2>
+              {mine.name} · {mine.competitionName}
+            </h2>
+            <p>
+              {mine.nextMatch ? (
+                <>
+                  <strong>Próximo partido:</strong>{' '}
+                  {mine.nextMatch.home ? 'en casa contra' : 'fuera contra'}{' '}
+                  {name(mine.nextMatch.opponentId)}.{' '}
+                </>
+              ) : view.seasonInProgress ? (
+                <>Tu equipo no tiene más partidos esta temporada. </>
+              ) : (
+                <>La temporada aún no ha empezado: pulsa «Jugar jornada». </>
+              )}
+              {mine.lastMatch && (
+                <>
+                  <strong>Último:</strong> {name(mine.lastMatch.homeTeamId)}{' '}
+                  {mine.lastMatch.homeScore} – {mine.lastMatch.awayScore}{' '}
+                  {name(mine.lastMatch.awayTeamId)}{' '}
+                  <button disabled={busy} onClick={() => openMatch(mine.lastMatch!.id)}>
+                    Ver partido
+                  </button>
+                </>
+              )}
+            </p>
+            {view.offseason && <OffseasonPanel report={view.offseason} />}
+            <SquadTable squad={mine.squad} />
+          </section>
+        )}
+
+        {view && tab === 'tactics' && mine && (
+          <section>
+            <h2>Tácticas de {mine.name}</h2>
+            <TacticsEditor
+              key={revision}
+              team={mine}
+              busy={busy}
+              onSave={(tactics) => run({ type: 'setTactics', tactics }, 'Guardando tácticas…')}
+            />
+          </section>
+        )}
+
+        {view && tab === 'lineup' && mine && (
+          <section>
+            <h2>Quinteto y rotación de {mine.name}</h2>
+            <LineupEditor
+              key={revision}
+              team={mine}
+              busy={busy}
+              onSave={(playerIds) => run({ type: 'setRotation', playerIds }, 'Guardando quinteto…')}
+            />
+          </section>
+        )}
+
+        {view && tab === 'market' && mine && view.market && (
+          <section>
+            <h2>Mercado de {mine.name}</h2>
+            <MarketPanel
+              team={mine}
+              market={view.market}
+              seasonNumber={view.seasonNumber}
+              busy={busy}
+              onSign={(playerId, years) =>
+                run({ type: 'signFreeAgent', playerId, years }, 'Fichando…')
+              }
+              onRenew={(playerId, years) =>
+                run({ type: 'renewContract', playerId, years }, 'Renovando…')
+              }
+              onRelease={(playerId) => run({ type: 'releasePlayer', playerId }, 'Liberando…')}
+            />
+          </section>
+        )}
+
+        {view && tab === 'finance' && mine && view.finance && (
+          <section>
+            <h2>Finanzas de {mine.name}</h2>
+            <FinancePanel finance={view.finance} seasonNumber={view.seasonNumber} />
+          </section>
+        )}
+
+        {view && tab === 'competition' && (
+          <section>
+            <div className="bar">
+              <label>
+                Competición{' '}
+                <select
+                  value={competitionId}
+                  onChange={(e) => setCompetitionId(e.target.value)}
+                  aria-label="Competición"
+                >
+                  {view.competitions.map((c) => (
+                    <option key={c.id} value={c.id}>
+                      Nivel {c.level} · {c.name} ({c.teamIds.length} equipos)
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </div>
+            {table ? (
+              <CompetitionView
+                key={`${table.seasonNumber}-${table.competitionId}`}
+                competition={table}
+                userTeamId={view.userTeamId}
+                name={name}
+                selectedMatchId={match?.detail.result.id ?? ''}
+                onMatch={openMatch}
+              />
             ) : (
-              <>La temporada aún no ha empezado: pulsa «Jugar jornada». </>
+              <p className="note">Todavía no se ha jugado ningún partido. Pulsa «Jugar jornada».</p>
             )}
-            {mine.lastMatch && (
-              <>
-                <strong>Último:</strong> {name(mine.lastMatch.homeTeamId)}{' '}
-                {mine.lastMatch.homeScore} – {mine.lastMatch.awayScore}{' '}
-                {name(mine.lastMatch.awayTeamId)}{' '}
-                <button disabled={busy} onClick={() => openMatch(mine.lastMatch!.id)}>
-                  Ver partido
-                </button>
-              </>
-            )}
-          </p>
-          {view.offseason && <OffseasonPanel report={view.offseason} />}
-          <SquadTable squad={mine.squad} />
-        </section>
-      )}
+          </section>
+        )}
 
-      {view && tab === 'tactics' && mine && (
-        <section>
-          <h2>Tácticas de {mine.name}</h2>
-          <TacticsEditor
-            key={revision}
-            team={mine}
-            busy={busy}
-            onSave={(tactics) => run({ type: 'setTactics', tactics }, 'Guardando tácticas…')}
-          />
-        </section>
-      )}
-
-      {view && tab === 'lineup' && mine && (
-        <section>
-          <h2>Quinteto y rotación de {mine.name}</h2>
-          <LineupEditor
-            key={revision}
-            team={mine}
-            busy={busy}
-            onSave={(playerIds) => run({ type: 'setRotation', playerIds }, 'Guardando quinteto…')}
-          />
-        </section>
-      )}
-
-      {view && tab === 'market' && mine && view.market && (
-        <section>
-          <h2>Mercado de {mine.name}</h2>
-          <MarketPanel
-            team={mine}
-            market={view.market}
-            seasonNumber={view.seasonNumber}
-            busy={busy}
-            onSign={(playerId, years) =>
-              run({ type: 'signFreeAgent', playerId, years }, 'Fichando…')
-            }
-            onRenew={(playerId, years) =>
-              run({ type: 'renewContract', playerId, years }, 'Renovando…')
-            }
-            onRelease={(playerId) => run({ type: 'releasePlayer', playerId }, 'Liberando…')}
-          />
-        </section>
-      )}
-
-      {view && tab === 'finance' && mine && view.finance && (
-        <section>
-          <h2>Finanzas de {mine.name}</h2>
-          <FinancePanel finance={view.finance} seasonNumber={view.seasonNumber} />
-        </section>
-      )}
-
-      {view && tab === 'competition' && (
-        <section>
-          <div className="bar">
-            <label>
-              Competición{' '}
-              <select
-                value={competitionId}
-                onChange={(e) => setCompetitionId(e.target.value)}
-                aria-label="Competición"
-              >
-                {view.competitions.map((c) => (
-                  <option key={c.id} value={c.id}>
-                    Nivel {c.level} · {c.name} ({c.teamIds.length} equipos)
-                  </option>
-                ))}
-              </select>
-            </label>
-          </div>
-          {table ? (
-            <CompetitionView
-              key={`${table.seasonNumber}-${table.competitionId}`}
-              competition={table}
-              userTeamId={view.userTeamId}
+        {view &&
+          tab === 'match' &&
+          (match ? (
+            <BoxScoreView
+              detail={match.detail}
+              playerNames={match.playerNames}
+              tactics={match.tactics}
               name={name}
-              selectedMatchId={match?.detail.result.id ?? ''}
-              onMatch={openMatch}
             />
           ) : (
-            <p className="note">Todavía no se ha jugado ningún partido. Pulsa «Jugar jornada».</p>
-          )}
-        </section>
-      )}
-
-      {view &&
-        tab === 'match' &&
-        (match ? (
-          <BoxScoreView
-            detail={match.detail}
-            playerNames={match.playerNames}
-            tactics={match.tactics}
-            name={name}
-          />
-        ) : (
-          <p className="note">
-            Elige un partido en la pestaña «Competición» o pulsa «Ver partido» en «Mi equipo».
-          </p>
-        ))}
+            <p className="note">
+              Elige un partido en la pestaña «Competición» o pulsa «Ver partido» en «Mi equipo».
+            </p>
+          ))}
+      </div>
     </main>
   );
 }

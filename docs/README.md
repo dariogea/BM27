@@ -20,3 +20,5 @@ La [portada del proyecto](../README.md) presenta el juego y el resumen visual de
 [Base española y procedencia de los datos](datos/espana.md): dirección del producto, fuentes y catálogo pendiente de contrastar.
 
 - [Verificación visual de la demo y capturas reales (#23)](revisiones/demo-visual-23.md).
+
+- [Portal de gestión basado en las capturas del propietario (#52)](revisiones/portal-52.md).

@@ -1304,16 +1304,16 @@
             {
               "t": "Sistema de diseño con modo claro y oscuro",
               "s": "hecho",
-              "i": 23,
-              "n": "Demo visual con temas persistentes, inicio guiado y tablas desplazables; comprobación de accesibilidad y pantallas en el PR.",
+              "i": 52,
+              "n": "Portal de gestión basado en las capturas del propietario: cabecera azul, navegación doble, paneles de actividad/resultados/clasificación/economía, temas persistentes y resoluciones de PC. Evidencia en docs/revisiones/portal-52.md.",
               "o": "codex"
             },
             {
-              "t": "Adaptación a móvil",
+              "t": "Adaptación a distintas resoluciones de PC",
               "s": "hecho",
-              "i": 23,
+              "i": 52,
               "o": "codex",
-              "n": "Demo visual con temas persistentes, inicio guiado y tablas desplazables; comprobación de accesibilidad y pantallas en el PR."
+              "n": "El propietario limita el producto a PC. Verificación a 1280×800 y 1920×1080, sin variante móvil."
             },
             {
               "t": "Accesibilidad (contraste, teclado, lectores de pantalla)",
@@ -1325,7 +1325,11 @@
             },
             {
               "t": "Tablas ordenables y filtros",
-              "s": "pendiente"
+              "s": "en-curso",
+              "p": 15,
+              "i": 52,
+              "o": "codex",
+              "n": "Filtro de actividad y selector de competición en el portal. Ordenación y filtros generales pendientes."
             },
             {
               "t": "Atajos de teclado",
@@ -2598,7 +2602,11 @@
             },
             {
               "t": "Elegir densidad de tablas y tamaño de interfaz",
-              "s": "pendiente"
+              "s": "en-curso",
+              "p": 40,
+              "i": 52,
+              "o": "codex",
+              "n": "Densidad compacta/confortable persistente. Escalado independiente de la interfaz pendiente."
             },
             {
               "t": "Restaurar ajustes sin borrar partidas",
@@ -2760,10 +2768,6 @@
         },
         {
           "t": "Mundo en línea compartido",
-          "s": "idea"
-        },
-        {
-          "t": "Aplicación para móvil",
           "s": "idea"
         },
         {

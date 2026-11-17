@@ -1,0 +1,67 @@
+{
+  "profile": "4 temporadas con bench-t001, antes del cambio",
+  "samples": 10909,
+  "note": "Muestras propias de V8, no tiempos exclusivos exactos ni medición de asignaciones. Ubicaciones del motor resueltas con el mapa de fuentes de tsx.",
+  "topSites": [
+    {
+      "site": "engine.ts:745",
+      "samples": 1459
+    },
+    {
+      "site": "engine.ts:386",
+      "samples": 1173
+    },
+    {
+      "site": "engine.ts:300",
+      "samples": 1024
+    },
+    {
+      "site": "set TextDecoder",
+      "samples": 658
+    },
+    {
+      "site": "engine.ts:1344",
+      "samples": 522
+    },
+    {
+      "site": "engine.ts:337",
+      "samples": 387
+    },
+    {
+      "site": "engine.ts:917",
+      "samples": 321
+    },
+    {
+      "site": "engine.ts:1134",
+      "samples": 295
+    },
+    {
+      "site": "packages/core/src/match/boxscore.ts:(anónimo)",
+      "samples": 266
+    },
+    {
+      "site": "packages/core/src/match/boxscore.ts:deriveBoxScore",
+      "samples": 249
+    },
+    {
+      "site": "packages/core/src/season/season.ts:(anónimo)",
+      "samples": 196
+    },
+    {
+      "site": "engine.ts:598",
+      "samples": 185
+    },
+    {
+      "site": "packages/core/src/market/market.ts:(anónimo)",
+      "samples": 177
+    },
+    {
+      "site": "engine.ts:1550",
+      "samples": 177
+    },
+    {
+      "site": "(garbage collector)",
+      "samples": 173
+    }
+  ]
+}

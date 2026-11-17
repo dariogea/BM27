@@ -55,3 +55,18 @@ conserva explícitamente los valores no verificados como `null`.
 La siguiente integración deberá coordinarse con el cargador de paquetes de datos (#21). Si cambia el
 contrato o la API pública del núcleo, se abrirá el aviso `contrato` antes de implementarlo. No hace falta
 bloquear las mejoras visuales o los guardados mientras se prepara el catálogo.
+
+## Base semilla 2026-27 aportada por el propietario (17-11-2026)
+
+[`seed.json`](../../data/reference/es/season-2026-27/seed.json) contiene **4 competiciones, 202 equipos con su
+grupo o conferencia, 34 reglas operativas y 30 fuentes** (estado `seed-unverified`). Procede de una base
+de investigación del propietario con fecha de corte 17-11-2026.
+
+- **Qué incluye y qué no:** no incluye personas (29 jugadores de dos equipos y 18 cargos de la base original)
+  hasta revisar derechos de uso y protección de datos. Tampoco escudos, fotografías ni valoraciones.
+- **Qué NO es:** ni un censo exhaustivo, ni una licencia de redistribución, ni una validación de las
+  condiciones de uso de cada fuente. Los identificadores son internos de la semilla.
+- **Precauciones heredadas:** `nombre_publico` no es razón social; Tercera FEB tiene 138 equipos (no 140);
+  se conserva un literal con posible errata; los cupos de Primera FEB no se han inventado.
+- **Todavía no se usa en la partida.** Integrarla exige el cargador de paquetes de datos (#21) y,
+  probablemente, grupos explícitos en el universo (contrato). Un test (`seed-data.test.ts`) vigila las cifras.

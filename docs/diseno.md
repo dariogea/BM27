@@ -75,3 +75,19 @@ componentes, con nombres descriptivos en inglés.
 Cada cifra debe proceder del estado del juego. La actividad del portal no sustituye una futura bandeja
 de prensa/personal. Los mapas deportivos deberán derivarse de eventos; la pista de cabecera actual
 es decorativa y tiene `aria-hidden`. No reutilizar logos o retratos de las referencias.
+
+## Paneles de gestión (T-033, Claude)
+
+Reglas propias en [`panels.css`](../apps/web/src/panels.css); solo usa las variables de arriba.
+
+| Elemento                                                | Cómo funciona                                                                                                                                                                                  |
+| ------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Cabeceras ordenables (`.th-sort`)                       | Un botón dentro de cada `<th>`; `aria-sort` indica la columna activa. La primera pulsación ordena de mayor a menor (el nombre y la posición, alfabético); la segunda invierte. Hoy: plantilla. |
+| Nivel de atributo (`.attr-t1` … `.attr-t5`)             | Fondo según el valor (bajo < 45, justo 45–59, bueno 60–74, muy bueno 75–84, élite 85+). **El número siempre se imprime**: el color solo ayuda. La leyenda está bajo la tabla.                  |
+| Insignias (`.badge`, `.badge-injury`, `.badge-expired`) | Estado junto a un nombre o fecha: «Lesión · N partidos», «Cumplido».                                                                                                                           |
+| Búsqueda de agentes libres                              | Campo con etiqueta accesible y contador de resultados (`role="status"`). Solo busca entre los 150 que envía el Worker.                                                                         |
+
+**Comprobación en navegador:** [`tools/qa/panels_browser.mjs`](../tools/qa/panels_browser.mjs) (1280 × 800, solo PC)
+juega una jornada y verifica la ordenación, la búsqueda y que axe (WCAG 2 A/AA) no encuentra nada en los cinco
+paneles, en tema oscuro y claro. Capturas: [oscuro](screenshots/plantilla-ordenable-oscuro.png),
+[claro](screenshots/plantilla-ordenable-claro.png).

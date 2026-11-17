@@ -42,7 +42,13 @@ export function CompetitionView(props: {
       </p>
       <div className="columns">
         {competition.groups.map((group) => (
-          <div key={group.name} className="scroll">
+          <div
+            key={group.name}
+            className="scroll"
+            tabIndex={0}
+            role="region"
+            aria-label={`Clasificación: ${group.name}`}
+          >
             <h3>Clasificación · {group.name}</h3>
             <table>
               <thead>

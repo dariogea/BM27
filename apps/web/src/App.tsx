@@ -60,6 +60,21 @@ interface ShownMatch {
 
 export function App() {
   const send = useSimulation();
+  const [theme, setTheme] = useState<'dark' | 'light'>(() => {
+    try {
+      return localStorage.getItem('bm27-theme') === 'light' ? 'light' : 'dark';
+    } catch {
+      return 'dark';
+    }
+  });
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    try {
+      localStorage.setItem('bm27-theme', theme);
+    } catch {
+      /* Settings persistence is optional. */
+    }
+  }, [theme]);
   const [seed, setSeed] = useState('bm27');
   const [view, setView] = useState<GameView | null>(null);
   const [tab, setTab] = useState<Tab>('competition');
@@ -148,12 +163,47 @@ export function App() {
     run({ type: 'matchDetail', matchId }, 'Abriendo partido…');
 
   return (
-    <main>
-      <h1>
-        BM27 <span className="tag">motor v1 · entrenadores y cantera PLACEHOLDER</span>
-      </h1>
-
-      <div className="bar">
+    <main className="app-shell">
+      <header className="app-header">
+        <div className="brand">
+          <div className="brand-mark" aria-hidden="true">
+            B27
+          </div>
+          <div>
+            <h1>Basketball Manager 2027</h1>
+            <p>Dirección deportiva · BM27</p>
+          </div>
+        </div>
+        <div className="header-actions">
+          <span className="status-pill">Demo en desarrollo</span>
+          <button onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
+            {theme === 'dark' ? '☀ Modo claro' : '☾ Modo oscuro'}
+          </button>
+        </div>
+      </header>
+      {!view && (
+        <section className="welcome">
+          <div>
+            <span className="eyebrow">Tu próximo proyecto deportivo</span>
+            <h2>El club empieza por tus decisiones.</h2>
+            <p>
+              Prepara tu quinteto, encuentra refuerzos y avanza una temporada en la que cada partido
+              deja huella.
+            </p>
+            <ol className="welcome-steps">
+              <li>Genera una partida o recupera un guardado del dispositivo.</li>
+              <li>Elige un equipo y ajusta su quinteto y sus tácticas.</li>
+              <li>Juega jornadas, consulta resultados y construye tu plantilla.</li>
+            </ol>
+          </div>
+          <div className="welcome-court" aria-hidden="true" />
+        </section>
+      )}
+      <p className="data-note">
+        Base de demostración: clubes y jugadores generados. El objetivo es representar el baloncesto
+        español con datos contrastados; estas plantillas aún no son las oficiales.
+      </p>
+      <div className="bar command-bar">
         <label>
           Semilla{' '}
           <input value={seed} onChange={(e) => setSeed(e.target.value)} aria-label="Semilla" />
@@ -197,6 +247,30 @@ export function App() {
         />
       </div>
 
+      {view && (
+        <section className="overview" aria-label="Resumen de la partida">
+          <article>
+            <span>Temporada</span>
+            <strong>{view.seasonNumber}</strong>
+            <span>{view.seasonInProgress ? `Jornada ${view.step}` : 'Preparación y mercado'}</span>
+          </article>
+          <article>
+            <span>Tu equipo</span>
+            <strong>{view.myTeam?.name ?? 'Sin equipo'}</strong>
+            <span>{view.myTeam?.competitionName ?? 'Elige un club para empezar'}</span>
+          </article>
+          <article>
+            <span>Competiciones</span>
+            <strong>{view.competitions.length} niveles</strong>
+            <span>Calendario, clasificación y playoffs</span>
+          </article>
+          <article>
+            <span>Mundo de la partida</span>
+            <strong>{view.teamCount} clubes</strong>
+            <span>{view.playerCount} jugadores en activo</span>
+          </article>
+        </section>
+      )}
       {view && (
         <div className="bar">
           <label>
@@ -246,6 +320,47 @@ export function App() {
       >
         Partidas de este dispositivo
       </button>
+      <p className="status-line" role="status" aria-live="polite" data-testid="status">
+        {status}
+      </p>
+      {error && (
+        <p className="error" role="alert">
+          Error: {error}
+        </p>
+      )}
+
+      {view && (
+        <>
+          <p className="note" data-testid="summary">
+            Temporada {view.seasonNumber}
+            {view.seasonInProgress
+              ? ` · en curso (${view.step} jornadas jugadas)`
+              : ' · sin empezar'}
+            {mine
+              ? ` · Diriges a ${mine.name} (nivel ${mine.level})${mine.position ? ` · ${mine.position}º, ${mine.wins} victorias y ${mine.losses} derrotas` : ''}`
+              : ' · No diriges ningún equipo'}
+          </p>
+          <nav className="tabs" aria-label="Secciones de la partida">
+            {TABS.map(([id, label]) => (
+              <button
+                key={id}
+                className={tab === id ? 'active' : ''}
+                aria-pressed={tab === id}
+                onClick={() => {
+                  setTab(id);
+                  if (id === 'saves') void run({ type: 'listSlots' }, 'Abriendo partidas…');
+                }}
+                disabled={
+                  (id === 'team' || id === 'tactics' || id === 'lineup' || id === 'market') && !mine
+                }
+              >
+                {label}
+              </button>
+            ))}
+          </nav>
+        </>
+      )}
+
       {tab === 'saves' && (
         <SavesPanel
           slots={slots}
@@ -289,40 +404,6 @@ export function App() {
           }}
         />
       )}
-      <p data-testid="status">{status}</p>
-      {error && <p className="error">Error: {error}</p>}
-
-      {view && (
-        <>
-          <p className="note" data-testid="summary">
-            Temporada {view.seasonNumber}
-            {view.seasonInProgress
-              ? ` · en curso (${view.step} jornadas jugadas)`
-              : ' · sin empezar'}
-            {mine
-              ? ` · Diriges a ${mine.name} (nivel ${mine.level})${mine.position ? ` · ${mine.position}º, ${mine.wins} victorias y ${mine.losses} derrotas` : ''}`
-              : ' · No diriges ningún equipo'}
-          </p>
-          <div className="tabs">
-            {TABS.map(([id, label]) => (
-              <button
-                key={id}
-                className={tab === id ? 'active' : ''}
-                onClick={() => {
-                  setTab(id);
-                  if (id === 'saves') void run({ type: 'listSlots' }, 'Abriendo partidas…');
-                }}
-                disabled={
-                  (id === 'team' || id === 'tactics' || id === 'lineup' || id === 'market') && !mine
-                }
-              >
-                {label}
-              </button>
-            ))}
-          </div>
-        </>
-      )}
-
       {view && tab === 'team' && mine && (
         <section>
           <h2>

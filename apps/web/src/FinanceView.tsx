@@ -39,33 +39,35 @@ export function FinancePanel(props: { finance: FinanceData; seasonNumber: number
       </div>
 
       <h3>Previsión de la próxima temporada</h3>
-      <table>
-        <tbody>
-          <tr>
-            <td className="name">Ingresos esperados (con tu reputación actual)</td>
-            <td>{euros(f.expectedRevenue)}</td>
-          </tr>
-          <tr>
-            <td className="name">Salarios (contratos actuales)</td>
-            <td>−{euros(f.payroll)}</td>
-          </tr>
-          <tr>
-            <td className="name">Costes fijos (pabellón, personal, viajes)</td>
-            <td>−{euros(f.fixedCosts)}</td>
-          </tr>
-          <tr>
-            <td className="name">
-              <strong>Resultado previsto</strong>
-            </td>
-            <td className={projectedResult < 0 ? 'bad' : ''}>
-              <strong>
-                {projectedResult >= 0 ? '+' : ''}
-                {euros(projectedResult)}
-              </strong>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div className="scroll" tabIndex={0} role="region" aria-label="Previsión económica">
+        <table>
+          <tbody>
+            <tr>
+              <td className="name">Ingresos esperados (con tu reputación actual)</td>
+              <td>{euros(f.expectedRevenue)}</td>
+            </tr>
+            <tr>
+              <td className="name">Salarios (contratos actuales)</td>
+              <td>−{euros(f.payroll)}</td>
+            </tr>
+            <tr>
+              <td className="name">Costes fijos (pabellón, personal, viajes)</td>
+              <td>−{euros(f.fixedCosts)}</td>
+            </tr>
+            <tr>
+              <td className="name">
+                <strong>Resultado previsto</strong>
+              </td>
+              <td className={projectedResult < 0 ? 'bad' : ''}>
+                <strong>
+                  {projectedResult >= 0 ? '+' : ''}
+                  {euros(projectedResult)}
+                </strong>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       <p className="note">
         Los ingresos suben con la reputación (más público y más patrocinio) y con los partidos en
         casa y los playoffs. La reputación sube o baja cada año según tu posición final, pero tiende
@@ -77,7 +79,7 @@ export function FinancePanel(props: { finance: FinanceData; seasonNumber: number
       {f.history.length === 0 ? (
         <p className="note">Todavía no hay ninguna temporada cerrada.</p>
       ) : (
-        <div className="scroll">
+        <div className="scroll" tabIndex={0} role="region" aria-label="Historial económico">
           <table data-testid="finance-history">
             <thead>
               <tr>

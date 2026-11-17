@@ -241,6 +241,18 @@ const MIGRATIONS: Record<number, (data: Json) => Json> = {
     namePool: 'namePool' in data ? data.namePool : null,
     dataPackId: 'dataPackId' in data ? data.dataPackId : null,
   }),
+  // v7 → v8 (#79): previous clubs have generated identities, without source claims.
+  7: (data) => ({
+    ...data,
+    schemaVersion: 8,
+    teams: Array.isArray(data.teams)
+      ? data.teams.map((team: unknown) =>
+          team !== null && typeof team === 'object' && !('identity' in team)
+            ? { ...team, identity: null }
+            : team,
+        )
+      : data.teams,
+  }),
 };
 
 export class MigrationError extends Error {

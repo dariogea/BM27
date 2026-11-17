@@ -1,0 +1,182 @@
+{
+  "formatVersion": 1,
+  "schemaVersion": 8,
+  "id": "example-eight-defined-clubs",
+  "name": "Clubes definidos · 8 equipos",
+  "description": "Clubes ficticios definidos individualmente con IDs estables y alias; jugadores generados. Ejemplo de procedencia declarada, sin representar una competición real.",
+  "config": {
+    "id": "example-eight-clubs",
+    "regions": ["Norte", "Sur"],
+    "rosterSize": {
+      "min": 10,
+      "max": 10
+    },
+    "levels": [
+      {
+        "competitionId": "example-league",
+        "name": "Liga de ejemplo",
+        "level": 1,
+        "rulesetId": "example-2x15",
+        "teamCount": 8,
+        "averageQuality": 65,
+        "format": {
+          "groupCount": 1,
+          "roundRobinLegs": 2,
+          "playoffs": {
+            "qualifiersPerGroup": 4,
+            "seriesBestOf": [1, 3]
+          }
+        },
+        "promotionSlots": 0,
+        "relegationSlots": 0,
+        "salaryCap": 1000000,
+        "minSalary": 8000,
+        "economy": {
+          "tvRevenue": 0,
+          "sponsorRevenue": 300000,
+          "ticketPrice": 8,
+          "averageAttendance": 700,
+          "fixedCosts": 75000,
+          "wageShare": 0.7,
+          "baseReputation": 50
+        }
+      }
+    ]
+  },
+  "rulesets": [
+    {
+      "id": "example-2x15",
+      "name": "Ejemplo: dos periodos de quince minutos",
+      "periods": 2,
+      "periodMinutes": 15,
+      "overtimeMinutes": 5,
+      "personalFoulLimit": 4,
+      "teamFoulsForBonus": 4,
+      "timeoutsFirstHalf": 1,
+      "timeoutsSecondHalf": 1,
+      "timeoutsOvertime": 1,
+      "technicalFoulsForEjection": 2,
+      "shotClockSeconds": 20,
+      "shotClockOffensiveReboundSeconds": 12
+    }
+  ],
+  "names": {
+    "cities": [
+      {
+        "name": "Valle Norte",
+        "region": "Norte"
+      },
+      {
+        "name": "Villa Sur",
+        "region": "Sur"
+      },
+      {
+        "name": "Puerto Claro",
+        "region": "Norte"
+      },
+      {
+        "name": "Monte Azul",
+        "region": "Sur"
+      }
+    ],
+    "teamNicknames": ["Canastas", "Halcones", "Robles"],
+    "firstNames": ["Álex", "Dani", "Sam", "Noa"],
+    "lastNames": ["Bosque", "Río", "Sierra", "Vega"]
+  },
+  "clubs": [
+    {
+      "id": "example-club-001",
+      "name": "Valle Norte Canastas",
+      "city": "Valle Norte",
+      "region": "Norte",
+      "competitionId": "example-league",
+      "identity": {
+        "referenceName": "Club de Baloncesto Valle Norte 1",
+        "source": {
+          "catalogId": "example-fictional-catalog",
+          "clubId": "demo-001",
+          "url": "https://github.com/dariogea/BM27/blob/main/data/packs/example-eight-defined-clubs.json",
+          "capturedOn": "2026-11-17",
+          "verification": "unverified"
+        }
+      }
+    },
+    {
+      "id": "example-club-002",
+      "name": "Villa Sur Canastas",
+      "city": "Villa Sur",
+      "region": "Sur",
+      "competitionId": "example-league",
+      "identity": {
+        "referenceName": "Club de Baloncesto Villa Sur 2",
+        "source": null
+      }
+    },
+    {
+      "id": "example-club-003",
+      "name": "Puerto Claro Canastas",
+      "city": "Puerto Claro",
+      "region": "Norte",
+      "competitionId": "example-league",
+      "identity": {
+        "referenceName": "Club de Baloncesto Puerto Claro 3",
+        "source": null
+      }
+    },
+    {
+      "id": "example-club-004",
+      "name": "Monte Azul Canastas",
+      "city": "Monte Azul",
+      "region": "Sur",
+      "competitionId": "example-league",
+      "identity": {
+        "referenceName": "Club de Baloncesto Monte Azul 4",
+        "source": null
+      }
+    },
+    {
+      "id": "example-club-005",
+      "name": "Valle Norte Halcones",
+      "city": "Valle Norte",
+      "region": "Norte",
+      "competitionId": "example-league",
+      "identity": {
+        "referenceName": "Club de Baloncesto Valle Norte 5",
+        "source": null
+      }
+    },
+    {
+      "id": "example-club-006",
+      "name": "Villa Sur Halcones",
+      "city": "Villa Sur",
+      "region": "Sur",
+      "competitionId": "example-league",
+      "identity": {
+        "referenceName": "Club de Baloncesto Villa Sur 6",
+        "source": null
+      }
+    },
+    {
+      "id": "example-club-007",
+      "name": "Puerto Claro Halcones",
+      "city": "Puerto Claro",
+      "region": "Norte",
+      "competitionId": "example-league",
+      "identity": {
+        "referenceName": "Club de Baloncesto Puerto Claro 7",
+        "source": null
+      }
+    },
+    {
+      "id": "example-club-008",
+      "name": "Monte Azul Halcones",
+      "city": "Monte Azul",
+      "region": "Sur",
+      "competitionId": "example-league",
+      "identity": {
+        "referenceName": "Club de Baloncesto Monte Azul 8",
+        "source": null
+      }
+    }
+  ]
+}

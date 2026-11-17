@@ -13,10 +13,10 @@
 ```mermaid
 pie showData title Elementos por estado
   "Hecho" : 123
-  "En curso" : 21
+  "En curso" : 22
   "Pendiente" : 299
   "Bloqueado" : 2
-  "Idea" : 30
+  "Idea" : 29
 ```
 
 ## Objetivo del 100 %
@@ -93,7 +93,7 @@ flowchart LR
 | **Finanzas** | 31 % | `██████░░░░░░░░░░░░░░` | 4 | 0 | 8 | 0 | 1 | El dinero como restricción real: ingresos, gastos, presupuestos y consecuencias de gestionar mal. |
 | **Gestión del usuario** | 36 % | `███████░░░░░░░░░░░░░` | 5 | 0 | 7 | 0 | 2 | Lo que el jugador puede hacer: decidir, delegar y entender las consecuencias. |
 | **Mundo persistente** | 40 % | `████████░░░░░░░░░░░░` | 4 | 0 | 5 | 0 | 1 | Un mundo que sigue vivo y estable durante decenas de temporadas, sin inflarse ni hundirse. |
-| **Datos, mods e idiomas** | 50 % | `██████████░░░░░░░░░░` | 6 | 2 | 3 | 0 | 2 | Reglamentos, competiciones y contenido como datos: añadir una liga no debe tocar el motor. |
+| **Datos, mods e idiomas** | 53 % | `███████████░░░░░░░░░` | 6 | 3 | 3 | 0 | 1 | Reglamentos, competiciones y contenido como datos: añadir una liga no debe tocar el motor. |
 | **Guardado y persistencia** | 60 % | `████████████░░░░░░░░` | 6 | 0 | 4 | 0 | 0 | Las partidas no se pierden, son compactas y se pueden recuperar. |
 | **Interfaz web** | 54 % | `███████████░░░░░░░░░` | 14 | 3 | 11 | 0 | 0 | La cara del juego: clara, rápida y accesible. |
 | **Visualización del partido** | 35 % | `███████░░░░░░░░░░░░░` | 3 | 1 | 3 | 0 | 2 | Ver el partido, no solo leerlo, derivado siempre del registro de eventos. |
@@ -142,6 +142,7 @@ Los agentes solo trabajan cuando el propietario lo autoriza (D-052); esto reflej
 | 🔄 En curso | Reducir copias del universo y coste por partido | Núcleo y arquitectura | 25 % | [#18](https://github.com/dariogea/BM27/issues/18) |
 | 🔄 En curso | Historial completo de la carrera de cada jugador | Jugadores | 30 % | [#67](https://github.com/dariogea/BM27/issues/67) |
 | 🔄 En curso | Guía para crear mods | Datos, mods e idiomas | 25 % | [#21](https://github.com/dariogea/BM27/issues/21) |
+| 🔄 En curso | Importar datos propios del usuario con procedencia declarada | Datos, mods e idiomas | 40 % | [#79](https://github.com/dariogea/BM27/issues/79) |
 | 🔄 En curso | Comprobación automática de procedencia y etiquetado de datos | Datos, mods e idiomas | 25 % | [#61](https://github.com/dariogea/BM27/issues/61) |
 | 🔄 En curso | Ficha de jugador completa | Interfaz web | 60 % | [#67](https://github.com/dariogea/BM27/issues/67) |
 | 🔄 En curso | Accesibilidad (contraste, teclado, lectores de pantalla) | Interfaz web | 50 % | [#23](https://github.com/dariogea/BM27/issues/23) |
@@ -428,14 +429,14 @@ _Un mundo que sigue vivo y estable durante decenas de temporadas, sin inflarse n
 
 </details>
 
-<details><summary><b>Datos, mods e idiomas</b> — 50 % `██████░░░░░░`</summary>
+<details><summary><b>Datos, mods e idiomas</b> — 53 % `██████░░░░░░`</summary>
 
 _Reglamentos, competiciones y contenido como datos: añadir una liga no debe tocar el motor._
 
 - ✅ Esquemas validados con zod y JSON Schema (`F0`)
 - ✅ Universo inicial de España masculina como datos (`F0`)
-- ✅ Cargador de paquetes de datos con errores legibles (`F3` · @codex · [#21](https://github.com/dariogea/BM27/issues/21)) — _JSON validado con campos y relaciones. Identidades explícitas y calendario español pendientes._
-- ✅ Versionado y compatibilidad de paquetes (`F3` · @codex · [#21](https://github.com/dariogea/BM27/issues/21)) — _Formato 1 / contrato 7. Versiones distintas rechazadas; migración automática de paquetes pendiente._
+- ✅ Cargador de paquetes de datos con errores legibles (`F3` · @codex · [#21](https://github.com/dariogea/BM27/issues/21)) — _JSON validado; #79 añade clubes explícitos, IDs estables y referencias. Calendario español y plantillas individualizadas pendientes._
+- ✅ Versionado y compatibilidad de paquetes (`F3` · @codex · [#21](https://github.com/dariogea/BM27/issues/21)) — _Formato 1 / contrato 8. Paquetes v7 sin clubs normalizados; versiones desconocidas rechazadas. Sin migrador general._
 - ✅ Elegir paquete al crear el universo (web y CLI) (`F3` · @codex · [#21](https://github.com/dariogea/BM27/issues/21))
 - ✅ Ejemplo mínimo: liga de 8 equipos (`F3` · @codex · [#21](https://github.com/dariogea/BM27/issues/21))
 - 🔄 Guía para crear mods (`F3` · 25 % · @codex · [#21](https://github.com/dariogea/BM27/issues/21)) — _Formato JSON y ejemplo documentados. Editor, herramientas y guía avanzada pendientes._
@@ -443,7 +444,7 @@ _Reglamentos, competiciones y contenido como datos: añadir una liga no debe toc
 - ⬜ Generador de nombres por país y región (`F3`)
 - ⬜ Textos traducibles (i18n) (`F4`)
 - ⬜ Segundo idioma (`F4`)
-- 💡 Importar datos propios del usuario con procedencia declarada (`F3`)
+- 🔄 Importar datos propios del usuario con procedencia declarada (`F3` · 40 % · @codex · [#79](https://github.com/dariogea/BM27/issues/79)) — _Clubes individualizados, alias, ubicaciones y fuentes declaradas con identidad estable. Jugadores y grupos explícitos pendientes; no certifica fuentes._
 - 🔄 Comprobación automática de procedencia y etiquetado de datos (`F3` · 25 % · @codex · [#61](https://github.com/dariogea/BM27/issues/61)) — _Adaptador de semilla: referencias, recuentos, alias, IDs y fechas validados; contraste independiente y condiciones de uso pendientes._
 
 </details>

@@ -13,3 +13,5 @@ export * from './validate';
 export * from './jsonSchema';
 
 export * from './dataPack';
+
+export * from './clubIdentity';

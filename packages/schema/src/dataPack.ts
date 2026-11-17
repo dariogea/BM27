@@ -1,3 +1,4 @@
+import { ClubDefinitionSchema } from './clubIdentity';
 import { z } from 'zod';
 import { NamePoolSchema } from './names';
 import { RulesetSchema } from './ruleset';
@@ -50,6 +51,7 @@ export const DataPackSchema = z
     }).strict(),
     rulesets: z.array(RulesetSchema).min(1).max(32),
     names: PackNamesSchema,
+    clubs: z.array(ClubDefinitionSchema).min(2).max(MAX_DATA_PACK_TEAMS).optional(),
   })
   .strict()
   .superRefine((pack, ctx) => {
@@ -115,6 +117,40 @@ export const DataPackSchema = z
         );
       if (level.minSalary * min > level.salaryCap)
         issue([...path, 'salaryCap'], 'no alcanza para una plantilla mínima con el salario mínimo');
+    }
+    if (pack.clubs) {
+      duplicate(
+        pack.clubs.map((club) => club.id),
+        ['clubs'],
+      );
+      if (pack.clubs.length !== total) issue(['clubs'], `se requieren exactamente ${total} clubes`);
+      const sources = new Set<string>();
+      pack.clubs.forEach((club, index) => {
+        if (!pack.config.levels.some((level) => level.competitionId === club.competitionId))
+          issue(
+            ['clubs', index, 'competitionId'],
+            `competición inexistente: ${club.competitionId}`,
+          );
+        if (!pack.config.regions.includes(club.region))
+          issue(['clubs', index, 'region'], `región no declarada: ${club.region}`);
+        const source = club.identity.source;
+        if (source) {
+          const key = JSON.stringify([source.catalogId, source.clubId]);
+          if (sources.has(key))
+            issue(['clubs', index, 'identity', 'source'], 'identidad de origen duplicada');
+          sources.add(key);
+        }
+      });
+      pack.config.levels.forEach((level) => {
+        const actual = pack.clubs!.filter(
+          (club) => club.competitionId === level.competitionId,
+        ).length;
+        if (actual !== level.teamCount)
+          issue(
+            ['clubs'],
+            `${level.competitionId}: se requieren ${level.teamCount} clubes, recibidos ${actual}`,
+          );
+      });
     }
     pack.names.cities.forEach((city, index) => {
       if (!pack.config.regions.includes(city.region))

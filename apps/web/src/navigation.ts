@@ -1,4 +1,5 @@
 export type Tab =
+  | 'world'
   | 'portal'
   | 'team'
   | 'tactics'
@@ -16,6 +17,7 @@ export const TABS: [Tab, string][] = [
   ['lineup', 'Quinteto'],
   ['market', 'Mercado'],
   ['finance', 'Finanzas'],
+  ['world', 'Mundo'],
   ['competition', 'Competición'],
   ['match', 'Partido'],
   ['saves', 'Partidas'],

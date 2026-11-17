@@ -1,3 +1,4 @@
+import { queryWorld } from './worldData';
 import { AUTO_SAVE, IndexedDbSaveStore } from './slotStore';
 /// <reference lib="webworker" />
 import {
@@ -552,6 +553,10 @@ async function handle(command: Command): Promise<Reply> {
         ms: ms(),
       };
     }
+    case 'worldSearch':
+    case 'worldPlayer':
+    case 'worldClub':
+      return { id: command.id, type: 'world', result: queryWorld(need(), command) };
     case 'exportSave': {
       const u = need();
       return {

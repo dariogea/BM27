@@ -1,3 +1,5 @@
+import { WorldView } from './WorldView';
+import type { WorldPayload, WorldQuery } from './worldTypes';
 import { ManagerHeader } from './ManagerHeader';
 import { UpdateBanner } from './UpdateBanner';
 import { PortalView } from './PortalView';
@@ -163,6 +165,13 @@ export function App() {
     }
   };
 
+  const requestWorld = async (query: WorldQuery): Promise<WorldPayload> => {
+    const reply = await send(query);
+    if (reply.type === 'world') return reply.result;
+    if (reply.type === 'error') throw new Error(reply.message);
+    throw new Error('No se pudo completar la consulta.');
+  };
+
   const navigate = (next: Tab): void => {
     setTab(next);
     if (next === 'saves') void run({ type: 'listSlots' }, 'Abriendo partidas…');
@@ -213,6 +222,35 @@ export function App() {
           Base de demostración: clubes y jugadores generados. El objetivo es representar el
           baloncesto español con datos contrastados; estas plantillas aún no son las oficiales.
         </p>
+        {view && tab !== 'portal' && tab !== 'world' && (
+          <section className="club-ribbon" aria-label="Resumen de la partida">
+            <div className="club-monogram" aria-hidden="true">
+              {mine?.name
+                .split(' ')
+                .map((word) => word[0])
+                .slice(0, 2)
+                .join('') ?? 'BM'}
+            </div>
+            <div className="club-ribbon-title">
+              <span className="eyebrow">Tu centro de gestión</span>
+              <h1>{mine?.name ?? 'Elige tu próximo club'}</h1>
+              <p>{mine?.competitionName ?? 'España · Base de demostración'}</p>
+            </div>
+            <div className="ribbon-stat">
+              <span>Temporada</span>
+              <strong>{view.seasonNumber}</strong>
+            </div>
+            <div className="ribbon-stat">
+              <span>Balance deportivo</span>
+              <strong>{mine ? `${mine.wins} V · ${mine.losses} D` : 'Sin equipo'}</strong>
+            </div>
+            <div className="ribbon-stat">
+              <span>Mundo de la partida</span>
+              <strong>{view.teamCount} clubes</strong>
+              <small>{view.playerCount} jugadores</small>
+            </div>
+          </section>
+        )}
         <div className={`workspace-actions ${view ? 'playing' : ''}`}>
           <details className="game-tools" open={!view}>
             <summary>Gestión de partida · crear, importar y exportar</summary>
@@ -268,35 +306,6 @@ export function App() {
             </div>
           </details>
 
-          {view && tab !== 'portal' && (
-            <section className="club-ribbon" aria-label="Resumen de la partida">
-              <div className="club-monogram" aria-hidden="true">
-                {mine?.name
-                  .split(' ')
-                  .map((word) => word[0])
-                  .slice(0, 2)
-                  .join('') ?? 'BM'}
-              </div>
-              <div className="club-ribbon-title">
-                <span className="eyebrow">Tu centro de gestión</span>
-                <h1>{mine?.name ?? 'Elige tu próximo club'}</h1>
-                <p>{mine?.competitionName ?? 'España · Base de demostración'}</p>
-              </div>
-              <div className="ribbon-stat">
-                <span>Temporada</span>
-                <strong>{view.seasonNumber}</strong>
-              </div>
-              <div className="ribbon-stat">
-                <span>Balance deportivo</span>
-                <strong>{mine ? `${mine.wins} V · ${mine.losses} D` : 'Sin equipo'}</strong>
-              </div>
-              <div className="ribbon-stat">
-                <span>Mundo de la partida</span>
-                <strong>{view.teamCount} clubes</strong>
-                <small>{view.playerCount} jugadores</small>
-              </div>
-            </section>
-          )}
           {view && (
             <details className="team-management" open={!mine}>
               <summary>Cambiar de club · simular temporada</summary>
@@ -382,6 +391,7 @@ export function App() {
             busy={busy}
           />
         )}
+        {view && tab === 'world' && <WorldView key={revision} view={view} request={requestWorld} />}
         {tab === 'saves' && (
           <SavesPanel
             slots={slots}

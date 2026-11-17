@@ -8,6 +8,7 @@ const SECTIONS: [Tab, string][] = [
   ['market', 'Captación'],
   ['finance', 'Club'],
   ['competition', 'Competiciones'],
+  ['world', 'Mundo'],
 ];
 
 export function ManagerHeader(props: {

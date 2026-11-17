@@ -13,7 +13,7 @@ import {
 
 describe('schema contract', () => {
   it('has a schema version', () => {
-    expect(SCHEMA_VERSION).toBe(6);
+    expect(SCHEMA_VERSION).toBe(7);
   });
 
   it('accepts a valid ruleset and rejects an invalid one with a readable message', () => {

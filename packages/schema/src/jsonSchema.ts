@@ -1,3 +1,4 @@
+import { DataPackSchema } from './dataPack';
 import { z } from 'zod';
 import { CompetitionSchema } from './competition';
 import { MatchEventSchema } from './event';
@@ -11,6 +12,7 @@ import { NamePoolSchema, UniverseConfigSchema, UniverseSchema } from './universe
 
 /** Every public contract, by file name, for JSON Schema export (used by mods/tools). */
 export const CONTRACTS = {
+  'data-pack': DataPackSchema,
   player: PlayerSchema,
   team: TeamSchema,
   'team-tactics': TeamTacticsSchema,

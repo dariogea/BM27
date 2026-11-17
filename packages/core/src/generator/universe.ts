@@ -24,6 +24,7 @@ const REPUTATION_PER_QUALITY = 3;
 
 export interface GenerateUniverseOptions {
   seed: string;
+  dataPackId?: string;
   config?: UniverseConfig;
   names?: NamePool;
   rulesets?: readonly Ruleset[];
@@ -183,6 +184,15 @@ export function generateUniverse(options: GenerateUniverseOptions): Universe {
   return {
     schemaVersion: SCHEMA_VERSION,
     seed: options.seed,
+    dataPackId: options.dataPackId ?? null,
+    namePool: options.names
+      ? {
+          cities: names.cities.map((city) => ({ ...city })),
+          teamNicknames: [...names.teamNicknames],
+          firstNames: [...names.firstNames],
+          lastNames: [...names.lastNames],
+        }
+      : null,
     seasonNumber: 1,
     nextPlayerSeq: playerSeq,
     regions: [...config.regions],

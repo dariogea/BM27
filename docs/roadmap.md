@@ -8,13 +8,13 @@
 
 ## Resumen
 
-**Preparación estimada para lanzamiento: 13 %** `████░░░░░░░░░░░░░░░░░░░░░░░░░░`  (475 elementos)
+**Preparación estimada para lanzamiento: 14 %** `████░░░░░░░░░░░░░░░░░░░░░░░░░░`  (475 elementos)
 
 ```mermaid
 pie showData title Elementos por estado
-  "Hecho" : 112
-  "En curso" : 18
-  "Pendiente" : 313
+  "Hecho" : 117
+  "En curso" : 19
+  "Pendiente" : 307
   "Bloqueado" : 2
   "Idea" : 30
 ```
@@ -43,7 +43,7 @@ Gestor de baloncesto comercial completo, con la profundidad de gestión como ref
 - ⬜ **R6** Instalación, actualizaciones y compatibilidad verificadas en los sistemas soportados
 - ⬜ **R7** Equilibrio, rendimiento, licencias y criterios de lanzamiento cerrados
 
-La cobertura del inventario es 25 %; no debe confundirse con preparación comercial.
+La cobertura del inventario es 26 %; no debe confundirse con preparación comercial.
 
 ## Fases (del punto A al Z)
 
@@ -52,7 +52,7 @@ flowchart LR
   F0["F0 Fundaciones<br/>76 %"]
   F1["F1 Primera versión jugable<br/>50 %"]
   F2["F2 Profundidad de gestión<br/>3 %"]
-  F3["F3 Mundo, datos y mods<br/>0 %"]
+  F3["F3 Mundo, datos y mods<br/>9 %"]
   F4["F4 Presentación<br/>11 %"]
   F5["F5 Distribución<br/>19 %"]
   F6["F6 Pulido y lanzamiento<br/>6 %"]
@@ -74,7 +74,7 @@ flowchart LR
 | **F0 Fundaciones** | 76 % | `███████████████░░░░░` | 82/110 | Núcleo determinista, motor de partido, mundo persistente, mercado y finanzas, y la forma de trabajar de los dos agentes. |
 | **F1 Primera versión jugable** | 50 % | `██████████░░░░░░░░░░` | 20/43 | Que el propietario pueda jugar de principio a fin una temporada y varias más sin tocar una terminal, con consultas básicas del mundo. |
 | **F2 Profundidad de gestión** | 3 % | `█░░░░░░░░░░░░░░░░░░░` | 4/184 | Traspasos, cantera y ojeadores, economía con decisiones, entrenador rival con criterio, motor de partido completo. |
-| **F3 Mundo, datos y mods** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0/63 | Calibración con datos contrastados, paquetes de datos cargables, pirámide completa y otras competiciones. |
+| **F3 Mundo, datos y mods** | 9 % | `██░░░░░░░░░░░░░░░░░░` | 5/63 | Calibración con datos contrastados, paquetes de datos cargables, pirámide completa y otras competiciones. |
 | **F4 Presentación** | 11 % | `██░░░░░░░░░░░░░░░░░░` | 3/36 | Diseño visual, accesibilidad, partido en 2D, narración, sonido y varios idiomas. |
 | **F5 Distribución** | 19 % | `████░░░░░░░░░░░░░░░░` | 2/22 | Instalador de escritorio, versiones alfa y beta en GitHub, actualización automática, firma y otras plataformas. |
 | **F6 Pulido y lanzamiento** | 6 % | `█░░░░░░░░░░░░░░░░░░░` | 1/17 | Tutorial, equilibrio final, documentación, comunidad y lanzamiento. |
@@ -88,12 +88,12 @@ flowchart LR
 | **Jugadores** | 42 % | `████████░░░░░░░░░░░░` | 9 | 2 | 10 | 0 | 2 | Personas con atributos, carrera, potencial y personalidad que el usuario descubre y gestiona. |
 | **Clubes** | 27 % | `█████░░░░░░░░░░░░░░░` | 4 | 0 | 9 | 0 | 2 | El club como organización: plantilla, reputación, afición, estadio y objetivos. |
 | **Entrenadores y personal técnico** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 9 | 0 | 0 | Las personas que dirigen y apoyan al equipo, con efecto real en el juego. |
-| **Competiciones** | 35 % | `███████░░░░░░░░░░░░░` | 6 | 0 | 9 | 0 | 2 | Pirámide masculina española en cuatro niveles como datos, ampliable sin tocar el motor. |
+| **Competiciones** | 41 % | `████████░░░░░░░░░░░░` | 7 | 0 | 8 | 0 | 2 | Pirámide masculina española en cuatro niveles como datos, ampliable sin tocar el motor. |
 | **Mercado y contratos** | 38 % | `████████░░░░░░░░░░░░` | 6 | 0 | 7 | 0 | 3 | Cómo se mueven los jugadores y el dinero entre clubes, con reglas distintas según la liga. |
 | **Finanzas** | 31 % | `██████░░░░░░░░░░░░░░` | 4 | 0 | 8 | 0 | 1 | El dinero como restricción real: ingresos, gastos, presupuestos y consecuencias de gestionar mal. |
 | **Gestión del usuario** | 36 % | `███████░░░░░░░░░░░░░` | 5 | 0 | 7 | 0 | 2 | Lo que el jugador puede hacer: decidir, delegar y entender las consecuencias. |
 | **Mundo persistente** | 30 % | `██████░░░░░░░░░░░░░░` | 3 | 0 | 6 | 0 | 1 | Un mundo que sigue vivo y estable durante decenas de temporadas, sin inflarse ni hundirse. |
-| **Datos, mods e idiomas** | 17 % | `███░░░░░░░░░░░░░░░░░` | 2 | 1 | 8 | 0 | 2 | Reglamentos, competiciones y contenido como datos: añadir una liga no debe tocar el motor. |
+| **Datos, mods e idiomas** | 50 % | `██████████░░░░░░░░░░` | 6 | 2 | 3 | 0 | 2 | Reglamentos, competiciones y contenido como datos: añadir una liga no debe tocar el motor. |
 | **Guardado y persistencia** | 60 % | `████████████░░░░░░░░` | 6 | 0 | 4 | 0 | 0 | Las partidas no se pierden, son compactas y se pueden recuperar. |
 | **Interfaz web** | 47 % | `█████████░░░░░░░░░░░` | 12 | 3 | 13 | 0 | 0 | La cara del juego: clara, rápida y accesible. |
 | **Visualización del partido** | 11 % | `██░░░░░░░░░░░░░░░░░░` | 1 | 0 | 6 | 0 | 2 | Ver el partido, no solo leerlo, derivado siempre del registro de eventos. |
@@ -140,6 +140,7 @@ Los agentes solo trabajan cuando el propietario lo autoriza (D-052); esto reflej
 | Estado | Elemento | Área | Avance | Enlace |
 | --- | --- | --- | ---: | --- |
 | 🔄 En curso | Historial completo de la carrera de cada jugador | Jugadores | 30 % | [#67](https://github.com/dariogea/BM27/issues/67) |
+| 🔄 En curso | Guía para crear mods | Datos, mods e idiomas | 25 % | [#21](https://github.com/dariogea/BM27/issues/21) |
 | 🔄 En curso | Comprobación automática de procedencia y etiquetado de datos | Datos, mods e idiomas | 25 % | [#61](https://github.com/dariogea/BM27/issues/61) |
 | 🔄 En curso | Ficha de jugador completa | Interfaz web | 60 % | [#67](https://github.com/dariogea/BM27/issues/67) |
 | 🔄 En curso | Accesibilidad (contraste, teclado, lectores de pantalla) | Interfaz web | 50 % | [#23](https://github.com/dariogea/BM27/issues/23) |
@@ -320,7 +321,7 @@ _Las personas que dirigen y apoyan al equipo, con efecto real en el juego._
 
 </details>
 
-<details><summary><b>Competiciones</b> — 35 % `████░░░░░░░░`</summary>
+<details><summary><b>Competiciones</b> — 41 % `█████░░░░░░░`</summary>
 
 _Pirámide masculina española en cuatro niveles como datos, ampliable sin tocar el motor._
 
@@ -335,7 +336,7 @@ _Pirámide masculina española en cuatro niveles como datos, ampliable sin tocar
 - ⬜ Competición continental de clubes (`F3`)
 - ⬜ Selecciones nacionales y ventanas internacionales (`F3`)
 - ⬜ Formatos mixtos (fase de grupos y eliminatoria) (`F3`)
-- ⬜ Ligas de otros países como paquetes de datos (`F3` · [#21](https://github.com/dariogea/BM27/issues/21))
+- ✅ Ligas de otros países como paquetes de datos (`F3` · @codex · [#21](https://github.com/dariogea/BM27/issues/21))
 - 💡 Niveles inferiores (amateur y formativos) (`F3`)
 - ⬜ Playoffs de ascenso con formato propio (`F0`) — _No verificado: hoy solo se confirma el playoff por el título._
 - ⬜ Calendario con descansos y viajes (`F2`)
@@ -425,17 +426,17 @@ _Un mundo que sigue vivo y estable durante decenas de temporadas, sin inflarse n
 
 </details>
 
-<details><summary><b>Datos, mods e idiomas</b> — 17 % `██░░░░░░░░░░`</summary>
+<details><summary><b>Datos, mods e idiomas</b> — 50 % `██████░░░░░░`</summary>
 
 _Reglamentos, competiciones y contenido como datos: añadir una liga no debe tocar el motor._
 
 - ✅ Esquemas validados con zod y JSON Schema (`F0`)
 - ✅ Universo inicial de España masculina como datos (`F0`)
-- ⬜ Cargador de paquetes de datos con errores legibles (`F3` · [#21](https://github.com/dariogea/BM27/issues/21)) — _T-022._
-- ⬜ Versionado y compatibilidad de paquetes (`F3` · [#21](https://github.com/dariogea/BM27/issues/21))
-- ⬜ Elegir paquete al crear el universo (web y CLI) (`F3` · [#21](https://github.com/dariogea/BM27/issues/21))
-- ⬜ Ejemplo mínimo: liga de 8 equipos (`F3` · [#21](https://github.com/dariogea/BM27/issues/21))
-- ⬜ Guía para crear mods (`F3`)
+- ✅ Cargador de paquetes de datos con errores legibles (`F3` · @codex · [#21](https://github.com/dariogea/BM27/issues/21)) — _JSON validado con campos y relaciones. Identidades explícitas y calendario español pendientes._
+- ✅ Versionado y compatibilidad de paquetes (`F3` · @codex · [#21](https://github.com/dariogea/BM27/issues/21)) — _Formato 1 / contrato 7. Versiones distintas rechazadas; migración automática de paquetes pendiente._
+- ✅ Elegir paquete al crear el universo (web y CLI) (`F3` · @codex · [#21](https://github.com/dariogea/BM27/issues/21))
+- ✅ Ejemplo mínimo: liga de 8 equipos (`F3` · @codex · [#21](https://github.com/dariogea/BM27/issues/21))
+- 🔄 Guía para crear mods (`F3` · 25 % · @codex · [#21](https://github.com/dariogea/BM27/issues/21)) — _Formato JSON y ejemplo documentados. Editor, herramientas y guía avanzada pendientes._
 - 💡 Editor de datos dentro del juego (`F3`)
 - ⬜ Generador de nombres por país y región (`F3`)
 - ⬜ Textos traducibles (i18n) (`F4`)

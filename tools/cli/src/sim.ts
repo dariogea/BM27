@@ -3,9 +3,15 @@
  *
  *   pnpm sim --seed demo --seasons 3 --out saves/demo.json
  */
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
-import { exportSave, generateUniverse, simulateSeason } from '@bm27/core';
+import { MAX_DATA_PACK_BYTES, type Universe } from '@bm27/schema';
+import {
+  exportSave,
+  generateUniverse,
+  generateUniverseFromDataPack,
+  simulateSeason,
+} from '@bm27/core';
 
 function arg(name: string, fallback: string): string {
   const index = process.argv.indexOf(`--${name}`);
@@ -20,7 +26,25 @@ if (!Number.isInteger(seasons) || seasons < 1) {
   process.exit(1);
 }
 
-let universe = generateUniverse({ seed });
+const packArg = arg('pack', '');
+if (process.argv.includes('--pack') && (!packArg || packArg.startsWith('--'))) {
+  console.error('--pack necesita una ruta de archivo JSON.');
+  process.exit(1);
+}
+let universe: Universe;
+try {
+  if (packArg) {
+    const packPath = resolve(process.env.INIT_CWD ?? process.cwd(), packArg);
+    if (statSync(packPath).size > MAX_DATA_PACK_BYTES)
+      throw new Error('El paquete supera el límite de 2 MiB.');
+    universe = generateUniverseFromDataPack(readFileSync(packPath, 'utf8'), seed);
+  } else universe = generateUniverse({ seed });
+} catch (error) {
+  console.error(
+    `No se pudo generar la partida: ${error instanceof Error ? error.message : String(error)}`,
+  );
+  process.exit(1);
+}
 const teamName = new Map(universe.teams.map((t) => [t.id, t.name]));
 console.log(
   `Universo generado con semilla "${seed}": ${universe.teams.length} equipos, ${universe.players.length} jugadores.`,

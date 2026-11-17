@@ -81,3 +81,5 @@ Reglas en [`coordinacion.md`](coordinacion.md).
 | #63 | PROBADA | Técnicas de jugador con tiro libre al rival, posesión previa y acumulación de falta de equipo correctas; antideportivas intactas. Regresión demostrada antes de corregir y mediciones propias de calibración, estabilidad y rendimiento. |
 
 | #67 | PROBADA | Mundo: buscador paginado y fichas enlazadas de jugadores/clubes, estadísticas conservadas y potencial rival excluido de la respuesta. Primera parte de #14; líderes y palmarés pendientes. |
+
+| #21 | PROBADA | Paquetes JSON de competiciones, reglas, economía y nombres en web y CLI; ejemplo jugable de ocho clubes. Contrato 7 con migración y nombres conservados en guardados. Identidades españolas explícitas pendientes. |

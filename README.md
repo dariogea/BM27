@@ -61,7 +61,7 @@ Las barras de fase muestran cobertura del plan; el índice global usa pesos dist
 ```mermaid
 flowchart LR
   F0["F0 Fundaciones<br/>77 %"]
-  F1["F1 Primera versión jugable<br/>38 %"]
+  F1["F1 Primera versión jugable<br/>43 %"]
   F2["F2 Profundidad de gestión<br/>0 %"]
   F3["F3 Mundo, datos y mods<br/>0 %"]
   F4["F4 Presentación<br/>0 %"]
@@ -71,7 +71,7 @@ flowchart LR
 ```
 
 - **F0 · Fundaciones**: 77 % `███████████████░░░░░`
-- **F1 · Primera versión jugable**: 38 % `████████░░░░░░░░░░░░`
+- **F1 · Primera versión jugable**: 43 % `█████████░░░░░░░░░░░`
 - **F2 · Profundidad de gestión**: 0 % `░░░░░░░░░░░░░░░░░░░░`
 - **F3 · Mundo, datos y mods**: 0 % `░░░░░░░░░░░░░░░░░░░░`
 - **F4 · Presentación**: 0 % `░░░░░░░░░░░░░░░░░░░░`
@@ -108,6 +108,8 @@ validarse en un Windows real.
 La guía conserva los comandos, el recorrido de una partida y las comprobaciones.
 
 **[Ejecutar y desarrollar BM27 →](docs/desarrollo.md)**
+
+**[Cómo usar los guardados internos y las copias en archivo →](docs/partidas.md)**
 
 ## Explorar el proyecto
 

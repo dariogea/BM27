@@ -1127,14 +1127,17 @@
         },
         {
           "t": "Varias ranuras con nombre dentro de la aplicación",
-          "s": "pendiente",
+          "s": "hecho",
           "i": 16,
-          "n": "T-017."
+          "n": "IndexedDB local con nombres, metadatos, renombrado y protección de otras ranuras; autoguardado de fin de temporada configurable. Archivos como copia portable.",
+          "o": "codex"
         },
         {
           "t": "Guardado automático al cerrar temporada",
-          "s": "pendiente",
-          "i": 16
+          "s": "hecho",
+          "i": 16,
+          "o": "codex",
+          "n": "IndexedDB local con nombres, metadatos, renombrado y protección de otras ranuras; autoguardado de fin de temporada configurable. Archivos como copia portable."
         },
         {
           "t": "Política de historial y compactación",

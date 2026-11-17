@@ -95,37 +95,38 @@ describe('replay provenance', () => {
 afterEach(() => vi.unstubAllGlobals());
 
 it('the Worker retains live details but refuses unverified replays after loading a save', async () => {
-  let reply: Reply;
+  const pending = new Map<number, (reply: Reply) => void>();
   const worker = {
     onmessage: (_message: { data: Command }): void => {},
     postMessage: (value: Reply): void => {
-      reply = value;
+      pending.get(value.id)?.(value);
     },
   };
   vi.stubGlobal('self', worker);
   await import('../../../apps/web/src/worker');
-  const send = (command: Command): Reply => {
-    worker.onmessage({ data: command });
-    return reply;
-  };
-  const generated = send({ id: 1, type: 'generate', seed: 'replay-worker' });
+  const send = (command: Command): Promise<Reply> =>
+    new Promise((resolve) => {
+      pending.set(command.id, resolve);
+      worker.onmessage({ data: command });
+    });
+  const generated = await send({ id: 1, type: 'generate', seed: 'replay-worker' });
   if (generated.type !== 'state') throw new Error('Generation failed');
   const teamId = generated.view.competitions[0]!.teamIds[0]!;
-  send({ id: 2, type: 'chooseTeam', teamId });
-  const advanced = send({ id: 3, type: 'advance' });
+  await send({ id: 2, type: 'chooseTeam', teamId });
+  const advanced = await send({ id: 3, type: 'advance' });
   if (advanced.type !== 'state') throw new Error('Advance failed');
   const matches = advanced.view.tables.flatMap((c) => c.matches);
   const own = matches.find((m) => m.homeTeamId === teamId || m.awayTeamId === teamId)!;
   const other = matches.find((m) => m.homeTeamId !== teamId && m.awayTeamId !== teamId)!;
-  expect(send({ id: 4, type: 'matchDetail', matchId: own.id }).type).toBe('matchDetail');
-  expect(send({ id: 5, type: 'matchDetail', matchId: other.id }).type).toBe('matchDetail');
-  const saved = send({ id: 6, type: 'exportSave' });
+  expect((await send({ id: 4, type: 'matchDetail', matchId: own.id })).type).toBe('matchDetail');
+  expect((await send({ id: 5, type: 'matchDetail', matchId: other.id })).type).toBe('matchDetail');
+  const saved = await send({ id: 6, type: 'exportSave' });
   if (saved.type !== 'save') throw new Error('Export failed');
-  expect(send({ id: 7, type: 'importSave', json: saved.json }).type).toBe('state');
-  const unavailable = send({ id: 8, type: 'matchDetail', matchId: own.id });
+  expect((await send({ id: 7, type: 'importSave', json: saved.json })).type).toBe('state');
+  const unavailable = await send({ id: 8, type: 'matchDetail', matchId: own.id });
   expect(unavailable.type).toBe('error');
   if (unavailable.type === 'error') expect(unavailable.message).toContain('no se pueden verificar');
-  const continued = send({ id: 9, type: 'advance' });
+  const continued = await send({ id: 9, type: 'advance' });
   if (continued.type !== 'state') throw new Error('Continuation failed');
   const newMatch = continued.view.tables
     .flatMap((c) => c.matches)
@@ -135,11 +136,13 @@ it('the Worker retains live details but refuses unverified replays after loading
         m.homeTeamId !== teamId &&
         m.awayTeamId !== teamId,
     )!;
-  expect(send({ id: 10, type: 'matchDetail', matchId: newMatch.id }).type).toBe('matchDetail');
-  const chosen = send({ id: 11, type: 'chooseTeam', teamId: newMatch.homeTeamId });
+  expect((await send({ id: 10, type: 'matchDetail', matchId: newMatch.id })).type).toBe(
+    'matchDetail',
+  );
+  const chosen = await send({ id: 11, type: 'chooseTeam', teamId: newMatch.homeTeamId });
   if (chosen.type !== 'state') throw new Error('Team selection failed');
   const currentTactics = chosen.view.myTeam!.tactics;
-  send({
+  await send({
     id: 12,
     type: 'setTactics',
     tactics: {
@@ -148,6 +151,6 @@ it('the Worker retains live details but refuses unverified replays after loading
       pace: currentTactics.pace === 'fast' ? 'slow' : 'fast',
     },
   });
-  expect(send({ id: 13, type: 'advance' }).type).toBe('state');
-  expect(send({ id: 14, type: 'matchDetail', matchId: newMatch.id }).type).toBe('error');
+  expect((await send({ id: 13, type: 'advance' })).type).toBe('state');
+  expect((await send({ id: 14, type: 'matchDetail', matchId: newMatch.id })).type).toBe('error');
 });

@@ -1,3 +1,5 @@
+import { SavesPanel } from './SavesPanel';
+import type { SlotSummary } from './slotStore';
 import type { MatchDetail, TeamTactics } from '@bm27/schema';
 import { useEffect, useRef, useState } from 'react';
 import { CompetitionView } from './CompetitionView';
@@ -38,7 +40,7 @@ function useSimulation() {
     });
 }
 
-type Tab = 'team' | 'tactics' | 'lineup' | 'market' | 'finance' | 'competition' | 'match';
+type Tab = 'team' | 'tactics' | 'lineup' | 'market' | 'finance' | 'competition' | 'match' | 'saves';
 const TABS: [Tab, string][] = [
   ['team', 'Mi equipo'],
   ['tactics', 'Tácticas'],
@@ -47,6 +49,7 @@ const TABS: [Tab, string][] = [
   ['finance', 'Finanzas'],
   ['competition', 'Competición'],
   ['match', 'Partido'],
+  ['saves', 'Partidas'],
 ];
 
 interface ShownMatch {
@@ -64,6 +67,8 @@ export function App() {
   const [teamChoice, setTeamChoice] = useState('');
   const [match, setMatch] = useState<ShownMatch | null>(null);
   const [busy, setBusy] = useState(false);
+  const [slots, setSlots] = useState<SlotSummary[] | null>(null);
+  const [autosave, setAutosave] = useState(true);
   const [status, setStatus] = useState('Elige una semilla y pulsa «Generar universo».');
   const [error, setError] = useState('');
   /** Bumped whenever the team's saved settings change, to reset the editors. */
@@ -77,6 +82,11 @@ export function App() {
     const reply = await send(command);
     setBusy(false);
     switch (reply.type) {
+      case 'slots':
+        setSlots(reply.slots);
+        setAutosave(reply.autosave);
+        setStatus(reply.message);
+        break;
       case 'error':
         setError(reply.message);
         setStatus('');
@@ -86,7 +96,11 @@ export function App() {
         setStatus(reply.message);
         setRevision((n) => n + 1);
         const mine = reply.view.myTeam;
-        if (command.type === 'generate' || command.type === 'importSave') {
+        if (
+          command.type === 'generate' ||
+          command.type === 'importSave' ||
+          command.type === 'loadSlot'
+        ) {
           setMatch(null);
           setCompetitionId(mine?.competitionId ?? reply.view.competitions[0]?.id ?? '');
           setTeamChoice(reply.view.userTeamId ?? reply.view.competitions[0]?.teamIds[0] ?? '');
@@ -223,6 +237,58 @@ export function App() {
         </div>
       )}
 
+      <button
+        disabled={busy}
+        onClick={() => {
+          setTab('saves');
+          void run({ type: 'listSlots' }, 'Abriendo partidas…');
+        }}
+      >
+        Partidas de este dispositivo
+      </button>
+      {tab === 'saves' && (
+        <SavesPanel
+          slots={slots}
+          busy={busy}
+          canSave={view !== null}
+          autosave={autosave}
+          onRefresh={() => {
+            void run({ type: 'listSlots' }, 'Actualizando partidas…');
+          }}
+          onSave={(name) => {
+            if (
+              !slots?.some((s) => s.name === name.trim()) ||
+              window.confirm(
+                'Ya existe ese guardado. ¿Quieres sobrescribirlo con la partida abierta?',
+              )
+            )
+              void run({ type: 'saveSlot', name }, 'Guardando en este dispositivo…');
+          }}
+          onLoad={(name) => {
+            if (
+              !view ||
+              window.confirm(
+                'Cargar sustituirá la partida abierta. Guarda antes los cambios que quieras conservar. ¿Continuar?',
+              )
+            )
+              void run({ type: 'loadSlot', name }, 'Cargando del dispositivo…');
+          }}
+          onDelete={(name) => {
+            if (
+              window.confirm(
+                '¿Eliminar este guardado del dispositivo? Los archivos exportados no se modifican.',
+              )
+            )
+              void run({ type: 'deleteSlot', name }, 'Eliminando guardado…');
+          }}
+          onRename={(name, newName) => {
+            void run({ type: 'renameSlot', name, newName }, 'Renombrando…');
+          }}
+          onAutosave={(enabled) => {
+            void run({ type: 'setAutosave', enabled }, 'Actualizando preferencia…');
+          }}
+        />
+      )}
       <p data-testid="status">{status}</p>
       {error && <p className="error">Error: {error}</p>}
 
@@ -242,7 +308,10 @@ export function App() {
               <button
                 key={id}
                 className={tab === id ? 'active' : ''}
-                onClick={() => setTab(id)}
+                onClick={() => {
+                  setTab(id);
+                  if (id === 'saves') void run({ type: 'listSlots' }, 'Abriendo partidas…');
+                }}
                 disabled={
                   (id === 'team' || id === 'tactics' || id === 'lineup' || id === 'market') && !mine
                 }

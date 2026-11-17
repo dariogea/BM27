@@ -12,9 +12,9 @@
 
 ```mermaid
 pie showData title Elementos por estado
-  "Hecho" : 109
+  "Hecho" : 110
   "En curso" : 15
-  "Pendiente" : 319
+  "Pendiente" : 318
   "Bloqueado" : 2
   "Idea" : 30
 ```
@@ -43,7 +43,7 @@ Gestor de baloncesto comercial completo, con la profundidad de gestión como ref
 - ⬜ **R6** Instalación, actualizaciones y compatibilidad verificadas en los sistemas soportados
 - ⬜ **R7** Equilibrio, rendimiento, licencias y criterios de lanzamiento cerrados
 
-La cobertura del inventario es 24 %; no debe confundirse con preparación comercial.
+La cobertura del inventario es 25 %; no debe confundirse con preparación comercial.
 
 ## Fases (del punto A al Z)
 
@@ -54,7 +54,7 @@ flowchart LR
   F2["F2 Profundidad de gestión<br/>3 %"]
   F3["F3 Mundo, datos y mods<br/>0 %"]
   F4["F4 Presentación<br/>11 %"]
-  F5["F5 Distribución<br/>15 %"]
+  F5["F5 Distribución<br/>19 %"]
   F6["F6 Pulido y lanzamiento<br/>6 %"]
   F0 --> F1 --> F2 --> F3 --> F4 --> F5 --> F6
   classDef hecho fill:#2da44e,color:#fff,stroke:#1a7f37;
@@ -76,7 +76,7 @@ flowchart LR
 | **F2 Profundidad de gestión** | 3 % | `█░░░░░░░░░░░░░░░░░░░` | 4/184 | Traspasos, cantera y ojeadores, economía con decisiones, entrenador rival con criterio, motor de partido completo. |
 | **F3 Mundo, datos y mods** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0/63 | Calibración con datos contrastados, paquetes de datos cargables, pirámide completa y otras competiciones. |
 | **F4 Presentación** | 11 % | `██░░░░░░░░░░░░░░░░░░` | 3/36 | Diseño visual, accesibilidad, partido en 2D, narración, sonido y varios idiomas. |
-| **F5 Distribución** | 15 % | `███░░░░░░░░░░░░░░░░░` | 1/22 | Instalador de escritorio, versiones alfa y beta en GitHub, actualización automática, firma y otras plataformas. |
+| **F5 Distribución** | 19 % | `████░░░░░░░░░░░░░░░░` | 2/22 | Instalador de escritorio, versiones alfa y beta en GitHub, actualización automática, firma y otras plataformas. |
 | **F6 Pulido y lanzamiento** | 6 % | `█░░░░░░░░░░░░░░░░░░░` | 1/17 | Tutorial, equilibrio final, documentación, comunidad y lanzamiento. |
 
 ## Áreas del juego
@@ -97,7 +97,7 @@ flowchart LR
 | **Guardado y persistencia** | 60 % | `████████████░░░░░░░░` | 6 | 0 | 4 | 0 | 0 | Las partidas no se pierden, son compactas y se pueden recuperar. |
 | **Interfaz web** | 38 % | `████████░░░░░░░░░░░░` | 10 | 2 | 16 | 0 | 0 | La cara del juego: clara, rápida y accesible. |
 | **Visualización del partido** | 11 % | `██░░░░░░░░░░░░░░░░░░` | 1 | 0 | 6 | 0 | 2 | Ver el partido, no solo leerlo, derivado siempre del registro de eventos. |
-| **Aplicación de escritorio y distribución** | 27 % | `█████░░░░░░░░░░░░░░░` | 1 | 4 | 5 | 0 | 2 | Que el propietario instale y actualice el juego sin pasar por GitHub. |
+| **Aplicación de escritorio y distribución** | 35 % | `███████░░░░░░░░░░░░░` | 2 | 4 | 4 | 0 | 2 | Que el propietario instale y actualice el juego sin pasar por GitHub. |
 | **Calidad, pruebas y herramientas** | 46 % | `█████████░░░░░░░░░░░` | 6 | 0 | 5 | 0 | 2 | Poder fiarse de lo construido y detectar a tiempo lo que se rompe. |
 | **Proceso y coordinación** | 70 % | `██████████████░░░░░░` | 7 | 0 | 1 | 2 | 0 | Que dos agentes y un propietario no programador trabajen sin estorbarse. |
 | **Documentación y comunidad** | 23 % | `█████░░░░░░░░░░░░░░░` | 2 | 1 | 5 | 0 | 3 | Que cualquiera entienda el juego, el proyecto y cómo ampliarlo. |
@@ -131,7 +131,6 @@ Los agentes solo trabajan cuando el propietario lo autoriza (D-052); esto reflej
 | 🔄 En curso | Rachas y momento del partido | Motor de partido | 35 % | [#11](https://github.com/dariogea/BM27/issues/11) |
 | 🔄 En curso | Lesiones: tipos, duración y recaídas | Jugadores | 30 % | [#11](https://github.com/dariogea/BM27/issues/11) |
 | 🔄 En curso | Publicación en Releases de GitHub (preversión) | Aplicación de escritorio y distribución | 60 % | [#22](https://github.com/dariogea/BM27/issues/22) |
-| ⬜ Pendiente | Versión 0.1.0-alpha.1 publicada | Aplicación de escritorio y distribución | — | — |
 | 🔄 En curso | Actualización automática desde el propio juego | Aplicación de escritorio y distribución | 40 % | — |
 | 🔄 En curso | La etiqueta de la Release corresponde al código compilado | Aplicación de escritorio y distribución | 90 % | [#39](https://github.com/dariogea/BM27/issues/39) |
 | ⬜ Pendiente | Política de fusión sin huecos conocidos | Proceso y coordinación | — | [#36](https://github.com/dariogea/BM27/issues/36) |
@@ -514,13 +513,13 @@ _Ver el partido, no solo leerlo, derivado siempre del registro de eventos._
 
 </details>
 
-<details><summary><b>Aplicación de escritorio y distribución</b> — 27 % `███░░░░░░░░░`</summary>
+<details><summary><b>Aplicación de escritorio y distribución</b> — 35 % `████░░░░░░░░`</summary>
 
 _Que el propietario instale y actualice el juego sin pasar por GitHub._
 
 - ✅ Envoltorio Tauri 2 con instalador para Windows (`F5` · @claude · [#22](https://github.com/dariogea/BM27/issues/22)) — _Se compila en el Windows de GitHub; nadie lo ha ejecutado aún en un Windows real._
 - 🔄 Publicación en Releases de GitHub (preversión) (`F5` · 60 % · @claude · [#22](https://github.com/dariogea/BM27/issues/22))
-- ⬜ Versión 0.1.0-alpha.1 publicada (`F5` · @claude) — _Versión ya puesta en los archivos (T-027). Falta fusionar y publicar la etiqueta, con autorización del propietario._
+- ✅ Versión 0.1.0-alpha.1 publicada (`F5` · @claude) — _Publicada el 17-11-2026 en Releases (pre-lanzamiento), 1,4 MB. Sin probar en un Windows real._
 - 🔄 Canales alfa y beta (`F5` · 30 %) — _Los pre-lanzamientos se detectan con el orden de versiones; faltan los canales fijos._
 - 🔄 Actualización automática desde el propio juego (`F5` · 40 % · @claude) — _T-031: el launcher ya busca versiones nuevas al abrir y enseña el enlace. Falta descargar e instalar solo (necesita repositorio público de versiones y firma)._
 - ⬜ Firma de código del instalador (`F5`) — _Sin firma Windows avisa (SmartScreen)._

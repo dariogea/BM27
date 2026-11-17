@@ -1,3 +1,4 @@
+import { LeagueRecords } from './LeagueRecords';
 import { useEffect, useRef, useState } from 'react';
 import type { GameView } from './protocol';
 import { describeTactics } from './MatchView';
@@ -94,6 +95,8 @@ export function WorldView(props: {
         </div>
         <span className="status-pill">Temporada {props.view.seasonNumber}</span>
       </header>
+      <LeagueRecords view={props.view} request={props.request} onPlayer={player} onClub={club} />
+      <h2>Buscador de jugadores y clubes</h2>
       <form
         className="world-search"
         onSubmit={(event) => {

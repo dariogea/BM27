@@ -8,13 +8,13 @@
 
 ## Resumen
 
-**Preparación estimada para lanzamiento: 14 %** `████░░░░░░░░░░░░░░░░░░░░░░░░░░`  (475 elementos)
+**Preparación estimada para lanzamiento: 15 %** `█████░░░░░░░░░░░░░░░░░░░░░░░░░`  (475 elementos)
 
 ```mermaid
 pie showData title Elementos por estado
-  "Hecho" : 117
+  "Hecho" : 121
   "En curso" : 19
-  "Pendiente" : 307
+  "Pendiente" : 303
   "Bloqueado" : 2
   "Idea" : 30
 ```
@@ -43,14 +43,14 @@ Gestor de baloncesto comercial completo, con la profundidad de gestión como ref
 - ⬜ **R6** Instalación, actualizaciones y compatibilidad verificadas en los sistemas soportados
 - ⬜ **R7** Equilibrio, rendimiento, licencias y criterios de lanzamiento cerrados
 
-La cobertura del inventario es 26 %; no debe confundirse con preparación comercial.
+La cobertura del inventario es 27 %; no debe confundirse con preparación comercial.
 
 ## Fases (del punto A al Z)
 
 ```mermaid
 flowchart LR
   F0["F0 Fundaciones<br/>76 %"]
-  F1["F1 Primera versión jugable<br/>50 %"]
+  F1["F1 Primera versión jugable<br/>59 %"]
   F2["F2 Profundidad de gestión<br/>3 %"]
   F3["F3 Mundo, datos y mods<br/>9 %"]
   F4["F4 Presentación<br/>11 %"]
@@ -72,7 +72,7 @@ flowchart LR
 | Fase | Avance | | Hecho | Qué significa |
 | --- | ---: | --- | ---: | --- |
 | **F0 Fundaciones** | 76 % | `███████████████░░░░░` | 82/110 | Núcleo determinista, motor de partido, mundo persistente, mercado y finanzas, y la forma de trabajar de los dos agentes. |
-| **F1 Primera versión jugable** | 50 % | `██████████░░░░░░░░░░` | 20/43 | Que el propietario pueda jugar de principio a fin una temporada y varias más sin tocar una terminal, con consultas básicas del mundo. |
+| **F1 Primera versión jugable** | 59 % | `████████████░░░░░░░░` | 24/43 | Que el propietario pueda jugar de principio a fin una temporada y varias más sin tocar una terminal, con consultas básicas del mundo. |
 | **F2 Profundidad de gestión** | 3 % | `█░░░░░░░░░░░░░░░░░░░` | 4/184 | Traspasos, cantera y ojeadores, economía con decisiones, entrenador rival con criterio, motor de partido completo. |
 | **F3 Mundo, datos y mods** | 9 % | `██░░░░░░░░░░░░░░░░░░` | 5/63 | Calibración con datos contrastados, paquetes de datos cargables, pirámide completa y otras competiciones. |
 | **F4 Presentación** | 11 % | `██░░░░░░░░░░░░░░░░░░` | 3/36 | Diseño visual, accesibilidad, partido en 2D, narración, sonido y varios idiomas. |
@@ -88,14 +88,14 @@ flowchart LR
 | **Jugadores** | 42 % | `████████░░░░░░░░░░░░` | 9 | 2 | 10 | 0 | 2 | Personas con atributos, carrera, potencial y personalidad que el usuario descubre y gestiona. |
 | **Clubes** | 27 % | `█████░░░░░░░░░░░░░░░` | 4 | 0 | 9 | 0 | 2 | El club como organización: plantilla, reputación, afición, estadio y objetivos. |
 | **Entrenadores y personal técnico** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 9 | 0 | 0 | Las personas que dirigen y apoyan al equipo, con efecto real en el juego. |
-| **Competiciones** | 41 % | `████████░░░░░░░░░░░░` | 7 | 0 | 8 | 0 | 2 | Pirámide masculina española en cuatro niveles como datos, ampliable sin tocar el motor. |
+| **Competiciones** | 47 % | `█████████░░░░░░░░░░░` | 8 | 0 | 7 | 0 | 2 | Pirámide masculina española en cuatro niveles como datos, ampliable sin tocar el motor. |
 | **Mercado y contratos** | 38 % | `████████░░░░░░░░░░░░` | 6 | 0 | 7 | 0 | 3 | Cómo se mueven los jugadores y el dinero entre clubes, con reglas distintas según la liga. |
 | **Finanzas** | 31 % | `██████░░░░░░░░░░░░░░` | 4 | 0 | 8 | 0 | 1 | El dinero como restricción real: ingresos, gastos, presupuestos y consecuencias de gestionar mal. |
 | **Gestión del usuario** | 36 % | `███████░░░░░░░░░░░░░` | 5 | 0 | 7 | 0 | 2 | Lo que el jugador puede hacer: decidir, delegar y entender las consecuencias. |
-| **Mundo persistente** | 30 % | `██████░░░░░░░░░░░░░░` | 3 | 0 | 6 | 0 | 1 | Un mundo que sigue vivo y estable durante decenas de temporadas, sin inflarse ni hundirse. |
+| **Mundo persistente** | 40 % | `████████░░░░░░░░░░░░` | 4 | 0 | 5 | 0 | 1 | Un mundo que sigue vivo y estable durante decenas de temporadas, sin inflarse ni hundirse. |
 | **Datos, mods e idiomas** | 50 % | `██████████░░░░░░░░░░` | 6 | 2 | 3 | 0 | 2 | Reglamentos, competiciones y contenido como datos: añadir una liga no debe tocar el motor. |
 | **Guardado y persistencia** | 60 % | `████████████░░░░░░░░` | 6 | 0 | 4 | 0 | 0 | Las partidas no se pierden, son compactas y se pueden recuperar. |
-| **Interfaz web** | 47 % | `█████████░░░░░░░░░░░` | 12 | 3 | 13 | 0 | 0 | La cara del juego: clara, rápida y accesible. |
+| **Interfaz web** | 54 % | `███████████░░░░░░░░░` | 14 | 3 | 11 | 0 | 0 | La cara del juego: clara, rápida y accesible. |
 | **Visualización del partido** | 11 % | `██░░░░░░░░░░░░░░░░░░` | 1 | 0 | 6 | 0 | 2 | Ver el partido, no solo leerlo, derivado siempre del registro de eventos. |
 | **Aplicación de escritorio y distribución** | 35 % | `███████░░░░░░░░░░░░░` | 2 | 4 | 4 | 0 | 2 | Que el propietario instale y actualice el juego sin pasar por GitHub. |
 | **Calidad, pruebas y herramientas** | 46 % | `█████████░░░░░░░░░░░` | 6 | 0 | 5 | 0 | 2 | Poder fiarse de lo construido y detectar a tiempo lo que se rompe. |
@@ -321,7 +321,7 @@ _Las personas que dirigen y apoyan al equipo, con efecto real en el juego._
 
 </details>
 
-<details><summary><b>Competiciones</b> — 41 % `█████░░░░░░░`</summary>
+<details><summary><b>Competiciones</b> — 47 % `██████░░░░░░`</summary>
 
 _Pirámide masculina española en cuatro niveles como datos, ampliable sin tocar el motor._
 
@@ -341,7 +341,7 @@ _Pirámide masculina española en cuatro niveles como datos, ampliable sin tocar
 - ⬜ Playoffs de ascenso con formato propio (`F0`) — _No verificado: hoy solo se confirma el playoff por el título._
 - ⬜ Calendario con descansos y viajes (`F2`)
 - 💡 Partidos aplazados y suspendidos (`F3`)
-- ⬜ Palmarés de cada competición (`F1` · [#14](https://github.com/dariogea/BM27/issues/14))
+- ✅ Palmarés de cada competición (`F1` · @codex · [#72](https://github.com/dariogea/BM27/issues/72)) — _Consultas de datos conservados por competición y temporada. Líderes con muestras explícitas; palmarés solo de temporadas cerradas, sin títulos anteriores a la partida._
 
 </details>
 
@@ -409,7 +409,7 @@ _Lo que el jugador puede hacer: decidir, delegar y entender las consecuencias._
 
 </details>
 
-<details><summary><b>Mundo persistente</b> — 30 % `████░░░░░░░░`</summary>
+<details><summary><b>Mundo persistente</b> — 40 % `█████░░░░░░░`</summary>
 
 _Un mundo que sigue vivo y estable durante decenas de temporadas, sin inflarse ni hundirse._
 
@@ -417,7 +417,7 @@ _Un mundo que sigue vivo y estable durante decenas de temporadas, sin inflarse n
 - ✅ Envejecimiento, retiradas y relevo con jóvenes (`F0`)
 - ✅ Estabilidad medida a 30 temporadas (pnpm stability) (`F0`)
 - ⬜ Las estrellas del nivel uno no se aplanan con los años (`F2` · [#19](https://github.com/dariogea/BM27/issues/19)) — _T-020._
-- ⬜ Historial de campeones, ascensos y descensos (`F1` · [#14](https://github.com/dariogea/BM27/issues/14))
+- ✅ Historial de campeones, ascensos y descensos (`F1` · @codex · [#72](https://github.com/dariogea/BM27/issues/72)) — _Consultas de datos conservados por competición y temporada. Líderes con muestras explícitas; palmarés solo de temporadas cerradas, sin títulos anteriores a la partida._
 - ⬜ Récords históricos de liga y club (`F3`)
 - ⬜ Noticias del mundo (retiradas, récords, quiebras) (`F3`)
 - ⬜ Cantera real en lugar del relleno automático (`F2` · [#13](https://github.com/dariogea/BM27/issues/13))
@@ -463,7 +463,7 @@ _Las partidas no se pierden, son compactas y se pueden recuperar._
 
 </details>
 
-<details><summary><b>Interfaz web</b> — 47 % `██████░░░░░░`</summary>
+<details><summary><b>Interfaz web</b> — 54 % `███████░░░░░`</summary>
 
 _La cara del juego: clara, rápida y accesible._
 
@@ -475,11 +475,11 @@ _La cara del juego: clara, rápida y accesible._
   - ✅ Mercado de agentes libres (`F1`)
   - ✅ Finanzas (`F1`)
   - ✅ Guardar y cargar (`F1`)
-- **Pantallas por hacer** — 30 %
+- **Pantallas por hacer** — 47 %
   - ✅ Plantilla y tácticas de cualquier equipo (`F1` · @codex · [#67](https://github.com/dariogea/BM27/issues/67)) — _Buscador paginado y fichas enlazadas en Mundo, con datos del Worker y verificación real en PC._
   - 🔄 Ficha de jugador completa (`F1` · 60 % · @codex · [#67](https://github.com/dariogea/BM27/issues/67)) — _Atributos, contrato, lesión y estadísticas conservadas. Potencial rival oculto; trayectoria detallada y ojeo pendientes._
-  - ⬜ Líderes estadísticos (`F1` · [#14](https://github.com/dariogea/BM27/issues/14))
-  - ⬜ Palmarés (`F1` · [#14](https://github.com/dariogea/BM27/issues/14))
+  - ✅ Líderes estadísticos (`F1` · @codex · [#72](https://github.com/dariogea/BM27/issues/72)) — _Consultas de datos conservados por competición y temporada. Líderes con muestras explícitas; palmarés solo de temporadas cerradas, sin títulos anteriores a la partida._
+  - ✅ Palmarés (`F1` · @codex · [#72](https://github.com/dariogea/BM27/issues/72)) — _Consultas de datos conservados por competición y temporada. Líderes con muestras explícitas; palmarés solo de temporadas cerradas, sin títulos anteriores a la partida._
   - ✅ Buscador de jugadores y equipos (`F1` · @codex · [#67](https://github.com/dariogea/BM27/issues/67)) — _Buscador paginado y fichas enlazadas en Mundo, con datos del Worker y verificación real en PC._
   - ✅ Pantalla de inicio que explique cómo se juega (`F4` · @codex · [#23](https://github.com/dariogea/BM27/issues/23)) — _Demo visual con temas persistentes, inicio guiado y tablas desplazables; comprobación de accesibilidad y pantallas en el PR._
   - ⬜ Mercado de traspasos (`F2` · [#8](https://github.com/dariogea/BM27/issues/8))

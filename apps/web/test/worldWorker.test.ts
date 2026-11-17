@@ -62,6 +62,21 @@ it('routes world queries without exposing rival potential or changing saved stat
     type: 'world',
     result: { kind: 'search', total: teams.length },
   });
+  expect(
+    await send({
+      id: 10,
+      type: 'worldRecords',
+      competitionId: generated.view.competitions[0]!.id,
+      season: 0,
+      metric: 'points',
+      mode: 'average',
+      minGames: 1,
+      minAttempts: 10,
+    }),
+  ).toMatchObject({
+    type: 'world',
+    result: { kind: 'records', rows: [], honours: [] },
+  });
   const after = await send({ id: 9, type: 'exportSave' });
   if (before.type !== 'save' || after.type !== 'save') throw new Error('Export failed');
   expect(after.json).toBe(before.json);

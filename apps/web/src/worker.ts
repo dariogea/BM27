@@ -588,6 +588,7 @@ async function handle(command: Command): Promise<Reply> {
         ms: ms(),
       };
     }
+    case 'worldRecords':
     case 'worldSearch':
     case 'worldPlayer':
     case 'worldClub':

@@ -144,7 +144,7 @@ const lines = [
   `- Tras ${SEASONS} temporadas: ${f2(saveBytes / 1024 / 1024)} MB → unas ${f2((saveBytes - freshBytes) / SEASONS / 1024 / 1024)} MB por temporada.`,
   `- Exportar (serializar + checksum SHA-256): ${f0(exported.ms)} ms. Importar (leer + verificar checksum + validar esquema): ${f0(imported.ms)} ms.`,
   '- Qué contiene: equipos, jugadores (incluidos los retirados), competiciones y, por cada temporada, clasificaciones, resultado de cada partido, series de playoff y estadísticas acumuladas por jugador.',
-  '- Qué NO contiene: el registro de eventos ni el box score de cada partido. Se pueden reconstruir de forma idéntica re-simulando el partido con su semilla mientras la temporada esté en curso, pero no se guardan. JSON sin comprimir ni sangrado.',
+  '- Qué NO contiene: el registro de eventos ni el box score de cada partido. Una repetición fiel requiere conservar o verificar el estado original del encuentro; la semilla y el marcador no bastan. JSON sin comprimir ni sangrado.',
   '',
   '## Comparación con tareas anteriores',
   '',
@@ -158,7 +158,7 @@ const lines = [
   '',
   'Las cifras anteriores son las registradas en `T-001.md`, `T-002.md`, `T-004.md` y `T-005.md`, medidas en un contenedor equivalente pero en otra ejecución; la comparación es orientativa. T-002 es anterior a la temporada paso a paso (T-003) y a la progresión de jugadores (T-004).',
   '',
-  'La calibración del motor (medias de liga frente a bandas de referencia) está en `T-006-calibracion.md`, y la estabilidad a largo plazo del mundo en `T-006-estabilidad.md`.',
+  `La calibración del motor (medias de liga frente a bandas de referencia) está en \`${TASK}-calibracion.md\`, y la estabilidad a largo plazo del mundo en \`${TASK}-estabilidad.md\`.`,
   '',
 ];
 

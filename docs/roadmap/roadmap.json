@@ -250,9 +250,9 @@
               "t": "Faltas técnicas",
               "s": "hecho",
               "f": "F2",
-              "i": 11,
-              "n": "T-028: 1 tiro libre y posesión; no cuenta como falta de equipo.",
-              "o": "claude"
+              "i": 63,
+              "n": "T-028 implementó el suceso; #63 corrige a 1 TL al rival y reanudación por el equipo con derecho previo al balón, contando también para las faltas de equipo y sin reset de fase.",
+              "o": "codex"
             },
             {
               "t": "Faltas antideportivas y descalificantes",

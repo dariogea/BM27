@@ -216,7 +216,7 @@ _Que cada partido se juegue posesión a posesión con reglas de baloncesto reale
 - **Faltas y disciplina** — 62 %
   - ✅ Faltas personales y límite de faltas por jugador (`F0`)
   - ✅ Faltas de equipo y bonus (`F0`)
-  - ✅ Faltas técnicas (`F2` · @claude · [#11](https://github.com/dariogea/BM27/issues/11)) — _T-028: 1 tiro libre y posesión; no cuenta como falta de equipo._
+  - ✅ Faltas técnicas (`F2` · @codex · [#63](https://github.com/dariogea/BM27/issues/63)) — _T-028 implementó el suceso; #63 corrige a 1 TL al rival y reanudación por el equipo con derecho previo al balón, contando también para las faltas de equipo y sin reset de fase._
   - 🔄 Faltas antideportivas y descalificantes (`F2` · 70 % · @claude · [#11](https://github.com/dariogea/BM27/issues/11)) — _T-028: antideportivas con 2 tiros y posesión, y expulsión con 2 faltas de conducta. Falta la falta descalificante directa._
   - 💡 Árbitros con criterio propio (estricto o permisivo) (`F3`)
   - 💡 Sanciones y suspensiones fuera de la pista (`F3`)

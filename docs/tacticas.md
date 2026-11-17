@@ -50,8 +50,9 @@ Dos plantillas idénticas de nivel 1 juegan 3.000 partidos; solo cambia una tác
 
 ## Sucesos del partido (T-028)
 
-Todo sale del registro de eventos, y todo tiene efecto en el partido. Cifras medidas en
-[`benchmarks/T-028-calibracion.md`](benchmarks/T-028-calibracion.md) (nivel 1, 3 universos).
+Todo sale del registro de eventos y tiene efecto en el partido. Mediciones actualizadas tras corregir
+la reanudación de técnicas (#63): [`benchmarks/63-calibracion.md`](benchmarks/63-calibracion.md)
+(nivel 1, 3 universos). Las de T-028 se conservan como histórico.
 
 | Suceso               | Cómo funciona                                                                                                                                                                                | Medido por partido                      |
 | -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------- |
@@ -60,7 +61,7 @@ Todo sale del registro de eventos, y todo tiene efecto en el partido. Cifras med
 | Tiempos muertos      | Cupos del reglamento (FIBA 2 + 3 + 1). Los pide el entrenador para cortar una racha de 8 puntos, al final del partido si va por detrás, o para descansar. Los dos equipos recuperan energía. | 5,6 (los dos equipos)                   |
 | Racha                | Más de 5 puntos seguidos dan un pequeño bonus de tiro (máximo 1,2 %); un tiempo muerto la corta.                                                                                             | —                                       |
 | Lesión en el partido | Riesgo por posesión que sube con la fatiga. El jugador sale al instante y se pierde de 1 a 80 partidos.                                                                                      | 0,16–0,18                               |
-| Falta técnica        | 1 tiro libre y posesión para el rival; cuenta como falta del jugador, no del equipo.                                                                                                         | 0,2                                     |
+| Falta técnica        | 1 tiro libre para el rival; reanuda el equipo que tenía derecho al balón, sin resetear la fase de posesión. Cuenta al jugador y al equipo.                                                   | 0,2                                     |
 | Falta antideportiva  | 2 tiros libres y posesión; cuenta como falta de equipo.                                                                                                                                      | 0,13                                    |
 | Expulsión            | 2 faltas de conducta (técnica o antideportiva) expulsan al jugador.                                                                                                                          | 0,01–0,02                               |
 

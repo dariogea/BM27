@@ -1,3 +1,4 @@
+import { AUTO_SAVE, IndexedDbSaveStore } from './slotStore';
 /// <reference lib="webworker" />
 import {
   advanceSeason,
@@ -47,6 +48,7 @@ import { ReplayProofs } from './replayProof';
 
 // The whole game state lives here, off the UI thread.
 let universe: Universe | null = null;
+const slotStore = new IndexedDbSaveStore();
 /** Universe from which the matches shown on screen can be re-simulated. */
 let replayUniverse: Universe | null = null;
 const replayProofs = new ReplayProofs();
@@ -356,7 +358,7 @@ function describeMine(played: MatchResult[], u: Universe, before: string | null)
   return ` Tu partido: ${name(mine.homeTeamId)} ${mine.homeScore} – ${mine.awayScore} ${name(mine.awayTeamId)} (${myScore > theirScore ? 'victoria' : 'derrota'}).`;
 }
 
-function handle(command: Command): Reply {
+async function handle(command: Command): Promise<Reply> {
   const start = performance.now();
   const ms = (): number => Math.round(performance.now() - start);
   const state = (message: string): Reply => ({
@@ -366,7 +368,53 @@ function handle(command: Command): Reply {
     message,
   });
 
+  const slots = async (message: string): Promise<Reply> => ({
+    id: command.id,
+    type: 'slots',
+    slots: await slotStore.summaries(),
+    autosave: await slotStore.autosaveEnabled(),
+    message,
+  });
+  const automatic = async (): Promise<string> => {
+    try {
+      if (await slotStore.autosaveEnabled()) {
+        await slotStore.save(AUTO_SAVE, need());
+        return ' Guardado automático completado.';
+      }
+      return '';
+    } catch (error) {
+      return ` No se pudo completar el guardado automático: ${error instanceof Error ? error.message : String(error)} La partida sigue abierta; guarda una copia en archivo.`;
+    }
+  };
   switch (command.type) {
+    case 'listSlots':
+      return slots('Partidas guardadas en este dispositivo.');
+    case 'saveSlot': {
+      if (command.name.trim() === AUTO_SAVE)
+        throw new Error('Ese nombre está reservado para el guardado automático.');
+      await slotStore.save(command.name, need());
+      return slots('Partida guardada en el dispositivo.');
+    }
+    case 'deleteSlot':
+      await slotStore.delete(command.name);
+      return slots('Partida eliminada.');
+    case 'renameSlot':
+      await slotStore.rename(command.name, command.newName);
+      return slots('Nombre actualizado.');
+    case 'setAutosave':
+      await slotStore.setAutosave(command.enabled);
+      return slots(
+        command.enabled ? 'Guardado automático activado.' : 'Guardado automático desactivado.',
+      );
+    case 'loadSlot': {
+      const loaded = await slotStore.load(command.name);
+      universe = loaded;
+      offseasonReport = null;
+      replayUniverse = loaded;
+      myMatches.clear();
+      replayProofs.clear();
+      return state(`Partida cargada del dispositivo: temporada ${loaded.seasonNumber}.`);
+    }
     case 'generate': {
       universe = generateUniverse({ seed: command.seed });
       offseasonReport = null;
@@ -423,9 +471,10 @@ function handle(command: Command): Reply {
       const seasonNumber = need().seasonNumber;
       const { season, played } = step();
       const mine = describeMine(played, need(), userTeamId);
+      const saved = season ? await automatic() : '';
       return state(
         season
-          ? `Temporada ${seasonNumber} terminada (${ms()} ms).${mine} Se han aplicado ascensos, descensos y un año más de edad.`
+          ? `Temporada ${seasonNumber} terminada (${ms()} ms).${mine} Se han aplicado ascensos, descensos y un año más de edad.${saved}`
           : `Jornada jugada: ${played.length} partidos en ${ms()} ms.${mine}`,
       );
     }
@@ -438,8 +487,9 @@ function handle(command: Command): Reply {
         matches += played.length;
         if (season) break;
       }
+      const saved = await automatic();
       return state(
-        `Temporada ${seasonNumber} terminada: ${matches} partidos simulados en ${ms()} ms. Se han aplicado ascensos, descensos y un año más de edad.`,
+        `Temporada ${seasonNumber} terminada: ${matches} partidos simulados en ${ms()} ms. Se han aplicado ascensos, descensos y un año más de edad.${saved}`,
       );
     }
     case 'matchDetail': {
@@ -524,16 +574,20 @@ function handle(command: Command): Reply {
   }
 }
 
+// Commands are serialized: saving/loading cannot race a simulation or another write.
+let commands: Promise<void> = Promise.resolve();
 self.onmessage = (message: MessageEvent<Command>) => {
-  let reply: Reply;
-  try {
-    reply = handle(message.data);
-  } catch (error) {
-    reply = {
-      id: message.data.id,
-      type: 'error',
-      message: error instanceof Error ? error.message : String(error),
-    };
-  }
-  self.postMessage(reply);
+  commands = commands.then(async () => {
+    let reply: Reply;
+    try {
+      reply = await handle(message.data);
+    } catch (error) {
+      reply = {
+        id: message.data.id,
+        type: 'error',
+        message: error instanceof Error ? error.message : String(error),
+      };
+    }
+    self.postMessage(reply);
+  });
 };

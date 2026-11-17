@@ -12,9 +12,9 @@
 
 ```mermaid
 pie showData title Elementos por estado
-  "Hecho" : 101
+  "Hecho" : 103
   "En curso" : 5
-  "Pendiente" : 336
+  "Pendiente" : 334
   "Bloqueado" : 3
   "Idea" : 30
 ```
@@ -50,7 +50,7 @@ La cobertura del inventario es 22 %; no debe confundirse con preparación comerc
 ```mermaid
 flowchart LR
   F0["F0 Fundaciones<br/>77 %"]
-  F1["F1 Primera versión jugable<br/>38 %"]
+  F1["F1 Primera versión jugable<br/>43 %"]
   F2["F2 Profundidad de gestión<br/>0 %"]
   F3["F3 Mundo, datos y mods<br/>0 %"]
   F4["F4 Presentación<br/>0 %"]
@@ -72,7 +72,7 @@ flowchart LR
 | Fase | Avance | | Hecho | Qué significa |
 | --- | ---: | --- | ---: | --- |
 | **F0 Fundaciones** | 77 % | `███████████████░░░░░` | 83/110 | Núcleo determinista, motor de partido, mundo persistente, mercado y finanzas, y la forma de trabajar de los dos agentes. |
-| **F1 Primera versión jugable** | 38 % | `████████░░░░░░░░░░░░` | 16/43 | Que el propietario pueda jugar de principio a fin una temporada y varias más sin tocar una terminal, con consultas básicas del mundo. |
+| **F1 Primera versión jugable** | 43 % | `█████████░░░░░░░░░░░` | 18/43 | Que el propietario pueda jugar de principio a fin una temporada y varias más sin tocar una terminal, con consultas básicas del mundo. |
 | **F2 Profundidad de gestión** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0/184 | Traspasos, cantera y ojeadores, economía con decisiones, entrenador rival con criterio, motor de partido completo. |
 | **F3 Mundo, datos y mods** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0/63 | Calibración con datos contrastados, paquetes de datos cargables, pirámide completa y otras competiciones. |
 | **F4 Presentación** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0/36 | Diseño visual, accesibilidad, partido en 2D, narración, sonido y varios idiomas. |
@@ -94,7 +94,7 @@ flowchart LR
 | **Gestión del usuario** | 36 % | `███████░░░░░░░░░░░░░` | 5 | 0 | 7 | 0 | 2 | Lo que el jugador puede hacer: decidir, delegar y entender las consecuencias. |
 | **Mundo persistente** | 30 % | `██████░░░░░░░░░░░░░░` | 3 | 0 | 6 | 0 | 1 | Un mundo que sigue vivo y estable durante decenas de temporadas, sin inflarse ni hundirse. |
 | **Datos, mods e idiomas** | 15 % | `███░░░░░░░░░░░░░░░░░` | 2 | 0 | 9 | 0 | 2 | Reglamentos, competiciones y contenido como datos: añadir una liga no debe tocar el motor. |
-| **Guardado y persistencia** | 40 % | `████████░░░░░░░░░░░░` | 4 | 0 | 6 | 0 | 0 | Las partidas no se pierden, son compactas y se pueden recuperar. |
+| **Guardado y persistencia** | 60 % | `████████████░░░░░░░░` | 6 | 0 | 4 | 0 | 0 | Las partidas no se pierden, son compactas y se pueden recuperar. |
 | **Interfaz web** | 25 % | `█████░░░░░░░░░░░░░░░` | 7 | 0 | 21 | 0 | 0 | La cara del juego: clara, rápida y accesible. |
 | **Visualización del partido** | 11 % | `██░░░░░░░░░░░░░░░░░░` | 1 | 0 | 6 | 0 | 2 | Ver el partido, no solo leerlo, derivado siempre del registro de eventos. |
 | **Aplicación de escritorio y distribución** | 13 % | `███░░░░░░░░░░░░░░░░░` | 1 | 1 | 7 | 1 | 2 | Que el propietario instale y actualice el juego sin pasar por GitHub. |
@@ -430,15 +430,15 @@ _Reglamentos, competiciones y contenido como datos: añadir una liga no debe toc
 
 </details>
 
-<details><summary><b>Guardado y persistencia</b> — 40 % `█████░░░░░░░`</summary>
+<details><summary><b>Guardado y persistencia</b> — 60 % `███████░░░░░`</summary>
 
 _Las partidas no se pierden, son compactas y se pueden recuperar._
 
 - ✅ Guardado en archivo JSON con comprobación (`F1`)
 - ✅ Interfaz SaveStore con migraciones (`F1`)
 - ✅ Guardar y cargar en el escritorio mediante diálogos (`F1`)
-- ⬜ Varias ranuras con nombre dentro de la aplicación (`F1` · [#16](https://github.com/dariogea/BM27/issues/16)) — _T-017._
-- ⬜ Guardado automático al cerrar temporada (`F1` · [#16](https://github.com/dariogea/BM27/issues/16))
+- ✅ Varias ranuras con nombre dentro de la aplicación (`F1` · @codex · [#16](https://github.com/dariogea/BM27/issues/16)) — _IndexedDB local con nombres, metadatos, renombrado y protección de otras ranuras; autoguardado de fin de temporada configurable. Archivos como copia portable._
+- ✅ Guardado automático al cerrar temporada (`F1` · @codex · [#16](https://github.com/dariogea/BM27/issues/16)) — _IndexedDB local con nombres, metadatos, renombrado y protección de otras ranuras; autoguardado de fin de temporada configurable. Archivos como copia portable._
 - ⬜ Política de historial y compactación (`F2` · [#17](https://github.com/dariogea/BM27/issues/17)) — _T-018. Decisión del propietario pendiente (#24)._
 - ⬜ Compresión del archivo (`F2` · [#17](https://github.com/dariogea/BM27/issues/17))
 - ⬜ Recuperación ante archivo corrupto (`F1` · [#16](https://github.com/dariogea/BM27/issues/16))

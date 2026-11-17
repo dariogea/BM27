@@ -71,17 +71,17 @@ describe('replay provenance', () => {
       prepareTeam(home, players),
       away,
       getBuiltinRuleset('fiba'),
-      'replay-regression/2988',
+      'replay-regression/1628',
     );
     const changedWorld = setTeamTactics(world, home.id, { pace: 'fast' });
     const changed = playMatch(
       prepareTeam(changedWorld.teams[0]!, players),
       away,
       getBuiltinRuleset('fiba'),
-      'replay-regression/2988',
+      'replay-regression/1628',
     );
-    expect([original.boxScore.home.points, original.boxScore.away.points]).toEqual([76, 70]);
-    expect([changed.boxScore.home.points, changed.boxScore.away.points]).toEqual([76, 70]);
+    expect([original.boxScore.home.points, original.boxScore.away.points]).toEqual([86, 67]);
+    expect([changed.boxScore.home.points, changed.boxScore.away.points]).toEqual([86, 67]);
     expect(changed.boxScore).not.toEqual(original.boxScore);
     expect(changed.events).not.toEqual(original.events);
     const proofs = new ReplayProofs();

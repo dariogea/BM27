@@ -56,6 +56,12 @@ const TURNOVER_LABELS: Record<string, string> = {
   'shot-clock': 'se agota la posesión',
 };
 
+const TIMEOUT_REASONS: Record<string, string> = {
+  'opponent-run': 'para cortar una racha del rival',
+  'end-of-game': 'final del partido',
+  rest: 'descanso',
+};
+
 /** One line of play-by-play in plain Spanish, built only from the event. */
 function describeEvent(event: MatchEvent, who: (id: string) => string): string | null {
   switch (event.type) {
@@ -73,8 +79,27 @@ function describeEvent(event: MatchEvent, who: (id: string) => string): string |
       return `Rebote ${event.kind === 'offensive' ? 'ofensivo' : 'defensivo'} de ${who(event.playerId)}`;
     case 'turnover':
       return `Pérdida de ${who(event.playerId)}: ${TURNOVER_LABELS[event.kind]}${event.stealPlayerId ? ` (robo de ${who(event.stealPlayerId)})` : ''}`;
-    case 'foul':
-      return `Falta ${event.kind === 'offensive' ? 'en ataque ' : event.intentional ? 'intencionada ' : ''}de ${who(event.playerId)}${event.freeThrows ? ` · ${event.freeThrows} tiros libres` : ''}${event.fouledOut ? ' · ELIMINADO' : ''}`;
+    case 'foul': {
+      const label =
+        event.kind === 'technical'
+          ? 'técnica '
+          : event.kind === 'unsportsmanlike'
+            ? 'antideportiva '
+            : event.kind === 'offensive'
+              ? 'en ataque '
+              : event.intentional
+                ? 'intencionada '
+                : '';
+      return `Falta ${label}de ${who(event.playerId)}${event.freeThrows ? ` · ${event.freeThrows} ${event.freeThrows === 1 ? 'tiro libre' : 'tiros libres'}` : ''}${event.fouledOut ? ' · ELIMINADO' : ''}`;
+    }
+    case 'timeout':
+      return `Tiempo muerto (${TIMEOUT_REASONS[event.reason]})`;
+    case 'injury':
+      return `LESIÓN de ${who(event.playerId)}: se pierde ${event.gamesOut} ${event.gamesOut === 1 ? 'partido' : 'partidos'}`;
+    case 'jump_ball':
+      return event.kind === 'opening'
+        ? 'Salto inicial'
+        : 'Balón retenido: la flecha de posesión decide';
     case 'substitution':
       return `Cambio: entra ${who(event.playerInId)} por ${who(event.playerOutId)}`;
     default:

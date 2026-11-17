@@ -259,7 +259,12 @@ describe('the user and the money', () => {
       ...offseason,
       teams: offseason.teams.map((x) =>
         x.id === t.id
-          ? { ...x, finance: { ...x.finance, lastRevenue: 1_000_000 }, reputation: 5 }
+          ? {
+              ...x,
+              // Cash for the severance pay, so that only the wage budget speaks.
+              finance: { ...x.finance, balance: 2_000_000, lastRevenue: 1_000_000 },
+              reputation: 5,
+            }
           : x,
       ),
     };

@@ -147,13 +147,17 @@ describe('managing a team', () => {
     expect(hashValue(withChange.filter((m) => m.round <= 5))).toBe(
       hashValue(withoutChange.filter((m) => m.round <= 5)),
     );
-    // ...afterwards the team's own matches differ, and nobody else's do.
+    // ...afterwards the team's own matches differ...
     const later = (list: typeof withChange) => list.filter((m) => m.round > 5);
     expect(hashValue(later(withChange).filter(involves))).not.toBe(
       hashValue(later(withoutChange).filter(involves)),
     );
-    expect(hashValue(later(withChange).filter((m) => !involves(m)))).toBe(
-      hashValue(later(withoutChange).filter((m) => !involves(m))),
+    // ...and nobody else's do on the very next matchday. (From T-028 on, injuries make
+    // matches depend on earlier ones: a changed result can injure a different opponent
+    // player, who then misses a different later game. That is the only way the change spreads.)
+    const nextDay = (list: typeof withChange) => list.filter((m) => m.round === 6);
+    expect(hashValue(nextDay(withChange).filter((m) => !involves(m)))).toBe(
+      hashValue(nextDay(withoutChange).filter((m) => !involves(m))),
     );
   });
 

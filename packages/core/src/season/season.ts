@@ -33,6 +33,10 @@ interface SeasonContext {
   teamsById: Map<string, Team>;
   playersById: Map<string, Player>;
   prepared: Map<string, PreparedTeam>;
+  /** Injuries that happened in the matches played by the current step. */
+  injuries: { playerId: string; gamesOut: number }[];
+  /** Teams that played a match in the current step (their injured players recover a game). */
+  playedTeams: Set<string>;
 }
 
 /** Contexts are cached per universe so stepping through a season stays cheap. */
@@ -40,14 +44,33 @@ const contextCache = new WeakMap<Universe['teams'], SeasonContext>();
 
 function makeContext(universe: Universe): SeasonContext {
   const cached = contextCache.get(universe.teams);
-  if (
-    cached &&
-    cached.universe.players === universe.players &&
-    cached.universe.seed === universe.seed
-  ) {
-    cached.universe = universe;
-    cached.seasonNumber = universe.seasonNumber;
-    return cached;
+  if (cached && cached.universe.seed === universe.seed) {
+    if (cached.universe.players === universe.players) {
+      cached.universe = universe;
+      cached.seasonNumber = universe.seasonNumber;
+      return cached;
+    }
+    // Only some players changed (injuries from the last matchday): keep the prepared squads of
+    // every team that has none of them, which avoids rebuilding the whole league each matchday.
+    if (cached.universe.players.length === universe.players.length) {
+      const playersById = new Map(universe.players.map((p) => [p.id, p]));
+      const dirty = new Set<string>();
+      for (const p of universe.players) {
+        const before = cached.playersById.get(p.id);
+        if (before === p) continue;
+        if (before?.teamId) dirty.add(before.teamId);
+        if (p.teamId) dirty.add(p.teamId);
+      }
+      const context: SeasonContext = {
+        ...cached,
+        universe,
+        seasonNumber: universe.seasonNumber,
+        playersById,
+        prepared: new Map([...cached.prepared].filter(([teamId]) => !dirty.has(teamId))),
+      };
+      contextCache.set(universe.teams, context);
+      return context;
+    }
   }
   const context = buildContext(universe);
   contextCache.set(universe.teams, context);
@@ -63,7 +86,37 @@ function buildContext(universe: Universe): SeasonContext {
     teamsById,
     playersById,
     prepared: new Map(),
+    injuries: [],
+    playedTeams: new Set(),
   };
+}
+
+/**
+ * Recovers one game for every injured player whose team played, then applies the new injuries.
+ * Returns the same array when nothing changes, so cached contexts stay valid.
+ */
+function applyInjuries(
+  players: readonly Player[],
+  playedTeams: ReadonlySet<string>,
+  injuries: readonly { playerId: string; gamesOut: number }[],
+): readonly Player[] {
+  const fresh = new Map<string, number>();
+  for (const injury of injuries) {
+    fresh.set(injury.playerId, Math.max(fresh.get(injury.playerId) ?? 0, injury.gamesOut));
+  }
+  let changed = false;
+  const result = players.map((player) => {
+    let injury = player.injury;
+    if (injury && player.teamId !== null && playedTeams.has(player.teamId)) {
+      injury = injury.gamesRemaining > 1 ? { gamesRemaining: injury.gamesRemaining - 1 } : null;
+    }
+    const gamesOut = fresh.get(player.id);
+    if (gamesOut !== undefined) injury = { gamesRemaining: gamesOut };
+    if (injury === player.injury) return player;
+    changed = true;
+    return { ...player, injury };
+  });
+  return changed ? result : players;
 }
 
 function preparedTeam(ctx: SeasonContext, teamId: string): PreparedTeam {
@@ -317,6 +370,13 @@ function stepCompetition(
     };
     work.matches.push(result);
     played.push(result);
+    ctx.playedTeams.add(homeTeamId);
+    ctx.playedTeams.add(awayTeamId);
+    for (const event of match.events) {
+      if (event.type === 'injury') {
+        ctx.injuries.push({ playerId: event.playerId, gamesOut: event.gamesOut });
+      }
+    }
     for (const side of [match.boxScore.home, match.boxScore.away]) {
       for (const line of side.players) {
         if (line.seconds === 0) continue;
@@ -492,11 +552,20 @@ export function advanceSeason(
   const started = universe.currentSeason ? universe : startSeason(universe);
   const progress = started.currentSeason as SeasonProgress;
   const ctx = makeContext(started);
+  ctx.injuries = [];
+  ctx.playedTeams = new Set();
   const competitionsById = new Map(started.competitions.map((c) => [c.id, c]));
   const played: MatchResult[] = [];
   const competitions = progress.competitions.map((p) =>
     stepCompetition(ctx, competitionsById.get(p.competitionId) as Competition, p, options, played),
   );
+  // Injured players recover one game per match of their team; new injuries start counting
+  // from the team's next match. Done after the whole step so every match saw the same squads.
+  const players = applyInjuries(
+    started.players,
+    ctx.playedTeams,
+    ctx.injuries,
+  ) as Universe['players'];
 
   if (competitions.every((c) => c.phase === 'done')) {
     const season: Season = {
@@ -506,12 +575,13 @@ export function advanceSeason(
       ),
       finance: [], // filled in by the offseason, which closes the books
     };
-    const after = applyOffseason({ ...started, currentSeason: null }, season);
+    const after = applyOffseason({ ...started, players, currentSeason: null }, season);
     return { universe: after, played, season: after.history[after.history.length - 1] as Season };
   }
   return {
     universe: {
       ...started,
+      players,
       currentSeason: { seasonNumber: progress.seasonNumber, step: progress.step + 1, competitions },
     },
     played,

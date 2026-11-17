@@ -35,6 +35,26 @@
       "minimum": 1,
       "maximum": 20
     },
+    "timeoutsFirstHalf": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 10
+    },
+    "timeoutsSecondHalf": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 10
+    },
+    "timeoutsOvertime": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 5
+    },
+    "technicalFoulsForEjection": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 5
+    },
     "shotClockSeconds": {
       "type": "integer",
       "minimum": 10,
@@ -54,6 +74,10 @@
     "overtimeMinutes",
     "personalFoulLimit",
     "teamFoulsForBonus",
+    "timeoutsFirstHalf",
+    "timeoutsSecondHalf",
+    "timeoutsOvertime",
+    "technicalFoulsForEjection",
     "shotClockSeconds",
     "shotClockOffensiveReboundSeconds"
   ],

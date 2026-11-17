@@ -7,6 +7,10 @@
     "overtimeMinutes": 5,
     "personalFoulLimit": 5,
     "teamFoulsForBonus": 5,
+    "timeoutsFirstHalf": 2,
+    "timeoutsSecondHalf": 3,
+    "timeoutsOvertime": 1,
+    "technicalFoulsForEjection": 2,
     "shotClockSeconds": 24,
     "shotClockOffensiveReboundSeconds": 14
   },
@@ -18,6 +22,10 @@
     "overtimeMinutes": 5,
     "personalFoulLimit": 6,
     "teamFoulsForBonus": 5,
+    "timeoutsFirstHalf": 4,
+    "timeoutsSecondHalf": 3,
+    "timeoutsOvertime": 2,
+    "technicalFoulsForEjection": 2,
     "shotClockSeconds": 24,
     "shotClockOffensiveReboundSeconds": 14
   }

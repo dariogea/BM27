@@ -162,10 +162,11 @@
             },
             {
               "t": "Saltos entre dos y posesión alterna",
-              "s": "pendiente",
+              "s": "hecho",
               "f": "F2",
               "i": 11,
-              "n": "T-012."
+              "n": "T-028: salto inicial y balones retenidos con flecha de posesión (los períodos también la usan).",
+              "o": "claude"
             },
             {
               "t": "Reglas de 8 y 5 segundos, campo atrás, tres segundos",
@@ -247,15 +248,20 @@
             },
             {
               "t": "Faltas técnicas",
-              "s": "pendiente",
+              "s": "hecho",
               "f": "F2",
-              "i": 11
+              "i": 11,
+              "n": "T-028: 1 tiro libre y posesión; no cuenta como falta de equipo.",
+              "o": "claude"
             },
             {
               "t": "Faltas antideportivas y descalificantes",
-              "s": "pendiente",
+              "s": "en-curso",
               "f": "F2",
-              "i": 11
+              "i": 11,
+              "p": 70,
+              "n": "T-028: antideportivas con 2 tiros y posesión, y expulsión con 2 faltas de conducta. Falta la falta descalificante directa.",
+              "o": "claude"
             },
             {
               "t": "Árbitros con criterio propio (estricto o permisivo)",
@@ -339,20 +345,28 @@
             },
             {
               "t": "Tiempos muertos",
-              "s": "pendiente",
+              "s": "hecho",
               "f": "F2",
-              "i": 11
+              "i": 11,
+              "n": "T-028: cupos del reglamento por mitad y prórroga; los pide un entrenador con reglas fijas (PLACEHOLDER).",
+              "o": "claude"
             },
             {
               "t": "Lesiones durante el partido",
-              "s": "pendiente",
+              "s": "hecho",
               "f": "F2",
-              "i": 11
+              "i": 11,
+              "n": "T-028: riesgo por posesión y fatiga; el jugador sale al instante y se pierde varios partidos.",
+              "o": "claude"
             },
             {
               "t": "Rachas y momento del partido",
-              "s": "pendiente",
-              "f": "F2"
+              "s": "en-curso",
+              "f": "F2",
+              "p": 35,
+              "n": "T-028: bonus pequeño de tiro para una racha de más de 5 puntos; un tiempo muerto la corta.",
+              "o": "claude",
+              "i": 11
             },
             {
               "t": "Ventaja de jugar en casa (bonus de tiro)",
@@ -455,9 +469,12 @@
         },
         {
           "t": "Lesiones: tipos, duración y recaídas",
-          "s": "pendiente",
+          "s": "en-curso",
           "f": "F2",
-          "i": 11
+          "i": 11,
+          "p": 30,
+          "n": "T-028: la duración ya existe (1 a 80 partidos, se curan por partidos y en la offseason). Faltan tipos y recaídas.",
+          "o": "claude"
         },
         {
           "t": "Personalidad y moral",

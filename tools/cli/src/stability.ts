@@ -25,6 +25,8 @@ function arg(name: string, fallback: string): string {
 }
 const SEASONS = Number(arg('seasons', '30'));
 const SEED = arg('seed', 'stability-t004');
+/** `--task T-028` writes docs/benchmarks/T-028-estabilidad.md instead of overwriting T-006's. */
+const TASK = /^[A-Za-z0-9-]+$/.test(arg('task', '')) ? arg('task', '') : 'T-006';
 
 interface Row {
   season: number;
@@ -193,7 +195,7 @@ const names = [...universe.competitions]
 const first = rows[0] as Row;
 const last = rows[rows.length - 1] as Row;
 const lines: string[] = [
-  '# Estabilidad del mundo: desarrollo, mercado y finanzas (T-006)',
+  `# Estabilidad del mundo: desarrollo, mercado, finanzas y lesiones (${TASK})`,
   '',
   `> Generado por \`pnpm stability --write\`. Universo con semilla \`${SEED}\`, ${SEASONS} temporadas`,
   `> seguidas (con ascensos, descensos, retiradas y sustitución por jóvenes). Entorno: ${cpus()[0]?.model ?? 'desconocida'}, Node ${process.version}.`,
@@ -254,7 +256,7 @@ const lines: string[] = [
 console.log(lines.slice(0, 40).join('\n'));
 if (process.argv.includes('--write')) {
   const here = dirname(fileURLToPath(import.meta.url));
-  const file = join(here, '..', '..', '..', 'docs', 'benchmarks', 'T-006-estabilidad.md');
+  const file = join(here, '..', '..', '..', 'docs', 'benchmarks', `${TASK}-estabilidad.md`);
   writeFileSync(file, lines.join('\n'));
   console.log(`\nEscrito en ${file}`);
 }

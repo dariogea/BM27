@@ -11,5 +11,8 @@
  *       universe gains `transactions`.
  *   5 — T-006: teams gain `reputation` and `finance`; competitions gain `economy`; seasons gain
  *       `finance`; transactions gain `cost`.
+ *   6 — T-028: players gain `injury`; rulesets gain timeouts and `technicalFoulsForEjection`;
+ *       match events gain `jump_ball`, `timeout` and `injury`, and fouls gain the kinds `technical`
+ *       and `unsportsmanlike`.
  */
-export const SCHEMA_VERSION = 5 as const;
+export const SCHEMA_VERSION = 6 as const;

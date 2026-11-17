@@ -8,13 +8,13 @@
 
 ## Resumen
 
-**Preparación estimada para lanzamiento: 11 %** `███░░░░░░░░░░░░░░░░░░░░░░░░░░░`  (475 elementos)
+**Preparación estimada para lanzamiento: 12 %** `████░░░░░░░░░░░░░░░░░░░░░░░░░░`  (475 elementos)
 
 ```mermaid
 pie showData title Elementos por estado
-  "Hecho" : 105
-  "En curso" : 10
-  "Pendiente" : 327
+  "Hecho" : 109
+  "En curso" : 13
+  "Pendiente" : 320
   "Bloqueado" : 3
   "Idea" : 30
 ```
@@ -43,7 +43,7 @@ Gestor de baloncesto comercial completo, con la profundidad de gestión como ref
 - ⬜ **R6** Instalación, actualizaciones y compatibilidad verificadas en los sistemas soportados
 - ⬜ **R7** Equilibrio, rendimiento, licencias y criterios de lanzamiento cerrados
 
-La cobertura del inventario es 23 %; no debe confundirse con preparación comercial.
+La cobertura del inventario es 24 %; no debe confundirse con preparación comercial.
 
 ## Fases (del punto A al Z)
 
@@ -51,7 +51,7 @@ La cobertura del inventario es 23 %; no debe confundirse con preparación comerc
 flowchart LR
   F0["F0 Fundaciones<br/>76 %"]
   F1["F1 Primera versión jugable<br/>43 %"]
-  F2["F2 Profundidad de gestión<br/>0 %"]
+  F2["F2 Profundidad de gestión<br/>3 %"]
   F3["F3 Mundo, datos y mods<br/>0 %"]
   F4["F4 Presentación<br/>11 %"]
   F5["F5 Distribución<br/>11 %"]
@@ -62,7 +62,7 @@ flowchart LR
   classDef pendiente fill:#eaeef2,color:#24292f,stroke:#8c959f;
   class F0 curso;
   class F1 curso;
-  class F2 pendiente;
+  class F2 curso;
   class F3 pendiente;
   class F4 curso;
   class F5 curso;
@@ -73,7 +73,7 @@ flowchart LR
 | --- | ---: | --- | ---: | --- |
 | **F0 Fundaciones** | 76 % | `███████████████░░░░░` | 82/110 | Núcleo determinista, motor de partido, mundo persistente, mercado y finanzas, y la forma de trabajar de los dos agentes. |
 | **F1 Primera versión jugable** | 43 % | `█████████░░░░░░░░░░░` | 18/43 | Que el propietario pueda jugar de principio a fin una temporada y varias más sin tocar una terminal, con consultas básicas del mundo. |
-| **F2 Profundidad de gestión** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0/184 | Traspasos, cantera y ojeadores, economía con decisiones, entrenador rival con criterio, motor de partido completo. |
+| **F2 Profundidad de gestión** | 3 % | `█░░░░░░░░░░░░░░░░░░░` | 4/184 | Traspasos, cantera y ojeadores, economía con decisiones, entrenador rival con criterio, motor de partido completo. |
 | **F3 Mundo, datos y mods** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0/63 | Calibración con datos contrastados, paquetes de datos cargables, pirámide completa y otras competiciones. |
 | **F4 Presentación** | 11 % | `██░░░░░░░░░░░░░░░░░░` | 3/36 | Diseño visual, accesibilidad, partido en 2D, narración, sonido y varios idiomas. |
 | **F5 Distribución** | 11 % | `██░░░░░░░░░░░░░░░░░░` | 1/22 | Instalador de escritorio, versiones alfa y beta en GitHub, actualización automática, firma y otras plataformas. |
@@ -84,8 +84,8 @@ flowchart LR
 | Área | Avance | | ✅ | 🔄 | ⬜ | ⛔ | 💡 | Para qué sirve |
 | --- | ---: | --- | ---: | ---: | ---: | ---: | ---: | --- |
 | **Núcleo y arquitectura** | 53 % | `███████████░░░░░░░░░` | 8 | 1 | 7 | 0 | 0 | La base técnica que hace fiable todo lo demás: reproducible, sin interfaz, validada por esquemas. |
-| **Motor de partido** | 51 % | `██████████░░░░░░░░░░` | 24 | 2 | 20 | 0 | 3 | Que cada partido se juegue posesión a posesión con reglas de baloncesto reales y que las tácticas tengan efecto medible. |
-| **Jugadores** | 39 % | `████████░░░░░░░░░░░░` | 9 | 0 | 12 | 0 | 2 | Personas con atributos, carrera, potencial y personalidad que el usuario descubre y gestiona. |
+| **Motor de partido** | 61 % | `████████████░░░░░░░░` | 28 | 4 | 14 | 0 | 3 | Que cada partido se juegue posesión a posesión con reglas de baloncesto reales y que las tácticas tengan efecto medible. |
+| **Jugadores** | 40 % | `████████░░░░░░░░░░░░` | 9 | 1 | 11 | 0 | 2 | Personas con atributos, carrera, potencial y personalidad que el usuario descubre y gestiona. |
 | **Clubes** | 27 % | `█████░░░░░░░░░░░░░░░` | 4 | 0 | 9 | 0 | 2 | El club como organización: plantilla, reputación, afición, estadio y objetivos. |
 | **Entrenadores y personal técnico** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 9 | 0 | 0 | Las personas que dirigen y apoyan al equipo, con efecto real en el juego. |
 | **Competiciones** | 35 % | `███████░░░░░░░░░░░░░` | 6 | 0 | 9 | 0 | 2 | Pirámide masculina española en cuatro niveles como datos, ampliable sin tocar el motor. |
@@ -127,6 +127,9 @@ Los agentes solo trabajan cuando el propietario lo autoriza (D-052); esto reflej
 
 | Estado | Elemento | Área | Avance | Enlace |
 | --- | --- | --- | ---: | --- |
+| 🔄 En curso | Faltas antideportivas y descalificantes | Motor de partido | 70 % | [#11](https://github.com/dariogea/BM27/issues/11) |
+| 🔄 En curso | Rachas y momento del partido | Motor de partido | 35 % | [#11](https://github.com/dariogea/BM27/issues/11) |
+| 🔄 En curso | Lesiones: tipos, duración y recaídas | Jugadores | 30 % | [#11](https://github.com/dariogea/BM27/issues/11) |
 | 🔄 En curso | Publicación en Releases de GitHub (preversión) | Aplicación de escritorio y distribución | 60 % | [#22](https://github.com/dariogea/BM27/issues/22) |
 | ⬜ Pendiente | Versión 0.1.0-alpha.1 publicada | Aplicación de escritorio y distribución | — | — |
 | 🔄 En curso | La etiqueta de la Release corresponde al código compilado | Aplicación de escritorio y distribución | 90 % | [#39](https://github.com/dariogea/BM27/issues/39) |
@@ -183,18 +186,18 @@ _La base técnica que hace fiable todo lo demás: reproducible, sin interfaz, va
 
 </details>
 
-<details><summary><b>Motor de partido</b> — 51 % `██████░░░░░░`</summary>
+<details><summary><b>Motor de partido</b> — 61 % `███████░░░░░`</summary>
 
 _Que cada partido se juegue posesión a posesión con reglas de baloncesto reales y que las tácticas tengan efecto medible._
 
-- **Estructura del partido** — 60 %
+- **Estructura del partido** — 70 %
   - ✅ Simulación por posesiones (`F0`)
   - ✅ Cuatro periodos y reloj de partido (`F0`)
   - ✅ Reloj de posesión (24 s) y reinicio a 14 s (`F0`)
   - ✅ Prórrogas hasta desempatar (`F0`)
   - ✅ Registro de eventos por posesión (fuente de todo) (`F0`)
   - ✅ Box score derivado del registro (`F0`)
-  - ⬜ Saltos entre dos y posesión alterna (`F2` · [#11](https://github.com/dariogea/BM27/issues/11)) — _T-012._
+  - ✅ Saltos entre dos y posesión alterna (`F2` · @claude · [#11](https://github.com/dariogea/BM27/issues/11)) — _T-028: salto inicial y balones retenidos con flecha de posesión (los períodos también la usan)._
   - ⬜ Reglas de 8 y 5 segundos, campo atrás, tres segundos (`F2`)
   - ⬜ Interferencia y goaltending (`F2`)
   - 💡 Revisión de jugadas arbitral (si el reglamento la admite) (`F3`)
@@ -209,11 +212,11 @@ _Que cada partido se juegue posesión a posesión con reglas de baloncesto reale
   - ⬜ Contraataques con ventaja numérica (`F2`)
   - ⬜ Mates, bandejas y variedad de finalizaciones (`F2`)
   - ⬜ Posiciones reales de los jugadores en pista (`F4`) — _Necesario para un visualizador 2D fiel._
-- **Faltas y disciplina** — 33 %
+- **Faltas y disciplina** — 62 %
   - ✅ Faltas personales y límite de faltas por jugador (`F0`)
   - ✅ Faltas de equipo y bonus (`F0`)
-  - ⬜ Faltas técnicas (`F2` · [#11](https://github.com/dariogea/BM27/issues/11))
-  - ⬜ Faltas antideportivas y descalificantes (`F2` · [#11](https://github.com/dariogea/BM27/issues/11))
+  - ✅ Faltas técnicas (`F2` · @claude · [#11](https://github.com/dariogea/BM27/issues/11)) — _T-028: 1 tiro libre y posesión; no cuenta como falta de equipo._
+  - 🔄 Faltas antideportivas y descalificantes (`F2` · 70 % · @claude · [#11](https://github.com/dariogea/BM27/issues/11)) — _T-028: antideportivas con 2 tiros y posesión, y expulsión con 2 faltas de conducta. Falta la falta descalificante directa._
   - 💡 Árbitros con criterio propio (estricto o permisivo) (`F3`)
   - 💡 Sanciones y suspensiones fuera de la pista (`F3`)
 - **Defensa y tácticas** — 50 %
@@ -225,14 +228,14 @@ _Que cada partido se juegue posesión a posesión con reglas de baloncesto reale
   - ⬜ Jugadas ensayadas y sistemas de ataque propios (`F2`)
   - ⬜ Ajustes tácticos durante el partido (`F2` · [#10](https://github.com/dariogea/BM27/issues/10)) — _T-011._
   - ⬜ Planes específicos contra un rival (`F2`)
-- **Rotaciones, energía y entrenador de partido** — 39 %
+- **Rotaciones, energía y entrenador de partido** — 65 %
   - ✅ Quinteto inicial y plan de minutos (`F0`) — _El entrenador es un PLACEHOLDER con reglas fijas._
   - ✅ Fatiga y recuperación en el banquillo (`F0`)
   - 🔄 Cambios con reglas fijas (margen de rendimiento y faltas) (`F0` · 50 %) — _Parte del entrenador PLACEHOLDER._
   - ⬜ Entrenador con criterio propio (`F2` · [#10](https://github.com/dariogea/BM27/issues/10)) — _T-011._
-  - ⬜ Tiempos muertos (`F2` · [#11](https://github.com/dariogea/BM27/issues/11))
-  - ⬜ Lesiones durante el partido (`F2` · [#11](https://github.com/dariogea/BM27/issues/11))
-  - ⬜ Rachas y momento del partido (`F2`)
+  - ✅ Tiempos muertos (`F2` · @claude · [#11](https://github.com/dariogea/BM27/issues/11)) — _T-028: cupos del reglamento por mitad y prórroga; los pide un entrenador con reglas fijas (PLACEHOLDER)._
+  - ✅ Lesiones durante el partido (`F2` · @claude · [#11](https://github.com/dariogea/BM27/issues/11)) — _T-028: riesgo por posesión y fatiga; el jugador sale al instante y se pierde varios partidos._
+  - 🔄 Rachas y momento del partido (`F2` · 35 % · @claude · [#11](https://github.com/dariogea/BM27/issues/11)) — _T-028: bonus pequeño de tiro para una racha de más de 5 puntos; un tiempo muerto la corta._
   - ✅ Ventaja de jugar en casa (bonus de tiro) (`F0`)
   - ⬜ Efecto del público y del ambiente del pabellón (`F2`)
 - **Estadísticas y calibración** — 33 %
@@ -246,7 +249,7 @@ _Que cada partido se juegue posesión a posesión con reglas de baloncesto reale
 
 </details>
 
-<details><summary><b>Jugadores</b> — 39 % `█████░░░░░░░`</summary>
+<details><summary><b>Jugadores</b> — 40 % `█████░░░░░░░`</summary>
 
 _Personas con atributos, carrera, potencial y personalidad que el usuario descubre y gestiona._
 
@@ -259,7 +262,7 @@ _Personas con atributos, carrera, potencial y personalidad que el usuario descub
 - ✅ Contrato y salario (`F0`)
 - ✅ Estadísticas por temporada (`F0`)
 - ⬜ Potencial mostrado como estimación (ojeadores) (`F2` · [#13](https://github.com/dariogea/BM27/issues/13)) — _T-014. Decisión pendiente del propietario (#24)._
-- ⬜ Lesiones: tipos, duración y recaídas (`F2` · [#11](https://github.com/dariogea/BM27/issues/11))
+- 🔄 Lesiones: tipos, duración y recaídas (`F2` · 30 % · @claude · [#11](https://github.com/dariogea/BM27/issues/11)) — _T-028: la duración ya existe (1 a 80 partidos, se curan por partidos y en la offseason). Faltan tipos y recaídas._
 - ⬜ Personalidad y moral (`F2`)
 - ⬜ Ambición, lealtad y relación con el club (`F2`)
 - ⬜ Rasgos especiales (clutch, trabajador, frágil…) (`F2`)

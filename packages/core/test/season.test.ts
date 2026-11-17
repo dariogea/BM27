@@ -1,7 +1,8 @@
-import type { Universe } from '@bm27/schema';
+import type { MatchResult, Universe } from '@bm27/schema';
 import { parseUniverse } from '@bm27/schema';
 import { beforeAll, describe, expect, it } from 'vitest';
 import {
+  advanceSeason,
   buildRoundRobin,
   bracketOrder,
   computeStandings,
@@ -200,13 +201,20 @@ describe('season simulation', () => {
   });
 
   it('any match can be replayed from its seed with the same result', () => {
-    for (const competition of outcome.season.competitions) {
-      const sample = [
-        competition.matches[0]!,
-        competition.matches[competition.matches.length - 1]!,
-      ];
-      for (const result of sample) {
-        const detail = replayMatch(universe, result);
+    // A replay needs the universe as it was when the match was played: since T-028 injuries
+    // change the squads from one matchday to the next. Check the first, a middle and the last step.
+    let before = universe;
+    const steps: { before: Universe; played: MatchResult[] }[] = [];
+    for (;;) {
+      const step = advanceSeason(before);
+      steps.push({ before, played: step.played });
+      before = step.universe;
+      if (step.season) break;
+    }
+    const picks = [steps[0]!, steps[Math.floor(steps.length / 2)]!, steps[steps.length - 1]!];
+    for (const { before: at, played } of picks) {
+      for (const result of [played[0]!, played[played.length - 1]!]) {
+        const detail = replayMatch(at, result);
         expect(detail.boxScore.home.points).toBe(result.homeScore);
         expect(detail.boxScore.away.points).toBe(result.awayScore);
         expect(detail.events.length).toBeGreaterThan(100);

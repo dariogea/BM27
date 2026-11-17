@@ -15,9 +15,12 @@ import {
   simulateSeason,
 } from '@bm27/core';
 
-const TASK = 'T-006';
+/** `pnpm bench --task T-028` writes docs/benchmarks/T-028.md; the default keeps T-006. */
+const taskArg = process.argv.indexOf('--task');
+const taskValue = taskArg >= 0 ? process.argv[taskArg + 1] : undefined;
+const TASK = taskValue && /^[A-Za-z0-9-]+$/.test(taskValue) ? taskValue : 'T-006';
 const ENGINE_LABEL =
-  'v1 con jugadores que se desarrollan (T-004) mercado (T-005) y finanzas (T-006), entrenador PLACEHOLDER';
+  'v1 con jugadores que se desarrollan (T-004), mercado (T-005), finanzas (T-006) y sucesos del partido (T-028: tiempos muertos, lesiones, técnicas y salto), entrenador PLACEHOLDER';
 const SEED = 'bench-t001';
 const SEASONS = 10;
 const REPEATS = 5;

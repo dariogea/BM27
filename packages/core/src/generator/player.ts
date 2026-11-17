@@ -162,6 +162,7 @@ export function generatePlayer(rng: Rng, names: NamePool, input: GeneratePlayerI
     // Contracts are agreed by whoever signs the player (the universe generator or the market).
     contract: null,
     retired: false,
+    injury: null,
   };
   const targetAge = Math.max(
     DEVELOPMENT.startAge,

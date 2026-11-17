@@ -56,6 +56,12 @@ export const ContractSchema = z.object({
 });
 export type Contract = z.infer<typeof ContractSchema>;
 
+/** An injury that keeps a player out of the next `gamesRemaining` games of his team. */
+export const InjurySchema = z.object({
+  gamesRemaining: z.number().int().min(1),
+});
+export type Injury = z.infer<typeof InjurySchema>;
+
 export const PlayerSchema = z.object({
   id: z.string().min(1),
   firstName: z.string().min(1),
@@ -75,5 +81,7 @@ export const PlayerSchema = z.object({
   /** Null exactly when the player has no club. */
   contract: ContractSchema.nullable(),
   retired: z.boolean(),
+  /** Null when the player is fit. */
+  injury: InjurySchema.nullable(),
 });
 export type Player = z.infer<typeof PlayerSchema>;

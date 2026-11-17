@@ -1099,11 +1099,11 @@
           "f": "F4"
         },
         {
-          "t": "Importar datos propios del usuario sin traer datos reales",
+          "t": "Importar datos propios del usuario con procedencia declarada",
           "s": "idea"
         },
         {
-          "t": "Comprobación automática de nombres reales prohibidos",
+          "t": "Comprobación automática de procedencia y etiquetado de datos",
           "s": "pendiente"
         }
       ]
@@ -2249,7 +2249,7 @@
           "t": "Planificación de viajes",
           "c": [
             {
-              "t": "Calcular distancias entre sedes ficticias",
+              "t": "Calcular distancias entre sedes de los clubes",
               "s": "pendiente"
             },
             {
@@ -2439,7 +2439,7 @@
               "s": "pendiente"
             },
             {
-              "t": "Reconocer hitos y aniversarios de la historia ficticia",
+              "t": "Reconocer hitos y aniversarios de la historia de la partida",
               "s": "pendiente"
             },
             {

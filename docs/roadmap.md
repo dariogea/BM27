@@ -432,8 +432,8 @@ _Reglamentos, competiciones y contenido como datos: añadir una liga no debe toc
 - ⬜ Generador de nombres por país y región (`F3`)
 - ⬜ Textos traducibles (i18n) (`F4`)
 - ⬜ Segundo idioma (`F4`)
-- 💡 Importar datos propios del usuario sin traer datos reales (`F3`)
-- ⬜ Comprobación automática de nombres reales prohibidos (`F3`)
+- 💡 Importar datos propios del usuario con procedencia declarada (`F3`)
+- ⬜ Comprobación automática de procedencia y etiquetado de datos (`F3`)
 
 </details>
 
@@ -777,7 +777,7 @@ _Hacer explícitas las condiciones para competir y fichar, manteniendo las regla
 _Que los desplazamientos, descansos y cambios de fecha tengan una planificación coherente._
 
 - **Planificación de viajes** — 0 %
-  - ⬜ Calcular distancias entre sedes ficticias (`F2`)
+  - ⬜ Calcular distancias entre sedes de los clubes (`F2`)
   - ⬜ Planificar desplazamientos según horario del encuentro (`F2`)
   - ⬜ Incluir recuperación por viajes sin duplicar fatiga (`F2`)
   - ⬜ Reflejar el coste logístico en la previsión económica (`F2`)
@@ -833,7 +833,7 @@ _Representar la relación pública del club a partir de hechos del mundo simulad
 - **Comunidad del club** — 0 %
   - ⬜ Seguir satisfacción de grupos de aficionados (`F2`)
   - ⬜ Medir el efecto de precios y resultados en la asistencia (`F2`)
-  - ⬜ Reconocer hitos y aniversarios de la historia ficticia (`F2`)
+  - ⬜ Reconocer hitos y aniversarios de la historia de la partida (`F2`)
   - ⬜ Conservar la memoria de rivalidades y encuentros destacados (`F2`)
 
 </details>

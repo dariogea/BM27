@@ -137,6 +137,7 @@ export function queryWorld(universe: Universe, query: WorldQuery): WorldPayload 
   const competition = competitions.get(team.id);
   return {
     kind: 'club',
+    identity: team.identity,
     id: team.id,
     name: team.name,
     city: team.city,

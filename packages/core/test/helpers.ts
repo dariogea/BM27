@@ -31,6 +31,7 @@ export function makeTestTeam(
   }
   const team: Team = {
     id: teamId,
+    identity: null,
     name: teamId,
     city: 'Test',
     region: 'Test',

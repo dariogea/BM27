@@ -1,3 +1,4 @@
+import { ClubProvenance } from './ClubProvenance';
 import { LeagueRecords } from './LeagueRecords';
 import { useEffect, useRef, useState } from 'react';
 import type { GameView } from './protocol';
@@ -408,6 +409,7 @@ export function WorldView(props: {
               <dd>{money(data.salaryCap)} / año</dd>
             </div>
           </dl>
+          <ClubProvenance identity={data.identity} />
           <h4>Plan de juego</h4>
           <p>{describeTactics(data.tactics)}</p>
           <h4>Plantilla</h4>

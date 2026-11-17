@@ -15,5 +15,6 @@
  *       match events gain `jump_ball`, `timeout` and `injury`, and fouls gain the kinds `technical`
  *       and `unsportsmanlike`.
  *   7 — #21: universe gains persisted custom namePool and dataPackId; versioned JSON data packs.
+ *   8 — #79: stable explicit club definitions and persisted identity/source claims.
  */
-export const SCHEMA_VERSION = 7 as const;
+export const SCHEMA_VERSION = 8 as const;

@@ -43,7 +43,7 @@ sobrescribe otro archivo. No consulta Internet ni cambia los originales.
 
 La semilla **no identifica los subgrupos de calendario de Tercera FEB**. El adaptador no transforma
 las conferencias en cinco ligas de 28/26 equipos ni reparte sus clubes entre diez subgrupos por orden
-alfabético o por posición en el listado. Esto necesita evidencia adicional y soporte del cargador #21.
+alfabético o por posición en el listado. Esto necesita evidencia adicional y soporte de grupos explícitos; el cargador #21 y las identidades #79 ya existen.
 
 ## Procedencia y obstáculos
 
@@ -56,7 +56,7 @@ fuentes. Se conserva la URL con `sourceIds: []` y se informa del obstáculo; no 
 verificada. Las referencias de clubes sí deben figurar en el catálogo de fuentes.
 
 Obstáculos para una temporada oficial: contraste independiente y condiciones de uso, traducción de
-reglas a un formato ejecutable, cargador #21 y subgrupos desconocidos. Los valores de reglas son
+reglas a un formato ejecutable y subgrupos desconocidos. El cargador #21 y las identidades #79 están disponibles; este adaptador sigue sin generar un paquete de temporada. Los valores de reglas son
 **evidencia textual**, nunca código a ejecutar ni instrucciones que pueda activar la importación.
 
 Se rechazan IDs duplicados, referencias de competición inexistentes, recuentos contradictorios,

@@ -90,4 +90,5 @@ Reglas en [`coordinacion.md`](coordinacion.md).
 
 | #15 (parte 1) | PROBADA | Reproductor del registro con marcador, quintetos activos, pausa/velocidad/periodos y mapa de tiros exactos con filtros. Sin posiciones inventadas. Modo directo y visualizador posicional pendientes; #15 sigue abierta. |
 
+| #79 | PROBADA | Clubes explícitos en paquetes con IDs estables, alias y referencias conservadas; contrato 8/migración 7, paquetes v7 compatibles y etiquetas de procedencia veraces. Ejemplo ficticio; semilla española y grupos explícitos pendientes. |
 | T-033 | PROBADA | Paneles de gestión: plantilla ordenable por cualquier columna con mapa de color por nivel e insignias de lesión y contrato cumplido; búsqueda de agentes libres; comprobación en navegador con axe (0 violaciones en 5 paneles × 2 temas). Finanzas, competición y partido se revisaron pero no se han rediseñado. |

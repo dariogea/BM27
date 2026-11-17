@@ -130,6 +130,7 @@ export function generateUniverse(options: GenerateUniverseOptions): Universe {
       teams.push({
         id: teamId,
         name,
+        identity: null,
         city: city.name,
         region: city.region,
         playerIds,

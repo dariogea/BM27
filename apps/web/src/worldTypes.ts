@@ -1,5 +1,6 @@
 import type { LeagueRecordsPayload, LeagueRecordsQuery } from './leagueRecordsTypes';
 import type {
+  ClubIdentity,
   Contract,
   PlayerAttributes,
   PlayerSeasonStats,
@@ -57,6 +58,7 @@ export interface WorldPlayer {
 }
 export interface WorldClub {
   kind: 'club';
+  identity: ClubIdentity | null;
   id: string;
   name: string;
   city: string;

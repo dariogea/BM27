@@ -1,3 +1,4 @@
+import { queryLeagueRecords } from './leagueRecordsData';
 import type { Universe } from '@bm27/schema';
 import type { WorldPayload, WorldQuery } from './worldTypes';
 
@@ -12,6 +13,7 @@ const fullName = (player: { firstName: string; lastName: string }): string =>
 
 /** Read-only projections for the Worker. No generator calls or random state are used. */
 export function queryWorld(universe: Universe, query: WorldQuery): WorldPayload {
+  if (query.type === 'worldRecords') return queryLeagueRecords(universe, query);
   const teams = new Map(universe.teams.map((team) => [team.id, team]));
   const competitions = new Map(
     universe.competitions.flatMap((competition) =>

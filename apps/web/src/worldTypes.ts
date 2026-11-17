@@ -1,3 +1,4 @@
+import type { LeagueRecordsPayload, LeagueRecordsQuery } from './leagueRecordsTypes';
 import type {
   Contract,
   PlayerAttributes,
@@ -7,6 +8,7 @@ import type {
 } from '@bm27/schema';
 
 export type WorldQuery =
+  | LeagueRecordsQuery
   | {
       type: 'worldSearch';
       entity: 'players' | 'clubs';
@@ -75,4 +77,4 @@ export interface WorldClub {
     opponentScore: number;
   }[];
 }
-export type WorldPayload = WorldSearch | WorldPlayer | WorldClub;
+export type WorldPayload = WorldSearch | WorldPlayer | WorldClub | LeagueRecordsPayload;

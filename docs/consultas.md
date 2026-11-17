@@ -1,4 +1,4 @@
-# Consultar el mundo de la partida — #67
+# Consultar el mundo de la partida — #67 y #72
 
 La sección **Mundo** de la cabecera permite buscar jugadores y clubes. Funciona en PC, con temas
 claro y oscuro. No cambia las tácticas, fichajes ni resultados del universo.
@@ -56,10 +56,47 @@ accesibilidad ni a una prueba del instalador Windows.
 
 ## Qué sigue pendiente
 
-Esta es la primera entrega de #14. Quedan líderes estadísticos, palmarés, trayectoria más detallada y
-entrada directa desde la clasificación. Los cinco paneles reservados por Claude no se han modificado.
+Las entregas #67 y #72 cubren buscador, fichas, líderes y palmarés de #14. Quedan trayectoria más
+detallada y entrada directa desde la clasificación. Los cinco paneles reservados por Claude no se han modificado.
 Los datos siguen siendo los de la demo generada; el catálogo español de #61 aún no se carga en la partida.
 
-Validación de la entrega: **265/265 pruebas** (`pnpm test --maxWorkers=2`), lint, formato,
+Validación de la primera entrega (#67): **265/265 pruebas** (`pnpm test --maxWorkers=2`), lint, formato,
 TypeScript, compilación y `roadmap:check` correctos. Las 16 comprobaciones específicas y las
 52 de regresión del navegador se ejecutaron con las funciones reales del juego.
+
+## Líderes y palmarés (#72)
+
+En **Mundo**, el bloque **Líderes y palmarés** permite elegir competición, temporada, estadística y
+cálculo por partido o total. Pulsa **Consultar líderes** después de cambiar los filtros. «Última
+registrada» elige la temporada en curso si existe; entre temporadas elige la última cerrada.
+
+Puntos, rebotes (ofensivos + defensivos), asistencias, robos y tapones proceden de los acumulados
+del guardado. Las medias dividen por partidos jugados. Los porcentajes de campo, triples y tiros
+libres usan sus propios aciertos e intentos; no son una media de porcentajes de partidos. La tabla
+muestra también el numerador y denominador, para poder comprobar cada cifra.
+
+Los mínimos de partidos e intentos son filtros del usuario, **no criterios oficiales de elegibilidad**.
+El mínimo de intentos solo se aplica a porcentajes. Nunca se divide entre cero ni se incluyen
+jugadores sin partidos. Se muestran hasta 50 registros ordenados por valor sin redondear; los
+empates exactos comparten posición. Cada fila conserva el club de sus estadísticas, aunque el
+jugador tenga otro club o esté retirado. Si hay dos jugadores con el mismo nombre, sus fichas
+siguen enlazadas por ID independiente. El historial actual agrega liga regular y playoffs, sin un
+filtro por fase que el guardado no conserva por separado.
+
+El palmarés reúne campeones, ascensos y descensos de las temporadas **cerradas** de esa competición.
+No añade títulos anteriores al inicio de la partida ni declara campeón al líder provisional. Los
+nombres de jugadores y clubes abren sus fichas. Las consultas no alteran el universo ni consumen RNG.
+
+Verificación adicional: seis pruebas de datos y extensión del test del Worker real; recorrido de
+navegador `tools/qa/league_records_browser.py` sobre un guardado creado simulando dos temporadas:
+medias/totales/porcentajes, muestras, enlaces, exportación idéntica tras consultar y tercera temporada
+sin campeón inventado. La herramienta necesita Playwright, Chromium, axe y el guardado de prueba:
+
+```bash
+pnpm sim --pack data/packs/example-eight-clubs.json --seed league-browser --seasons 2 --out /tmp/bm27-league-save.json
+python tools/qa/league_records_browser.py
+```
+
+![Líderes y palmarés en PC](screenshots/league-leaders-desktop-dark.png)
+
+Validación de #72: **280/280 pruebas** de la suite completa, lint, tipos, formato y compilación correctos. Las diez comprobaciones específicas y las dieciséis de regresión del buscador/fichas pasaron sin errores JavaScript, desbordamiento global ni infracciones axe detectadas.

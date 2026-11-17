@@ -104,3 +104,14 @@
   min-height: 32px;
   font-size: 12px;
 }
+
+.league-records {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+.honour-club {
+  display: block;
+  margin-block: 4px;
+}

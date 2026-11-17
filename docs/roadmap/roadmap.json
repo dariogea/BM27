@@ -761,9 +761,11 @@
         },
         {
           "t": "Palmarés de cada competición",
-          "s": "pendiente",
+          "s": "hecho",
           "f": "F1",
-          "i": 14
+          "i": 72,
+          "o": "codex",
+          "n": "Consultas de datos conservados por competición y temporada. Líderes con muestras explícitas; palmarés solo de temporadas cerradas, sin títulos anteriores a la partida."
         }
       ]
     },
@@ -1028,9 +1030,11 @@
         },
         {
           "t": "Historial de campeones, ascensos y descensos",
-          "s": "pendiente",
+          "s": "hecho",
           "f": "F1",
-          "i": 14
+          "i": 72,
+          "o": "codex",
+          "n": "Consultas de datos conservados por competición y temporada. Líderes con muestras explícitas; palmarés solo de temporadas cerradas, sin títulos anteriores a la partida."
         },
         {
           "t": "Récords históricos de liga y club",
@@ -1262,13 +1266,17 @@
             },
             {
               "t": "Líderes estadísticos",
-              "s": "pendiente",
-              "i": 14
+              "s": "hecho",
+              "i": 72,
+              "o": "codex",
+              "n": "Consultas de datos conservados por competición y temporada. Líderes con muestras explícitas; palmarés solo de temporadas cerradas, sin títulos anteriores a la partida."
             },
             {
               "t": "Palmarés",
-              "s": "pendiente",
-              "i": 14
+              "s": "hecho",
+              "i": 72,
+              "o": "codex",
+              "n": "Consultas de datos conservados por competición y temporada. Líderes con muestras explícitas; palmarés solo de temporadas cerradas, sin títulos anteriores a la partida."
             },
             {
               "t": "Buscador de jugadores y equipos",

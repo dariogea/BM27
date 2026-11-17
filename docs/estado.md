@@ -83,3 +83,5 @@ Reglas en [`coordinacion.md`](coordinacion.md).
 | #67 | PROBADA | Mundo: buscador paginado y fichas enlazadas de jugadores/clubes, estadísticas conservadas y potencial rival excluido de la respuesta. Primera parte de #14; líderes y palmarés pendientes. |
 
 | #21 | PROBADA | Paquetes JSON de competiciones, reglas, economía y nombres en web y CLI; ejemplo jugable de ocho clubes. Contrato 7 con migración y nombres conservados en guardados. Identidades españolas explícitas pendientes. |
+
+| #72 | PROBADA | Líderes por competición/temporada con medias, totales y porcentajes, mínimos explícitos y fichas enlazadas; palmarés real conservado de campeones/ascensos/descensos. Segunda parte de #14, sin contrato ni motor. |

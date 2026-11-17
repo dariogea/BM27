@@ -65,7 +65,7 @@ Recorrido de guardados en Chromium: generar, guardar, recargar, recuperar lista 
 renombrar y eliminar, correcto con la nueva interfaz.
 
 `pnpm lint`, `pnpm typecheck`, `pnpm format:check`, `pnpm roadmap:check` y `pnpm build`: correctos.
-`pnpm test --maxWorkers=2`: **205/205 pruebas**.
+`pnpm test --maxWorkers=2`: **213/213 pruebas**.
 
 ## Límites
 

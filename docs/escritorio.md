@@ -34,6 +34,10 @@ Una versión es una **etiqueta** de Git con la forma `v0.1.0-alpha.1`:
 - Los nombres con guion (`-alpha`, `-beta`, `-rc`) se publican como **pre-lanzamiento** en Releases.
 - Antes de etiquetar hay que poner **la misma versión** en `apps/desktop/package.json` y en
   `apps/desktop/src-tauri/tauri.conf.json` (sin la `v`). El flujo se niega a publicar si no coinciden.
+- Además, [`tools/ci/release-check.mjs`](../tools/ci/release-check.mjs) exige que **la etiqueta apunte al
+  commit que se compila** (si la etiqueta ya existe y apunta a otro, no se publica), que una etiqueta
+  nueva solo se cree desde `main` y que **nunca se reemplace una Release existente** (para
+  republicar, bórrala a mano antes).
 - Al subir la etiqueta, el flujo [`release.yml`](../.github/workflows/release.yml) ejecuta los tests,
   compila el instalador en un Windows de GitHub y lo adjunta a la Release.
 - También se puede lanzar **a mano** desde _Actions → Publicar versión (Windows) → Run workflow_:

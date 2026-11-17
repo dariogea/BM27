@@ -39,7 +39,7 @@ un único objeto JSON:
 | Campo                 | Contenido                                                                                                           |
 | --------------------- | ------------------------------------------------------------------------------------------------------------------- |
 | `formatVersion`       | `1`, versión del formato de paquete.                                                                                |
-| `schemaVersion`       | `7`, versión del contrato que esta entrega admite.                                                                  |
+| `schemaVersion`       | `8`, versión actual del contrato.                                                                                   |
 | `id`                  | Identificador estable del paquete: letras minúsculas, cifras, punto, guion o guion bajo; empieza por letra o cifra. |
 | `name`, `description` | Nombre visible y explicación de la procedencia o limitaciones. Descripción opcional.                                |
 | `config`              | Regiones, niveles, número de clubes, formato de competición, plantilla y parámetros económicos.                     |
@@ -63,6 +63,12 @@ Límites actuales: JSON UTF-8 de hasta 2 MiB, hasta 512 clubes en total, 12 nive
 plantillas de entre 5 y 30 jugadores. No se admiten scripts, archivos comprimidos ni recursos
 externos ejecutables. El núcleo recibe texto o datos ya leídos; no accede a red, disco ni navegador.
 
+## Clubes definidos individualmente
+
+El campo opcional `clubs` permite fijar identidades, nombres visibles, ubicación y referencias para
+todos los clubes. Ver [formato, ejemplo y límites de identidades](identidades-clubes.md). Sin ese
+campo, se conservan las identidades generadas a partir de `names`. Los jugadores siguen generándose.
+
 ## Guardados y compatibilidad
 
 El contrato de partida sube de 6 a 7 para conservar `namePool` y `dataPackId`. La migración de un
@@ -70,17 +76,23 @@ guardado anterior añade ambos campos con valor `null`: mantiene el generador de
 Los guardados nuevos de paquetes conservan sus listas también durante el reemplazo provisional de
 jugadores retirados por jóvenes. No equivalen a una cantera modelada.
 
-Los paquetes deben declarar exactamente el formato y contrato admitidos. Un paquete de otra
-versión se rechaza; todavía no hay migraciones automáticas de paquetes. Las migraciones de partidas
-guardadas son un mecanismo distinto. La versión 7 no es importable por versiones antiguas de BM27.
+El contrato actual es 8: añade `Team.identity` nullable y una migración 7→8 que no inventa fuentes
+para clubes anteriores. Un guardado nuevo no puede abrirse con una aplicación antigua que desconozca
+su versión.
+
+El formato de paquete sigue en 1. Los paquetes de contrato 7 **sin `clubs`** son compatibles y se
+normalizan a 8 antes de validar. Los de versiones desconocidas, o que usan campos nuevos declarando
+una versión antigua, se rechazan. No hay un migrador general de paquetes; las migraciones de partidas
+son un mecanismo distinto.
 
 ## Qué falta para la base española
 
-Este formato genera identidades a partir de listas de nombres. Todavía **no importa clubes y
-jugadores individualizados**, sus fuentes, ni asignaciones explícitas a subgrupos de calendario.
-El [catálogo de la semilla española](catalogo-semilla.md) sigue separado. En particular, las cinco
-conferencias de Tercera FEB no se convierten en cinco ligas ni en diez subgrupos inventados.
-El cargador es una base para esa integración, no la integración terminada.
+El formato admite clubes definidos individualmente y sus referencias declaradas, pero todavía
+**no importa jugadores individualizados ni asignaciones explícitas a subgrupos de calendario**.
+El [catálogo de la semilla española](catalogo-semilla.md) sigue separado y pendiente de contraste.
+En particular, las cinco conferencias de Tercera FEB no se convierten en cinco ligas ni en diez
+subgrupos inventados. La infraestructura de identidad no equivale a tener integrada una temporada
+española oficial.
 
 ## Verificación de esta entrega (#21)
 

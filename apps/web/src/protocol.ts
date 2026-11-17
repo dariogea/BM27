@@ -17,6 +17,7 @@ export interface DataPackSummary {
   id: string;
   name: string;
   description: string;
+  definedClubs: number;
   competitions: { id: string; name: string; teams: number }[];
 }
 
@@ -162,6 +163,7 @@ export interface FinanceView {
 
 /** Everything the UI needs to draw the current state of the game. */
 export interface GameView {
+  clubData: 'generated' | 'defined' | 'mixed';
   seed: string;
   /** Season being played, or about to be played. */
   seasonNumber: number;

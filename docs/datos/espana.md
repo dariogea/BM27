@@ -52,7 +52,8 @@ conserva explícitamente los valores no verificados como `null`.
 4. Estimar atributos y economía con metodología propia; calibrar y distinguirlos de las fuentes.
 5. Validar el paquete con esquemas, simular temporadas y comprobar guardados/migraciones antes de sustituir la demo.
 
-La siguiente integración deberá coordinarse con el cargador de paquetes de datos (#21). Si cambia el
+El cargador de paquetes (#21) y las identidades explícitas de clubes (#79) ya están implementados. La
+siguiente integración necesita aún grupos y datos contrastados. Si cambia el
 contrato o la API pública del núcleo, se abrirá el aviso `contrato` antes de implementarlo. No hace falta
 bloquear las mejoras visuales o los guardados mientras se prepara el catálogo.
 
@@ -68,8 +69,8 @@ de investigación del propietario con fecha de corte 17-11-2026.
   condiciones de uso de cada fuente. Los identificadores son internos de la semilla.
 - **Precauciones heredadas:** `nombre_publico` no es razón social; Tercera FEB tiene 138 equipos (no 140);
   se conserva un literal con posible errata; los cupos de Primera FEB no se han inventado.
-- **Todavía no se usa en la partida.** Integrarla exige el cargador de paquetes de datos (#21) y,
-  probablemente, grupos explícitos en el universo (contrato). Un test (`seed-data.test.ts`) vigila las cifras.
+- **Todavía no se usa en la partida.** El cargador #21 y las identidades #79 ya permiten clubes
+  definidos; integrarla exige aún grupos explícitos y contraste de sus datos. Un test (`seed-data.test.ts`) vigila las cifras.
 
 ## Mapeo e integración
 

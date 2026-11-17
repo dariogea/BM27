@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,159}$"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160
+    },
+    "city": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160
+    },
+    "region": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160
+    },
+    "competitionId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160
+    },
+    "identity": {
+      "type": "object",
+      "properties": {
+        "referenceName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "source": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "catalogId": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 160
+                },
+                "clubId": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 160
+                },
+                "url": {
+                  "type": "string",
+                  "format": "uri"
+                },
+                "capturedOn": {
+                  "type": "string",
+                  "format": "date",
+                  "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))$"
+                },
+                "verification": {
+                  "type": "string",
+                  "enum": [
+                    "unverified",
+                    "declared-verified"
+                  ]
+                }
+              },
+              "required": [
+                "catalogId",
+                "clubId",
+                "url",
+                "capturedOn",
+                "verification"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "referenceName",
+        "source"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "id",
+    "name",
+    "city",
+    "region",
+    "competitionId",
+    "identity"
+  ],
+  "additionalProperties": false
+}

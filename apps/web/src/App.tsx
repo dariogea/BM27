@@ -226,8 +226,11 @@ export function App() {
           </section>
         )}
         <p className="data-note">
-          Base de demostración: clubes y jugadores generados. El objetivo es representar el
-          baloncesto español con datos contrastados; estas plantillas aún no son las oficiales.
+          {view?.clubData === 'defined'
+            ? 'Clubes definidos por un paquete y jugadores generados. Las fuentes y verificaciones son declaraciones del paquete; no es una base oficial contrastada.'
+            : view?.clubData === 'mixed'
+              ? 'Clubes definidos y generados; jugadores generados. Las referencias declaradas no equivalen a una base oficial contrastada.'
+              : 'Base de demostración: clubes y jugadores generados. El objetivo es representar el baloncesto español con datos contrastados; estas plantillas aún no son las oficiales.'}
         </p>
         {view && tab !== 'portal' && tab !== 'world' && (
           <section className="club-ribbon" aria-label="Resumen de la partida">

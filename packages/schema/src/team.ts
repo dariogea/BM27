@@ -1,3 +1,4 @@
+import { ClubIdentitySchema } from './clubIdentity';
 import { z } from 'zod';
 
 /**
@@ -44,6 +45,8 @@ export type TeamFinance = z.infer<typeof TeamFinanceSchema>;
 export const TeamSchema = z.object({
   id: z.string().min(1),
   name: z.string().min(1),
+  /** Null for generated identities; defined clubs retain their original name and source claims. */
+  identity: ClubIdentitySchema.nullable(),
   city: z.string().min(1),
   /** Geographic region, used to build regional groups. */
   region: z.string().min(1),

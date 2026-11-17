@@ -1086,7 +1086,7 @@
           "t": "Cargador de paquetes de datos con errores legibles",
           "s": "hecho",
           "i": 21,
-          "n": "JSON validado con campos y relaciones. Identidades explícitas y calendario español pendientes.",
+          "n": "JSON validado; #79 añade clubes explícitos, IDs estables y referencias. Calendario español y plantillas individualizadas pendientes.",
           "o": "codex"
         },
         {
@@ -1094,7 +1094,7 @@
           "s": "hecho",
           "i": 21,
           "o": "codex",
-          "n": "Formato 1 / contrato 7. Versiones distintas rechazadas; migración automática de paquetes pendiente."
+          "n": "Formato 1 / contrato 8. Paquetes v7 sin clubs normalizados; versiones desconocidas rechazadas. Sin migrador general."
         },
         {
           "t": "Elegir paquete al crear el universo (web y CLI)",
@@ -1136,7 +1136,11 @@
         },
         {
           "t": "Importar datos propios del usuario con procedencia declarada",
-          "s": "idea"
+          "s": "en-curso",
+          "p": 40,
+          "i": 79,
+          "o": "codex",
+          "n": "Clubes individualizados, alias, ubicaciones y fuentes declaradas con identidad estable. Jugadores y grupos explícitos pendientes; no certifica fuentes."
         },
         {
           "t": "Comprobación automática de procedencia y etiquetado de datos",

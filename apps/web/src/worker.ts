@@ -261,6 +261,11 @@ function viewOf(u: Universe): GameView {
     step: u.currentSeason?.step ?? 0,
     userTeamId: u.userTeamId,
     teamCount: u.teams.length,
+    clubData: u.teams.every((team) => team.identity !== null)
+      ? 'defined'
+      : u.teams.some((team) => team.identity !== null)
+        ? 'mixed'
+        : 'generated',
     playerCount: u.players.filter((p) => !p.retired).length,
     competitions: [...u.competitions]
       .sort((a, b) => a.level - b.level)
@@ -437,6 +442,7 @@ async function handle(command: Command): Promise<Reply> {
               id: pack.id,
               name: pack.name,
               description: pack.description,
+              definedClubs: pack.clubs?.length ?? 0,
               competitions: pack.config.levels.map((level) => ({
                 id: level.competitionId,
                 name: level.name,

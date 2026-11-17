@@ -89,3 +89,5 @@ Reglas en [`coordinacion.md`](coordinacion.md).
 | #18 (parte 1) | PROBADA | Menos objetos temporales al emitir eventos: B2 2527→2167 ms en el mismo entorno; 317 huellas idénticas. Informes antes/después propios. Meta del 30 % y paralelismo pendientes; #18 sigue abierta. |
 
 | #15 (parte 1) | PROBADA | Reproductor del registro con marcador, quintetos activos, pausa/velocidad/periodos y mapa de tiros exactos con filtros. Sin posiciones inventadas. Modo directo y visualizador posicional pendientes; #15 sigue abierta. |
+
+| #79 | PROBADA | Clubes explícitos en paquetes con IDs estables, alias y referencias conservadas; contrato 8/migración 7, paquetes v7 compatibles y etiquetas de procedencia veraces. Ejemplo ficticio; semilla española y grupos explícitos pendientes. |

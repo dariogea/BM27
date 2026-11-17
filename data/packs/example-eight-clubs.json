@@ -1,6 +1,6 @@
 {
   "formatVersion": 1,
-  "schemaVersion": 7,
+  "schemaVersion": 8,
   "id": "example-eight-clubs",
   "name": "Liga de ejemplo · 8 clubes",
   "description": "Paquete de demostración con clubes y jugadores generados. Dos periodos de quince minutos; no representa una competición real.",

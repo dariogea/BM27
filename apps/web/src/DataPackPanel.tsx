@@ -30,6 +30,11 @@ export function DataPackPanel(props: {
       {props.selected && (
         <>
           <p className="note">{props.selected.description}</p>
+          <p className="note">
+            {props.selected.definedClubs
+              ? `${props.selected.definedClubs} clubes definidos individualmente. Jugadores generados.`
+              : 'Clubes y jugadores generados a partir de listas de nombres.'}
+          </p>
           <ul>
             {props.selected.competitions.map((competition) => (
               <li key={competition.id}>

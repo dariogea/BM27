@@ -1,0 +1,67 @@
+{
+  "id": "es-real-reference",
+  "version": 1,
+  "status": "research",
+  "proposedSeason": "2026-27",
+  "verifiedSeason": null,
+  "importedClubs": 0,
+  "importedPlayers": 0,
+  "currentDemoConfig": "packages/core/src/data/universe-es.json",
+  "sources": [
+    {
+      "id": "acb",
+      "url": "https://www.acb.com/",
+      "scope": "Primer nivel masculino",
+      "accessChecked": "2026-11-17",
+      "result": "connection-not-completed",
+      "termsReviewed": false
+    },
+    {
+      "id": "feb",
+      "url": "https://www.feb.es/",
+      "scope": "Competiciones nacionales federativas",
+      "accessChecked": "2026-11-17",
+      "result": "connection-not-completed",
+      "termsReviewed": false
+    }
+  ],
+  "levels": [
+    { "level": 1, "source": "acb", "verifiedTeamCount": null, "verifiedFormat": null },
+    { "level": 2, "source": "feb", "verifiedTeamCount": null, "verifiedFormat": null },
+    { "level": 3, "source": "feb", "verifiedTeamCount": null, "verifiedFormat": null },
+    { "level": 4, "source": "feb", "verifiedTeamCount": null, "verifiedFormat": null }
+  ],
+  "identityFields": [
+    "stableId",
+    "referenceIdentity",
+    "displayAlias",
+    "season",
+    "sourceId",
+    "sourceUrl",
+    "verifiedAt",
+    "dataKind",
+    "usageStatus"
+  ],
+  "playerFields": [
+    "stableId",
+    "publicName",
+    "displayAlias",
+    "clubId",
+    "season",
+    "positions",
+    "heightCm",
+    "birthDate",
+    "publicStatistics",
+    "estimatedAttributes",
+    "sources"
+  ],
+  "aliasExamples": [
+    {
+      "displayAlias": "Real Chamartín Baloncesto",
+      "referenceIdentity": "Real Madrid Baloncesto",
+      "source": "owner-design-example",
+      "officiallyVerified": false,
+      "enabledInDemo": false
+    }
+  ]
+}

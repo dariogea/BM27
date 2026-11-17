@@ -16,3 +16,7 @@ La [guía de desarrollo](desarrollo.md) reúne instalación, arranque, pruebas y
 La [portada del proyecto](../README.md) presenta el juego y el resumen visual de avance.
 
 [Partidas y copias de seguridad](partidas.md): ranuras internas, autoguardado y archivos portables.
+
+[Base española y procedencia de los datos](datos/espana.md): dirección del producto, fuentes y catálogo pendiente de contrastar.
+
+- [Verificación visual de la demo y capturas reales (#23)](revisiones/demo-visual-23.md).

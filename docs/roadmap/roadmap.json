@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "actualizado": "2026-11-16",
+  "actualizado": "2026-11-17",
   "fases": [
     {
       "id": "F0",
@@ -1239,9 +1239,11 @@
             },
             {
               "t": "Pantalla de inicio que explique cómo se juega",
-              "s": "pendiente",
+              "s": "hecho",
               "f": "F4",
-              "i": 23
+              "i": 23,
+              "o": "codex",
+              "n": "Demo visual con temas persistentes, inicio guiado y tablas desplazables; comprobación de accesibilidad y pantallas en el PR."
             },
             {
               "t": "Mercado de traspasos",
@@ -1284,19 +1286,25 @@
           "c": [
             {
               "t": "Sistema de diseño con modo claro y oscuro",
-              "s": "pendiente",
+              "s": "hecho",
               "i": 23,
-              "n": "T-024."
+              "n": "Demo visual con temas persistentes, inicio guiado y tablas desplazables; comprobación de accesibilidad y pantallas en el PR.",
+              "o": "codex"
             },
             {
               "t": "Adaptación a móvil",
-              "s": "pendiente",
-              "i": 23
+              "s": "hecho",
+              "i": 23,
+              "o": "codex",
+              "n": "Demo visual con temas persistentes, inicio guiado y tablas desplazables; comprobación de accesibilidad y pantallas en el PR."
             },
             {
               "t": "Accesibilidad (contraste, teclado, lectores de pantalla)",
-              "s": "pendiente",
-              "i": 23
+              "s": "en-curso",
+              "i": 23,
+              "p": 50,
+              "o": "codex",
+              "n": "Mejoras en controles, foco y avisos. Falta validar todos los recorridos y tecnologías asistivas."
             },
             {
               "t": "Tablas ordenables y filtros",
@@ -1638,9 +1646,11 @@
       "f": "F6",
       "c": [
         {
-          "t": "Nombres reales prohibidos (pilar 7)",
-          "s": "hecho",
-          "f": "F0"
+          "t": "Procedencia y condiciones de uso de datos reales y alias",
+          "s": "en-curso",
+          "f": "F0",
+          "p": 15,
+          "n": "La orden del propietario de 17-11-2026 sustituye la ficción total; catálogo de investigación sin plantillas importadas."
         },
         {
           "t": "Nombre definitivo del juego",

@@ -15,7 +15,7 @@
 </p>
 
 **BM27 — Basketball Manager 2027** es el título definitivo de un simulador de gestión de baloncesto
-para PC. El proyecto combina decisiones deportivas, gestión de club y un mundo ficticio que evoluciona
+para PC. El proyecto combina decisiones deportivas, gestión de club y un mundo deportivo que evoluciona
 con las temporadas. El objetivo es un gestor deportivo profundo, explicable y duradero.
 
 > **Prototipo temprano y jugable.** El nombre es definitivo; el producto aún está lejos de una versión
@@ -29,12 +29,20 @@ con las temporadas. El objetivo es un gestor deportivo profundo, explicable y du
 | Partido        | Simulación por posesiones, tácticas con efecto y estadísticas derivadas de eventos. | Entrenadores con criterio, más reglas, lesiones, tiempos muertos y calibración contrastada.      |
 | Club y mercado | Equipo propio, quinteto, agentes libres, contratos, salarios y cuentas del club.    | Traspasos negociados, personal, instalaciones, patrocinadores y decisiones económicas profundas. |
 | Mundo          | Cuatro niveles, temporadas, ascensos, descensos, desarrollo y retiradas.            | Cantera real, ojeo, competiciones adicionales y mayor estabilidad contrastada.                   |
-| Experiencia    | Web funcional y compilación de instalador para Windows.                             | Interfaz pulida, ayuda, accesibilidad completa y pruebas de instalación real.                    |
-| Partidas       | Archivos con checksum, migraciones y guardado a mitad de temporada.                 | Guardados internos, recuperación y un historial más completo.                                    |
+| Experiencia    | Demo con temas claro/oscuro, inicio guiado, móvil y compilación para Windows.       | Ayuda completa, validación de todas las pantallas y pruebas de instalación real.                 |
+| Partidas       | Archivos con checksum, ranuras internas y autoguardado al terminar la temporada.    | Recuperación con copias históricas y un historial más completo.                                  |
 
 Los entrenadores y la entrada de jóvenes siguen usando reglas provisionales (`PLACEHOLDER`).
 Las escalas de salarios y las bandas estadísticas son aproximaciones. No se presentan como sistemas
 terminados de un juego comercial.
+
+**Nueva dirección de datos:** [España como referencia real y catálogo de fuentes](docs/datos/espana.md). Las plantillas actuales siguen siendo generadas hasta contrastar las oficiales.
+
+## Así se ve la demo
+
+![Demo real de BM27: equipo y temporada en modo oscuro](docs/screenshots/team-desktop-dark.png)
+
+[Ver inicio, modo claro y pantallas de móvil](docs/revisiones/demo-visual-23.md). Las capturas muestran datos generados de la demo.
 
 ## La referencia del 100 %
 
@@ -50,7 +58,7 @@ terminar la experiencia. Los pesos son hipótesis de planificación publicadas, 
 
 ## Avance del desarrollo
 
-**Preparación estimada para lanzamiento: 9 %** `███░░░░░░░░░░░░░░░░░░░░░░░░░░░`
+**Preparación estimada para lanzamiento: 11 %** `███░░░░░░░░░░░░░░░░░░░░░░░░░░░`
 
 475 elementos organizados en 7 fases y 34 áreas de desarrollo. El índice pondera la profundidad y el producto terminado; no es una comparación medida con otro juego ni una fecha de entrega.
 
@@ -60,21 +68,21 @@ Las barras de fase muestran cobertura del plan; el índice global usa pesos dist
 
 ```mermaid
 flowchart LR
-  F0["F0 Fundaciones<br/>77 %"]
+  F0["F0 Fundaciones<br/>76 %"]
   F1["F1 Primera versión jugable<br/>43 %"]
   F2["F2 Profundidad de gestión<br/>0 %"]
   F3["F3 Mundo, datos y mods<br/>0 %"]
-  F4["F4 Presentación<br/>0 %"]
+  F4["F4 Presentación<br/>10 %"]
   F5["F5 Distribución<br/>7 %"]
   F6["F6 Pulido y lanzamiento<br/>6 %"]
   F0 --> F1 --> F2 --> F3 --> F4 --> F5 --> F6
 ```
 
-- **F0 · Fundaciones**: 77 % `███████████████░░░░░`
+- **F0 · Fundaciones**: 76 % `███████████████░░░░░`
 - **F1 · Primera versión jugable**: 43 % `█████████░░░░░░░░░░░`
 - **F2 · Profundidad de gestión**: 0 % `░░░░░░░░░░░░░░░░░░░░`
 - **F3 · Mundo, datos y mods**: 0 % `░░░░░░░░░░░░░░░░░░░░`
-- **F4 · Presentación**: 0 % `░░░░░░░░░░░░░░░░░░░░`
+- **F4 · Presentación**: 10 % `██░░░░░░░░░░░░░░░░░░`
 - **F5 · Distribución**: 7 % `█░░░░░░░░░░░░░░░░░░░`
 - **F6 · Pulido y lanzamiento**: 6 % `█░░░░░░░░░░░░░░░░░░░`
 
@@ -123,5 +131,4 @@ La guía conserva los comandos, el recorrido de una partida y las comprobaciones
 ---
 
 El desarrollo sigue las fases y tareas del roadmap y actualiza sus estados con evidencia. Los próximos
-sistemas no se consideran implementados por estar descritos en el plan. Todo el contenido deportivo
-del juego utiliza identidades ficticias.
+sistemas no se consideran implementados por estar descritos en el plan. El objetivo es una base española de referencia real; la demo actual usa datos generados y lo indica expresamente.

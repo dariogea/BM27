@@ -65,7 +65,7 @@ flowchart LR
   F2["F2 Profundidad de gestión<br/>0 %"]
   F3["F3 Mundo, datos y mods<br/>0 %"]
   F4["F4 Presentación<br/>0 %"]
-  F5["F5 Distribución<br/>7 %"]
+  F5["F5 Distribución<br/>11 %"]
   F6["F6 Pulido y lanzamiento<br/>6 %"]
   F0 --> F1 --> F2 --> F3 --> F4 --> F5 --> F6
 ```
@@ -75,7 +75,7 @@ flowchart LR
 - **F2 · Profundidad de gestión**: 0 % `░░░░░░░░░░░░░░░░░░░░`
 - **F3 · Mundo, datos y mods**: 0 % `░░░░░░░░░░░░░░░░░░░░`
 - **F4 · Presentación**: 0 % `░░░░░░░░░░░░░░░░░░░░`
-- **F5 · Distribución**: 7 % `█░░░░░░░░░░░░░░░░░░░`
+- **F5 · Distribución**: 11 % `██░░░░░░░░░░░░░░░░░░`
 - **F6 · Pulido y lanzamiento**: 6 % `█░░░░░░░░░░░░░░░░░░░`
 
 **[Ver el roadmap completo: tareas, responsables y pendientes](docs/roadmap.md)**

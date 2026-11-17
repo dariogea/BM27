@@ -28,6 +28,10 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
+        with:
+          # Hacen falta las etiquetas para comprobar a qué commit apunta cada una.
+          fetch-depth: 0
+          fetch-tags: true
 
       - uses: pnpm/action-setup@v4
 
@@ -48,21 +52,12 @@ jobs:
       - name: Tests (no se publica una versión rota)
         run: pnpm test
 
-      - name: Comprobar que la versión coincide con la etiqueta
+      - name: Comprobar etiqueta, versión y commit (tools/ci/release-check.mjs)
         shell: bash
         env:
+          GH_TOKEN: ${{ github.token }}
           TAG: ${{ github.event.inputs.tag || (startsWith(github.ref, 'refs/tags/') && github.ref_name) || '' }}
-        run: |
-          if [ -n "$TAG" ]; then
-            VERSION="${TAG#v}"
-            CONF=$(node -p "require('./apps/desktop/src-tauri/tauri.conf.json').version")
-            PKG=$(node -p "require('./apps/desktop/package.json').version")
-            echo "Etiqueta: $VERSION · tauri.conf.json: $CONF · package.json: $PKG"
-            if [ "$VERSION" != "$CONF" ] || [ "$VERSION" != "$PKG" ]; then
-              echo "::error::La versión de la etiqueta ($VERSION) no coincide con apps/desktop/package.json ($PKG) y tauri.conf.json ($CONF). Actualiza esas dos versiones antes de etiquetar."
-              exit 1
-            fi
-          fi
+        run: node tools/ci/release-check.mjs
 
       - name: Compilar el instalador
         run: pnpm --filter @bm27/desktop tauri build
@@ -84,10 +79,9 @@ jobs:
         run: |
           FLAGS=""
           case "$TAG" in *-*) FLAGS="--prerelease" ;; esac
-          if gh release view "$TAG" >/dev/null 2>&1; then
-            gh release upload "$TAG" apps/desktop/src-tauri/target/release/bundle/nsis/*.exe --clobber
-          else
-            gh release create "$TAG" apps/desktop/src-tauri/target/release/bundle/nsis/*.exe \
-              --title "BM27 $TAG" $FLAGS \
-              --notes "Versión de prueba de BM27 para Windows. Descarga el archivo \`.exe\` y ejecútalo. Si Windows muestra «Windows protegió su PC», pulsa «Más información» y «Ejecutar de todos modos» (el instalador no está firmado con un certificado de pago)."
-          fi
+          # --target fija la etiqueta (si aún no existe) en el commit exacto que se ha compilado.
+          # Nunca se sustituye una Release existente: la comprobación anterior ya la rechaza.
+          gh release create "$TAG" apps/desktop/src-tauri/target/release/bundle/nsis/*.exe \
+            --target "$GITHUB_SHA" \
+            --title "BM27 $TAG" $FLAGS \
+            --notes "Versión de prueba de BM27 para Windows. Descarga el archivo \`.exe\` y ejecútalo. Si Windows muestra «Windows protegió su PC», pulsa «Más información» y «Ejecutar de todos modos» (el instalador no está firmado con un certificado de pago)."

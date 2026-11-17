@@ -13,8 +13,8 @@
 ```mermaid
 pie showData title Elementos por estado
   "Hecho" : 105
-  "En curso" : 7
-  "Pendiente" : 330
+  "En curso" : 9
+  "Pendiente" : 328
   "Bloqueado" : 3
   "Idea" : 30
 ```
@@ -53,7 +53,7 @@ flowchart LR
   F1["F1 Primera versión jugable<br/>43 %"]
   F2["F2 Profundidad de gestión<br/>0 %"]
   F3["F3 Mundo, datos y mods<br/>0 %"]
-  F4["F4 Presentación<br/>10 %"]
+  F4["F4 Presentación<br/>11 %"]
   F5["F5 Distribución<br/>7 %"]
   F6["F6 Pulido y lanzamiento<br/>6 %"]
   F0 --> F1 --> F2 --> F3 --> F4 --> F5 --> F6
@@ -75,7 +75,7 @@ flowchart LR
 | **F1 Primera versión jugable** | 43 % | `█████████░░░░░░░░░░░` | 18/43 | Que el propietario pueda jugar de principio a fin una temporada y varias más sin tocar una terminal, con consultas básicas del mundo. |
 | **F2 Profundidad de gestión** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0/184 | Traspasos, cantera y ojeadores, economía con decisiones, entrenador rival con criterio, motor de partido completo. |
 | **F3 Mundo, datos y mods** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0/63 | Calibración con datos contrastados, paquetes de datos cargables, pirámide completa y otras competiciones. |
-| **F4 Presentación** | 10 % | `██░░░░░░░░░░░░░░░░░░` | 3/36 | Diseño visual, accesibilidad, partido en 2D, narración, sonido y varios idiomas. |
+| **F4 Presentación** | 11 % | `██░░░░░░░░░░░░░░░░░░` | 3/36 | Diseño visual, accesibilidad, partido en 2D, narración, sonido y varios idiomas. |
 | **F5 Distribución** | 7 % | `█░░░░░░░░░░░░░░░░░░░` | 1/22 | Instalador de escritorio, versiones alfa y beta en GitHub, actualización automática, firma y otras plataformas. |
 | **F6 Pulido y lanzamiento** | 6 % | `█░░░░░░░░░░░░░░░░░░░` | 1/17 | Tutorial, equilibrio final, documentación, comunidad y lanzamiento. |
 
@@ -95,7 +95,7 @@ flowchart LR
 | **Mundo persistente** | 30 % | `██████░░░░░░░░░░░░░░` | 3 | 0 | 6 | 0 | 1 | Un mundo que sigue vivo y estable durante decenas de temporadas, sin inflarse ni hundirse. |
 | **Datos, mods e idiomas** | 15 % | `███░░░░░░░░░░░░░░░░░` | 2 | 0 | 9 | 0 | 2 | Reglamentos, competiciones y contenido como datos: añadir una liga no debe tocar el motor. |
 | **Guardado y persistencia** | 60 % | `████████████░░░░░░░░` | 6 | 0 | 4 | 0 | 0 | Las partidas no se pierden, son compactas y se pueden recuperar. |
-| **Interfaz web** | 38 % | `████████░░░░░░░░░░░░` | 10 | 1 | 17 | 0 | 0 | La cara del juego: clara, rápida y accesible. |
+| **Interfaz web** | 38 % | `████████░░░░░░░░░░░░` | 10 | 2 | 16 | 0 | 0 | La cara del juego: clara, rápida y accesible. |
 | **Visualización del partido** | 11 % | `██░░░░░░░░░░░░░░░░░░` | 1 | 0 | 6 | 0 | 2 | Ver el partido, no solo leerlo, derivado siempre del registro de eventos. |
 | **Aplicación de escritorio y distribución** | 13 % | `███░░░░░░░░░░░░░░░░░` | 1 | 1 | 7 | 1 | 2 | Que el propietario instale y actualice el juego sin pasar por GitHub. |
 | **Calidad, pruebas y herramientas** | 46 % | `█████████░░░░░░░░░░░` | 6 | 0 | 5 | 0 | 2 | Poder fiarse de lo construido y detectar a tiempo lo que se rompe. |
@@ -114,10 +114,10 @@ flowchart LR
 | **Instalaciones y operaciones del club** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Gestionar mejoras materiales con capacidad, plazos, mantenimiento y efectos concretos. |
 | **Medios y vínculo con la afición** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Representar la relación pública del club a partir de hechos del mundo simulado. |
 | **Experiencia inicial y aprendizaje** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Ayudar a empezar y comprender el juego sin exigir conocimientos técnicos ni de todas sus reglas. |
-| **Accesibilidad y preferencias de uso** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Permitir seguir y gestionar la partida con distintas capacidades, dispositivos y preferencias. |
+| **Accesibilidad y preferencias de uso** | 3 % | `█░░░░░░░░░░░░░░░░░░░` | 0 | 1 | 11 | 0 | 0 | Permitir seguir y gestionar la partida con distintas capacidades, dispositivos y preferencias. |
 | **Seguridad y mantenimiento técnico** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Proteger partidas, distribución y dependencias sin introducir servicios externos innecesarios. |
 | **Compatibilidad y calidad de distribución** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Definir dónde funciona el juego y validar la instalación, actualización y retirada del producto. |
-| **Ideas sin clasificar _(no cuenta)_** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 0 | 0 | 8 | Aparcamiento de ideas que aún no son tareas. No cuentan en el porcentaje. |
+| **Ideas sin clasificar _(no cuenta)_** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 0 | 0 | 7 | Aparcamiento de ideas que aún no son tareas. No cuentan en el porcentaje. |
 
 ## Quién trabaja en qué ahora
 
@@ -137,6 +137,8 @@ Los agentes solo trabajan cuando el propietario lo autoriza (D-052); esto reflej
 | Estado | Elemento | Área | Avance | Enlace |
 | --- | --- | --- | ---: | --- |
 | 🔄 En curso | Accesibilidad (contraste, teclado, lectores de pantalla) | Interfaz web | 50 % | [#23](https://github.com/dariogea/BM27/issues/23) |
+| 🔄 En curso | Tablas ordenables y filtros | Interfaz web | 15 % | [#52](https://github.com/dariogea/BM27/issues/52) |
+| 🔄 En curso | Elegir densidad de tablas y tamaño de interfaz | Accesibilidad y preferencias de uso | 40 % | [#52](https://github.com/dariogea/BM27/issues/52) |
 
 ### En curso sin dueño asignado
 
@@ -479,11 +481,11 @@ _La cara del juego: clara, rápida y accesible._
   - ⬜ Instalaciones y patrocinadores (`F2` · [#12](https://github.com/dariogea/BM27/issues/12))
   - ⬜ Ajustes del juego (`F4`)
   - ⬜ Ayuda y glosario (`F4`)
-- **Calidad de la interfaz** — 31 %
-  - ✅ Sistema de diseño con modo claro y oscuro (`F4` · @codex · [#23](https://github.com/dariogea/BM27/issues/23)) — _Demo visual con temas persistentes, inicio guiado y tablas desplazables; comprobación de accesibilidad y pantallas en el PR._
-  - ✅ Adaptación a móvil (`F4` · @codex · [#23](https://github.com/dariogea/BM27/issues/23)) — _Demo visual con temas persistentes, inicio guiado y tablas desplazables; comprobación de accesibilidad y pantallas en el PR._
+- **Calidad de la interfaz** — 33 %
+  - ✅ Sistema de diseño con modo claro y oscuro (`F4` · @codex · [#52](https://github.com/dariogea/BM27/issues/52)) — _Portal de gestión basado en las capturas del propietario: cabecera azul, navegación doble, paneles de actividad/resultados/clasificación/economía, temas persistentes y resoluciones de PC. Evidencia en docs/revisiones/portal-52.md._
+  - ✅ Adaptación a distintas resoluciones de PC (`F4` · @codex · [#52](https://github.com/dariogea/BM27/issues/52)) — _El propietario limita el producto a PC. Verificación a 1280×800 y 1920×1080, sin variante móvil._
   - 🔄 Accesibilidad (contraste, teclado, lectores de pantalla) (`F4` · 50 % · @codex · [#23](https://github.com/dariogea/BM27/issues/23)) — _Mejoras en controles, foco y avisos. Falta validar todos los recorridos y tecnologías asistivas._
-  - ⬜ Tablas ordenables y filtros (`F4`)
+  - 🔄 Tablas ordenables y filtros (`F4` · 15 % · @codex · [#52](https://github.com/dariogea/BM27/issues/52)) — _Filtro de actividad y selector de competición en el portal. Ordenación y filtros generales pendientes._
   - ⬜ Atajos de teclado (`F4`)
   - ⬜ Explicaciones emergentes (tooltips) de cada atributo (`F4`)
   - ⬜ Gráficos de evolución (jugador, club, finanzas) (`F4`)
@@ -860,7 +862,7 @@ _Ayudar a empezar y comprender el juego sin exigir conocimientos técnicos ni de
 
 </details>
 
-<details><summary><b>Accesibilidad y preferencias de uso</b> — 0 % `░░░░░░░░░░░░`</summary>
+<details><summary><b>Accesibilidad y preferencias de uso</b> — 3 % `░░░░░░░░░░░░`</summary>
 
 _Permitir seguir y gestionar la partida con distintas capacidades, dispositivos y preferencias._
 
@@ -874,10 +876,10 @@ _Permitir seguir y gestionar la partida con distintas capacidades, dispositivos 
   - ⬜ Permitir ampliar textos sin perder controles (`F4`)
   - ⬜ Respetar la preferencia de movimiento reducido (`F4`)
   - ⬜ Verificar contraste en estados de foco, error y selección (`F4`)
-- **Preferencias persistentes** — 0 %
+- **Preferencias persistentes** — 10 %
   - ⬜ Guardar preferencias de accesibilidad entre sesiones (`F4`)
   - ⬜ Configurar formatos de números, moneda y fechas (`F4`)
-  - ⬜ Elegir densidad de tablas y tamaño de interfaz (`F4`)
+  - 🔄 Elegir densidad de tablas y tamaño de interfaz (`F4` · 40 % · @codex · [#52](https://github.com/dariogea/BM27/issues/52)) — _Densidad compacta/confortable persistente. Escalado independiente de la interfaz pendiente._
   - ⬜ Restaurar ajustes sin borrar partidas (`F4`)
 
 </details>
@@ -932,7 +934,6 @@ _Aparcamiento de ideas que aún no son tareas. No cuentan en el porcentaje._
 
 - 💡 Modo multijugador en la misma partida (`F6`)
 - 💡 Mundo en línea compartido (`F6`)
-- 💡 Aplicación para móvil (`F6`)
 - 💡 Retos y escenarios (salvar un club en quiebra) (`F6`)
 - 💡 Logros (`F6`)
 - 💡 Modo espectador: ver una liga sin gestionar (`F6`)

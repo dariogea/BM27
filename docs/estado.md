@@ -69,3 +69,5 @@ Reglas en [`coordinacion.md`](coordinacion.md).
 | #16 | PROBADA | Ranuras internas en IndexedDB, metadatos, renombrado, borrado y autoguardado configurable; archivos portables conservados. |
 
 | #23 | PROBADA | Demo con inicio guiado, jerarquía visual, temas claro/oscuro y adaptación móvil. Base española real como objetivo; catálogo oficial pendiente de contraste. |
+
+| #52 | PROBADA | Portal inspirado en las capturas del propietario, navegación doble, actividad real, clasificación y preferencias persistentes. Solo PC, sin variante móvil. |

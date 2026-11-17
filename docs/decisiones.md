@@ -109,3 +109,9 @@ IndexedDB es el almacén local de ranuras para la web y el frontend Tauri; se co
 ## Dirección de la demo y base española (17-11-2026, propietario)
 
 La prioridad es una demo jugable y visualmente cuidada, con España como referencia real de estructura, clubes y jugadores. Esta orden sustituye la ficción total de la decisión inicial/pilar 7. Se separan identidades contrastadas, alias visibles y estimaciones; cambiar nombres no acredita derechos sobre datos o activos. La demo generada actual se mantiene identificada hasta disponer de un catálogo verificado. El manifiesto de investigación y el orden de incorporación están en docs/datos/espana.md. No se alteran participantes o formatos usando cifras de una temporada sin contrastar.
+
+## Portal de gestión (#52, referencia visual del propietario)
+
+Se adopta la estructura de las capturas aportadas: cabecera azul, navegación en dos niveles, paneles densos y fondo oscuro con acentos morados/rosas. La marca, la pista ilustrativa y las iniciales de clubes son propias de BM27; no se incorporan fotografías ni escudos de las capturas. El portal se deriva del GameView existente, sin cambios del protocolo ni del núcleo. La actividad no es prensa simulada: refleja resultados, movimientos y avisos reales. Las clasificaciones y resultados conservan la temporada de sus datos, también después de un ascenso. El presupuesto es salarial anual, no una cifra de traspasos inexistente. Las preferencias de tema y densidad no cambian la simulación.
+
+El propietario confirma después que el producto es **solo PC**. Se retiran los layouts y artefactos móviles; el roadmap cambia ese objetivo por adaptación a resoluciones de escritorio y elimina la app móvil del banco de ideas.

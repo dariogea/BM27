@@ -24,25 +24,27 @@ con las temporadas. El objetivo es un gestor deportivo profundo, explicable y du
 
 ## Estado real del juego
 
-| Sistema        | Qué existe hoy                                                                      | Qué falta para el objetivo completo                                                              |
-| -------------- | ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| Partido        | Simulación por posesiones, tácticas con efecto y estadísticas derivadas de eventos. | Entrenadores con criterio, más reglas, lesiones, tiempos muertos y calibración contrastada.      |
-| Club y mercado | Equipo propio, quinteto, agentes libres, contratos, salarios y cuentas del club.    | Traspasos negociados, personal, instalaciones, patrocinadores y decisiones económicas profundas. |
-| Mundo          | Cuatro niveles, temporadas, ascensos, descensos, desarrollo y retiradas.            | Cantera real, ojeo, competiciones adicionales y mayor estabilidad contrastada.                   |
-| Experiencia    | Demo con temas claro/oscuro, inicio guiado, móvil y compilación para Windows.       | Ayuda completa, validación de todas las pantallas y pruebas de instalación real.                 |
-| Partidas       | Archivos con checksum, ranuras internas y autoguardado al terminar la temporada.    | Recuperación con copias históricas y un historial más completo.                                  |
+| Sistema        | Qué existe hoy                                                                         | Qué falta para el objetivo completo                                                              |
+| -------------- | -------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| Partido        | Simulación por posesiones, tácticas con efecto y estadísticas derivadas de eventos.    | Entrenadores con criterio, más reglas, lesiones, tiempos muertos y calibración contrastada.      |
+| Club y mercado | Equipo propio, quinteto, agentes libres, contratos, salarios y cuentas del club.       | Traspasos negociados, personal, instalaciones, patrocinadores y decisiones económicas profundas. |
+| Mundo          | Cuatro niveles, temporadas, ascensos, descensos, desarrollo y retiradas.               | Cantera real, ojeo, competiciones adicionales y mayor estabilidad contrastada.                   |
+| Experiencia    | Demo con temas claro/oscuro, inicio guiado, diseño para PC y compilación para Windows. | Ayuda completa, validación de todas las pantallas y pruebas de instalación real.                 |
+| Partidas       | Archivos con checksum, ranuras internas y autoguardado al terminar la temporada.       | Recuperación con copias históricas y un historial más completo.                                  |
 
 Los entrenadores y la entrada de jóvenes siguen usando reglas provisionales (`PLACEHOLDER`).
 Las escalas de salarios y las bandas estadísticas son aproximaciones. No se presentan como sistemas
 terminados de un juego comercial.
 
+**Plataforma objetivo: solo PC.** La interfaz se valida a distintas resoluciones de escritorio; no se desarrolla una versión móvil.
+
 **Nueva dirección de datos:** [España como referencia real y catálogo de fuentes](docs/datos/espana.md). Las plantillas actuales siguen siendo generadas hasta contrastar las oficiales.
 
 ## Así se ve la demo
 
-![Demo real de BM27: equipo y temporada en modo oscuro](docs/screenshots/team-desktop-dark.png)
+![Portal real de BM27: actividad, resultados, clasificación y economía](docs/screenshots/portal-desktop-dark.png)
 
-[Ver inicio, modo claro y pantallas de móvil](docs/revisiones/demo-visual-23.md). Las capturas muestran datos generados de la demo.
+[Ver el portal de PC, modo claro y distintas resoluciones](docs/revisiones/portal-52.md). Las capturas muestran datos generados de la demo.
 
 ## La referencia del 100 %
 
@@ -72,7 +74,7 @@ flowchart LR
   F1["F1 Primera versión jugable<br/>43 %"]
   F2["F2 Profundidad de gestión<br/>0 %"]
   F3["F3 Mundo, datos y mods<br/>0 %"]
-  F4["F4 Presentación<br/>10 %"]
+  F4["F4 Presentación<br/>11 %"]
   F5["F5 Distribución<br/>7 %"]
   F6["F6 Pulido y lanzamiento<br/>6 %"]
   F0 --> F1 --> F2 --> F3 --> F4 --> F5 --> F6
@@ -82,7 +84,7 @@ flowchart LR
 - **F1 · Primera versión jugable**: 43 % `█████████░░░░░░░░░░░`
 - **F2 · Profundidad de gestión**: 0 % `░░░░░░░░░░░░░░░░░░░░`
 - **F3 · Mundo, datos y mods**: 0 % `░░░░░░░░░░░░░░░░░░░░`
-- **F4 · Presentación**: 10 % `██░░░░░░░░░░░░░░░░░░`
+- **F4 · Presentación**: 11 % `██░░░░░░░░░░░░░░░░░░`
 - **F5 · Distribución**: 7 % `█░░░░░░░░░░░░░░░░░░░`
 - **F6 · Pulido y lanzamiento**: 6 % `█░░░░░░░░░░░░░░░░░░░`
 

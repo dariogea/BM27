@@ -1,3 +1,4 @@
+import type { SlotSummary } from './slotStore';
 import type {
   Contract,
   GroupSeason,
@@ -23,7 +24,13 @@ export type Command =
   | { id: number; type: 'finishSeason' }
   | { id: number; type: 'matchDetail'; matchId: string }
   | { id: number; type: 'exportSave' }
-  | { id: number; type: 'importSave'; json: string };
+  | { id: number; type: 'importSave'; json: string }
+  | { id: number; type: 'listSlots' }
+  | { id: number; type: 'saveSlot'; name: string }
+  | { id: number; type: 'loadSlot'; name: string }
+  | { id: number; type: 'deleteSlot'; name: string }
+  | { id: number; type: 'renameSlot'; name: string; newName: string }
+  | { id: number; type: 'setAutosave'; enabled: boolean };
 
 export interface CompetitionViewData {
   competitionId: string;
@@ -165,6 +172,7 @@ export interface GameView {
 }
 
 export type Reply =
+  | { id: number; type: 'slots'; slots: SlotSummary[]; autosave: boolean; message: string }
   | { id: number; type: 'state'; view: GameView; message: string }
   | {
       id: number;

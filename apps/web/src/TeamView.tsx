@@ -27,7 +27,7 @@ const per = (total: number, games: number): string => (games ? (total / games).t
 
 export function SquadTable({ squad }: { squad: SquadPlayer[] }) {
   return (
-    <div className="scroll">
+    <div className="scroll" tabIndex={0} role="region" aria-label="Plantilla y estadísticas">
       <table>
         <thead>
           <tr>

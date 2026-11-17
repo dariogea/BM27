@@ -5,11 +5,13 @@ Nombre corto: **BM27**. La marca no implica que el producto esté terminado.
 
 ## Descripción para About de GitHub
 
-BM27 — Basketball Manager 2027. Simulador de gestión de baloncesto para PC: decisiones deportivas, gestión de club y un mundo ficticio persistente. Prototipo jugable en desarrollo; roadmap, métricas de preparación y documentación en el repositorio.
+BM27 — Basketball Manager 2027. Simulador de gestión de baloncesto para PC: decisiones deportivas, gestión de club y un mundo deportivo persistente. Prototipo jugable en desarrollo; roadmap, métricas de preparación y documentación en el repositorio.
 
 Enlace del proyecto: https://github.com/dariogea/BM27#readme
 
 Temas propuestos: `basketball`, `sports-management`, `simulation`, `game-development`, `typescript`, `react`, `tauri`.
+
+La referencia de datos es el baloncesto español real. La demo actual usa datos generados; el catálogo contrastado se prepara por temporadas.
 
 ## Referencia de producto
 

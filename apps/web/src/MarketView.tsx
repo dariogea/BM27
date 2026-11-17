@@ -82,7 +82,7 @@ export function MarketPanel(props: {
       <CapBar market={market} />
 
       <h3>Mi plantilla y sus contratos</h3>
-      <div className="scroll">
+      <div className="scroll" tabIndex={0} role="region" aria-label="Mercado y contratos">
         <table data-testid="contracts">
           <thead>
             <tr>
@@ -195,7 +195,7 @@ export function MarketPanel(props: {
         </label>
         <span className="note">Se muestran los 150 más valorados.</span>
       </div>
-      <div className="scroll">
+      <div className="scroll" tabIndex={0} role="region" aria-label="Mercado y contratos">
         <table data-testid="freeagents">
           <thead>
             <tr>

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "actualizado": "2026-11-16",
+  "actualizado": "2026-11-17",
   "fases": [
     {
       "id": "F0",
@@ -1116,11 +1116,11 @@
           "f": "F4"
         },
         {
-          "t": "Importar datos propios del usuario sin traer datos reales",
+          "t": "Importar datos propios del usuario con procedencia declarada",
           "s": "idea"
         },
         {
-          "t": "Comprobación automática de nombres reales prohibidos",
+          "t": "Comprobación automática de procedencia y etiquetado de datos",
           "s": "pendiente"
         }
       ]
@@ -1144,14 +1144,17 @@
         },
         {
           "t": "Varias ranuras con nombre dentro de la aplicación",
-          "s": "pendiente",
+          "s": "hecho",
           "i": 16,
-          "n": "T-017."
+          "n": "IndexedDB local con nombres, metadatos, renombrado y protección de otras ranuras; autoguardado de fin de temporada configurable. Archivos como copia portable.",
+          "o": "codex"
         },
         {
           "t": "Guardado automático al cerrar temporada",
-          "s": "pendiente",
-          "i": 16
+          "s": "hecho",
+          "i": 16,
+          "o": "codex",
+          "n": "IndexedDB local con nombres, metadatos, renombrado y protección de otras ranuras; autoguardado de fin de temporada configurable. Archivos como copia portable."
         },
         {
           "t": "Política de historial y compactación",
@@ -1253,9 +1256,11 @@
             },
             {
               "t": "Pantalla de inicio que explique cómo se juega",
-              "s": "pendiente",
+              "s": "hecho",
               "f": "F4",
-              "i": 23
+              "i": 23,
+              "o": "codex",
+              "n": "Demo visual con temas persistentes, inicio guiado y tablas desplazables; comprobación de accesibilidad y pantallas en el PR."
             },
             {
               "t": "Mercado de traspasos",
@@ -1298,19 +1303,25 @@
           "c": [
             {
               "t": "Sistema de diseño con modo claro y oscuro",
-              "s": "pendiente",
+              "s": "hecho",
               "i": 23,
-              "n": "T-024."
+              "n": "Demo visual con temas persistentes, inicio guiado y tablas desplazables; comprobación de accesibilidad y pantallas en el PR.",
+              "o": "codex"
             },
             {
               "t": "Adaptación a móvil",
-              "s": "pendiente",
-              "i": 23
+              "s": "hecho",
+              "i": 23,
+              "o": "codex",
+              "n": "Demo visual con temas persistentes, inicio guiado y tablas desplazables; comprobación de accesibilidad y pantallas en el PR."
             },
             {
               "t": "Accesibilidad (contraste, teclado, lectores de pantalla)",
-              "s": "pendiente",
-              "i": 23
+              "s": "en-curso",
+              "i": 23,
+              "p": 50,
+              "o": "codex",
+              "n": "Mejoras en controles, foco y avisos. Falta validar todos los recorridos y tecnologías asistivas."
             },
             {
               "t": "Tablas ordenables y filtros",
@@ -1416,7 +1427,7 @@
           "t": "Versión 0.1.0-alpha.1 publicada",
           "s": "pendiente",
           "o": "claude",
-          "n": "Esperando autorización del propietario."
+          "n": "Versión ya puesta en los archivos (T-027). Falta fusionar y publicar la etiqueta, con autorización del propietario."
         },
         {
           "t": "Canales alfa y beta",
@@ -1434,10 +1445,11 @@
         },
         {
           "t": "La etiqueta de la Release corresponde al código compilado",
-          "s": "pendiente",
+          "s": "en-curso",
           "o": "claude",
           "i": 39,
-          "n": "Hallazgo de Codex."
+          "n": "T-027: validador tools/ci/release-check.mjs con tests; falta fusionarlo y probar la compilación en Windows.",
+          "p": 90
         },
         {
           "t": "Versión para macOS",
@@ -1652,9 +1664,11 @@
       "f": "F6",
       "c": [
         {
-          "t": "Nombres reales prohibidos (pilar 7)",
-          "s": "hecho",
-          "f": "F0"
+          "t": "Procedencia y condiciones de uso de datos reales y alias",
+          "s": "en-curso",
+          "f": "F0",
+          "p": 15,
+          "n": "La orden del propietario de 17-11-2026 sustituye la ficción total; catálogo de investigación sin plantillas importadas."
         },
         {
           "t": "Nombre definitivo del juego",
@@ -2253,7 +2267,7 @@
           "t": "Planificación de viajes",
           "c": [
             {
-              "t": "Calcular distancias entre sedes ficticias",
+              "t": "Calcular distancias entre sedes de los clubes",
               "s": "pendiente"
             },
             {
@@ -2443,7 +2457,7 @@
               "s": "pendiente"
             },
             {
-              "t": "Reconocer hitos y aniversarios de la historia ficticia",
+              "t": "Reconocer hitos y aniversarios de la historia de la partida",
               "s": "pendiente"
             },
             {

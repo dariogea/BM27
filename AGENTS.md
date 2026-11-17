@@ -75,7 +75,7 @@ La CI ejecuta exactamente eso en cada PR. **Un PR solo está listo si todo eso p
 - **Medir, no suponer:** si cambias el motor o la economía, comprueba con `pnpm calibrate`,
   `pnpm stability` y `pnpm bench` y guarda los informes en `docs/benchmarks/` con el número de tu tarea.
   **No sobrescribas los informes de tareas anteriores.**
-- **Sin nombres reales** de jugadores, clubes, patrocinadores ni competiciones. Sin secretos.
+- **Datos y nombres:** la orden del propietario de 17-11-2026 sustituye la ficción total por una base española real de referencia. Separar hechos contrastados, estimaciones y alias; identificar la demo generada y documentar procedencia/uso. Ver `docs/datos/espana.md`. Sin secretos ni datos privados.
 
 ## Puntos donde es fácil estorbarse
 

@@ -1,0 +1,5 @@
+# Same line endings on every platform (a CRLF checkout on Windows broke text-sensitive tests).
+* text=auto eol=lf
+*.png binary
+*.ico binary
+*.icns binary

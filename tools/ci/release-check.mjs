@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 /**
  * Release policy: decides whether the Windows workflow may build/publish a tag.
  *

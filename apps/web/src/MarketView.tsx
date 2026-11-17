@@ -211,8 +211,8 @@ export function MarketPanel(props: {
         </label>
         <span className="note" role="status">
           {agents.length} {agents.length === 1 ? 'resultado' : 'resultados'}
-          {agents.length > 60 ? ' (se muestran los 60 primeros)' : ''}. El mercado reúne los 150 más
-          valorados.
+          {agents.length > 60 ? ' (se muestran los 60 primeros)' : ''}. De los{' '}
+          {market.freeAgentCount} agentes libres, el juego envía hasta 150 (los más valorados).
         </span>
       </div>
       <div className="scroll" tabIndex={0} role="region" aria-label="Mercado y contratos">

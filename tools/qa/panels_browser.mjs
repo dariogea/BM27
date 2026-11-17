@@ -105,7 +105,18 @@ const SHOTS = process.env.BM27_SHOTS;
         await page.getByText('Apariencia', { exact: true }).click();
       }
       for (const label of ['Mi equipo', 'Mercado', 'Finanzas', 'Competición', 'Partido']) {
-        await nav.getByRole('button', { name: label, exact: true }).click();
+        if (label === 'Partido') {
+          // Audit the real box score, not the empty message: open the match first.
+          await nav.getByRole('button', { name: 'Mi equipo', exact: true }).click();
+          await page.getByRole('button', { name: 'Ver partido', exact: true }).first().click();
+          await page.getByTestId('boxscore').first().waitFor({ timeout: 30000 });
+          check(
+            (await page.getByTestId('boxscore').count()) >= 1,
+            'el panel Partido muestra el box score',
+          );
+        } else {
+          await nav.getByRole('button', { name: label, exact: true }).click();
+        }
         await page.waitForTimeout(300);
         await page.addScriptTag({ path: AXE });
         const violations = await page.evaluate(async () =>

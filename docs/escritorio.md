@@ -55,6 +55,22 @@ Una versión es una **etiqueta** de Git con la forma `v0.1.0-alpha.1`:
 - La ventana usa **WebView2** de Microsoft (viene con Windows 11 y con Windows 10 actualizado). Si falta,
   el instalador lo descarga.
 
+## Launcher: versión y búsqueda de actualizaciones (T-031)
+
+Al abrir la aplicación de escritorio aparece, arriba del todo, una franja con **la versión en uso** y el
+resultado de buscar en GitHub una versión nueva (alfas y betas incluidas si usas una versión preliminar):
+
+- «Estás en la última versión.»
+- «Hay una versión nueva: …» con el botón **Copiar enlace de descarga**: pegas el enlace en el navegador
+  (con tu sesión de GitHub abierta), descargas el instalador y lo ejecutas; tu partida guardada se conserva.
+- «No se puede leer el repositorio sin permiso»: el repositorio es **privado**. En «Ajustes de actualización»
+  se puede pegar un **token de GitHub de solo lectura** (permiso «Contents: Read-only», limitado a este
+  repositorio). Se guarda solo en ese ordenador y solo se envía a GitHub para leer las versiones.
+
+**Qué NO hace todavía:** no descarga ni instala solo (el instalador no está firmado y el repositorio es privado),
+y no se ha probado dentro de la aplicación instalada en un Windows real: se ha probado con respuestas de
+GitHub simuladas en un navegador automatizado y con 9 tests de la lógica de versiones.
+
 ## Siguiente paso: actualización automática (fase 2)
 
 La idea acordada con el propietario: al abrir el juego, la propia aplicación busca una versión nueva en

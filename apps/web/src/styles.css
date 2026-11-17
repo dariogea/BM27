@@ -1108,3 +1108,29 @@ button.score-button {
   padding: 3px 8px;
   font-size: 11px;
 }
+
+/* Launcher strip: version and update check (desktop app only). */
+.update-banner {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  padding: 8px 12px;
+  margin-bottom: 12px;
+  font-size: 13px;
+}
+.update-line {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  align-items: center;
+}
+.update-new strong {
+  color: var(--accent);
+}
+.update-settings {
+  margin-top: 6px;
+}
+.update-settings summary {
+  cursor: pointer;
+  color: var(--muted);
+}

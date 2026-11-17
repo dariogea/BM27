@@ -73,3 +73,5 @@ Reglas en [`coordinacion.md`](coordinacion.md).
 | #23 | PROBADA | Demo con inicio guiado, jerarquía visual, temas claro/oscuro y adaptación móvil. Base española real como objetivo; catálogo oficial pendiente de contraste. |
 
 | #52 | PROBADA | Portal inspirado en las capturas del propietario, navegación doble, actividad real, clasificación y preferencias persistentes. Solo PC, sin variante móvil. |
+
+| T-031 | PROBADA | Launcher: la aplicación de escritorio muestra su versión y busca al abrir una versión nueva en GitHub (token opcional para el repositorio privado); enlace de descarga copiable. Probado con respuestas simuladas y 9 tests; sin probar dentro de un Windows real. No descarga ni instala sola. |

@@ -75,3 +75,5 @@ Reglas en [`coordinacion.md`](coordinacion.md).
 | #52 | PROBADA | Portal inspirado en las capturas del propietario, navegación doble, actividad real, clasificación y preferencias persistentes. Solo PC, sin variante móvil. |
 
 | T-031 | PROBADA | Launcher: la aplicación de escritorio muestra su versión y busca al abrir una versión nueva en GitHub (token opcional para el repositorio privado); enlace de descarga copiable. Probado con respuestas simuladas y 9 tests; sin probar dentro de un Windows real. No descarga ni instala sola. |
+
+| #61 | PROBADA | Adaptador de la semilla española: 202 identidades estables dentro de la semilla, alias, fuentes, validaciones y obstáculos explícitos para la integración. No cambia la demo ni contrato. |

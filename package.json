@@ -11,7 +11,7 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "typecheck": "pnpm -r typecheck",
+    "typecheck": "pnpm -r typecheck && tsc --noEmit -p tools/data/tsconfig.json",
     "test": "vitest run",
     "build": "pnpm --filter @bm27/web build",
     "web": "pnpm --filter @bm27/web dev",
@@ -21,7 +21,8 @@
     "calibrate": "pnpm --filter @bm27/cli calibrate",
     "stability": "pnpm --filter @bm27/cli stability",
     "roadmap": "node tools/roadmap/roadmap.mjs",
-    "roadmap:check": "node tools/roadmap/roadmap.mjs --check"
+    "roadmap:check": "node tools/roadmap/roadmap.mjs --check",
+    "data:catalog": "tsx tools/data/build-seed-catalog.ts"
   },
   "devDependencies": {
     "@eslint/js": "^9.0.0",

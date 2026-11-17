@@ -7,6 +7,7 @@
 <p align="center"><strong>Gestiona baloncesto. Construye un club. Compite durante generaciones.</strong></p>
 
 <p align="center">
+  <a href="#descargar-para-windows">Descargar</a> ·
   <a href="#estado-real-del-juego">Estado real</a> ·
   <a href="#avance-del-desarrollo">Preparación</a> ·
   <a href="docs/roadmap.md">Plan completo</a> ·
@@ -21,6 +22,25 @@ con las temporadas. El objetivo es un gestor deportivo profundo, explicable y du
 > **Prototipo temprano y jugable.** El nombre es definitivo; el producto aún está lejos de una versión
 > comercial completa. Repositorio privado y comercial: [licencia](LICENSE). La cabecera es una
 > ilustración de marca, no una captura del juego.
+
+## Descargar para Windows
+
+**[⬇ Descargar BM27 v0.1.0-alpha.1 para Windows (.exe, 1,4 MB)](https://github.com/dariogea/BM27/releases/download/v0.1.0-alpha.1/BM27_0.1.0-alpha.1_x64-setup.exe)**
+
+Versión **alfa** ([todas las versiones](https://github.com/dariogea/BM27/releases)). Pasos:
+
+1. Entra en GitHub con tu cuenta (el repositorio es privado: sin sesión el enlace da «404»).
+2. Pulsa el enlace de arriba: se descarga `BM27_0.1.0-alpha.1_x64-setup.exe`.
+3. Ábrelo con doble clic. Se instala solo para tu usuario, sin permisos de administrador.
+4. Si Windows dice **«Windows protegió su PC»**, pulsa **«Más información»** y **«Ejecutar de todos modos»** (el instalador no está firmado con un certificado de pago).
+5. Abre **BM27** desde el menú Inicio. Arriba verás la franja del launcher con la versión y la búsqueda de actualizaciones.
+
+Comprobación opcional: la huella SHA-256 del archivo es
+`c1aecb59ce83023a8a39170933f86e467ffaa719d47cf40c09098b67b3430e92`.
+
+**Limitaciones:** los clubes y jugadores son generados; nadie ha ejecutado aún este instalador en un Windows real; la
+comprobación de actualizaciones necesita un token de lectura mientras el repositorio sea privado
+(ver [`docs/escritorio.md`](docs/escritorio.md)).
 
 ## Estado real del juego
 
@@ -75,7 +95,7 @@ flowchart LR
   F2["F2 Profundidad de gestión<br/>3 %"]
   F3["F3 Mundo, datos y mods<br/>0 %"]
   F4["F4 Presentación<br/>11 %"]
-  F5["F5 Distribución<br/>15 %"]
+  F5["F5 Distribución<br/>19 %"]
   F6["F6 Pulido y lanzamiento<br/>6 %"]
   F0 --> F1 --> F2 --> F3 --> F4 --> F5 --> F6
 ```
@@ -85,7 +105,7 @@ flowchart LR
 - **F2 · Profundidad de gestión**: 3 % `█░░░░░░░░░░░░░░░░░░░`
 - **F3 · Mundo, datos y mods**: 0 % `░░░░░░░░░░░░░░░░░░░░`
 - **F4 · Presentación**: 11 % `██░░░░░░░░░░░░░░░░░░`
-- **F5 · Distribución**: 15 % `███░░░░░░░░░░░░░░░░░`
+- **F5 · Distribución**: 19 % `████░░░░░░░░░░░░░░░░`
 - **F6 · Pulido y lanzamiento**: 6 % `█░░░░░░░░░░░░░░░░░░░`
 
 **[Ver el roadmap completo: tareas, responsables y pendientes](docs/roadmap.md)**

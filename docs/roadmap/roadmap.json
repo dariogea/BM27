@@ -1292,13 +1292,6 @@
               "o": "codex"
             },
             {
-              "t": "Adaptación a móvil",
-              "s": "hecho",
-              "i": 23,
-              "o": "codex",
-              "n": "Demo visual con temas persistentes, inicio guiado y tablas desplazables; comprobación de accesibilidad y pantallas en el PR."
-            },
-            {
               "t": "Accesibilidad (contraste, teclado, lectores de pantalla)",
               "s": "en-curso",
               "i": 23,
@@ -2743,10 +2736,6 @@
         },
         {
           "t": "Mundo en línea compartido",
-          "s": "idea"
-        },
-        {
-          "t": "Aplicación para móvil",
           "s": "idea"
         },
         {

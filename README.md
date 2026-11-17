@@ -29,7 +29,7 @@ con las temporadas. El objetivo es un gestor deportivo profundo, explicable y du
 | Partido        | Simulación por posesiones, tácticas con efecto y estadísticas derivadas de eventos. | Entrenadores con criterio, más reglas, lesiones, tiempos muertos y calibración contrastada.      |
 | Club y mercado | Equipo propio, quinteto, agentes libres, contratos, salarios y cuentas del club.    | Traspasos negociados, personal, instalaciones, patrocinadores y decisiones económicas profundas. |
 | Mundo          | Cuatro niveles, temporadas, ascensos, descensos, desarrollo y retiradas.            | Cantera real, ojeo, competiciones adicionales y mayor estabilidad contrastada.                   |
-| Experiencia    | Demo con temas claro/oscuro, inicio guiado, móvil y compilación para Windows.       | Ayuda completa, validación de todas las pantallas y pruebas de instalación real.                 |
+| Experiencia    | Demo con temas claro/oscuro, inicio guiado y compilación para Windows (solo PC).    | Ayuda completa, validación de todas las pantallas y pruebas de instalación real.                 |
 | Partidas       | Archivos con checksum, ranuras internas y autoguardado al terminar la temporada.    | Recuperación con copias históricas y un historial más completo.                                  |
 
 Los entrenadores y la entrada de jóvenes siguen usando reglas provisionales (`PLACEHOLDER`).
@@ -58,9 +58,9 @@ terminar la experiencia. Los pesos son hipótesis de planificación publicadas, 
 
 ## Avance del desarrollo
 
-**Preparación estimada para lanzamiento: 11 %** `███░░░░░░░░░░░░░░░░░░░░░░░░░░░`
+**Preparación estimada para lanzamiento: 10 %** `███░░░░░░░░░░░░░░░░░░░░░░░░░░░`
 
-475 elementos organizados en 7 fases y 34 áreas de desarrollo. El índice pondera la profundidad y el producto terminado; no es una comparación medida con otro juego ni una fecha de entrega.
+474 elementos organizados en 7 fases y 34 áreas de desarrollo. El índice pondera la profundidad y el producto terminado; no es una comparación medida con otro juego ni una fecha de entrega.
 
 ![Preparación del producto por fases](docs/assets/development-progress.svg)
 
@@ -72,7 +72,7 @@ flowchart LR
   F1["F1 Primera versión jugable<br/>43 %"]
   F2["F2 Profundidad de gestión<br/>0 %"]
   F3["F3 Mundo, datos y mods<br/>0 %"]
-  F4["F4 Presentación<br/>10 %"]
+  F4["F4 Presentación<br/>7 %"]
   F5["F5 Distribución<br/>11 %"]
   F6["F6 Pulido y lanzamiento<br/>6 %"]
   F0 --> F1 --> F2 --> F3 --> F4 --> F5 --> F6
@@ -82,7 +82,7 @@ flowchart LR
 - **F1 · Primera versión jugable**: 43 % `█████████░░░░░░░░░░░`
 - **F2 · Profundidad de gestión**: 0 % `░░░░░░░░░░░░░░░░░░░░`
 - **F3 · Mundo, datos y mods**: 0 % `░░░░░░░░░░░░░░░░░░░░`
-- **F4 · Presentación**: 10 % `██░░░░░░░░░░░░░░░░░░`
+- **F4 · Presentación**: 7 % `█░░░░░░░░░░░░░░░░░░░`
 - **F5 · Distribución**: 11 % `██░░░░░░░░░░░░░░░░░░`
 - **F6 · Pulido y lanzamiento**: 6 % `█░░░░░░░░░░░░░░░░░░░`
 

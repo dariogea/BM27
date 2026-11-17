@@ -8,11 +8,11 @@
 
 ## Resumen
 
-**Preparación estimada para lanzamiento: 11 %** `███░░░░░░░░░░░░░░░░░░░░░░░░░░░`  (475 elementos)
+**Preparación estimada para lanzamiento: 10 %** `███░░░░░░░░░░░░░░░░░░░░░░░░░░░`  (474 elementos)
 
 ```mermaid
 pie showData title Elementos por estado
-  "Hecho" : 105
+  "Hecho" : 104
   "En curso" : 8
   "Pendiente" : 329
   "Bloqueado" : 3
@@ -53,7 +53,7 @@ flowchart LR
   F1["F1 Primera versión jugable<br/>43 %"]
   F2["F2 Profundidad de gestión<br/>0 %"]
   F3["F3 Mundo, datos y mods<br/>0 %"]
-  F4["F4 Presentación<br/>10 %"]
+  F4["F4 Presentación<br/>7 %"]
   F5["F5 Distribución<br/>11 %"]
   F6["F6 Pulido y lanzamiento<br/>6 %"]
   F0 --> F1 --> F2 --> F3 --> F4 --> F5 --> F6
@@ -75,7 +75,7 @@ flowchart LR
 | **F1 Primera versión jugable** | 43 % | `█████████░░░░░░░░░░░` | 18/43 | Que el propietario pueda jugar de principio a fin una temporada y varias más sin tocar una terminal, con consultas básicas del mundo. |
 | **F2 Profundidad de gestión** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0/184 | Traspasos, cantera y ojeadores, economía con decisiones, entrenador rival con criterio, motor de partido completo. |
 | **F3 Mundo, datos y mods** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0/63 | Calibración con datos contrastados, paquetes de datos cargables, pirámide completa y otras competiciones. |
-| **F4 Presentación** | 10 % | `██░░░░░░░░░░░░░░░░░░` | 3/36 | Diseño visual, accesibilidad, partido en 2D, narración, sonido y varios idiomas. |
+| **F4 Presentación** | 7 % | `█░░░░░░░░░░░░░░░░░░░` | 2/35 | Diseño visual, accesibilidad, partido en 2D, narración, sonido y varios idiomas. |
 | **F5 Distribución** | 11 % | `██░░░░░░░░░░░░░░░░░░` | 1/22 | Instalador de escritorio, versiones alfa y beta en GitHub, actualización automática, firma y otras plataformas. |
 | **F6 Pulido y lanzamiento** | 6 % | `█░░░░░░░░░░░░░░░░░░░` | 1/17 | Tutorial, equilibrio final, documentación, comunidad y lanzamiento. |
 
@@ -95,7 +95,7 @@ flowchart LR
 | **Mundo persistente** | 30 % | `██████░░░░░░░░░░░░░░` | 3 | 0 | 6 | 0 | 1 | Un mundo que sigue vivo y estable durante decenas de temporadas, sin inflarse ni hundirse. |
 | **Datos, mods e idiomas** | 15 % | `███░░░░░░░░░░░░░░░░░` | 2 | 0 | 9 | 0 | 2 | Reglamentos, competiciones y contenido como datos: añadir una liga no debe tocar el motor. |
 | **Guardado y persistencia** | 60 % | `████████████░░░░░░░░` | 6 | 0 | 4 | 0 | 0 | Las partidas no se pierden, son compactas y se pueden recuperar. |
-| **Interfaz web** | 38 % | `████████░░░░░░░░░░░░` | 10 | 1 | 17 | 0 | 0 | La cara del juego: clara, rápida y accesible. |
+| **Interfaz web** | 35 % | `███████░░░░░░░░░░░░░` | 9 | 1 | 17 | 0 | 0 | La cara del juego: clara, rápida y accesible. |
 | **Visualización del partido** | 11 % | `██░░░░░░░░░░░░░░░░░░` | 1 | 0 | 6 | 0 | 2 | Ver el partido, no solo leerlo, derivado siempre del registro de eventos. |
 | **Aplicación de escritorio y distribución** | 21 % | `████░░░░░░░░░░░░░░░░` | 1 | 2 | 6 | 1 | 2 | Que el propietario instale y actualice el juego sin pasar por GitHub. |
 | **Calidad, pruebas y herramientas** | 46 % | `█████████░░░░░░░░░░░` | 6 | 0 | 5 | 0 | 2 | Poder fiarse de lo construido y detectar a tiempo lo que se rompe. |
@@ -117,7 +117,7 @@ flowchart LR
 | **Accesibilidad y preferencias de uso** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Permitir seguir y gestionar la partida con distintas capacidades, dispositivos y preferencias. |
 | **Seguridad y mantenimiento técnico** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Proteger partidas, distribución y dependencias sin introducir servicios externos innecesarios. |
 | **Compatibilidad y calidad de distribución** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Definir dónde funciona el juego y validar la instalación, actualización y retirada del producto. |
-| **Ideas sin clasificar _(no cuenta)_** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 0 | 0 | 8 | Aparcamiento de ideas que aún no son tareas. No cuentan en el porcentaje. |
+| **Ideas sin clasificar _(no cuenta)_** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 0 | 0 | 7 | Aparcamiento de ideas que aún no son tareas. No cuentan en el porcentaje. |
 
 ## Quién trabaja en qué ahora
 
@@ -454,7 +454,7 @@ _Las partidas no se pierden, son compactas y se pueden recuperar._
 
 </details>
 
-<details><summary><b>Interfaz web</b> — 38 % `█████░░░░░░░`</summary>
+<details><summary><b>Interfaz web</b> — 35 % `████░░░░░░░░`</summary>
 
 _La cara del juego: clara, rápida y accesible._
 
@@ -479,9 +479,8 @@ _La cara del juego: clara, rápida y accesible._
   - ⬜ Instalaciones y patrocinadores (`F2` · [#12](https://github.com/dariogea/BM27/issues/12))
   - ⬜ Ajustes del juego (`F4`)
   - ⬜ Ayuda y glosario (`F4`)
-- **Calidad de la interfaz** — 31 %
+- **Calidad de la interfaz** — 21 %
   - ✅ Sistema de diseño con modo claro y oscuro (`F4` · @codex · [#23](https://github.com/dariogea/BM27/issues/23)) — _Demo visual con temas persistentes, inicio guiado y tablas desplazables; comprobación de accesibilidad y pantallas en el PR._
-  - ✅ Adaptación a móvil (`F4` · @codex · [#23](https://github.com/dariogea/BM27/issues/23)) — _Demo visual con temas persistentes, inicio guiado y tablas desplazables; comprobación de accesibilidad y pantallas en el PR._
   - 🔄 Accesibilidad (contraste, teclado, lectores de pantalla) (`F4` · 50 % · @codex · [#23](https://github.com/dariogea/BM27/issues/23)) — _Mejoras en controles, foco y avisos. Falta validar todos los recorridos y tecnologías asistivas._
   - ⬜ Tablas ordenables y filtros (`F4`)
   - ⬜ Atajos de teclado (`F4`)
@@ -932,7 +931,6 @@ _Aparcamiento de ideas que aún no son tareas. No cuentan en el porcentaje._
 
 - 💡 Modo multijugador en la misma partida (`F6`)
 - 💡 Mundo en línea compartido (`F6`)
-- 💡 Aplicación para móvil (`F6`)
 - 💡 Retos y escenarios (salvar un club en quiebra) (`F6`)
 - 💡 Logros (`F6`)
 - 💡 Modo espectador: ver una liga sin gestionar (`F6`)

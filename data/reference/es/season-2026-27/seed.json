@@ -1,0 +1,2459 @@
+{
+  "id": "es-seed-2026-27",
+  "version": 1,
+  "status": "seed-unverified",
+  "capturedOn": "2026-11-17",
+  "provenance": "Base semilla aportada por el propietario (investigación de fuentes públicas a 17-11-2026). No es un censo exhaustivo ni una licencia de redistribución; las condiciones de uso de cada fuente no están revisadas. Los identificadores son internos de esta semilla, no oficiales. Se excluyen deliberadamente las personas (jugadores, directivos) hasta revisar derechos y protección de datos.",
+  "cautions": [
+    "nombre_publico no es razón social: no equiparar patrocinador, equipo y sociedad deportiva.",
+    "Tercera FEB: 138 equipos (no 140); las conferencias A, B, C y E tienen 28 y la D 26. Se conserva el literal 'Fundación Globalcaka La Roda' (posible errata).",
+    "Los datos FEB proceden de la aprobación del 21-07-2026 y pueden haber cambiado después.",
+    "No se han inventado los cupos específicos de Primera FEB: su normativa no se pudo procesar entera."
+  ],
+  "competitions": [
+    {
+      "id": "ACB",
+      "season": "2026/27",
+      "name": "Liga Endesa",
+      "level": 1,
+      "organizer": "ACB",
+      "confirmedTeams": 18,
+      "sourceUrl": "https://acb.com/es/liga/equipos"
+    },
+    {
+      "id": "P1",
+      "season": "2026/27",
+      "name": "Primera FEB",
+      "level": 2,
+      "organizer": "FEB",
+      "confirmedTeams": 18,
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx"
+    },
+    {
+      "id": "P2",
+      "season": "2026/27",
+      "name": "Segunda FEB",
+      "level": 3,
+      "organizer": "FEB",
+      "confirmedTeams": 28,
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx"
+    },
+    {
+      "id": "P3",
+      "season": "2026/27",
+      "name": "Tercera FEB",
+      "level": 4,
+      "organizer": "FEB",
+      "confirmedTeams": 138,
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx"
+    }
+  ],
+  "teams": [
+    {
+      "id": "ACB-X-001",
+      "competitionId": "ACB",
+      "sourceOrder": 1,
+      "publicName": "ASISA JOVENTUT",
+      "sourceUrl": "https://acb.com/es/liga/equipos",
+      "capturedOn": "2026-11-17"
+    },
+    {
+      "id": "ACB-X-002",
+      "competitionId": "ACB",
+      "sourceOrder": 2,
+      "publicName": "BARÇA",
+      "sourceUrl": "https://acb.com/es/liga/equipos",
+      "capturedOn": "2026-11-17"
+    },
+    {
+      "id": "ACB-X-003",
+      "competitionId": "ACB",
+      "sourceOrder": 3,
+      "publicName": "CASADEMONT ZARAGOZA",
+      "sourceUrl": "https://acb.com/es/liga/equipos",
+      "capturedOn": "2026-11-17"
+    },
+    {
+      "id": "ACB-X-004",
+      "competitionId": "ACB",
+      "sourceOrder": 4,
+      "publicName": "FIATC GIRONA",
+      "sourceUrl": "https://acb.com/es/liga/equipos",
+      "capturedOn": "2026-11-17"
+    },
+    {
+      "id": "ACB-X-005",
+      "competitionId": "ACB",
+      "sourceOrder": 5,
+      "publicName": "ILERNA LLEIDA",
+      "sourceUrl": "https://acb.com/es/liga/equipos",
+      "capturedOn": "2026-11-17"
+    },
+    {
+      "id": "ACB-X-006",
+      "competitionId": "ACB",
+      "sourceOrder": 6,
+      "publicName": "KIDS&US MANRESA",
+      "sourceUrl": "https://acb.com/es/liga/equipos",
+      "capturedOn": "2026-11-17"
+    },
+    {
+      "id": "ACB-X-007",
+      "competitionId": "ACB",
+      "sourceOrder": 7,
+      "publicName": "KOSNER BASKONIA",
+      "sourceUrl": "https://acb.com/es/liga/equipos",
+      "capturedOn": "2026-11-17"
+    },
+    {
+      "id": "ACB-X-008",
+      "competitionId": "ACB",
+      "sourceOrder": 8,
+      "publicName": "LA LAGUNA TENERIFE",
+      "sourceUrl": "https://acb.com/es/liga/equipos",
+      "capturedOn": "2026-11-17"
+    },
+    {
+      "id": "ACB-X-009",
+      "competitionId": "ACB",
+      "sourceOrder": 9,
+      "publicName": "LEYMA CORUÑA",
+      "sourceUrl": "https://acb.com/es/liga/equipos",
+      "capturedOn": "2026-11-17"
+    },
+    {
+      "id": "ACB-X-010",
+      "competitionId": "ACB",
+      "sourceOrder": 10,
+      "publicName": "MONBUS OBRA",
+      "sourceUrl": "https://acb.com/es/liga/equipos",
+      "capturedOn": "2026-11-17"
+    },
+    {
+      "id": "ACB-X-011",
+      "competitionId": "ACB",
+      "sourceOrder": 11,
+      "publicName": "MORABANC ANDORRA",
+      "sourceUrl": "https://acb.com/es/liga/equipos",
+      "capturedOn": "2026-11-17"
+    },
+    {
+      "id": "ACB-X-012",
+      "competitionId": "ACB",
+      "sourceOrder": 12,
+      "publicName": "REAL MADRID",
+      "sourceUrl": "https://acb.com/es/liga/equipos",
+      "capturedOn": "2026-11-17"
+    },
+    {
+      "id": "ACB-X-013",
+      "competitionId": "ACB",
+      "sourceOrder": 13,
+      "publicName": "RECOLETAS SALUD SAN PABLO BURGOS",
+      "sourceUrl": "https://acb.com/es/liga/equipos",
+      "capturedOn": "2026-11-17"
+    },
+    {
+      "id": "ACB-X-014",
+      "competitionId": "ACB",
+      "sourceOrder": 14,
+      "publicName": "RÍO BREOGÁN",
+      "sourceUrl": "https://acb.com/es/liga/equipos",
+      "capturedOn": "2026-11-17"
+    },
+    {
+      "id": "ACB-X-015",
+      "competitionId": "ACB",
+      "sourceOrder": 15,
+      "publicName": "SURNE BILBAO",
+      "sourceUrl": "https://acb.com/es/liga/equipos",
+      "capturedOn": "2026-11-17"
+    },
+    {
+      "id": "ACB-X-016",
+      "competitionId": "ACB",
+      "sourceOrder": 16,
+      "publicName": "UCAM MURCIA",
+      "sourceUrl": "https://acb.com/es/liga/equipos",
+      "capturedOn": "2026-11-17"
+    },
+    {
+      "id": "ACB-X-017",
+      "competitionId": "ACB",
+      "sourceOrder": 17,
+      "publicName": "UNICAJA",
+      "sourceUrl": "https://acb.com/es/liga/equipos",
+      "capturedOn": "2026-11-17"
+    },
+    {
+      "id": "ACB-X-018",
+      "competitionId": "ACB",
+      "sourceOrder": 18,
+      "publicName": "VALENCIA BASKET",
+      "sourceUrl": "https://acb.com/es/liga/equipos",
+      "capturedOn": "2026-11-17"
+    },
+    {
+      "id": "P1-X-001",
+      "competitionId": "P1",
+      "sourceOrder": 1,
+      "publicName": "Alimerka Oviedo Baloncesto",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P1-X-002",
+      "competitionId": "P1",
+      "sourceOrder": 2,
+      "publicName": "Grupo Alega Cantabria",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P1-X-003",
+      "competitionId": "P1",
+      "sourceOrder": 3,
+      "publicName": "Bueno Arenas Albacete",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P1-X-004",
+      "competitionId": "P1",
+      "sourceOrder": 4,
+      "publicName": "Grupo Ureta Tizona Burgos",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P1-X-005",
+      "competitionId": "P1",
+      "sourceOrder": 5,
+      "publicName": "Caja Rural CB Zamora",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P1-X-006",
+      "competitionId": "P1",
+      "sourceOrder": 6,
+      "publicName": "Hestia Menorca",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P1-X-007",
+      "competitionId": "P1",
+      "sourceOrder": 7,
+      "publicName": "Cajasol Coto Córdoba",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P1-X-008",
+      "competitionId": "P1",
+      "sourceOrder": 8,
+      "publicName": "Insolac Caja 87",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P1-X-009",
+      "competitionId": "P1",
+      "sourceOrder": 9,
+      "publicName": "Club Ourense Baloncesto",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P1-X-010",
+      "competitionId": "P1",
+      "sourceOrder": 10,
+      "publicName": "Inveready Gipuzkoa",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P1-X-011",
+      "competitionId": "P1",
+      "sourceOrder": 11,
+      "publicName": "Covirán Granada",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P1-X-012",
+      "competitionId": "P1",
+      "sourceOrder": 12,
+      "publicName": "Lucentum Alicante",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P1-X-013",
+      "competitionId": "P1",
+      "sourceOrder": 13,
+      "publicName": "Fibwi Mallorca Básquet Palma",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P1-X-014",
+      "competitionId": "P1",
+      "sourceOrder": 14,
+      "publicName": "Movistar Estudiantes",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P1-X-015",
+      "competitionId": "P1",
+      "sourceOrder": 15,
+      "publicName": "Flexicar Fuenlabrada",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P1-X-016",
+      "competitionId": "P1",
+      "sourceOrder": 16,
+      "publicName": "Palmer Basket Mallorca Palma",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P1-X-017",
+      "competitionId": "P1",
+      "sourceOrder": 17,
+      "publicName": "Gran Canaria CB",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P1-X-018",
+      "competitionId": "P1",
+      "sourceOrder": 18,
+      "publicName": "Súper Agropal Palencia",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P2-A-001",
+      "competitionId": "P2",
+      "group": "A",
+      "sourceOrder": 1,
+      "publicName": "BCBadajoz",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P2-A-002",
+      "competitionId": "P2",
+      "group": "A",
+      "sourceOrder": 2,
+      "publicName": "CB Getafe",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P2-A-003",
+      "competitionId": "P2",
+      "group": "A",
+      "sourceOrder": 3,
+      "publicName": "CB Starlabs Morón",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P2-A-004",
+      "competitionId": "P2",
+      "group": "A",
+      "sourceOrder": 4,
+      "publicName": "CB Tres Cantos",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P2-A-005",
+      "competitionId": "P2",
+      "group": "A",
+      "sourceOrder": 5,
+      "publicName": "Cultural y Deportiva Leonesa",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P2-A-006",
+      "competitionId": "P2",
+      "group": "A",
+      "sourceOrder": 6,
+      "publicName": "Jaén Paraiso Interior FS",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P2-A-007",
+      "competitionId": "P2",
+      "group": "A",
+      "sourceOrder": 7,
+      "publicName": "Cáceres Patrimonio de la Humanidad",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P2-A-008",
+      "competitionId": "P2",
+      "group": "A",
+      "sourceOrder": 8,
+      "publicName": "CB Algeciras",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P2-A-009",
+      "competitionId": "P2",
+      "group": "A",
+      "sourceOrder": 9,
+      "publicName": "Clínica Ponferrada SDP",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P2-A-010",
+      "competitionId": "P2",
+      "group": "A",
+      "sourceOrder": 10,
+      "publicName": "CB Toledo Basket",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P2-A-011",
+      "competitionId": "P2",
+      "group": "A",
+      "sourceOrder": 11,
+      "publicName": "Melilla Ciudad del Deporte",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P2-A-012",
+      "competitionId": "P2",
+      "group": "A",
+      "sourceOrder": 12,
+      "publicName": "Movistar Estudiantes B",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P2-A-013",
+      "competitionId": "P2",
+      "group": "A",
+      "sourceOrder": 13,
+      "publicName": "UEMC Baloncesto Valladolid",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P2-A-014",
+      "competitionId": "P2",
+      "group": "A",
+      "sourceOrder": 14,
+      "publicName": "Spanish Basketball Academy",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P2-B-001",
+      "competitionId": "P2",
+      "group": "B",
+      "sourceOrder": 1,
+      "publicName": "Amics Castelló",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P2-B-002",
+      "competitionId": "P2",
+      "group": "B",
+      "sourceOrder": 2,
+      "publicName": "Biele ISB",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P2-B-003",
+      "competitionId": "P2",
+      "group": "B",
+      "sourceOrder": 3,
+      "publicName": "Basket Cartagena",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P2-B-004",
+      "competitionId": "P2",
+      "group": "B",
+      "sourceOrder": 4,
+      "publicName": "Intermaquinas Benicarló",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P2-B-005",
+      "competitionId": "P2",
+      "group": "B",
+      "sourceOrder": 5,
+      "publicName": "Lobe Tu Provincia Huesca La Magia",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P2-B-006",
+      "competitionId": "P2",
+      "group": "B",
+      "sourceOrder": 6,
+      "publicName": "LogroBasket Logi7",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P2-B-007",
+      "competitionId": "P2",
+      "group": "B",
+      "sourceOrder": 7,
+      "publicName": "CB Zaragoza",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P2-B-008",
+      "competitionId": "P2",
+      "group": "B",
+      "sourceOrder": 8,
+      "publicName": "Ciudad Molina Basket",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P2-B-009",
+      "competitionId": "P2",
+      "group": "B",
+      "sourceOrder": 9,
+      "publicName": "Class Bàsquet Sant Antoni",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P2-B-010",
+      "competitionId": "P2",
+      "group": "B",
+      "sourceOrder": 10,
+      "publicName": "Club Esportiu Bàsquet Llíria",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P2-B-011",
+      "competitionId": "P2",
+      "group": "B",
+      "sourceOrder": 11,
+      "publicName": "Proinbeni UPB Gandía",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P2-B-012",
+      "competitionId": "P2",
+      "group": "B",
+      "sourceOrder": 12,
+      "publicName": "Sol Gironès Bisbal Bàsquet",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P2-B-013",
+      "competitionId": "P2",
+      "group": "B",
+      "sourceOrder": 13,
+      "publicName": "TQ-CB Prat",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P2-B-014",
+      "competitionId": "P2",
+      "group": "B",
+      "sourceOrder": 14,
+      "publicName": "Reina Proteínas Clavijo",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-A-001",
+      "competitionId": "P3",
+      "group": "A",
+      "sourceOrder": 1,
+      "publicName": "Universidad de Oviedo",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-A-002",
+      "competitionId": "P3",
+      "group": "A",
+      "sourceOrder": 2,
+      "publicName": "Traumacor Culleredo",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-A-003",
+      "competitionId": "P3",
+      "group": "A",
+      "sourceOrder": 3,
+      "publicName": "Círculo Gijón Baloncesto",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-A-004",
+      "competitionId": "P3",
+      "group": "A",
+      "sourceOrder": 4,
+      "publicName": "Calvo Basket Xiria",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-A-005",
+      "competitionId": "P3",
+      "group": "A",
+      "sourceOrder": 5,
+      "publicName": "Baloncesto Villa de Mieres 2012",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-A-006",
+      "competitionId": "P3",
+      "group": "A",
+      "sourceOrder": 6,
+      "publicName": "Tifón Muebles Novobasket",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-A-007",
+      "competitionId": "P3",
+      "group": "A",
+      "sourceOrder": 7,
+      "publicName": "Restaurante Los Arcos CB Solares",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-A-008",
+      "competitionId": "P3",
+      "group": "A",
+      "sourceOrder": 8,
+      "publicName": "Ucoga Seguros CB Chantada",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-A-009",
+      "competitionId": "P3",
+      "group": "A",
+      "sourceOrder": 9,
+      "publicName": "Lis Data Solutions Bezana",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-A-010",
+      "competitionId": "P3",
+      "group": "A",
+      "sourceOrder": 10,
+      "publicName": "Marín Ence Peixegalego",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-A-011",
+      "competitionId": "P3",
+      "group": "A",
+      "sourceOrder": 11,
+      "publicName": "De Morro Fino Cantbasket",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-A-012",
+      "competitionId": "P3",
+      "group": "A",
+      "sourceOrder": 12,
+      "publicName": "Sigaltec Basket Base Club",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-A-013",
+      "competitionId": "P3",
+      "group": "A",
+      "sourceOrder": 13,
+      "publicName": "Constru. Gonzalo Crespo Pas Piélagos",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-A-014",
+      "competitionId": "P3",
+      "group": "A",
+      "sourceOrder": 14,
+      "publicName": "Megacalzado Ardoi",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-A-015",
+      "competitionId": "P3",
+      "group": "A",
+      "sourceOrder": 15,
+      "publicName": "Hotel 4Postes",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-A-016",
+      "competitionId": "P3",
+      "group": "A",
+      "sourceOrder": 16,
+      "publicName": "CB Valle de Egües",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-A-017",
+      "competitionId": "P3",
+      "group": "A",
+      "sourceOrder": 17,
+      "publicName": "Usal Meins Avenida",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-A-018",
+      "competitionId": "P3",
+      "group": "A",
+      "sourceOrder": 18,
+      "publicName": "Universidad de Deusto Loiola Indautxu",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-A-019",
+      "competitionId": "P3",
+      "group": "A",
+      "sourceOrder": 19,
+      "publicName": "Ulla Oil Rosalía",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-A-020",
+      "competitionId": "P3",
+      "group": "A",
+      "sourceOrder": 20,
+      "publicName": "Ulacia ZKE",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-A-021",
+      "competitionId": "P3",
+      "group": "A",
+      "sourceOrder": 21,
+      "publicName": "Baloncesto La Flecha",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-A-022",
+      "competitionId": "P3",
+      "group": "A",
+      "sourceOrder": 22,
+      "publicName": "Iruki Take",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-A-023",
+      "competitionId": "P3",
+      "group": "A",
+      "sourceOrder": 23,
+      "publicName": "Recoletas Salud Salamanca",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-A-024",
+      "competitionId": "P3",
+      "group": "A",
+      "sourceOrder": 24,
+      "publicName": "Teknei Bizkaia Zornotza",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-A-025",
+      "competitionId": "P3",
+      "group": "A",
+      "sourceOrder": 25,
+      "publicName": "Caja Rural RDL",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-A-026",
+      "competitionId": "P3",
+      "group": "A",
+      "sourceOrder": 26,
+      "publicName": "San Prudencio",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-A-027",
+      "competitionId": "P3",
+      "group": "A",
+      "sourceOrder": 27,
+      "publicName": "Ineltron Santo Domingo de Betanzos",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-A-028",
+      "competitionId": "P3",
+      "group": "A",
+      "sourceOrder": 28,
+      "publicName": "Tabirako Baque",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-B-001",
+      "competitionId": "P3",
+      "group": "B",
+      "sourceOrder": 1,
+      "publicName": "Zentro Basket Madrid",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-B-002",
+      "competitionId": "P3",
+      "group": "B",
+      "sourceOrder": 2,
+      "publicName": "Cesus Distrito Olímpico",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-B-003",
+      "competitionId": "P3",
+      "group": "B",
+      "sourceOrder": 3,
+      "publicName": "CB Fuenlabrada",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-B-004",
+      "competitionId": "P3",
+      "group": "B",
+      "sourceOrder": 4,
+      "publicName": "Qualis CB Villa de Valdemoro",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-B-005",
+      "competitionId": "P3",
+      "group": "B",
+      "sourceOrder": 5,
+      "publicName": "CB Las Rozas",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-B-006",
+      "competitionId": "P3",
+      "group": "B",
+      "sourceOrder": 6,
+      "publicName": "CD Mensajero Isla de Palma",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-B-007",
+      "competitionId": "P3",
+      "group": "B",
+      "sourceOrder": 7,
+      "publicName": "EB Felipe Antón",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-B-008",
+      "competitionId": "P3",
+      "group": "B",
+      "sourceOrder": 8,
+      "publicName": "CB Aridane",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-B-009",
+      "competitionId": "P3",
+      "group": "B",
+      "sourceOrder": 9,
+      "publicName": "CB Dadarmo de Güimar",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-B-010",
+      "competitionId": "P3",
+      "group": "B",
+      "sourceOrder": 10,
+      "publicName": "Fundación Globalcaka La Roda",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21",
+      "note": "Nombre copiado literalmente de la publicación FEB; parece contener errata (Globalcaka)."
+    },
+    {
+      "id": "P3-B-011",
+      "competitionId": "P3",
+      "group": "B",
+      "sourceOrder": 11,
+      "publicName": "El Ventero CBV",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-B-012",
+      "competitionId": "P3",
+      "group": "B",
+      "sourceOrder": 12,
+      "publicName": "Basket Globalcaja Quintanar",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-B-013",
+      "competitionId": "P3",
+      "group": "B",
+      "sourceOrder": 13,
+      "publicName": "Stop Biogás Tobarra",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-B-014",
+      "competitionId": "P3",
+      "group": "B",
+      "sourceOrder": 14,
+      "publicName": "AG Movialsa QualitySport Criptana",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-B-015",
+      "competitionId": "P3",
+      "group": "B",
+      "sourceOrder": 15,
+      "publicName": "Uros de Rivas",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-B-016",
+      "competitionId": "P3",
+      "group": "B",
+      "sourceOrder": 16,
+      "publicName": "Real Canoe NC",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-B-017",
+      "competitionId": "P3",
+      "group": "B",
+      "sourceOrder": 17,
+      "publicName": "Fundal Alcobendas",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-B-018",
+      "competitionId": "P3",
+      "group": "B",
+      "sourceOrder": 18,
+      "publicName": "Baloncesto Alcalá",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-B-019",
+      "competitionId": "P3",
+      "group": "B",
+      "sourceOrder": 19,
+      "publicName": "Grupo Egido Pintobasket",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-B-020",
+      "competitionId": "P3",
+      "group": "B",
+      "sourceOrder": 20,
+      "publicName": "Baloncesto Telde",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-B-021",
+      "competitionId": "P3",
+      "group": "B",
+      "sourceOrder": 21,
+      "publicName": "Gran Canaria",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-B-022",
+      "competitionId": "P3",
+      "group": "B",
+      "sourceOrder": 22,
+      "publicName": "CB 7 Palmas",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-B-023",
+      "competitionId": "P3",
+      "group": "B",
+      "sourceOrder": 23,
+      "publicName": "Náutico Tenerife",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-B-024",
+      "competitionId": "P3",
+      "group": "B",
+      "sourceOrder": 24,
+      "publicName": "Inmobiliaria Gálvez Santa Cruz",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-B-025",
+      "competitionId": "P3",
+      "group": "B",
+      "sourceOrder": 25,
+      "publicName": "Lujisa Guadalajara Basket",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-B-026",
+      "competitionId": "P3",
+      "group": "B",
+      "sourceOrder": 26,
+      "publicName": "Baloncesto Talavera",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-B-027",
+      "competitionId": "P3",
+      "group": "B",
+      "sourceOrder": 27,
+      "publicName": "Recucym Bazu",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-B-028",
+      "competitionId": "P3",
+      "group": "B",
+      "sourceOrder": 28,
+      "publicName": "Basket Cervantes Ciudad Real",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-C-001",
+      "competitionId": "P3",
+      "group": "C",
+      "sourceOrder": 1,
+      "publicName": "Florange UE Mataró",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-C-002",
+      "competitionId": "P3",
+      "group": "C",
+      "sourceOrder": 2,
+      "publicName": "Ibersol CB Tarragona",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-C-003",
+      "competitionId": "P3",
+      "group": "C",
+      "sourceOrder": 3,
+      "publicName": "CB Vic - Universitat de Vic",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-C-004",
+      "competitionId": "P3",
+      "group": "C",
+      "sourceOrder": 4,
+      "publicName": "DM Group Mollet",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-C-005",
+      "competitionId": "P3",
+      "group": "C",
+      "sourceOrder": 5,
+      "publicName": "Tibu-ron Castelldefels",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-C-006",
+      "competitionId": "P3",
+      "group": "C",
+      "sourceOrder": 6,
+      "publicName": "Sese A",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-C-007",
+      "competitionId": "P3",
+      "group": "C",
+      "sourceOrder": 7,
+      "publicName": "CB granollers",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-C-008",
+      "competitionId": "P3",
+      "group": "C",
+      "sourceOrder": 8,
+      "publicName": "Tenea CB Esparreguera",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-C-009",
+      "competitionId": "P3",
+      "group": "C",
+      "sourceOrder": 9,
+      "publicName": "Eglobe Tecla Sala",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-C-010",
+      "competitionId": "P3",
+      "group": "C",
+      "sourceOrder": 10,
+      "publicName": "UE Mongat",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-C-011",
+      "competitionId": "P3",
+      "group": "C",
+      "sourceOrder": 11,
+      "publicName": "CB Quart Fai Berti",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-C-012",
+      "competitionId": "P3",
+      "group": "C",
+      "sourceOrder": 12,
+      "publicName": "CB Cuarte de Huerva",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-C-013",
+      "competitionId": "P3",
+      "group": "C",
+      "sourceOrder": 13,
+      "publicName": "Immo Sa Marina Ciutat D´Inca Bàsquet",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-C-014",
+      "competitionId": "P3",
+      "group": "C",
+      "sourceOrder": 14,
+      "publicName": "Flanigan Calvià",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-C-015",
+      "competitionId": "P3",
+      "group": "C",
+      "sourceOrder": 15,
+      "publicName": "OCA Global CB Salou",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-C-016",
+      "competitionId": "P3",
+      "group": "C",
+      "sourceOrder": 16,
+      "publicName": "Pujol Mollerussa",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-C-017",
+      "competitionId": "P3",
+      "group": "C",
+      "sourceOrder": 17,
+      "publicName": "CB Navas Víscola",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-C-018",
+      "competitionId": "P3",
+      "group": "C",
+      "sourceOrder": 18,
+      "publicName": "Sandá CB L´Hospitalet",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-C-019",
+      "competitionId": "P3",
+      "group": "C",
+      "sourceOrder": 19,
+      "publicName": "CB Valls Tallers Pablo Martínez",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-C-020",
+      "competitionId": "P3",
+      "group": "C",
+      "sourceOrder": 20,
+      "publicName": "Monbus CB Igualada",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-C-021",
+      "competitionId": "P3",
+      "group": "C",
+      "sourceOrder": 21,
+      "publicName": "CB Cornellá",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-C-022",
+      "competitionId": "P3",
+      "group": "C",
+      "sourceOrder": 22,
+      "publicName": "CB Roser",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-C-023",
+      "competitionId": "P3",
+      "group": "C",
+      "sourceOrder": 23,
+      "publicName": "CB Artés",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-C-024",
+      "competitionId": "P3",
+      "group": "C",
+      "sourceOrder": 24,
+      "publicName": "La Parroquia Bàsquet Samá",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-C-025",
+      "competitionId": "P3",
+      "group": "C",
+      "sourceOrder": 25,
+      "publicName": "Fundación Grupo Jorge Bto. Zuera",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-C-026",
+      "competitionId": "P3",
+      "group": "C",
+      "sourceOrder": 26,
+      "publicName": "Letra Corpórea Barbastro",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-C-027",
+      "competitionId": "P3",
+      "group": "C",
+      "sourceOrder": 27,
+      "publicName": "Sa Tintina CB Es Castell Menorca",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-C-028",
+      "competitionId": "P3",
+      "group": "C",
+      "sourceOrder": 28,
+      "publicName": "Superm. Diskont CB Ciutadella Ponent",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-D-001",
+      "competitionId": "P3",
+      "group": "D",
+      "sourceOrder": 1,
+      "publicName": "CDBO Byspania Tíjola",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-D-002",
+      "competitionId": "P3",
+      "group": "D",
+      "sourceOrder": 2,
+      "publicName": "Jaén Paraiso Interior CB",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-D-003",
+      "competitionId": "P3",
+      "group": "D",
+      "sourceOrder": 3,
+      "publicName": "Baublock Tugasa Gymnástica",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-D-004",
+      "competitionId": "P3",
+      "group": "D",
+      "sourceOrder": 4,
+      "publicName": "CB San Fernando",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-D-005",
+      "competitionId": "P3",
+      "group": "D",
+      "sourceOrder": 5,
+      "publicName": "Oh!Tels ULB",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-D-006",
+      "competitionId": "P3",
+      "group": "D",
+      "sourceOrder": 6,
+      "publicName": "Baloncesto Badajoz",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-D-007",
+      "competitionId": "P3",
+      "group": "D",
+      "sourceOrder": 7,
+      "publicName": "Dehesas R. Climanavas Agrimetal Peñarroya",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-D-008",
+      "competitionId": "P3",
+      "group": "D",
+      "sourceOrder": 8,
+      "publicName": "San Antonio Cáceres",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-D-009",
+      "competitionId": "P3",
+      "group": "D",
+      "sourceOrder": 9,
+      "publicName": "CB La Zubia",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-D-010",
+      "competitionId": "P3",
+      "group": "D",
+      "sourceOrder": 10,
+      "publicName": "Lithium Iberia Sagrado Cáceres",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-D-011",
+      "competitionId": "P3",
+      "group": "D",
+      "sourceOrder": 11,
+      "publicName": "Molina Olea CB Costa Motril",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-D-012",
+      "competitionId": "P3",
+      "group": "D",
+      "sourceOrder": 12,
+      "publicName": "Bosco Mérida Patrimonio de la Humanidad",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-D-013",
+      "competitionId": "P3",
+      "group": "D",
+      "sourceOrder": 13,
+      "publicName": "Hospital Ochoa Marbella",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-D-014",
+      "competitionId": "P3",
+      "group": "D",
+      "sourceOrder": 14,
+      "publicName": "Melilla Ciudad del Deporte Enrique Soler",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-D-015",
+      "competitionId": "P3",
+      "group": "D",
+      "sourceOrder": 15,
+      "publicName": "Colegio El Pinar",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-D-016",
+      "competitionId": "P3",
+      "group": "D",
+      "sourceOrder": 16,
+      "publicName": "CB Novaschool Rincón de la Victoria",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-D-017",
+      "competitionId": "P3",
+      "group": "D",
+      "sourceOrder": 17,
+      "publicName": "Eiffage CB Ciudad de Dos Hermanas",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-D-018",
+      "competitionId": "P3",
+      "group": "D",
+      "sourceOrder": 18,
+      "publicName": "Ática Sevilla CB Coria",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-D-019",
+      "competitionId": "P3",
+      "group": "D",
+      "sourceOrder": 19,
+      "publicName": "Surseeds B. Murgi",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-D-020",
+      "competitionId": "P3",
+      "group": "D",
+      "sourceOrder": 20,
+      "publicName": "AD Rem Onuba",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-D-021",
+      "competitionId": "P3",
+      "group": "D",
+      "sourceOrder": 21,
+      "publicName": "Insolac CB Alcalá",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-D-022",
+      "competitionId": "P3",
+      "group": "D",
+      "sourceOrder": 22,
+      "publicName": "CB Spain",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-D-023",
+      "competitionId": "P3",
+      "group": "D",
+      "sourceOrder": 23,
+      "publicName": "Ecolculture CB Almería",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-D-024",
+      "competitionId": "P3",
+      "group": "D",
+      "sourceOrder": 24,
+      "publicName": "La Cartonera Lucentina Coto Lucena",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-D-025",
+      "competitionId": "P3",
+      "group": "D",
+      "sourceOrder": 25,
+      "publicName": "Baloncesto Comarca de la Axarquía",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-D-026",
+      "competitionId": "P3",
+      "group": "D",
+      "sourceOrder": 26,
+      "publicName": "CB Fénix",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-E-001",
+      "competitionId": "P3",
+      "group": "E",
+      "sourceOrder": 1,
+      "publicName": "CB Puerto Sagunto",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-E-002",
+      "competitionId": "P3",
+      "group": "E",
+      "sourceOrder": 2,
+      "publicName": "The Fitzgerald El Pilar",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-E-003",
+      "competitionId": "P3",
+      "group": "E",
+      "sourceOrder": 3,
+      "publicName": "FUndació Caixa Rural Vila-Real",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-E-004",
+      "competitionId": "P3",
+      "group": "E",
+      "sourceOrder": 4,
+      "publicName": "Socage Jovens L´Eliana",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-E-005",
+      "competitionId": "P3",
+      "group": "E",
+      "sourceOrder": 5,
+      "publicName": "Topsurface NB Paterna",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-E-006",
+      "competitionId": "P3",
+      "group": "E",
+      "sourceOrder": 6,
+      "publicName": "CB Jovens Almàssera",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-E-007",
+      "competitionId": "P3",
+      "group": "E",
+      "sourceOrder": 7,
+      "publicName": "CB Tabernes Blanques - Fernando Gil",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-E-008",
+      "competitionId": "P3",
+      "group": "E",
+      "sourceOrder": 8,
+      "publicName": "Halal Food Quality Uixó Bàsquet",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-E-009",
+      "competitionId": "P3",
+      "group": "E",
+      "sourceOrder": 9,
+      "publicName": "CB Morvedre",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-E-010",
+      "competitionId": "P3",
+      "group": "E",
+      "sourceOrder": 10,
+      "publicName": "Bauhaus Godella",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-E-011",
+      "competitionId": "P3",
+      "group": "E",
+      "sourceOrder": 11,
+      "publicName": "Cemalu Aldaia",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-E-012",
+      "competitionId": "P3",
+      "group": "E",
+      "sourceOrder": 12,
+      "publicName": "Turbo Manises CBC M-Q",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-E-013",
+      "competitionId": "P3",
+      "group": "E",
+      "sourceOrder": 13,
+      "publicName": "Burjassot CB",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-E-014",
+      "competitionId": "P3",
+      "group": "E",
+      "sourceOrder": 14,
+      "publicName": "Amics Castelló B",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-E-015",
+      "competitionId": "P3",
+      "group": "E",
+      "sourceOrder": 15,
+      "publicName": "Rigalli Alginet",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-E-016",
+      "competitionId": "P3",
+      "group": "E",
+      "sourceOrder": 16,
+      "publicName": "Velabasket CB Sueca",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-E-017",
+      "competitionId": "P3",
+      "group": "E",
+      "sourceOrder": 17,
+      "publicName": "CMG Hidráulica NB Torrent",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-E-018",
+      "competitionId": "P3",
+      "group": "E",
+      "sourceOrder": 18,
+      "publicName": "Servigroup Benidorm",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-E-019",
+      "competitionId": "P3",
+      "group": "E",
+      "sourceOrder": 19,
+      "publicName": "CBI Elche",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-E-020",
+      "competitionId": "P3",
+      "group": "E",
+      "sourceOrder": 20,
+      "publicName": "CB Jorge Juan Castelló Since 1907",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-E-021",
+      "competitionId": "P3",
+      "group": "E",
+      "sourceOrder": 21,
+      "publicName": "Personalhome Adesavi",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-E-022",
+      "competitionId": "P3",
+      "group": "E",
+      "sourceOrder": 22,
+      "publicName": "Eset Ontinent",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-E-023",
+      "competitionId": "P3",
+      "group": "E",
+      "sourceOrder": 23,
+      "publicName": "SCD Carolinas",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-E-024",
+      "competitionId": "P3",
+      "group": "E",
+      "sourceOrder": 24,
+      "publicName": "CB Ifach Calpe",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-E-025",
+      "competitionId": "P3",
+      "group": "E",
+      "sourceOrder": 25,
+      "publicName": "Denia Basker",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-E-026",
+      "competitionId": "P3",
+      "group": "E",
+      "sourceOrder": 26,
+      "publicName": "CB Estudiantes Cartagena",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-E-027",
+      "competitionId": "P3",
+      "group": "E",
+      "sourceOrder": 27,
+      "publicName": "Inversus Infante",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    },
+    {
+      "id": "P3-E-028",
+      "competitionId": "P3",
+      "group": "E",
+      "sourceOrder": 28,
+      "publicName": "Inversus Aceitunas Fruyper AD Cortera Sur",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "capturedOn": "2026-07-21"
+    }
+  ],
+  "rules": [
+    {
+      "id": "RL-001",
+      "competitionId": "ACB",
+      "season": "2026/27",
+      "key": "equipos_liga",
+      "value": "18",
+      "scope": "temporada",
+      "sourceUrl": "https://acb.com/es/liga/noticias/portal-de-transparencia-acb-139254",
+      "reference": "Estructura organizativa"
+    },
+    {
+      "id": "RL-002",
+      "competitionId": "ACB",
+      "season": "2026/27",
+      "key": "formato_regular",
+      "value": "Liga de ida y vuelta",
+      "scope": "temporada",
+      "sourceUrl": "https://www.acb.com/docs/descarga/pdf/transparencia/221026_normasinternas.pdf",
+      "reference": "Normas internas 2026"
+    },
+    {
+      "id": "RL-003",
+      "competitionId": "ACB",
+      "season": "2026/27",
+      "key": "playoffs_clasificados",
+      "value": "8",
+      "scope": "temporada",
+      "sourceUrl": "https://www.acb.com/docs/descarga/pdf/transparencia/221026_normasinternas.pdf",
+      "reference": "Normas internas 2026"
+    },
+    {
+      "id": "RL-004",
+      "competitionId": "ACB",
+      "season": "2026/27",
+      "key": "playoff_cuartos_max_partidos",
+      "value": "3",
+      "scope": "playoffs",
+      "sourceUrl": "https://www.acb.com/docs/descarga/pdf/transparencia/221026_normasinternas.pdf",
+      "reference": "Normas internas 2026"
+    },
+    {
+      "id": "RL-005",
+      "competitionId": "ACB",
+      "season": "2026/27",
+      "key": "playoff_semifinal_max_partidos",
+      "value": "5",
+      "scope": "playoffs",
+      "sourceUrl": "https://www.acb.com/docs/descarga/pdf/transparencia/221026_normasinternas.pdf",
+      "reference": "Normas internas 2026"
+    },
+    {
+      "id": "RL-006",
+      "competitionId": "ACB",
+      "season": "2026/27",
+      "key": "playoff_final_max_partidos",
+      "value": "5",
+      "scope": "playoffs",
+      "sourceUrl": "https://www.acb.com/docs/descarga/pdf/transparencia/221026_normasinternas.pdf",
+      "reference": "Normas internas 2026"
+    },
+    {
+      "id": "RL-007",
+      "competitionId": "ACB",
+      "season": "2026/27",
+      "key": "descensos",
+      "value": "2",
+      "scope": "temporada",
+      "sourceUrl": "https://www.acb.com/docs/descarga/pdf/transparencia/221026_normasinternas.pdf",
+      "reference": "Normas internas 2026",
+      "note": "Sujeto a condiciones de ascenso y organización de ligas."
+    },
+    {
+      "id": "RL-008",
+      "competitionId": "ACB",
+      "season": "2026/27",
+      "key": "formacion_min_si_8_9_inscritos",
+      "value": "3",
+      "scope": "acta",
+      "sourceUrl": "https://www.acb.com/docs/descarga/pdf/transparencia/221026_normasinternas.pdf",
+      "reference": "Art.15"
+    },
+    {
+      "id": "RL-009",
+      "competitionId": "ACB",
+      "season": "2026/27",
+      "key": "formacion_min_si_10_12_inscritos",
+      "value": "4",
+      "scope": "acta",
+      "sourceUrl": "https://www.acb.com/docs/descarga/pdf/transparencia/221026_normasinternas.pdf",
+      "reference": "Art.15"
+    },
+    {
+      "id": "RL-010",
+      "competitionId": "ACB",
+      "season": "2026/27",
+      "key": "extracomunitarios_max_acta",
+      "value": "2",
+      "scope": "acta",
+      "sourceUrl": "https://www.acb.com/docs/descarga/pdf/transparencia/221026_normasinternas.pdf",
+      "reference": "Art.15",
+      "note": "Consultar definiciones y excepciones antes de programar validación."
+    },
+    {
+      "id": "RL-011",
+      "competitionId": "ACB",
+      "season": "2026/27",
+      "key": "licencias_jugadores_max_temporada",
+      "value": "20",
+      "scope": "temporada",
+      "sourceUrl": "https://www.acb.com/docs/descarga/pdf/transparencia/221026_normasinternas.pdf",
+      "reference": "Art.15",
+      "note": "Puede haber excepciones reglamentarias; no implementar como límite irreversible."
+    },
+    {
+      "id": "RL-012",
+      "competitionId": "P1",
+      "season": "2026/27",
+      "key": "equipos_liga",
+      "value": "18",
+      "scope": "temporada",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "reference": "Comisión Delegada 21/07/2026"
+    },
+    {
+      "id": "RL-013",
+      "competitionId": "P1",
+      "season": "2026/27",
+      "key": "jornadas_liga_regular",
+      "value": "34",
+      "scope": "temporada",
+      "sourceUrl": "https://www.feb.es/primerafeb/",
+      "reference": "Información competición 2026/27",
+      "note": "Verificar en BBCC Primera FEB (PDF grande) antes de simular calendarios."
+    },
+    {
+      "id": "RL-014",
+      "competitionId": "P2",
+      "season": "2026/27",
+      "key": "equipos_liga",
+      "value": "28",
+      "scope": "temporada",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "reference": "Comisión Delegada 21/07/2026"
+    },
+    {
+      "id": "RL-015",
+      "competitionId": "P2",
+      "season": "2026/27",
+      "key": "grupos",
+      "value": "2",
+      "scope": "temporada",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "reference": "Comisión Delegada 21/07/2026"
+    },
+    {
+      "id": "RL-016",
+      "competitionId": "P2",
+      "season": "2026/27",
+      "key": "equipos_grupo",
+      "value": "14",
+      "scope": "temporada",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "reference": "Comisión Delegada 21/07/2026"
+    },
+    {
+      "id": "RL-017",
+      "competitionId": "P2",
+      "season": "2026/27",
+      "key": "jugadores_acta_min",
+      "value": "8",
+      "scope": "acta",
+      "sourceUrl": "https://www.feb.es/Documentos/Enlaces/%5B6549%5DBBCC%20Segunda%20FEB%2026-27%20-%20Versi%C3%B3n%20Web.pdf",
+      "reference": "2.3.1"
+    },
+    {
+      "id": "RL-018",
+      "competitionId": "P2",
+      "season": "2026/27",
+      "key": "jugadores_acta_max",
+      "value": "12",
+      "scope": "acta",
+      "sourceUrl": "https://www.feb.es/Documentos/Enlaces/%5B6549%5DBBCC%20Segunda%20FEB%2026-27%20-%20Versi%C3%B3n%20Web.pdf",
+      "reference": "2.3.1"
+    },
+    {
+      "id": "RL-019",
+      "competitionId": "P2",
+      "season": "2026/27",
+      "key": "formacion_min_si_8_9_inscritos",
+      "value": "3",
+      "scope": "acta",
+      "sourceUrl": "https://www.feb.es/Documentos/Enlaces/%5B6549%5DBBCC%20Segunda%20FEB%2026-27%20-%20Versi%C3%B3n%20Web.pdf",
+      "reference": "2.3.1"
+    },
+    {
+      "id": "RL-020",
+      "competitionId": "P2",
+      "season": "2026/27",
+      "key": "formacion_min_si_10_12_inscritos",
+      "value": "4",
+      "scope": "acta",
+      "sourceUrl": "https://www.feb.es/Documentos/Enlaces/%5B6549%5DBBCC%20Segunda%20FEB%2026-27%20-%20Versi%C3%B3n%20Web.pdf",
+      "reference": "2.3.1"
+    },
+    {
+      "id": "RL-021",
+      "competitionId": "P2",
+      "season": "2026/27",
+      "key": "extracomunitarios_max_acta",
+      "value": "1",
+      "scope": "acta",
+      "sourceUrl": "https://www.feb.es/Documentos/Enlaces/%5B6549%5DBBCC%20Segunda%20FEB%2026-27%20-%20Versi%C3%B3n%20Web.pdf",
+      "reference": "2.3.1"
+    },
+    {
+      "id": "RL-022",
+      "competitionId": "P2",
+      "season": "2026/27",
+      "key": "jugadores_formacion_min_en_pista",
+      "value": "2",
+      "scope": "simultaneidad",
+      "sourceUrl": "https://www.feb.es/Documentos/Enlaces/%5B6549%5DBBCC%20Segunda%20FEB%2026-27%20-%20Versi%C3%B3n%20Web.pdf",
+      "reference": "2.3.1"
+    },
+    {
+      "id": "RL-023",
+      "competitionId": "P2",
+      "season": "2026/27",
+      "key": "licencias_jugadores_max_temporada",
+      "value": "20",
+      "scope": "temporada",
+      "sourceUrl": "https://www.feb.es/Documentos/Enlaces/%5B6549%5DBBCC%20Segunda%20FEB%2026-27%20-%20Versi%C3%B3n%20Web.pdf",
+      "reference": "2.2 y 2.3",
+      "note": "Consultar excepciones, sustituciones y fechas límite."
+    },
+    {
+      "id": "RL-024",
+      "competitionId": "P2",
+      "season": "2026/27",
+      "key": "aval_inscripcion_eur",
+      "value": "54000",
+      "scope": "inscripción",
+      "sourceUrl": "https://www.feb.es/Documentos/Enlaces/%5B6549%5DBBCC%20Segunda%20FEB%2026-27%20-%20Versi%C3%B3n%20Web.pdf",
+      "reference": "2.1",
+      "note": "Importe de aval según BBCC; sujeto a condiciones."
+    },
+    {
+      "id": "RL-025",
+      "competitionId": "P2",
+      "season": "2026/27",
+      "key": "cuota_inscripcion_eur",
+      "value": "17500",
+      "scope": "inscripción",
+      "sourceUrl": "https://www.feb.es/Documentos/Enlaces/%5B6549%5DBBCC%20Segunda%20FEB%2026-27%20-%20Versi%C3%B3n%20Web.pdf",
+      "reference": "2.1",
+      "note": "Diferenciar aval, cuota y otros gastos."
+    },
+    {
+      "id": "RL-026",
+      "competitionId": "P3",
+      "season": "2026/27",
+      "key": "equipos_inscritos",
+      "value": "138",
+      "scope": "temporada",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "reference": "Comisión Delegada 21/07/2026",
+      "note": "La previsión inicial era 140; usar composición definitiva de 138."
+    },
+    {
+      "id": "RL-027",
+      "competitionId": "P3",
+      "season": "2026/27",
+      "key": "conferencias",
+      "value": "5",
+      "scope": "temporada",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "reference": "Comisión Delegada 21/07/2026"
+    },
+    {
+      "id": "RL-028",
+      "competitionId": "P3",
+      "season": "2026/27",
+      "key": "grupos_conferencia_d_inscritos",
+      "value": "26",
+      "scope": "temporada",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "reference": "Conferencia D"
+    },
+    {
+      "id": "RL-029",
+      "competitionId": "P3",
+      "season": "2026/27",
+      "key": "ascensos_a_segunda",
+      "value": "6",
+      "scope": "temporada",
+      "sourceUrl": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "reference": "Introducción"
+    },
+    {
+      "id": "RL-030",
+      "competitionId": "P3",
+      "season": "2026/27",
+      "key": "jugadores_acta_min",
+      "value": "8",
+      "scope": "acta",
+      "sourceUrl": "https://www.feb.es/Documentos/Enlaces/%5B6547%5DBBCC%20Tercera%20FEB%2026-27%20-%20Versi%C3%B3n%20Web.pdf",
+      "reference": "2.3.1"
+    },
+    {
+      "id": "RL-031",
+      "competitionId": "P3",
+      "season": "2026/27",
+      "key": "jugadores_acta_max",
+      "value": "12",
+      "scope": "acta",
+      "sourceUrl": "https://www.feb.es/Documentos/Enlaces/%5B6547%5DBBCC%20Tercera%20FEB%2026-27%20-%20Versi%C3%B3n%20Web.pdf",
+      "reference": "2.3.1"
+    },
+    {
+      "id": "RL-032",
+      "competitionId": "P3",
+      "season": "2026/27",
+      "key": "jugadores_formacion_min_acta",
+      "value": "8",
+      "scope": "acta",
+      "sourceUrl": "https://www.feb.es/Documentos/Enlaces/%5B6547%5DBBCC%20Tercera%20FEB%2026-27%20-%20Versi%C3%B3n%20Web.pdf",
+      "reference": "2.3.1"
+    },
+    {
+      "id": "RL-033",
+      "competitionId": "P3",
+      "season": "2026/27",
+      "key": "extracomunitarios_max_acta",
+      "value": "1",
+      "scope": "acta",
+      "sourceUrl": "https://www.feb.es/Documentos/Enlaces/%5B6547%5DBBCC%20Tercera%20FEB%2026-27%20-%20Versi%C3%B3n%20Web.pdf",
+      "reference": "2.3.1"
+    },
+    {
+      "id": "RL-034",
+      "competitionId": "P3",
+      "season": "2026/27",
+      "key": "licencias_jugadores_max_temporada",
+      "value": "20",
+      "scope": "temporada",
+      "sourceUrl": "https://www.feb.es/Documentos/Enlaces/%5B6547%5DBBCC%20Tercera%20FEB%2026-27%20-%20Versi%C3%B3n%20Web.pdf",
+      "reference": "2.2 y 2.3",
+      "note": "Revisar excepciones."
+    }
+  ],
+  "sources": [
+    {
+      "id": "F01",
+      "organization": "ACB",
+      "title": "Listado de equipos Liga Endesa 2026/27",
+      "kind": "DIRECTORIO",
+      "url": "https://acb.com/es/liga/equipos",
+      "documentDate": "2026-11-17",
+      "verification": "consultado"
+    },
+    {
+      "id": "F02",
+      "organization": "FEB",
+      "title": "Composición definitiva masculina 2026/27",
+      "kind": "INSCRIPCIONES",
+      "url": "https://www.feb.es/2026/7/21/baloncesto/comision-delegada-confirma-composicion-las-ligas-masculinas-202627-feb/105668.aspx",
+      "documentDate": "2026-07-21",
+      "verification": "consultado"
+    },
+    {
+      "id": "F03",
+      "organization": "FEB",
+      "title": "Página general normativa FEB",
+      "kind": "REPOSITORIO",
+      "url": "https://www.feb.es/normativa.aspx",
+      "documentDate": "2026-11-17",
+      "verification": "consultado"
+    },
+    {
+      "id": "F04",
+      "organization": "FEB",
+      "title": "BBCC Primera FEB 2026/27",
+      "kind": "BASES",
+      "url": "https://www.feb.es/Documentos/Enlaces/%5B6537%5DBBCC%20Primera%20FEB%2026-27%20-%20Versi%C3%B3n%20Web.pdf",
+      "documentDate": "2026-27",
+      "verification": "enlace confirmado; PDF supera límite de lectura web"
+    },
+    {
+      "id": "F05",
+      "organization": "FEB",
+      "title": "BBCC Segunda FEB 2026/27",
+      "kind": "BASES",
+      "url": "https://www.feb.es/Documentos/Enlaces/%5B6549%5DBBCC%20Segunda%20FEB%2026-27%20-%20Versi%C3%B3n%20Web.pdf",
+      "documentDate": "2026-27",
+      "verification": "consultado"
+    },
+    {
+      "id": "F06",
+      "organization": "FEB",
+      "title": "BBCC Tercera FEB 2026/27",
+      "kind": "BASES",
+      "url": "https://www.feb.es/Documentos/Enlaces/%5B6547%5DBBCC%20Tercera%20FEB%2026-27%20-%20Versi%C3%B3n%20Web.pdf",
+      "documentDate": "2026-27",
+      "verification": "consultado"
+    },
+    {
+      "id": "F07",
+      "organization": "FEB",
+      "title": "BBCC Copa España 2026/27",
+      "kind": "BASES",
+      "url": "https://www.feb.es/Documentos/Enlaces/%5B6546%5DBBCC%20Copa%20Espa%C3%B1a%2026-27%20-%20Versi%C3%B3n%20Web.pdf",
+      "documentDate": "2026-27",
+      "verification": "enlace repositorio"
+    },
+    {
+      "id": "F08",
+      "organization": "FEB",
+      "title": "Reglamento General y Competiciones (28 jul 2026)",
+      "kind": "REGLAMENTO",
+      "url": "https://www.feb.es/Documentos/Enlaces/%5B6692%5D1290_Reg%20General%20y%20Competiciones%20%28Baloncesto%29%20CD%2028.07.2026%20-%20Versi%C3%B3n%20WEB.pdf",
+      "documentDate": "2026-07-28",
+      "verification": "consultado"
+    },
+    {
+      "id": "F09",
+      "organization": "FEB",
+      "title": "Reglamento Disciplinario (28 jul 2026)",
+      "kind": "REGLAMENTO",
+      "url": "https://www.feb.es/Documentos/Enlaces/%5B6693%5DReglamento%20Disciplinario%20%28Baloncesto%29%20CD%2028.07.2026%20-%20Versi%C3%B3n%20WEB.pdf",
+      "documentDate": "2026-07-28",
+      "verification": "consultado"
+    },
+    {
+      "id": "F10",
+      "organization": "FEB",
+      "title": "Reglas oficiales FIBA 2026",
+      "kind": "REGLAS",
+      "url": "https://www.feb.es/Documentos/Enlaces/%5B5612%5DFIBA%20Official%20Rules%202026.pdf",
+      "documentDate": "2026",
+      "verification": "enlace repositorio"
+    },
+    {
+      "id": "F11",
+      "organization": "FEB",
+      "title": "Interpretaciones oficiales FIBA 2026",
+      "kind": "REGLAS",
+      "url": "https://www.feb.es/Documentos/Enlaces/%5B5742%5DOfficial%20Interpretations%20FIBA%20Rules%202026.pdf",
+      "documentDate": "2026",
+      "verification": "enlace repositorio"
+    },
+    {
+      "id": "F12",
+      "organization": "FEB",
+      "title": "Cambios en las reglas FIBA 2026",
+      "kind": "REGLAS",
+      "url": "https://www.feb.es/Documentos/Enlaces/%5B6716%5DCambios%20Reglas%20Oficiales%20FIBA%202026.pdf",
+      "documentDate": "2026",
+      "verification": "enlace repositorio"
+    },
+    {
+      "id": "F13",
+      "organization": "ACB",
+      "title": "Portal transparencia ACB",
+      "kind": "REPOSITORIO",
+      "url": "https://acb.com/es/liga/noticias/portal-de-transparencia-acb-139254",
+      "documentDate": "2026-11-17",
+      "verification": "consultado"
+    },
+    {
+      "id": "F14",
+      "organization": "ACB",
+      "title": "Reglamento de competiciones ACB",
+      "kind": "REGLAMENTO",
+      "url": "https://www.acb.com/docs/descarga/pdf/transparencia/reglamento_competiciones_051026.pdf",
+      "documentDate": "2026-10",
+      "verification": "enlace repositorio"
+    },
+    {
+      "id": "F15",
+      "organization": "ACB",
+      "title": "Normas internas ACB",
+      "kind": "REGLAMENTO",
+      "url": "https://www.acb.com/docs/descarga/pdf/transparencia/221026_normasinternas.pdf",
+      "documentDate": "2026-10",
+      "verification": "enlace repositorio"
+    },
+    {
+      "id": "F16",
+      "organization": "ACB",
+      "title": "Control económico ACB",
+      "kind": "REGLAMENTO",
+      "url": "https://www.acb.com/docs/descarga/pdf/transparencia/06052025_reglamentocontroleconomico.pdf",
+      "documentDate": "2025-05-06",
+      "verification": "enlace repositorio"
+    },
+    {
+      "id": "F17",
+      "organization": "ACB",
+      "title": "Estatutos ACB",
+      "kind": "ESTATUTOS",
+      "url": "https://www.acb.com/docs/descarga/pdf/transparencia/estatutos280826.pdf",
+      "documentDate": "2026-08-28",
+      "verification": "enlace repositorio"
+    },
+    {
+      "id": "F18",
+      "organization": "FEB",
+      "title": "Transparencia FEB - órganos, sanciones y directivos",
+      "kind": "REPOSITORIO",
+      "url": "https://www.feb.es/transparencia.aspx",
+      "documentDate": "2026-11-17",
+      "verification": "consultado"
+    },
+    {
+      "id": "F19",
+      "organization": "FEB",
+      "title": "Organigrama FEB, revisión noviembre 2025",
+      "kind": "DIRECTIVOS",
+      "url": "https://www.feb.es/Documentos/Enlaces/%5B5861%5D%5B5861%5DOrganigrama%20FEB_ACTUALIZADO%202025.pptx%20%281%29.pdf",
+      "documentDate": "2025-11",
+      "verification": "consultado; histórico"
+    },
+    {
+      "id": "F20",
+      "organization": "FEB",
+      "title": "Ficha equipo Inveready Askatuak Gipuzkoa (Copa España)",
+      "kind": "PLANTILLA",
+      "url": "https://www.feb.es/competiciones/equipo/1008378",
+      "documentDate": "2026-11-17",
+      "verification": "consultado; muestra miembros no asegura licencias vigentes"
+    },
+    {
+      "id": "F21",
+      "organization": "ACB",
+      "title": "Ficha plantilla Asisa Joventut",
+      "kind": "PLANTILLA",
+      "url": "https://acb.com/es/liga/equipos/asisa-joventut-8",
+      "documentDate": "2026-11-17",
+      "verification": "consultado"
+    },
+    {
+      "id": "F22",
+      "organization": "FEB",
+      "title": "Circular 1: inscripción equipos OficinaWeb 2026/27",
+      "kind": "CIRCULAR",
+      "url": "https://www.feb.es/Documentos/Enlaces/%5B6695%5DCircular%20N%C2%BA%201-%20Inscripci%C3%B3n%20equipos%20OficinaWeb%202026-2027%20firmada.pdf",
+      "documentDate": "2026-27",
+      "verification": "consultado"
+    },
+    {
+      "id": "F23",
+      "organization": "FEB",
+      "title": "Circular 2: licencias OficinaWeb 2026/27",
+      "kind": "CIRCULAR",
+      "url": "https://www.feb.es/Documentos/Enlaces/%5B6705%5DCircular%20N%C2%BA%202-%20Inscripci%C3%B3n%20licencias%20OficinaWeb%202026-2027%20firmada.pdf",
+      "documentDate": "2026-27",
+      "verification": "consultado"
+    },
+    {
+      "id": "F24",
+      "organization": "FEB",
+      "title": "Estatutos FEB",
+      "kind": "ESTATUTOS",
+      "url": "https://www.feb.es/Documentos/Enlaces/%5B5718%5DEstatutos%20%28aprobados%20por%20CD%20CSD%2012.11.2024%29.pdf",
+      "documentDate": "2024-11-12",
+      "verification": "enlace repositorio"
+    },
+    {
+      "id": "F25",
+      "organization": "FEB",
+      "title": "Reglamento de Gobernanza FEB",
+      "kind": "REGLAMENTO",
+      "url": "https://www.feb.es/Documentos/Enlaces/%5B5766%5D%5B5848%5D2.%20SGRP%20-%204%20-%20REGLAMENTO%20DE%20GOBERNANZA%20FEB_V3%20%289%29.pdf",
+      "documentDate": "2026-27",
+      "verification": "enlace repositorio"
+    },
+    {
+      "id": "F26",
+      "organization": "Estado",
+      "title": "Ley 39/2022, del Deporte",
+      "kind": "LEY",
+      "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2022-24430",
+      "documentDate": "2022",
+      "verification": "BOE legislación consolidada"
+    },
+    {
+      "id": "F27",
+      "organization": "Estado",
+      "title": "LO 3/2018, protección de datos personales y derechos digitales",
+      "kind": "LEY",
+      "url": "https://www.boe.es/eli/es/lo/2018/12/05/3/",
+      "documentDate": "2018",
+      "verification": "BOE; RGPD también aplicable"
+    },
+    {
+      "id": "F28",
+      "organization": "FEB",
+      "title": "Listado estadístico Primera FEB",
+      "kind": "ESTADISTICAS",
+      "url": "https://www.feb.es/competiciones/estadisticas.aspx?g=1&nm=primerafeb&t=2026",
+      "documentDate": "2026-27",
+      "verification": "para completar plantilla"
+    },
+    {
+      "id": "F29",
+      "organization": "FEB",
+      "title": "Listado estadístico Segunda FEB",
+      "kind": "ESTADISTICAS",
+      "url": "https://www.feb.es/competiciones/estadisticas.aspx?g=2&nm=segundafeb&t=2026",
+      "documentDate": "2026-27",
+      "verification": "para completar plantilla"
+    },
+    {
+      "id": "F30",
+      "organization": "FEB",
+      "title": "Listado estadístico Tercera FEB",
+      "kind": "ESTADISTICAS",
+      "url": "https://www.feb.es/competiciones/estadisticas.aspx?g=3&nm=tercerafeb&t=2026",
+      "documentDate": "2026-27",
+      "verification": "para completar plantilla"
+    }
+  ]
+}

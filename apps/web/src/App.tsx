@@ -1,3 +1,4 @@
+import { ReplayViewer } from './ReplayViewer';
 import { DataPackPanel } from './DataPackPanel';
 import { WorldView } from './WorldView';
 import type { WorldPayload, WorldQuery } from './worldTypes';
@@ -576,12 +577,20 @@ export function App() {
         {view &&
           tab === 'match' &&
           (match ? (
-            <BoxScoreView
-              detail={match.detail}
-              playerNames={match.playerNames}
-              tactics={match.tactics}
-              name={name}
-            />
+            <>
+              <ReplayViewer
+                key={match.detail.result.id}
+                detail={match.detail}
+                playerNames={match.playerNames}
+                name={name}
+              />
+              <BoxScoreView
+                detail={match.detail}
+                playerNames={match.playerNames}
+                tactics={match.tactics}
+                name={name}
+              />
+            </>
           ) : (
             <p className="note">
               Elige un partido en la pestaña «Competición» o pulsa «Ver partido» en «Mi equipo».

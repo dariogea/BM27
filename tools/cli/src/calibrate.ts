@@ -5,6 +5,8 @@
  *
  *   pnpm calibrate            → prints the report
  *   pnpm calibrate --write    → also writes docs/benchmarks/T-006-calibracion.md
+ *   pnpm calibrate --write --task T-028 → writes docs/benchmarks/T-028-calibracion.md instead
+ *                                         (older reports are never overwritten by accident)
  */
 import { writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -62,6 +64,14 @@ interface Totals {
   zoneMade: Record<ShotZone, number>;
   minutesByRank: number[];
   playersUsed: number;
+  /** Match incidents (T-028). */
+  timeouts: number;
+  injuries: number;
+  technicals: number;
+  unsportsmanlike: number;
+  ejections: number;
+  heldBalls: number;
+  tipWinnerWins: number;
 }
 
 function emptyTotals(): Totals {
@@ -92,6 +102,13 @@ function emptyTotals(): Totals {
     zoneMade: zero(SHOT_ZONES),
     minutesByRank: new Array<number>(15).fill(0),
     playersUsed: 0,
+    timeouts: 0,
+    injuries: 0,
+    technicals: 0,
+    unsportsmanlike: 0,
+    ejections: 0,
+    heldBalls: 0,
+    tipWinnerWins: 0,
   };
 }
 
@@ -125,7 +142,19 @@ function collect(t: Totals, d: MatchDetail): void {
   }
   // Play-type usage: a possession-ending action (shot, turnover) per play type.
   let lastShot: { playType: PlayType; possession: number } | null = null;
+  const homeWon = d.result.homeScore > d.result.awayScore;
   for (const e of d.events) {
+    if (e.type === 'timeout') t.timeouts++;
+    else if (e.type === 'injury') t.injuries++;
+    else if (e.type === 'jump_ball') {
+      if (e.kind === 'held-ball') t.heldBalls++;
+      else if ((e.winnerTeamId === d.result.homeTeamId) === homeWon) t.tipWinnerWins++;
+    } else if (e.type === 'foul') {
+      if (e.kind === 'technical') t.technicals++;
+      if (e.kind === 'unsportsmanlike') t.unsportsmanlike++;
+      if (e.fouledOut && e.kind !== 'personal' && e.kind !== 'shooting' && e.kind !== 'offensive')
+        t.ejections++;
+    }
     if (e.type === 'shot') {
       t.playUses[e.playType]++;
       t.playPoints[e.playType] += e.points;
@@ -138,6 +167,13 @@ function collect(t: Totals, d: MatchDetail): void {
       t.playPoints[lastShot.playType]++;
     }
   }
+}
+
+/** Task name for the output file: `--task T-028`, defaulting to the original T-006 report. */
+function taskName(): string {
+  const index = process.argv.indexOf('--task');
+  const value = index >= 0 ? process.argv[index + 1] : undefined;
+  return value && /^[A-Za-z0-9-]+$/.test(value) ? value : 'T-006';
 }
 
 const f1 = (n: number): string => n.toFixed(1);
@@ -189,6 +225,19 @@ function report(levelName: string, t: Totals, withTargets: boolean): string[] {
     '',
   );
 
+  lines.push(
+    '| Sucesos (por partido, los dos equipos) | Medido |',
+    '| --- | --- |',
+    `| Tiempos muertos | ${f1(t.timeouts / t.games)} |`,
+    `| Lesiones | ${(t.injuries / t.games).toFixed(2)} |`,
+    `| Faltas técnicas | ${(t.technicals / t.games).toFixed(2)} |`,
+    `| Faltas antideportivas | ${(t.unsportsmanlike / t.games).toFixed(2)} |`,
+    `| Expulsiones por conducta | ${(t.ejections / t.games).toFixed(3)} |`,
+    `| Balones retenidos (flecha de posesión) | ${f1(t.heldBalls / t.games)} |`,
+    `| % de partidos ganados por quien gana el salto inicial | ${f1((100 * t.tipWinnerWins) / t.games)} |`,
+    '',
+  );
+
   const uses = PLAY_TYPES.reduce((n, p) => n + t.playUses[p], 0);
   lines.push('| Tipo de jugada | % de uso | Puntos por jugada |', '| --- | --- | --- |');
   for (const p of PLAY_TYPES) {
@@ -211,7 +260,7 @@ function report(levelName: string, t: Totals, withTargets: boolean): string[] {
 const SEEDS = [SEED, `${SEED}-b`, `${SEED}-c`];
 const universes = SEEDS.map((seed) => generateUniverse({ seed }));
 const out: string[] = [
-  '# Calibración del motor de partido v1 con finanzas, mercado y jugadores que se desarrollan (T-006)',
+  `# Calibración del motor de partido v1 con finanzas, mercado, jugadores que se desarrollan y sucesos del partido (${taskName()})`,
   '',
   '> Archivo generado por `pnpm calibrate --write`. Cifras medidas simulando la liga regular de',
   `> cada nivel en ${SEEDS.length} universos (semillas \`${SEEDS.join('`, `')}\`) y promediando.`,
@@ -236,7 +285,7 @@ for (const level of [1, 2, 3, 4]) {
 console.log(out.join('\n'));
 if (process.argv.includes('--write')) {
   const here = dirname(fileURLToPath(import.meta.url));
-  const file = join(here, '..', '..', '..', 'docs', 'benchmarks', 'T-006-calibracion.md');
+  const file = join(here, '..', '..', '..', 'docs', 'benchmarks', `${taskName()}-calibracion.md`);
   writeFileSync(file, out.join('\n'));
   console.log(`Escrito en ${file}`);
 }

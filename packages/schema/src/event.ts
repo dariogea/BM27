@@ -52,6 +52,17 @@ export const TURNOVER_KINDS = [
 export const TurnoverKindSchema = z.enum(TURNOVER_KINDS);
 export type TurnoverKind = z.infer<typeof TurnoverKindSchema>;
 
+/** Kinds of foul. Technical and unsportsmanlike fouls come from conduct, not from a play. */
+export const FOUL_KINDS = [
+  'personal',
+  'shooting',
+  'offensive',
+  'technical',
+  'unsportsmanlike',
+] as const;
+export const FoulKindSchema = z.enum(FOUL_KINDS);
+export type FoulKind = z.infer<typeof FoulKindSchema>;
+
 export const MatchEventSchema = z.discriminatedUnion('type', [
   z.object({ ...base, type: z.literal('lineup'), teamId: id, playerIds: z.array(id).length(5) }),
   z.object({ ...base, type: z.literal('period_start'), periodSeconds: z.number().int().min(1) }),
@@ -107,12 +118,37 @@ export const MatchEventSchema = z.discriminatedUnion('type', [
     /** Team of the player who commits the foul. */
     teamId: id,
     drawnByPlayerId: id,
-    kind: z.enum(['personal', 'shooting', 'offensive']),
+    kind: FoulKindSchema,
     /** True for a deliberate foul to stop the clock late in the game. */
     intentional: z.boolean(),
     /** Free throws awarded by this foul. */
     freeThrows: z.number().int().min(0).max(3),
     fouledOut: z.boolean(),
+  }),
+  z.object({
+    ...base,
+    type: z.literal('jump_ball'),
+    /** `opening` tip-off, or a `held-ball` settled by the alternating-possession arrow. */
+    kind: z.enum(['opening', 'held-ball']),
+    /** Team that gets the ball. */
+    winnerTeamId: id,
+    /** Players who jump (opening tip only): home first, then away. */
+    jumperIds: z.array(id).length(2).optional(),
+  }),
+  z.object({
+    ...base,
+    type: z.literal('timeout'),
+    /** Team that calls the timeout. */
+    teamId: id,
+    reason: z.enum(['opponent-run', 'end-of-game', 'rest']),
+  }),
+  z.object({
+    ...base,
+    type: z.literal('injury'),
+    playerId: id,
+    teamId: id,
+    /** Games the player will miss after this one. */
+    gamesOut: z.number().int().min(1),
   }),
   z.object({ ...base, type: z.literal('game_end') }),
 ]);

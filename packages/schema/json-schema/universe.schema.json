@@ -4,7 +4,7 @@
   "properties": {
     "schemaVersion": {
       "type": "number",
-      "const": 5
+      "const": 6
     },
     "seed": {
       "type": "string"
@@ -74,6 +74,26 @@
             "minimum": 1,
             "maximum": 20
           },
+          "timeoutsFirstHalf": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 10
+          },
+          "timeoutsSecondHalf": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 10
+          },
+          "timeoutsOvertime": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 5
+          },
+          "technicalFoulsForEjection": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5
+          },
           "shotClockSeconds": {
             "type": "integer",
             "minimum": 10,
@@ -93,6 +113,10 @@
           "overtimeMinutes",
           "personalFoulLimit",
           "teamFoulsForBonus",
+          "timeoutsFirstHalf",
+          "timeoutsSecondHalf",
+          "timeoutsOvertime",
+          "technicalFoulsForEjection",
           "shotClockSeconds",
           "shotClockOffensiveReboundSeconds"
         ],
@@ -683,6 +707,27 @@
           },
           "retired": {
             "type": "boolean"
+          },
+          "injury": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "gamesRemaining": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 9007199254740991
+                  }
+                },
+                "required": [
+                  "gamesRemaining"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "null"
+              }
+            ]
           }
         },
         "required": [
@@ -696,7 +741,8 @@
           "potential",
           "teamId",
           "contract",
-          "retired"
+          "retired",
+          "injury"
         ],
         "additionalProperties": false
       }

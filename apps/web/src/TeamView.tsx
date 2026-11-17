@@ -67,6 +67,13 @@ export function SquadTable({ squad }: { squad: SquadPlayer[] }) {
                 <td className="name">
                   {p.firstName} {p.lastName}
                   {index < 5 ? ' *' : ''}
+                  {p.injury ? (
+                    <span className="warn" title="Lesionado: no juega hasta que se recupere">
+                      {' '}
+                      · lesionado {p.injury.gamesRemaining}{' '}
+                      {p.injury.gamesRemaining === 1 ? 'partido' : 'partidos'}
+                    </span>
+                  ) : null}
                 </td>
                 <td>{p.positions.join('/')}</td>
                 <td>{p.age}</td>

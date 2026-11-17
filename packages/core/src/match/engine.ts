@@ -1,4 +1,5 @@
 import type {
+  FoulKind,
   MatchEvent,
   PlayType,
   Ruleset,
@@ -22,9 +23,12 @@ import type { PreparedTeam, SimPlayer } from './prepare';
  * Contract: the ONLY output is the event log; box scores and any viewer are
  * derived from it (see `deriveBoxScore`).
  *
+ * T-028 adds timeouts, in-game injuries, technical and unsportsmanlike fouls, the
+ * opening jump ball and the possession arrow (held balls).
+ *
  * Still PLACEHOLDER inside this engine (to be replaced in later tasks):
- *  - The coach: starters, minutes plan and substitutions follow fixed rules.
- *  - No timeouts, injuries, technical fouls, jump balls or and-one variety.
+ *  - The coach: starters, minutes plan, substitutions and timeouts follow fixed rules.
+ *  - No and-one variety; an injured player who cannot be replaced stays on court.
  *  - Help defense is a single "rim protection" number per line-up.
  *  - All numeric constants are calibrated against approximate league averages
  *    (see docs/benchmarks/T-002.md), not against a verified dataset.
@@ -159,6 +163,42 @@ export const ENGINE = {
   minutesDeficitWeight: 1.6,
   foulTroublePenalty: 25,
 
+  // --- Jump balls --------------------------------------------------------------
+  /** Chance per half-court action that the ball is held (settled by the arrow). */
+  heldBallChance: 0.006,
+  /** How much the tip-off depends on height and jumping (per unit of difference). */
+  tipSkillWeight: 0.2,
+
+  // --- Timeouts -----------------------------------------------------------------
+  /** Unanswered points by the opponent that make a coach stop the game. */
+  timeoutRunPoints: 8,
+  /** Seconds of game time that must pass between two timeouts. */
+  timeoutCooldownSeconds: 150,
+  /** Energy both teams recover during a timeout. */
+  timeoutRecovery: 0.05,
+  /** Average energy on court under which a tired team may ask for a rest. */
+  timeoutRestEnergy: 0.74,
+  timeoutRestChance: 0.5,
+  /** End of the game: the trailing team uses timeouts to set up plays. */
+  timeoutEndSeconds: 120,
+  timeoutEndDeficit: 8,
+  timeoutEndChance: 0.6,
+  /** Momentum: small shooting bonus for a team on an unanswered run (needs > 5 points). */
+  momentumPerPoint: 0.0015,
+  momentumMax: 0.012,
+
+  // --- Injuries -------------------------------------------------------------------
+  /** Chance per player on court and possession (about 0.2 injuries per match). */
+  injuryPerPlayerPossession: 0.0001,
+  /** Injury risk grows as energy drops: risk × (1 + factor × (1 − energy)). */
+  injuryFatigueFactor: 1.5,
+
+  // --- Conduct fouls ----------------------------------------------------------------
+  /** Chance per team and action of a technical foul (about 0.2 per match). */
+  technicalChance: 0.0008,
+  unsportsmanlikeChance: 0.0005,
+  conductDisciplineWeight: 0.6,
+
   // --- End of game -----------------------------------------------------------
   clutchSeconds: 300,
   clutchMargin: 10,
@@ -197,6 +237,13 @@ interface Side {
   score: number;
   teamFouls: number;
   shotBonus: number;
+  /** Extra shot probability while the team is on an unanswered run. */
+  momentum: number;
+  /** Players who cannot continue (injured). */
+  injured: boolean[];
+  /** Technical and unsportsmanlike fouls per player. */
+  conduct: number[];
+  timeoutsLeft: number;
   drainMultiplier: number;
   /** Cumulative play-type weights for this team's offense. */
   playWeights: number[];
@@ -225,6 +272,10 @@ function makeSide(team: PreparedTeam, shotBonus: number): Side {
     score: 0,
     teamFouls: 0,
     shotBonus,
+    momentum: 0,
+    injured: new Array<boolean>(n).fill(false),
+    conduct: new Array<number>(n).fill(0),
+    timeoutsLeft: 0,
     drainMultiplier:
       E.paceDrain[t.pace] *
       E.pressureDrain[t.pressure] *
@@ -250,9 +301,15 @@ export function simulateMatch(input: MatchInput): MatchEvent[] {
   let clock = 0;
   let elapsed = 0;
   let possession = 0;
-  let offense = rng.chance(0.5) ? home : away;
-  let defense = offense === home ? away : home;
-  const firstOffense = offense;
+  // The opening tip decides the first possession (see the game loop); the arrow then
+  // alternates possessions: period starts and held balls.
+  let offense = home;
+  let defense = away;
+  let arrow: Side = away;
+  // Unanswered run, used for momentum and for timeouts.
+  let runSide: Side | null = null;
+  let runPoints = 0;
+  let lastTimeoutAt = -Infinity;
 
   const stamp = () => ({
     seq: events.length,
@@ -297,6 +354,19 @@ export function simulateMatch(input: MatchInput): MatchEvent[] {
     }
   };
 
+  /** Adds points and keeps track of the unanswered run (momentum). */
+  const scored = (side: Side, points: number): void => {
+    side.score += points;
+    if (runSide === side) runPoints += points;
+    else {
+      runSide = side;
+      runPoints = points;
+    }
+    const other = side === home ? away : home;
+    side.momentum = clamp((runPoints - 5) * E.momentumPerPoint, 0, E.momentumMax);
+    other.momentum = 0;
+  };
+
   const isFinalStretch = (): boolean => period >= rules.periods;
   const isClutch = (): boolean =>
     isFinalStretch() &&
@@ -339,7 +409,7 @@ export function simulateMatch(input: MatchInput): MatchEvent[] {
     for (let slot = 0; slot < 5; slot++) {
       const current = side.onCourt[slot] as number;
       if (current === protectedIndex) continue;
-      const forced = side.fouledOut[current] as boolean;
+      const forced = (side.fouledOut[current] as boolean) || (side.injured[current] as boolean);
       let best = -1;
       let bestValue = -Infinity;
       if (!forced) {
@@ -350,7 +420,7 @@ export function simulateMatch(input: MatchInput): MatchEvent[] {
           (shortStint && !inTrouble(current) ? E.minStintBonus : 0);
       }
       for (let j = 0; j < side.players.length; j++) {
-        if (side.isOn[j] || side.fouledOut[j]) continue;
+        if (side.isOn[j] || side.fouledOut[j] || side.injured[j]) continue;
         if (!forced) {
           if (((side.players[j] as SimPlayer).slotFit[slot] as number) < 0.9) continue;
           // Outside the planned rotation: only in garbage time.
@@ -375,8 +445,8 @@ export function simulateMatch(input: MatchInput): MatchEvent[] {
           playerOutId: (side.players[current] as SimPlayer).id,
         });
       }
-      // If a fouled-out player cannot be replaced (nobody left), he stays on
-      // court. PLACEHOLDER: real rules would continue with fewer players.
+      // If a fouled-out, ejected or injured player cannot be replaced (nobody left), he
+      // stays on court. PLACEHOLDER: real rules would continue with fewer players.
     }
   };
 
@@ -451,14 +521,20 @@ export function simulateMatch(input: MatchInput): MatchEvent[] {
     side: Side,
     index: number,
     drawnBy: SimPlayer,
-    kind: 'personal' | 'shooting' | 'offensive',
+    kind: FoulKind,
     freeThrowCount: number,
     intentional: boolean,
   ): void => {
     const fouler = side.players[index] as SimPlayer;
     side.fouls[index] = (side.fouls[index] as number) + 1;
-    side.teamFouls++;
-    const fouledOut = (side.fouls[index] as number) >= rules.personalFoulLimit;
+    // Technical fouls count against the player but not against the team.
+    if (kind !== 'technical') side.teamFouls++;
+    if (kind === 'technical' || kind === 'unsportsmanlike') {
+      side.conduct[index] = (side.conduct[index] as number) + 1;
+    }
+    const fouledOut =
+      (side.fouls[index] as number) >= rules.personalFoulLimit ||
+      (side.conduct[index] as number) >= rules.technicalFoulsForEjection;
     if (fouledOut) side.fouledOut[index] = true;
     events.push({
       ...stamp(),
@@ -489,7 +565,11 @@ export function simulateMatch(input: MatchInput): MatchEvent[] {
   };
 
   /** Shoots free throws. Returns true if the last one was missed (live rebound). */
-  const freeThrows = (shooter: SimPlayer, attempts: number): boolean => {
+  const freeThrows = (
+    shooter: SimPlayer,
+    attempts: number,
+    shooterSide: Side = offense,
+  ): boolean => {
     const pressure = isClutch() && clock <= 120 ? 0.05 * shooter.composure : 0;
     const probability = clamp(
       E.freeThrowBase + 0.35 * (shooter.freeThrow - 0.2) + pressure,
@@ -499,7 +579,7 @@ export function simulateMatch(input: MatchInput): MatchEvent[] {
     let lastMissed = false;
     for (let i = 0; i < attempts; i++) {
       const made = rng.next() < probability;
-      if (made) offense.score++;
+      if (made) scored(shooterSide, 1);
       lastMissed = !made;
       events.push({ ...stamp(), type: 'free_throw', playerId: shooter.id, made });
     }
@@ -702,6 +782,7 @@ export function simulateMatch(input: MatchInput): MatchEvent[] {
         E.makeDefenseWeight * resistance +
         E.makeOpenWeight[shotZone] * openness +
         offense.shotBonus +
+        offense.momentum +
         clutchBonus) *
         (0.94 + 0.06 * energy),
       0.03,
@@ -732,7 +813,7 @@ export function simulateMatch(input: MatchInput): MatchEvent[] {
       let assistId: string | undefined;
       let blockId: string | undefined;
       if (made) {
-        offense.score += points;
+        scored(offense, points);
         if (passerSlot >= 0 && rng.next() < E.assistCredit) assistId = P(offense, passerSlot).id;
       } else {
         const inside = shotZone === 'restricted' || shotZone === 'paint';
@@ -1198,6 +1279,54 @@ export function simulateMatch(input: MatchInput): MatchEvent[] {
   };
 
   // ---------------------------------------------------------------------------
+  // Conduct fouls and held balls
+  // ---------------------------------------------------------------------------
+  /**
+   * Rolls for a technical or unsportsmanlike foul by either team. The fouled team shoots
+   * the free throws (1 for a technical, 2 for an unsportsmanlike foul) and gets the ball.
+   * Returns the possession outcome, or null when nothing happened.
+   */
+  const conductFoul = (): 'continue' | 'dead' | null => {
+    for (const side of [offense, defense]) {
+      const factor = Math.exp(-E.conductDisciplineWeight * average(side, (p) => p.discipline));
+      const roll = rng.next();
+      const technical = E.technicalChance * factor;
+      if (roll >= technical + E.unsportsmanlikeChance * factor) continue;
+      const kind: FoulKind = roll < technical ? 'technical' : 'unsportsmanlike';
+      const other = side === offense ? defense : offense;
+      const slot = pick(side, (p) => Math.exp(-1.5 * p.discipline));
+      const index = side.onCourt[slot] as number;
+      // The fouled team chooses its best free-throw shooter.
+      let shooterSlot = 0;
+      for (let k = 1; k < 5; k++) {
+        if (P(other, k).freeThrow > P(other, shooterSlot).freeThrow) shooterSlot = k;
+      }
+      const shooter = P(other, shooterSlot);
+      const awarded = kind === 'technical' ? 1 : 2;
+      registerFoul(side, index, shooter, kind, awarded, false);
+      freeThrows(shooter, awarded, other);
+      deadBall();
+      // The fouled team keeps (or takes) the ball.
+      return other === offense ? 'continue' : 'dead';
+    }
+    return null;
+  };
+
+  /** A held ball: the possession arrow decides who gets the ball. */
+  const heldBall = (): 'continue' | 'dead' => {
+    const winner = arrow;
+    arrow = arrow === home ? away : home;
+    events.push({
+      ...stamp(),
+      type: 'jump_ball',
+      kind: 'held-ball',
+      winnerTeamId: winner.team.teamId,
+    });
+    deadBall();
+    return winner === offense ? 'continue' : 'dead';
+  };
+
+  // ---------------------------------------------------------------------------
   // One possession
   // ---------------------------------------------------------------------------
   const playPossession = (start: Start): Start => {
@@ -1239,6 +1368,27 @@ export function simulateMatch(input: MatchInput): MatchEvent[] {
         if (slot < 0) return 'defensive-rebound';
         phase = 'reset';
         continue;
+      }
+
+      // --- Conduct fouls and held balls (not during a putback in the air).
+      if (phase !== 'putback') {
+        const conduct = conductFoul();
+        if (conduct) {
+          if (conduct === 'continue') {
+            phase = 'reset';
+            continue;
+          }
+          return conduct;
+        }
+        if (!(phase === 'fresh' && canRun) && rng.next() < E.heldBallChance) {
+          const held = heldBall();
+          if (held === 'continue') {
+            phase = 'reset';
+            canRun = false;
+            continue;
+          }
+          return held;
+        }
       }
 
       // --- How long this action takes.
@@ -1320,6 +1470,92 @@ export function simulateMatch(input: MatchInput): MatchEvent[] {
   };
 
   // ---------------------------------------------------------------------------
+  // Timeouts and injuries (checked between possessions)
+  // ---------------------------------------------------------------------------
+  const callTimeout = (side: Side, reason: 'opponent-run' | 'end-of-game' | 'rest'): void => {
+    side.timeoutsLeft--;
+    lastTimeoutAt = elapsed;
+    events.push({ ...stamp(), type: 'timeout', teamId: side.team.teamId, reason });
+    // Both teams get their breath back, the run is over and the coaches can make changes.
+    rest(home, E.timeoutRecovery);
+    rest(away, E.timeoutRecovery);
+    runSide = null;
+    runPoints = 0;
+    home.momentum = 0;
+    away.momentum = 0;
+    deadBall();
+  };
+
+  const averageEnergy = (side: Side): number => {
+    let sum = 0;
+    for (let slot = 0; slot < 5; slot++) sum += side.energy[side.onCourt[slot] as number] as number;
+    return sum / 5;
+  };
+
+  const timeoutWindow = (): void => {
+    if (clock <= 0 || elapsed - lastTimeoutAt < E.timeoutCooldownSeconds) return;
+    // 1. A coach stops an opponent run.
+    if (runSide !== null && runPoints >= E.timeoutRunPoints) {
+      const victim = runSide === home ? away : home;
+      if (victim.timeoutsLeft > 0) {
+        callTimeout(victim, 'opponent-run');
+        return;
+      }
+    }
+    // 2. End of the game: the trailing team sets up its plays.
+    if (isFinalStretch() && clock <= E.timeoutEndSeconds) {
+      for (const side of [home, away]) {
+        const behind = side === home ? away.score - home.score : home.score - away.score;
+        if (side.timeoutsLeft > 0 && behind >= 1 && behind <= E.timeoutEndDeficit) {
+          if (rng.next() < E.timeoutEndChance) {
+            callTimeout(side, 'end-of-game');
+            return;
+          }
+        }
+      }
+    }
+    // 3. A tired team asks for a rest.
+    for (const side of [offense, defense]) {
+      if (side.timeoutsLeft > 0 && averageEnergy(side) < E.timeoutRestEnergy) {
+        if (rng.next() < E.timeoutRestChance) {
+          callTimeout(side, 'rest');
+          return;
+        }
+      }
+    }
+  };
+
+  const injuryDuration = (): number => {
+    const roll = rng.next();
+    if (roll < 0.55) return rng.int(1, 3);
+    if (roll < 0.85) return rng.int(4, 12);
+    if (roll < 0.97) return rng.int(13, 30);
+    return rng.int(31, 80);
+  };
+
+  const injuryCheck = (): void => {
+    for (const side of [home, away]) {
+      for (let slot = 0; slot < 5; slot++) {
+        const index = side.onCourt[slot] as number;
+        if (side.injured[index]) continue;
+        const risk =
+          E.injuryPerPlayerPossession *
+          (1 + E.injuryFatigueFactor * (1 - (side.energy[index] as number)));
+        if (rng.next() >= risk) continue;
+        side.injured[index] = true;
+        events.push({
+          ...stamp(),
+          type: 'injury',
+          playerId: (side.players[index] as SimPlayer).id,
+          teamId: side.team.teamId,
+          gamesOut: injuryDuration(),
+        });
+        coach(side);
+      }
+    }
+  };
+
+  // ---------------------------------------------------------------------------
   // Game loop
   // ---------------------------------------------------------------------------
   for (period = 1; ; period++) {
@@ -1335,11 +1571,19 @@ export function simulateMatch(input: MatchInput): MatchEvent[] {
       home.teamFouls = 0;
       away.teamFouls = 0;
     }
+    // Timeouts: unused first-half timeouts are lost; every overtime has its own.
+    if (overtime) {
+      home.timeoutsLeft = away.timeoutsLeft = rules.timeoutsOvertime;
+    } else if (period === 1) {
+      home.timeoutsLeft = away.timeoutsLeft = rules.timeoutsFirstHalf;
+    } else if (period === Math.floor(rules.periods / 2) + 1) {
+      home.timeoutsLeft = away.timeoutsLeft = rules.timeoutsSecondHalf;
+    }
     if (period > 1) {
-      // Alternate the first possession of each period.
-      const startsWithFirst = period % 2 === 1;
-      offense = startsWithFirst ? firstOffense : firstOffense === home ? away : home;
+      // The possession arrow decides who starts each period after the opening tip.
+      offense = arrow;
       defense = offense === home ? away : home;
+      arrow = defense;
       possession++;
     }
     events.push({ ...stamp(), type: 'period_start', periodSeconds });
@@ -1352,6 +1596,33 @@ export function simulateMatch(input: MatchInput): MatchEvent[] {
           playerIds: side.onCourt.map((i) => (side.players[i] as SimPlayer).id),
         });
       }
+      // Opening tip: the taller, higher-jumping centre wins it more often.
+      const jumper = (side: Side): number => {
+        let best = 0;
+        for (let slot = 1; slot < 5; slot++) {
+          const a = P(side, slot);
+          const b = P(side, best);
+          if (a.height + 0.5 * a.jumping > b.height + 0.5 * b.jumping) best = slot;
+        }
+        return best;
+      };
+      const homeJumper = P(home, jumper(home));
+      const awayJumper = P(away, jumper(away));
+      const edge =
+        homeJumper.height +
+        0.5 * homeJumper.jumping -
+        (awayJumper.height + 0.5 * awayJumper.jumping);
+      const homeWins = rng.next() < clamp(0.5 + E.tipSkillWeight * edge, 0.3, 0.7);
+      offense = homeWins ? home : away;
+      defense = homeWins ? away : home;
+      arrow = defense;
+      events.push({
+        ...stamp(),
+        type: 'jump_ball',
+        kind: 'opening',
+        winnerTeamId: offense.team.teamId,
+        jumperIds: [homeJumper.id, awayJumper.id],
+      });
     } else {
       const amount =
         period === Math.floor(rules.periods / 2) + 1 ? E.halftimeRecovery : E.breakRecovery;
@@ -1369,6 +1640,8 @@ export function simulateMatch(input: MatchInput): MatchEvent[] {
         defense = previous;
         possession++;
         if (start === 'dead') deadBall();
+        injuryCheck();
+        timeoutWindow();
       }
     }
     events.push({ ...stamp(), type: 'period_end' });

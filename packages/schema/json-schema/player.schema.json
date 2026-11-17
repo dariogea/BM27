@@ -248,6 +248,27 @@
     },
     "retired": {
       "type": "boolean"
+    },
+    "injury": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "gamesRemaining": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            }
+          },
+          "required": [
+            "gamesRemaining"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
     }
   },
   "required": [
@@ -261,7 +282,8 @@
     "potential",
     "teamId",
     "contract",
-    "retired"
+    "retired",
+    "injury"
   ],
   "additionalProperties": false
 }

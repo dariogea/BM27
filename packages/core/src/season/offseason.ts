@@ -28,6 +28,15 @@ import { createRng } from '../rng';
  * - Clubs renew or release the players whose contract ends (the user's club
  *   decides by itself before the season starts).
  */
+/** Games of recovery that the offseason is worth: short injuries heal, long ones carry over. */
+export const OFFSEASON_RECOVERY_GAMES = 30;
+
+function recover(player: Player): Player {
+  if (!player.injury) return player;
+  const left = player.injury.gamesRemaining - OFFSEASON_RECOVERY_GAMES;
+  return { ...player, injury: left > 0 ? { gamesRemaining: left } : null };
+}
+
 export function applyOffseason(universe: Universe, playedSeason: Season): Universe {
   // Close the books of the season that has just been played.
   const books = settleSeason(universe, playedSeason);
@@ -78,7 +87,7 @@ export function applyOffseason(universe: Universe, playedSeason: Season): Univer
       players.push(player);
       continue;
     }
-    const aged = developPlayer(player, rng);
+    const aged = recover(developPlayer(player, rng));
     // Unsigned players who are no longer young give up; the others keep waiting for an offer.
     const retires =
       aged.teamId === null

@@ -553,7 +553,9 @@
           "enum": [
             "personal",
             "shooting",
-            "offensive"
+            "offensive",
+            "technical",
+            "unsportsmanlike"
           ]
         },
         "intentional": {
@@ -582,6 +584,184 @@
         "intentional",
         "freeThrows",
         "fouledOut"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "seq": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "period": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "clock": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "possession": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "offenseTeamId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "type": {
+          "type": "string",
+          "const": "jump_ball"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "opening",
+            "held-ball"
+          ]
+        },
+        "winnerTeamId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "jumperIds": {
+          "minItems": 2,
+          "maxItems": 2,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "required": [
+        "seq",
+        "period",
+        "clock",
+        "possession",
+        "offenseTeamId",
+        "type",
+        "kind",
+        "winnerTeamId"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "seq": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "period": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "clock": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "possession": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "offenseTeamId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "type": {
+          "type": "string",
+          "const": "timeout"
+        },
+        "teamId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reason": {
+          "type": "string",
+          "enum": [
+            "opponent-run",
+            "end-of-game",
+            "rest"
+          ]
+        }
+      },
+      "required": [
+        "seq",
+        "period",
+        "clock",
+        "possession",
+        "offenseTeamId",
+        "type",
+        "teamId",
+        "reason"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "seq": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "period": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "clock": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "possession": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "offenseTeamId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "type": {
+          "type": "string",
+          "const": "injury"
+        },
+        "playerId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "teamId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "gamesOut": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        }
+      },
+      "required": [
+        "seq",
+        "period",
+        "clock",
+        "possession",
+        "offenseTeamId",
+        "type",
+        "playerId",
+        "teamId",
+        "gamesOut"
       ],
       "additionalProperties": false
     },

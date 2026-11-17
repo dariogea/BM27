@@ -55,6 +55,9 @@ export interface PreparedTeam {
   minuteShare: number[];
 }
 
+/** Fewer fit players than this and injured players are forced to play. */
+export const MIN_HEALTHY_PLAYERS = 8;
+
 const norm = (value: number): number => (value - 50) / 50;
 
 /** Single-number rating: mean of the player's 12 best attributes. */
@@ -157,10 +160,19 @@ function minuteShares(rosterSize: number, depth: number): number[] {
  */
 export function prepareTeam(team: Team, playersById: ReadonlyMap<string, Player>): PreparedTeam {
   const roster: SimPlayer[] = [];
+  const injured: { sim: SimPlayer; games: number }[] = [];
   for (const id of team.playerIds) {
     const player = playersById.get(id);
     if (!player) throw new Error(`Team ${team.id}: player ${id} not found`);
-    roster.push(toSimPlayer(player));
+    if (player.injury)
+      injured.push({ sim: toSimPlayer(player), games: player.injury.gamesRemaining });
+    else roster.push(toSimPlayer(player));
+  }
+  // Injured players do not play. PLACEHOLDER emergency rule: with fewer than
+  // MIN_HEALTHY_PLAYERS fit players, the least injured ones play through it at full strength.
+  injured.sort((a, b) => a.games - b.games || (a.sim.id < b.sim.id ? -1 : 1));
+  while (roster.length < MIN_HEALTHY_PLAYERS && injured.length > 0) {
+    roster.push((injured.shift() as { sim: SimPlayer }).sim);
   }
   if (roster.length < 5) throw new Error(`Team ${team.id} has fewer than 5 players`);
 
@@ -178,12 +190,16 @@ export function prepareTeam(team: Team, playersById: ReadonlyMap<string, Player>
       const player = byId.get(id);
       if (player && !listed.includes(player)) listed.push(player);
     }
-    if (listed.length < 5) {
+    const squad = new Set(team.playerIds);
+    if (new Set(team.rotation.filter((id) => squad.has(id))).size < 5) {
       throw new Error(`Team ${team.id}: the rotation needs at least 5 players of the squad`);
     }
-    starters = listed.slice(0, 5);
-    const rest = roster.filter((p) => !listed.includes(p));
-    bench = [...listed.slice(5), ...rest];
+    // Injured players listed in the rotation are skipped; the best fit players fill the gaps.
+    const fill = roster.filter((p) => !listed.includes(p)).slice(0, Math.max(0, 5 - listed.length));
+    const first = [...listed, ...fill];
+    starters = first.slice(0, 5);
+    const rest = roster.filter((p) => !first.includes(p));
+    bench = [...first.slice(5), ...rest];
   } else {
     const used = new Set<SimPlayer>();
     for (let slot = 0; slot < 5; slot++) {

@@ -74,6 +74,10 @@ describe('event log', () => {
       const dead =
         before.type === 'foul' ||
         before.type === 'period_start' ||
+        // T-028: a timeout, an injury or a held ball stop the game.
+        before.type === 'timeout' ||
+        before.type === 'injury' ||
+        before.type === 'jump_ball' ||
         (before.type === 'turnover' && before.stealPlayerId === undefined);
       expect(dead, `substitution after a live "${before.type}"`).toBe(true);
     });

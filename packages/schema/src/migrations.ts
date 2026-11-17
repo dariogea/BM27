@@ -208,6 +208,32 @@ const MIGRATIONS: Record<number, (data: Json) => Json> = {
         : data.history,
     };
   },
+  // v5 → v6 (T-028): players gain `injury`; rulesets gain timeouts and ejection limit.
+  5: (data) => ({
+    ...data,
+    schemaVersion: 6,
+    players: Array.isArray(data.players)
+      ? data.players.map((player: unknown) =>
+          player !== null && typeof player === 'object' && !('injury' in player)
+            ? { ...player, injury: null }
+            : player,
+        )
+      : data.players,
+    rulesets: Array.isArray(data.rulesets)
+      ? data.rulesets.map((ruleset: unknown) => {
+          if (ruleset === null || typeof ruleset !== 'object' || 'timeoutsFirstHalf' in ruleset)
+            return ruleset;
+          const big = (ruleset as { id?: unknown }).id === 'nba-like';
+          return {
+            ...ruleset,
+            timeoutsFirstHalf: big ? 4 : 2,
+            timeoutsSecondHalf: 3,
+            timeoutsOvertime: big ? 2 : 1,
+            technicalFoulsForEjection: 2,
+          };
+        })
+      : data.rulesets,
+  }),
 };
 
 export class MigrationError extends Error {

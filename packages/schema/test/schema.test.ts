@@ -13,7 +13,7 @@ import {
 
 describe('schema contract', () => {
   it('has a schema version', () => {
-    expect(SCHEMA_VERSION).toBe(5);
+    expect(SCHEMA_VERSION).toBe(6);
   });
 
   it('accepts a valid ruleset and rejects an invalid one with a readable message', () => {
@@ -25,6 +25,10 @@ describe('schema contract', () => {
       overtimeMinutes: 5,
       personalFoulLimit: 5,
       teamFoulsForBonus: 5,
+      timeoutsFirstHalf: 2,
+      timeoutsSecondHalf: 3,
+      timeoutsOvertime: 1,
+      technicalFoulsForEjection: 2,
       shotClockSeconds: 24,
       shotClockOffensiveReboundSeconds: 14,
     };

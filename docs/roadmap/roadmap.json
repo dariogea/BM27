@@ -1435,12 +1435,16 @@
         },
         {
           "t": "Canales alfa y beta",
-          "s": "pendiente"
+          "s": "en-curso",
+          "p": 30,
+          "n": "Los pre-lanzamientos se detectan con el orden de versiones; faltan los canales fijos."
         },
         {
           "t": "Actualización automática desde el propio juego",
-          "s": "bloqueado",
-          "n": "Depende de decidir si hay repositorio público solo para instaladores (#22)."
+          "s": "en-curso",
+          "n": "T-031: el launcher ya busca versiones nuevas al abrir y enseña el enlace. Falta descargar e instalar solo (necesita repositorio público de versiones y firma).",
+          "p": 40,
+          "o": "claude"
         },
         {
           "t": "Firma de código del instalador",

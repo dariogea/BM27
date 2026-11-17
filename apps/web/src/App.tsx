@@ -1,4 +1,5 @@
 import { ManagerHeader } from './ManagerHeader';
+import { UpdateBanner } from './UpdateBanner';
 import { PortalView } from './PortalView';
 import type { Tab } from './navigation';
 import { SavesPanel } from './SavesPanel';
@@ -189,6 +190,7 @@ export function App() {
         }}
       />
       <div className="workspace-content" id="workspace">
+        <UpdateBanner />
         {!view && (
           <section className="welcome">
             <div>

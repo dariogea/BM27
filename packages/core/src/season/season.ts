@@ -44,14 +44,33 @@ const contextCache = new WeakMap<Universe['teams'], SeasonContext>();
 
 function makeContext(universe: Universe): SeasonContext {
   const cached = contextCache.get(universe.teams);
-  if (
-    cached &&
-    cached.universe.players === universe.players &&
-    cached.universe.seed === universe.seed
-  ) {
-    cached.universe = universe;
-    cached.seasonNumber = universe.seasonNumber;
-    return cached;
+  if (cached && cached.universe.seed === universe.seed) {
+    if (cached.universe.players === universe.players) {
+      cached.universe = universe;
+      cached.seasonNumber = universe.seasonNumber;
+      return cached;
+    }
+    // Only some players changed (injuries from the last matchday): keep the prepared squads of
+    // every team that has none of them, which avoids rebuilding the whole league each matchday.
+    if (cached.universe.players.length === universe.players.length) {
+      const playersById = new Map(universe.players.map((p) => [p.id, p]));
+      const dirty = new Set<string>();
+      for (const p of universe.players) {
+        const before = cached.playersById.get(p.id);
+        if (before === p) continue;
+        if (before?.teamId) dirty.add(before.teamId);
+        if (p.teamId) dirty.add(p.teamId);
+      }
+      const context: SeasonContext = {
+        ...cached,
+        universe,
+        seasonNumber: universe.seasonNumber,
+        playersById,
+        prepared: new Map([...cached.prepared].filter(([teamId]) => !dirty.has(teamId))),
+      };
+      contextCache.set(universe.teams, context);
+      return context;
+    }
   }
   const context = buildContext(universe);
   contextCache.set(universe.teams, context);

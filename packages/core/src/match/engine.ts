@@ -208,6 +208,13 @@ export const ENGINE = {
 
 const E = ENGINE;
 
+/** Highest chance of a conduct foul per team and action (discipline of -1 on all five players). */
+const CONDUCT_MAX_CHANCE =
+  (E.technicalChance + E.unsportsmanlikeChance) * Math.exp(E.conductDisciplineWeight);
+/** Highest injury risk per player and possession (energy at its minimum). */
+const INJURY_MAX_RISK =
+  E.injuryPerPlayerPossession * (1 + E.injuryFatigueFactor * (1 - E.minEnergy));
+
 export interface MatchInput {
   home: PreparedTeam;
   away: PreparedTeam;
@@ -1288,8 +1295,10 @@ export function simulateMatch(input: MatchInput): MatchEvent[] {
    */
   const conductFoul = (): 'continue' | 'dead' | null => {
     for (const side of [offense, defense]) {
-      const factor = Math.exp(-E.conductDisciplineWeight * average(side, (p) => p.discipline));
       const roll = rng.next();
+      // Fast path (most actions): the roll is above the highest possible chance.
+      if (roll >= CONDUCT_MAX_CHANCE) continue;
+      const factor = Math.exp(-E.conductDisciplineWeight * average(side, (p) => p.discipline));
       const technical = E.technicalChance * factor;
       if (roll >= technical + E.unsportsmanlikeChance * factor) continue;
       const kind: FoulKind = roll < technical ? 'technical' : 'unsportsmanlike';
@@ -1538,10 +1547,12 @@ export function simulateMatch(input: MatchInput): MatchEvent[] {
       for (let slot = 0; slot < 5; slot++) {
         const index = side.onCourt[slot] as number;
         if (side.injured[index]) continue;
+        const roll = rng.next();
+        if (roll >= INJURY_MAX_RISK) continue; // fast path: above any possible risk
         const risk =
           E.injuryPerPlayerPossession *
           (1 + E.injuryFatigueFactor * (1 - (side.energy[index] as number)));
-        if (rng.next() >= risk) continue;
+        if (roll >= risk) continue;
         side.injured[index] = true;
         events.push({
           ...stamp(),

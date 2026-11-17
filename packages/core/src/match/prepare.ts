@@ -77,7 +77,22 @@ export function playerOverall(player: Player): number {
 /** Turns a 1–99 composite into a positive selection weight. */
 const role = (composite: number, spread: number): number => Math.exp((composite - 50) / spread);
 
+const simPlayers = new WeakMap<Player, SimPlayer>();
+
+/**
+ * The engine-ready form of a player, cached per player object: squads are prepared again
+ * whenever an injury changes, and unchanged players must not be converted again.
+ */
 function toSimPlayer(player: Player): SimPlayer {
+  let sim = simPlayers.get(player);
+  if (!sim) {
+    sim = buildSimPlayer(player);
+    simPlayers.set(player, sim);
+  }
+  return sim;
+}
+
+function buildSimPlayer(player: Player): SimPlayer {
   const { offensive: o, defensive: d, physical: p, mental: m } = player.attributes;
   const positionIndexes = player.positions.map((pos) => POSITIONS.indexOf(pos));
   const slotFit = [0, 1, 2, 3, 4].map((slot) => {

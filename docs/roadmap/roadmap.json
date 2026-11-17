@@ -100,9 +100,12 @@
         },
         {
           "t": "Reducir copias del universo y coste por partido",
-          "s": "pendiente",
+          "s": "en-curso",
           "f": "F2",
-          "i": 18
+          "i": 18,
+          "p": 25,
+          "o": "codex",
+          "n": "Primera mejora #18: B2 2527→2167 ms (14,2 %) con 317 huellas idénticas. Meta del 30 % pendiente; sin paralelismo ni cambios de reglas."
         },
         {
           "t": "Registro (log) de depuración del núcleo",

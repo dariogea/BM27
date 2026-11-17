@@ -13,8 +13,8 @@
 ```mermaid
 pie showData title Elementos por estado
   "Hecho" : 121
-  "En curso" : 19
-  "Pendiente" : 303
+  "En curso" : 20
+  "Pendiente" : 302
   "Bloqueado" : 2
   "Idea" : 30
 ```
@@ -83,7 +83,7 @@ flowchart LR
 
 | Área | Avance | | ✅ | 🔄 | ⬜ | ⛔ | 💡 | Para qué sirve |
 | --- | ---: | --- | ---: | ---: | ---: | ---: | ---: | --- |
-| **Núcleo y arquitectura** | 53 % | `███████████░░░░░░░░░` | 8 | 1 | 7 | 0 | 0 | La base técnica que hace fiable todo lo demás: reproducible, sin interfaz, validada por esquemas. |
+| **Núcleo y arquitectura** | 54 % | `███████████░░░░░░░░░` | 8 | 2 | 6 | 0 | 0 | La base técnica que hace fiable todo lo demás: reproducible, sin interfaz, validada por esquemas. |
 | **Motor de partido** | 61 % | `████████████░░░░░░░░` | 28 | 4 | 14 | 0 | 3 | Que cada partido se juegue posesión a posesión con reglas de baloncesto reales y que las tácticas tengan efecto medible. |
 | **Jugadores** | 42 % | `████████░░░░░░░░░░░░` | 9 | 2 | 10 | 0 | 2 | Personas con atributos, carrera, potencial y personalidad que el usuario descubre y gestiona. |
 | **Clubes** | 27 % | `█████░░░░░░░░░░░░░░░` | 4 | 0 | 9 | 0 | 2 | El club como organización: plantilla, reputación, afición, estadio y objetivos. |
@@ -139,6 +139,7 @@ Los agentes solo trabajan cuando el propietario lo autoriza (D-052); esto reflej
 
 | Estado | Elemento | Área | Avance | Enlace |
 | --- | --- | --- | ---: | --- |
+| 🔄 En curso | Reducir copias del universo y coste por partido | Núcleo y arquitectura | 25 % | [#18](https://github.com/dariogea/BM27/issues/18) |
 | 🔄 En curso | Historial completo de la carrera de cada jugador | Jugadores | 30 % | [#67](https://github.com/dariogea/BM27/issues/67) |
 | 🔄 En curso | Guía para crear mods | Datos, mods e idiomas | 25 % | [#21](https://github.com/dariogea/BM27/issues/21) |
 | 🔄 En curso | Comprobación automática de procedencia y etiquetado de datos | Datos, mods e idiomas | 25 % | [#61](https://github.com/dariogea/BM27/issues/61) |
@@ -167,7 +168,7 @@ Los agentes solo trabajan cuando el propietario lo autoriza (D-052); esto reflej
 
 Leyenda: ✅ hecho · 🔄 en curso · ⬜ pendiente · ⛔ bloqueado · 💡 idea. Entre paréntesis: fase, avance (si está en curso), dueño y enlace al Issue.
 
-<details><summary><b>Núcleo y arquitectura</b> — 53 % `██████░░░░░░`</summary>
+<details><summary><b>Núcleo y arquitectura</b> — 54 % `██████░░░░░░`</summary>
 
 _La base técnica que hace fiable todo lo demás: reproducible, sin interfaz, validada por esquemas._
 
@@ -181,7 +182,7 @@ _La base técnica que hace fiable todo lo demás: reproducible, sin interfaz, va
 - ✅ Prohibición de Math.random en el núcleo (test) (`F0`)
 - ⬜ Errores del núcleo con códigos y mensajes legibles (`F0`)
 - ⬜ Simulación en paralelo con varios Workers (`F2` · [#18](https://github.com/dariogea/BM27/issues/18)) — _T-019._
-- ⬜ Reducir copias del universo y coste por partido (`F2` · [#18](https://github.com/dariogea/BM27/issues/18))
+- 🔄 Reducir copias del universo y coste por partido (`F2` · 25 % · @codex · [#18](https://github.com/dariogea/BM27/issues/18)) — _Primera mejora #18: B2 2527→2167 ms (14,2 %) con 317 huellas idénticas. Meta del 30 % pendiente; sin paralelismo ni cambios de reglas._
 - ⬜ Registro (log) de depuración del núcleo (`F0`)
 - ✅ Medición de memoria en las pruebas de rendimiento (`F0`)
 - ⬜ Límites de tamaño del universo (`F0`)

@@ -318,13 +318,8 @@ export function simulateMatch(input: MatchInput): MatchEvent[] {
   let runPoints = 0;
   let lastTimeoutAt = -Infinity;
 
-  const stamp = () => ({
-    seq: events.length,
-    period,
-    clock,
-    possession,
-    offenseTeamId: offense.team.teamId,
-  });
+  // Build stamp fields directly in event literals: no intermediate object per event.
+  // Keep their order identical for reproducible event-log fingerprints.
 
   const P = (side: Side, slot: number): SimPlayer =>
     side.players[side.onCourt[slot] as number] as SimPlayer;
@@ -445,7 +440,11 @@ export function simulateMatch(input: MatchInput): MatchEvent[] {
         side.isOn[best] = true;
         side.enteredAt[best] = elapsed;
         events.push({
-          ...stamp(),
+          seq: events.length,
+          period,
+          clock,
+          possession,
+          offenseTeamId: offense.team.teamId,
           type: 'substitution',
           teamId: side.team.teamId,
           playerInId: (side.players[best] as SimPlayer).id,
@@ -545,7 +544,11 @@ export function simulateMatch(input: MatchInput): MatchEvent[] {
       (side.conduct[index] as number) >= rules.technicalFoulsForEjection;
     if (fouledOut) side.fouledOut[index] = true;
     events.push({
-      ...stamp(),
+      seq: events.length,
+      period,
+      clock,
+      possession,
+      offenseTeamId: offense.team.teamId,
       type: 'foul',
       playerId: fouler.id,
       teamId: side.team.teamId,
@@ -589,7 +592,16 @@ export function simulateMatch(input: MatchInput): MatchEvent[] {
       const made = rng.next() < probability;
       if (made) scored(shooterSide, 1);
       lastMissed = !made;
-      events.push({ ...stamp(), type: 'free_throw', playerId: shooter.id, made });
+      events.push({
+        seq: events.length,
+        period,
+        clock,
+        possession,
+        offenseTeamId: offense.team.teamId,
+        type: 'free_throw',
+        playerId: shooter.id,
+        made,
+      });
     }
     return lastMissed;
   };
@@ -616,7 +628,11 @@ export function simulateMatch(input: MatchInput): MatchEvent[] {
       offensive ? p.offensiveRebound * p.offensiveRebound : p.defensiveRebound * p.defensiveRebound,
     );
     events.push({
-      ...stamp(),
+      seq: events.length,
+      period,
+      clock,
+      possession,
+      offenseTeamId: offense.team.teamId,
       type: 'rebound',
       playerId: P(side, slot).id,
       teamId: side.team.teamId,
@@ -672,7 +688,17 @@ export function simulateMatch(input: MatchInput): MatchEvent[] {
         0,
         false,
       );
-      events.push({ ...stamp(), type: 'turnover', playerId: player.id, kind, playType });
+      events.push({
+        seq: events.length,
+        period,
+        clock,
+        possession,
+        offenseTeamId: offense.team.teamId,
+        type: 'turnover',
+        playerId: player.id,
+        kind,
+        playType,
+      });
       return 'dead';
     }
     const stealChance =
@@ -684,7 +710,11 @@ export function simulateMatch(input: MatchInput): MatchEvent[] {
           ? slot
           : pick(defense, (p) => Math.exp(p.steal * 1.6));
       events.push({
-        ...stamp(),
+        seq: events.length,
+        period,
+        clock,
+        possession,
+        offenseTeamId: offense.team.teamId,
         type: 'turnover',
         playerId: player.id,
         kind,
@@ -693,7 +723,17 @@ export function simulateMatch(input: MatchInput): MatchEvent[] {
       });
       return 'steal';
     }
-    events.push({ ...stamp(), type: 'turnover', playerId: player.id, kind, playType });
+    events.push({
+      seq: events.length,
+      period,
+      clock,
+      possession,
+      offenseTeamId: offense.team.teamId,
+      type: 'turnover',
+      playerId: player.id,
+      kind,
+      playType,
+    });
     return 'dead';
   };
 
@@ -837,7 +877,11 @@ export function simulateMatch(input: MatchInput): MatchEvent[] {
       }
       const location = shotLocation(shotZone);
       events.push({
-        ...stamp(),
+        seq: events.length,
+        period,
+        clock,
+        possession,
+        offenseTeamId: offense.team.teamId,
         type: 'shot',
         playerId: shooter.id,
         shotType,
@@ -1329,7 +1373,11 @@ export function simulateMatch(input: MatchInput): MatchEvent[] {
     const winner = arrow;
     arrow = arrow === home ? away : home;
     events.push({
-      ...stamp(),
+      seq: events.length,
+      period,
+      clock,
+      possession,
+      offenseTeamId: offense.team.teamId,
       type: 'jump_ball',
       kind: 'held-ball',
       winnerTeamId: winner.team.teamId,
@@ -1454,7 +1502,11 @@ export function simulateMatch(input: MatchInput): MatchEvent[] {
       } else if (rng.next() < E.shotClockViolation) {
         const slot = pick(offense, (p) => p.roleHandler);
         events.push({
-          ...stamp(),
+          seq: events.length,
+          period,
+          clock,
+          possession,
+          offenseTeamId: offense.team.teamId,
           type: 'turnover',
           playerId: P(offense, slot).id,
           kind: 'shot-clock',
@@ -1489,7 +1541,16 @@ export function simulateMatch(input: MatchInput): MatchEvent[] {
   const callTimeout = (side: Side, reason: 'opponent-run' | 'end-of-game' | 'rest'): void => {
     side.timeoutsLeft--;
     lastTimeoutAt = elapsed;
-    events.push({ ...stamp(), type: 'timeout', teamId: side.team.teamId, reason });
+    events.push({
+      seq: events.length,
+      period,
+      clock,
+      possession,
+      offenseTeamId: offense.team.teamId,
+      type: 'timeout',
+      teamId: side.team.teamId,
+      reason,
+    });
     // Both teams get their breath back, the run is over and the coaches can make changes.
     rest(home, E.timeoutRecovery);
     rest(away, E.timeoutRecovery);
@@ -1560,7 +1621,11 @@ export function simulateMatch(input: MatchInput): MatchEvent[] {
         if (roll >= risk) continue;
         side.injured[index] = true;
         events.push({
-          ...stamp(),
+          seq: events.length,
+          period,
+          clock,
+          possession,
+          offenseTeamId: offense.team.teamId,
           type: 'injury',
           playerId: (side.players[index] as SimPlayer).id,
           teamId: side.team.teamId,
@@ -1602,11 +1667,23 @@ export function simulateMatch(input: MatchInput): MatchEvent[] {
       arrow = defense;
       possession++;
     }
-    events.push({ ...stamp(), type: 'period_start', periodSeconds });
+    events.push({
+      seq: events.length,
+      period,
+      clock,
+      possession,
+      offenseTeamId: offense.team.teamId,
+      type: 'period_start',
+      periodSeconds,
+    });
     if (period === 1) {
       for (const side of [home, away]) {
         events.push({
-          ...stamp(),
+          seq: events.length,
+          period,
+          clock,
+          possession,
+          offenseTeamId: offense.team.teamId,
           type: 'lineup',
           teamId: side.team.teamId,
           playerIds: side.onCourt.map((i) => (side.players[i] as SimPlayer).id),
@@ -1633,7 +1710,11 @@ export function simulateMatch(input: MatchInput): MatchEvent[] {
       defense = homeWins ? away : home;
       arrow = defense;
       events.push({
-        ...stamp(),
+        seq: events.length,
+        period,
+        clock,
+        possession,
+        offenseTeamId: offense.team.teamId,
         type: 'jump_ball',
         kind: 'opening',
         winnerTeamId: offense.team.teamId,
@@ -1660,9 +1741,23 @@ export function simulateMatch(input: MatchInput): MatchEvent[] {
         timeoutWindow();
       }
     }
-    events.push({ ...stamp(), type: 'period_end' });
+    events.push({
+      seq: events.length,
+      period,
+      clock,
+      possession,
+      offenseTeamId: offense.team.teamId,
+      type: 'period_end',
+    });
   }
 
-  events.push({ ...stamp(), type: 'game_end' });
+  events.push({
+    seq: events.length,
+    period,
+    clock,
+    possession,
+    offenseTeamId: offense.team.teamId,
+    type: 'game_end',
+  });
   return events;
 }

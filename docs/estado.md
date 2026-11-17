@@ -85,3 +85,5 @@ Reglas en [`coordinacion.md`](coordinacion.md).
 | #21 | PROBADA | Paquetes JSON de competiciones, reglas, economía y nombres en web y CLI; ejemplo jugable de ocho clubes. Contrato 7 con migración y nombres conservados en guardados. Identidades españolas explícitas pendientes. |
 
 | #72 | PROBADA | Líderes por competición/temporada con medias, totales y porcentajes, mínimos explícitos y fichas enlazadas; palmarés real conservado de campeones/ascensos/descensos. Segunda parte de #14, sin contrato ni motor. |
+
+| #18 (parte 1) | PROBADA | Menos objetos temporales al emitir eventos: B2 2527→2167 ms en el mismo entorno; 317 huellas idénticas. Informes antes/después propios. Meta del 30 % y paralelismo pendientes; #18 sigue abierta. |

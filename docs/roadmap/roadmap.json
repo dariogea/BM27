@@ -1410,7 +1410,7 @@
           "t": "Versión 0.1.0-alpha.1 publicada",
           "s": "pendiente",
           "o": "claude",
-          "n": "Esperando autorización del propietario."
+          "n": "Versión ya puesta en los archivos (T-027). Falta fusionar y publicar la etiqueta, con autorización del propietario."
         },
         {
           "t": "Canales alfa y beta",
@@ -1428,10 +1428,11 @@
         },
         {
           "t": "La etiqueta de la Release corresponde al código compilado",
-          "s": "pendiente",
+          "s": "en-curso",
           "o": "claude",
           "i": 39,
-          "n": "Hallazgo de Codex."
+          "n": "T-027: validador tools/ci/release-check.mjs con tests; falta fusionarlo y probar la compilación en Windows.",
+          "p": 90
         },
         {
           "t": "Versión para macOS",

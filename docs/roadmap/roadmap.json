@@ -1364,10 +1364,10 @@
             {
               "t": "Tablas ordenables y filtros",
               "s": "en-curso",
-              "p": 15,
+              "p": 45,
               "i": 52,
               "o": "codex",
-              "n": "Filtro de actividad y selector de competición en el portal. Ordenación y filtros generales pendientes."
+              "n": "Portal: filtro de actividad y selector de competición (Codex). Plantilla: ordenación por cualquier columna y mapa de color por nivel. Mercado: búsqueda de agentes libres (T-033, Claude). Faltan las demás tablas."
             },
             {
               "t": "Atajos de teclado",

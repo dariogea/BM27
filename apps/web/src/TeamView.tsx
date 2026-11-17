@@ -2,6 +2,7 @@ import type { Position, TeamTactics } from '@bm27/schema';
 import { useState } from 'react';
 import { TACTIC_LABELS, minutes } from './MatchView';
 import type { MyTeamView, OffseasonReport, SquadPlayer } from './protocol';
+import './panels.css';
 
 const POSITION_LABELS: Record<Position, string> = {
   PG: 'Base',
@@ -25,41 +26,183 @@ const TACTIC_HELP: Record<keyof TeamTactics, string> = {
 
 const per = (total: number, games: number): string => (games ? (total / games).toFixed(1) : '–');
 
+type SortKey =
+  | 'order'
+  | 'name'
+  | 'pos'
+  | 'age'
+  | 'height'
+  | 'overall'
+  | 'potential'
+  | 'close'
+  | 'mid'
+  | 'three'
+  | 'pass'
+  | 'handle'
+  | 'perimeter'
+  | 'interior'
+  | 'rebound'
+  | 'speed'
+  | 'stamina'
+  | 'salary'
+  | 'until'
+  | 'games'
+  | 'minutes'
+  | 'points'
+  | 'rebounds'
+  | 'assists';
+
+/** Numeric value used to sort a row by a column (text columns sort alphabetically). */
+function sortValue(row: SquadPlayer, key: SortKey): number | string {
+  const { player: p, stats, contract } = row;
+  const a = p.attributes;
+  const games = stats?.games ?? 0;
+  const avg = (total: number): number => (games ? total / games : -1);
+  switch (key) {
+    case 'name':
+      return `${p.lastName} ${p.firstName}`;
+    case 'pos':
+      return p.positions[0] ?? '';
+    case 'age':
+      return p.age;
+    case 'height':
+      return p.heightCm;
+    case 'overall':
+      return row.overall;
+    case 'potential':
+      return p.potential;
+    case 'close':
+      return a.offensive.closeShot;
+    case 'mid':
+      return a.offensive.midRange;
+    case 'three':
+      return a.offensive.threePoint;
+    case 'pass':
+      return a.offensive.passing;
+    case 'handle':
+      return a.offensive.ballHandling;
+    case 'perimeter':
+      return a.defensive.perimeterDefense;
+    case 'interior':
+      return a.defensive.interiorDefense;
+    case 'rebound':
+      return a.defensive.defensiveRebound;
+    case 'speed':
+      return a.physical.speed;
+    case 'stamina':
+      return a.physical.stamina;
+    case 'salary':
+      return contract?.salary ?? -1;
+    case 'until':
+      return contract?.endSeason ?? -1;
+    case 'games':
+      return games;
+    case 'minutes':
+      return avg(stats?.seconds ?? 0);
+    case 'points':
+      return avg(stats?.points ?? 0);
+    case 'rebounds':
+      return avg((stats?.offensiveRebounds ?? 0) + (stats?.defensiveRebounds ?? 0));
+    case 'assists':
+      return avg(stats?.assists ?? 0);
+    default:
+      return 0;
+  }
+}
+
+/** Colour tier of an attribute (1 weak … 5 elite). The number is always shown too. */
+const tier = (value: number): number =>
+  value >= 85 ? 5 : value >= 75 ? 4 : value >= 60 ? 3 : value >= 45 ? 2 : 1;
+
+const TIER_LABELS = ['', 'bajo', 'justo', 'bueno', 'muy bueno', 'élite'];
+
+function Attr({ value }: { value: number }) {
+  return (
+    <td className={`attr attr-t${tier(value)}`} title={TIER_LABELS[tier(value)]}>
+      {value}
+    </td>
+  );
+}
+
 export function SquadTable({ squad }: { squad: SquadPlayer[] }) {
+  const [sort, setSort] = useState<{ key: SortKey; descending: boolean }>({
+    key: 'order',
+    descending: false,
+  });
+  const rows = squad.map((row, index) => ({ row, index }));
+  if (sort.key !== 'order') {
+    rows.sort((x, y) => {
+      const a = sortValue(x.row, sort.key);
+      const b = sortValue(y.row, sort.key);
+      const order =
+        typeof a === 'string' || typeof b === 'string'
+          ? String(a).localeCompare(String(b), 'es')
+          : a - b;
+      return (sort.descending ? -order : order) || x.index - y.index;
+    });
+  }
+  const header = (key: SortKey, label: string, title?: string, className?: string) => {
+    const active = sort.key === key;
+    return (
+      <th
+        className={className}
+        title={title}
+        aria-sort={active ? (sort.descending ? 'descending' : 'ascending') : 'none'}
+      >
+        <button
+          type="button"
+          className="th-sort"
+          onClick={() =>
+            setSort(
+              active
+                ? { key, descending: !sort.descending }
+                : { key, descending: key !== 'name' && key !== 'pos' },
+            )
+          }
+        >
+          {label}
+          <span aria-hidden="true">{active ? (sort.descending ? ' ▼' : ' ▲') : ''}</span>
+        </button>
+      </th>
+    );
+  };
   return (
     <div className="scroll" tabIndex={0} role="region" aria-label="Plantilla y estadísticas">
-      <table>
+      <table className="squad-table">
         <thead>
           <tr>
-            <th className="name">Jugador</th>
-            <th>Pos</th>
-            <th>Edad</th>
-            <th>Alt</th>
-            <th title="Valoración global">VAL</th>
-            <th title="Techo de habilidad si se desarrolla del todo (solo lo ves en tu equipo)">
-              POT
-            </th>
-            <th title="Tiro cerca del aro">Aro</th>
-            <th title="Media distancia">Med</th>
-            <th title="Triple">Tri</th>
-            <th title="Pase">Pas</th>
-            <th title="Bote">Bot</th>
-            <th title="Defensa exterior">DEx</th>
-            <th title="Defensa interior">DIn</th>
-            <th title="Rebote defensivo">Reb</th>
-            <th title="Velocidad">Vel</th>
-            <th title="Resistencia">Res</th>
-            <th title="Salario anual">Salario</th>
-            <th title="Última temporada del contrato">Hasta</th>
-            <th>PJ</th>
-            <th>MIN</th>
-            <th>PTS</th>
-            <th>REB</th>
-            <th>AS</th>
+            {header('name', 'Jugador', 'Ordenar por nombre', 'name')}
+            {header('pos', 'Pos')}
+            {header('age', 'Edad')}
+            {header('height', 'Alt')}
+            {header('overall', 'VAL', 'Valoración global')}
+            {header(
+              'potential',
+              'POT',
+              'Techo de habilidad si se desarrolla del todo (solo lo ves en tu equipo)',
+            )}
+            {header('close', 'Aro', 'Tiro cerca del aro')}
+            {header('mid', 'Med', 'Media distancia')}
+            {header('three', 'Tri', 'Triple')}
+            {header('pass', 'Pas', 'Pase')}
+            {header('handle', 'Bot', 'Bote')}
+            {header('perimeter', 'DEx', 'Defensa exterior')}
+            {header('interior', 'DIn', 'Defensa interior')}
+            {header('rebound', 'Reb', 'Rebote defensivo')}
+            {header('speed', 'Vel', 'Velocidad')}
+            {header('stamina', 'Res', 'Resistencia')}
+            {header('salary', 'Salario', 'Salario anual')}
+            {header('until', 'Hasta', 'Última temporada del contrato')}
+            {header('games', 'PJ')}
+            {header('minutes', 'MIN')}
+            {header('points', 'PTS')}
+            {header('rebounds', 'REB')}
+            {header('assists', 'AS')}
           </tr>
         </thead>
         <tbody>
-          {squad.map(({ player: p, overall, stats, contract, expired }, index) => {
+          {rows.map(({ row, index }) => {
+            const { player: p, overall, stats, contract, expired } = row;
             const a = p.attributes;
             const games = stats?.games ?? 0;
             return (
@@ -68,9 +211,11 @@ export function SquadTable({ squad }: { squad: SquadPlayer[] }) {
                   {p.firstName} {p.lastName}
                   {index < 5 ? ' *' : ''}
                   {p.injury ? (
-                    <span className="warn" title="Lesionado: no juega hasta que se recupere">
-                      {' '}
-                      · lesionado {p.injury.gamesRemaining}{' '}
+                    <span
+                      className="badge badge-injury"
+                      title="Lesionado: no juega hasta que se recupere"
+                    >
+                      Lesión · {p.injury.gamesRemaining}{' '}
                       {p.injury.gamesRemaining === 1 ? 'partido' : 'partidos'}
                     </span>
                   ) : null}
@@ -78,23 +223,26 @@ export function SquadTable({ squad }: { squad: SquadPlayer[] }) {
                 <td>{p.positions.join('/')}</td>
                 <td>{p.age}</td>
                 <td>{p.heightCm}</td>
-                <td>
-                  <strong>{overall.toFixed(0)}</strong>
-                </td>
-                <td>{p.potential}</td>
-                <td>{a.offensive.closeShot}</td>
-                <td>{a.offensive.midRange}</td>
-                <td>{a.offensive.threePoint}</td>
-                <td>{a.offensive.passing}</td>
-                <td>{a.offensive.ballHandling}</td>
-                <td>{a.defensive.perimeterDefense}</td>
-                <td>{a.defensive.interiorDefense}</td>
-                <td>{a.defensive.defensiveRebound}</td>
-                <td>{a.physical.speed}</td>
-                <td>{a.physical.stamina}</td>
+                <Attr value={Math.round(overall)} />
+                <Attr value={p.potential} />
+                <Attr value={a.offensive.closeShot} />
+                <Attr value={a.offensive.midRange} />
+                <Attr value={a.offensive.threePoint} />
+                <Attr value={a.offensive.passing} />
+                <Attr value={a.offensive.ballHandling} />
+                <Attr value={a.defensive.perimeterDefense} />
+                <Attr value={a.defensive.interiorDefense} />
+                <Attr value={a.defensive.defensiveRebound} />
+                <Attr value={a.physical.speed} />
+                <Attr value={a.physical.stamina} />
                 <td>{contract ? `${Math.round(contract.salary / 1000)} k€` : '–'}</td>
-                <td className={expired ? 'bad' : ''}>
-                  {contract ? (expired ? `${contract.endSeason} ⚠` : contract.endSeason) : '–'}
+                <td>
+                  {contract ? contract.endSeason : '–'}
+                  {expired ? (
+                    <span className="badge badge-expired" title="Contrato cumplido: renuévalo">
+                      Cumplido
+                    </span>
+                  ) : null}
                 </td>
                 <td>{games || '–'}</td>
                 <td>{stats && games ? minutes(Math.round(stats.seconds / games)) : '–'}</td>
@@ -109,7 +257,11 @@ export function SquadTable({ squad }: { squad: SquadPlayer[] }) {
         </tbody>
       </table>
       <p className="note">
-        * titular en el próximo partido. Atributos de 1 a 99. Las medias (MIN, PTS, REB, AS) son por
+        * titular en el próximo partido. Atributos de 1 a 99 con color según nivel (el número
+        siempre se muestra): <span className="attr attr-t1">bajo</span>{' '}
+        <span className="attr attr-t2">justo</span> <span className="attr attr-t3">bueno</span>{' '}
+        <span className="attr attr-t4">muy bueno</span> <span className="attr attr-t5">élite</span>.
+        Pulsa una cabecera para ordenar por esa columna. Las medias (MIN, PTS, REB, AS) son por
         partido en la temporada en curso.
       </p>
     </div>

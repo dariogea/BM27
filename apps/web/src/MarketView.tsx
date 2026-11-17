@@ -49,6 +49,7 @@ export function MarketPanel(props: {
 }) {
   const { market, team, seasonNumber } = props;
   const [position, setPosition] = useState<Position | 'all'>('all');
+  const [query, setQuery] = useState('');
   const [sort, setSort] = useState<'rating' | 'potential' | 'age' | 'salary'>('rating');
   const [years, setYears] = useState<Record<string, number>>({});
   const yearsFor = (id: string, fallback: number): number => years[id] ?? fallback;
@@ -56,6 +57,11 @@ export function MarketPanel(props: {
 
   const agents = market.freeAgents
     .filter((a) => position === 'all' || a.player.positions.includes(position))
+    .filter((a) =>
+      `${a.player.firstName} ${a.player.lastName}`
+        .toLowerCase()
+        .includes(query.trim().toLowerCase()),
+    )
     .sort((a, b) =>
       sort === 'potential'
         ? b.player.potential - a.player.potential
@@ -181,6 +187,16 @@ export function MarketPanel(props: {
           </select>
         </label>
         <label>
+          Buscar{' '}
+          <input
+            type="search"
+            value={query}
+            placeholder="Nombre o apellido"
+            aria-label="Buscar agente libre por nombre"
+            onChange={(e) => setQuery(e.target.value)}
+          />
+        </label>
+        <label>
           Ordenar por{' '}
           <select
             value={sort}
@@ -193,7 +209,11 @@ export function MarketPanel(props: {
             <option value="salary">Salario (más baratos)</option>
           </select>
         </label>
-        <span className="note">Se muestran los 150 más valorados.</span>
+        <span className="note" role="status">
+          {agents.length} {agents.length === 1 ? 'resultado' : 'resultados'}
+          {agents.length > 60 ? ' (se muestran los 60 primeros)' : ''}. El mercado reúne los 150 más
+          valorados.
+        </span>
       </div>
       <div className="scroll" tabIndex={0} role="region" aria-label="Mercado y contratos">
         <table data-testid="freeagents">

@@ -12,9 +12,7 @@ y jugar una jornada. No son maquetas ni plantillas oficiales.
 | Pantalla                        | Oscuro                                             | Claro                                               |
 | ------------------------------- | -------------------------------------------------- | --------------------------------------------------- |
 | Inicio, escritorio (1280 × 900) | [Captura](../screenshots/welcome-desktop-dark.png) | [Captura](../screenshots/welcome-desktop-light.png) |
-| Inicio, móvil (390 × 844)       | [Captura](../screenshots/welcome-mobile-dark.png)  | [Captura](../screenshots/welcome-mobile-light.png)  |
 | Equipo, escritorio              | [Captura](../screenshots/team-desktop-dark.png)    | [Captura](../screenshots/team-desktop-light.png)    |
-| Equipo, móvil                   | [Captura](../screenshots/team-mobile-dark.png)     | [Captura](../screenshots/team-mobile-light.png)     |
 
 ## Verificación repetible
 
@@ -52,3 +50,5 @@ la lógica de fichajes mantiene sus pruebas automatizadas.
 La [base española de referencia](../datos/espana.md) tiene una política y un manifiesto de investigación;
 no se han importado clubes ni jugadores oficiales. El acceso a las fuentes ACB/FEB no completó la
 conexión desde el entorno. No se cambió el formato deportivo con cifras sin verificar.
+
+Actualización posterior del propietario: solo PC. Las capturas vigentes y la comprobación actual están en [portal #52](portal-52.md); se han retirado los artefactos móviles. El resultado de 36 combinaciones descrito arriba pertenece a la entrega anterior, no al alcance actual.

@@ -24,3 +24,5 @@ La [portada del proyecto](../README.md) presenta el juego y el resumen visual de
 - [Portal de gestión basado en las capturas del propietario (#52)](revisiones/portal-52.md).
 
 - [Adaptador y validación de la semilla española (#61)](datos/catalogo-semilla.md).
+
+- [Buscador y fichas del mundo de la partida (#67)](consultas.md).

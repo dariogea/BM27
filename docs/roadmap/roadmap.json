@@ -537,10 +537,12 @@
         },
         {
           "t": "Historial completo de la carrera de cada jugador",
-          "s": "pendiente",
+          "s": "en-curso",
           "f": "F1",
-          "i": 14,
-          "n": "T-015."
+          "i": 67,
+          "n": "Se muestran temporadas y clubes de los registros estadísticos conservados; no se inventa trayectoria anterior al universo.",
+          "p": 30,
+          "o": "codex"
         }
       ]
     },
@@ -1235,13 +1237,18 @@
           "c": [
             {
               "t": "Plantilla y tácticas de cualquier equipo",
-              "s": "pendiente",
-              "i": 14
+              "s": "hecho",
+              "i": 67,
+              "o": "codex",
+              "n": "Buscador paginado y fichas enlazadas en Mundo, con datos del Worker y verificación real en PC."
             },
             {
               "t": "Ficha de jugador completa",
-              "s": "pendiente",
-              "i": 14
+              "s": "en-curso",
+              "i": 67,
+              "p": 60,
+              "o": "codex",
+              "n": "Atributos, contrato, lesión y estadísticas conservadas. Potencial rival oculto; trayectoria detallada y ojeo pendientes."
             },
             {
               "t": "Líderes estadísticos",
@@ -1255,8 +1262,10 @@
             },
             {
               "t": "Buscador de jugadores y equipos",
-              "s": "pendiente",
-              "i": 14
+              "s": "hecho",
+              "i": 67,
+              "o": "codex",
+              "n": "Buscador paginado y fichas enlazadas en Mundo, con datos del Worker y verificación real en PC."
             },
             {
               "t": "Pantalla de inicio que explique cómo se juega",

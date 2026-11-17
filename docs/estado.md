@@ -79,3 +79,5 @@ Reglas en [`coordinacion.md`](coordinacion.md).
 | #61 | PROBADA | Adaptador de la semilla española: 202 identidades estables dentro de la semilla, alias, fuentes, validaciones y obstáculos explícitos para la integración. No cambia la demo ni contrato. |
 
 | #63 | PROBADA | Técnicas de jugador con tiro libre al rival, posesión previa y acumulación de falta de equipo correctas; antideportivas intactas. Regresión demostrada antes de corregir y mediciones propias de calibración, estabilidad y rendimiento. |
+
+| #67 | PROBADA | Mundo: buscador paginado y fichas enlazadas de jugadores/clubes, estadísticas conservadas y potencial rival excluido de la respuesta. Primera parte de #14; líderes y palmarés pendientes. |

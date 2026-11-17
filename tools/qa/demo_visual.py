@@ -85,7 +85,7 @@ with sync_playwright() as p:
                 page.get_by_text('Apariencia',exact=True).click()
                 page.get_by_role('button',name='☀ Modo claro' if theme == 'light' else '☾ Modo oscuro',exact=True).click()
                 page.get_by_text('Apariencia',exact=True).click()
-            for tab in ['Portal','Mi equipo','Tácticas','Quinteto','Mercado','Finanzas','Competición','Partido','Partidas']:
+            for tab in ['Portal','Mi equipo','Tácticas','Quinteto','Mercado','Finanzas','Mundo','Competición','Partido','Partidas']:
                 page.get_by_role('navigation',name='Secciones de la partida').get_by_role('button',name=tab,exact=True).click()
                 page.wait_for_timeout(100)
                 audit(label+'-'+theme+'-'+tab)
@@ -118,4 +118,4 @@ with sync_playwright() as p:
 Path(os.environ.get('BM27_REPORT_PATH','/tmp/bm27-visual-browser-results.json')).write_text(json.dumps({'results':results,'errors':errors},ensure_ascii=False,indent=2))
 assert not errors,errors
 assert not any(r['violations'] or r['overflow'] for r in results),'See results'
-print('PASS: 48 screens, WCAG A/AA axe, no page overflow, theme persistence, keyboard focus, no browser errors.')
+print('PASS: 52 screens, WCAG A/AA axe, no page overflow, theme persistence, keyboard focus, no browser errors.')

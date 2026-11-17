@@ -1,3 +1,4 @@
+import type { WorldPayload, WorldQuery } from './worldTypes';
 import type { SlotSummary } from './slotStore';
 import type {
   Contract,
@@ -13,6 +14,7 @@ import type {
 
 /** Commands the UI sends to the simulation worker. The UI never runs the core itself. */
 export type Command =
+  | (WorldQuery & { id: number })
   | { id: number; type: 'generate'; seed: string }
   | { id: number; type: 'chooseTeam'; teamId: string | null }
   | { id: number; type: 'setTactics'; tactics: TeamTactics }
@@ -172,6 +174,7 @@ export interface GameView {
 }
 
 export type Reply =
+  | { id: number; type: 'world'; result: WorldPayload }
   | { id: number; type: 'slots'; slots: SlotSummary[]; autosave: boolean; message: string }
   | { id: number; type: 'state'; view: GameView; message: string }
   | {

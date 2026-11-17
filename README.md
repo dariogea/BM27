@@ -44,13 +44,13 @@ comprobación de actualizaciones necesita un token de lectura mientras el reposi
 
 ## Estado real del juego
 
-| Sistema        | Qué existe hoy                                                                         | Qué falta para el objetivo completo                                                              |
-| -------------- | -------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| Partido        | Simulación por posesiones, tácticas con efecto y estadísticas derivadas de eventos.    | Entrenadores con criterio, más reglas, lesiones, tiempos muertos y calibración contrastada.      |
-| Club y mercado | Equipo propio, quinteto, agentes libres, contratos, salarios y cuentas del club.       | Traspasos negociados, personal, instalaciones, patrocinadores y decisiones económicas profundas. |
-| Mundo          | Cuatro niveles, temporadas, ascensos, descensos, desarrollo y retiradas.               | Cantera real, ojeo, competiciones adicionales y mayor estabilidad contrastada.                   |
-| Experiencia    | Demo con temas claro/oscuro, inicio guiado, diseño para PC y compilación para Windows. | Ayuda completa, validación de todas las pantallas y pruebas de instalación real.                 |
-| Partidas       | Archivos con checksum, ranuras internas y autoguardado al terminar la temporada.       | Recuperación con copias históricas y un historial más completo.                                  |
+| Sistema        | Qué existe hoy                                                                                                                | Qué falta para el objetivo completo                                                              |
+| -------------- | ----------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| Partido        | Simulación por posesiones, tácticas con efecto y estadísticas derivadas de eventos.                                           | Entrenadores con criterio, más reglas, lesiones, tiempos muertos y calibración contrastada.      |
+| Club y mercado | Equipo propio, quinteto, agentes libres, contratos, salarios y cuentas del club.                                              | Traspasos negociados, personal, instalaciones, patrocinadores y decisiones económicas profundas. |
+| Mundo          | Cuatro niveles, temporadas, ascensos, descensos, desarrollo y retiradas.                                                      | Cantera real, ojeo, competiciones adicionales y mayor estabilidad contrastada.                   |
+| Experiencia    | Buscador y fichas de jugadores/clubes; demo con temas claro/oscuro, inicio guiado, diseño para PC y compilación para Windows. | Ayuda completa, validación de todas las pantallas y pruebas de instalación real.                 |
+| Partidas       | Archivos con checksum, ranuras internas y autoguardado al terminar la temporada.                                              | Recuperación con copias históricas y un historial más completo.                                  |
 
 Los entrenadores y la entrada de jóvenes siguen usando reglas provisionales (`PLACEHOLDER`).
 Las escalas de salarios y las bandas estadísticas son aproximaciones. No se presentan como sistemas
@@ -91,7 +91,7 @@ Las barras de fase muestran cobertura del plan; el índice global usa pesos dist
 ```mermaid
 flowchart LR
   F0["F0 Fundaciones<br/>76 %"]
-  F1["F1 Primera versión jugable<br/>43 %"]
+  F1["F1 Primera versión jugable<br/>50 %"]
   F2["F2 Profundidad de gestión<br/>3 %"]
   F3["F3 Mundo, datos y mods<br/>0 %"]
   F4["F4 Presentación<br/>11 %"]
@@ -101,7 +101,7 @@ flowchart LR
 ```
 
 - **F0 · Fundaciones**: 76 % `███████████████░░░░░`
-- **F1 · Primera versión jugable**: 43 % `█████████░░░░░░░░░░░`
+- **F1 · Primera versión jugable**: 50 % `██████████░░░░░░░░░░`
 - **F2 · Profundidad de gestión**: 3 % `█░░░░░░░░░░░░░░░░░░░`
 - **F3 · Mundo, datos y mods**: 0 % `░░░░░░░░░░░░░░░░░░░░`
 - **F4 · Presentación**: 11 % `██░░░░░░░░░░░░░░░░░░`
@@ -140,6 +140,8 @@ La guía conserva los comandos, el recorrido de una partida y las comprobaciones
 **[Ejecutar y desarrollar BM27 →](docs/desarrollo.md)**
 
 **[Cómo usar los guardados internos y las copias en archivo →](docs/partidas.md)**
+
+**[Consultar jugadores y clubes desde Mundo →](docs/consultas.md)**
 
 ## Explorar el proyecto
 

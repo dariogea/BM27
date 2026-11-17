@@ -148,4 +148,29 @@ describe('checkForUpdate', () => {
     expect(calls[0]!.headers.Authorization).toBeUndefined();
     expect(calls[1]!.headers.Authorization).toBe('Bearer secret');
   });
+
+  it('follows the pages so a run of pre-releases cannot hide a newer stable version', async () => {
+    const page1 = Array.from({ length: 100 }, (_, i) => release(`v2.0.0-beta.${i + 1}`));
+    const page2 = [release('v1.1.0'), release('v1.0.0')];
+    const asked: string[] = [];
+    const paged = (async (url: string) => {
+      asked.push(url);
+      return new Response(JSON.stringify(url.includes('page=2') ? page2 : page1), { status: 200 });
+    }) as unknown as typeof fetch;
+    const result = await checkForUpdate({ current: '1.0.0', fetchFn: paged });
+    expect(result).toMatchObject({ kind: 'available', release: { tag: 'v1.1.0' } });
+    expect(asked).toHaveLength(2);
+  });
+
+  it('stops after a few pages instead of asking forever', async () => {
+    let calls = 0;
+    const endless = (async () => {
+      calls++;
+      return new Response(JSON.stringify(Array.from({ length: 100 }, () => release('v0.0.1'))), {
+        status: 200,
+      });
+    }) as unknown as typeof fetch;
+    await checkForUpdate({ current: '1.0.0', fetchFn: endless });
+    expect(calls).toBeLessThanOrEqual(5);
+  });
 });

@@ -10,6 +10,9 @@
 /** Repository whose Releases are checked. Can be overridden in the launcher panel. */
 export const DEFAULT_RELEASES_REPO = 'dariogea/BM27';
 
+const PAGE_SIZE = 100;
+const MAX_PAGES = 5;
+
 export interface ParsedVersion {
   major: number;
   minor: number;
@@ -138,28 +141,38 @@ export async function checkForUpdate(options: CheckOptions): Promise<UpdateResul
   const headers: Record<string, string> = { Accept: 'application/vnd.github+json' };
   if (options.token?.trim()) headers.Authorization = `Bearer ${options.token.trim()}`;
   const fetchFn = options.fetchFn ?? fetch;
-  let response: Response;
-  try {
-    response = await fetchFn(`https://api.github.com/repos/${repo}/releases?per_page=30`, {
-      headers,
-    });
-  } catch {
-    return { kind: 'unavailable', current, reason: 'offline' };
+  // GitHub lists Releases newest first, 100 per page. Follow the pages (up to MAX_PAGES) so that a
+  // long run of pre-releases cannot hide a newer stable version on the next page.
+  const all: unknown[] = [];
+  for (let page = 1; page <= MAX_PAGES; page++) {
+    let response: Response;
+    try {
+      response = await fetchFn(
+        `https://api.github.com/repos/${repo}/releases?per_page=${PAGE_SIZE}&page=${page}`,
+        { headers },
+      );
+    } catch {
+      return { kind: 'unavailable', current, reason: 'offline' };
+    }
+    // A private repository answers 404 to an anonymous request, as if it did not exist.
+    if (response.status === 404 || response.status === 401) {
+      return { kind: 'unavailable', current, reason: 'private-or-missing' };
+    }
+    if (response.status === 403 || response.status === 429) {
+      return { kind: 'unavailable', current, reason: 'rate-limited' };
+    }
+    if (!response.ok) return { kind: 'unavailable', current, reason: 'bad-answer' };
+    let body: unknown;
+    try {
+      body = await response.json();
+    } catch {
+      return { kind: 'unavailable', current, reason: 'bad-answer' };
+    }
+    if (!Array.isArray(body)) return { kind: 'unavailable', current, reason: 'bad-answer' };
+    all.push(...body);
+    if (body.length < PAGE_SIZE) break; // last page
   }
-  // A private repository answers 404 to an anonymous request, as if it did not exist.
-  if (response.status === 404 || response.status === 401) {
-    return { kind: 'unavailable', current, reason: 'private-or-missing' };
-  }
-  if (response.status === 403 || response.status === 429) {
-    return { kind: 'unavailable', current, reason: 'rate-limited' };
-  }
-  if (!response.ok) return { kind: 'unavailable', current, reason: 'bad-answer' };
-  let body: unknown;
-  try {
-    body = await response.json();
-  } catch {
-    return { kind: 'unavailable', current, reason: 'bad-answer' };
-  }
+  const body = all;
   const release = newestRelease(body, running.pre.length > 0);
   const version = release ? parseVersion(release.tag) : null;
   if (release && version && compareVersions(version, running) > 0) {

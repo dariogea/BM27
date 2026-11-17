@@ -28,3 +28,5 @@ La [portada del proyecto](../README.md) presenta el juego y el resumen visual de
 - [Buscador y fichas del mundo de la partida (#67)](consultas.md).
 
 - [Cargar y crear paquetes de datos (#21)](datos/paquetes.md).
+
+- [Repetición del registro y mapa de tiros (#15)](repeticion.md).

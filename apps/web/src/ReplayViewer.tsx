@@ -1,0 +1,264 @@
+import { useEffect, useMemo, useRef, useState } from 'react';
+import type { MatchDetail } from '@bm27/schema';
+import { buildReplay, replayClock, replayEventText } from './replayData';
+import './replay.css';
+
+export function ReplayViewer(props: {
+  detail: MatchDetail;
+  playerNames: Record<string, string>;
+  name: (id: string) => string;
+}) {
+  const region = useRef<HTMLElement>(null);
+  useEffect(() => {
+    region.current?.focus({ preventScroll: true });
+    region.current?.scrollIntoView({ block: 'start' });
+  }, []);
+  const [cursor, setCursor] = useState(0);
+  const [playing, setPlaying] = useState(false);
+  const [rate, setRate] = useState(5);
+  const [team, setTeam] = useState('');
+  const [outcome, setOutcome] = useState('all');
+  const projection = useMemo(() => {
+    try {
+      return { data: buildReplay(props.detail), error: '' };
+    } catch (error) {
+      return { data: null, error: error instanceof Error ? error.message : String(error) };
+    }
+  }, [props.detail]);
+  const last = (projection.data?.frames.length ?? 1) - 1;
+  const position = Math.min(cursor, last);
+  useEffect(() => {
+    if (!playing) return;
+    if (cursor >= last) {
+      setPlaying(false);
+      return;
+    }
+    const timer = window.setTimeout(
+      () => setCursor((index) => Math.min(index + 1, last)),
+      1000 / rate,
+    );
+    return () => window.clearTimeout(timer);
+  }, [playing, cursor, last, rate]);
+  if (!projection.data)
+    return (
+      <p className="error" role="alert">
+        No se puede reproducir el registro: {projection.error}
+      </p>
+    );
+  const { frames, shots } = projection.data;
+  const frame = frames[position]!;
+  const final = frames[last]!;
+  const valid =
+    final.homeScore === props.detail.boxScore.home.points &&
+    final.awayScore === props.detail.boxScore.away.points;
+  const who = (id: string) => props.playerNames[id] ?? id;
+  const seek = (at: number) => {
+    setPlaying(false);
+    setCursor(Math.max(0, Math.min(at, last)));
+  };
+  const nextPeriod = frames.findIndex(
+    (f, index) => index > position && f.event?.type === 'period_start' && f.period > frame.period,
+  );
+  const visibleShots = shots.filter(
+    (s) =>
+      s.at <= position &&
+      (!team || s.teamId === team) &&
+      (outcome === 'all' || s.event.made === (outcome === 'made')),
+  );
+  const home = props.detail.boxScore.home.teamId;
+  const away = props.detail.boxScore.away.teamId;
+  return (
+    <section
+      className="replay-viewer"
+      ref={region}
+      tabIndex={-1}
+      aria-label="Repetición del registro"
+      data-testid="replay-viewer"
+    >
+      <div className="replay-heading">
+        <div>
+          <span className="eyebrow">El partido, evento a evento</span>
+          <h2>Repetición y mapa de tiros</h2>
+        </div>
+        <span className="status-pill">{playing ? 'Reproduciendo' : 'En pausa'}</span>
+      </div>
+      <p className="note">
+        Reproduce un partido ya simulado. Los quintetos y tiros salen del registro; este no contiene
+        posiciones ni movimientos de los diez jugadores.
+      </p>
+      {!valid && (
+        <p className="error" role="alert">
+          El registro no coincide con el marcador del acta. No se puede verificar esta repetición.
+        </p>
+      )}
+      <div className="replay-scoreboard" aria-label="Marcador de la repetición">
+        <div>
+          <span>{props.name(home)}</span>
+          <strong data-testid="replay-home-score">{frame.homeScore}</strong>
+        </div>
+        <div className="replay-clock">
+          <span>Periodo {frame.period}</span>
+          <strong>{replayClock(frame.clock)}</strong>
+          <small>
+            {position} / {last} eventos
+          </small>
+        </div>
+        <div>
+          <span>{props.name(away)}</span>
+          <strong data-testid="replay-away-score">{frame.awayScore}</strong>
+        </div>
+      </div>
+      <div className="bar replay-controls">
+        <button onClick={() => seek(0)} disabled={position === 0}>
+          Inicio
+        </button>
+        <button onClick={() => seek(position - 1)} disabled={position === 0}>
+          Evento anterior
+        </button>
+        <button
+          onClick={() => {
+            if (position >= last) setCursor(0);
+            setPlaying((value) => !value);
+          }}
+          disabled={!valid || last === 0}
+        >
+          {playing ? 'Pausar' : 'Reproducir'}
+        </button>
+        <button onClick={() => seek(position + 1)} disabled={position >= last}>
+          Evento siguiente
+        </button>
+        <button onClick={() => seek(nextPeriod)} disabled={nextPeriod < 0}>
+          Siguiente periodo
+        </button>
+        <button onClick={() => seek(last)} disabled={position >= last}>
+          Saltar al final
+        </button>
+        <label>
+          Velocidad
+          <select value={rate} onChange={(e) => setRate(Number(e.target.value))}>
+            <option value={2}>2 eventos/s</option>
+            <option value={5}>5 eventos/s</option>
+            <option value={10}>10 eventos/s</option>
+          </select>
+        </label>
+      </div>
+      <label className="replay-progress">
+        Recorrer el registro
+        <input
+          type="range"
+          min={0}
+          max={last}
+          value={position}
+          step={1}
+          onChange={(e) => seek(Number(e.target.value))}
+        />
+      </label>
+      <p className="replay-current" data-testid="replay-event">
+        {replayEventText(frame.event, who)}
+      </p>
+      <div className="replay-grid">
+        <section className="replay-court-panel" aria-label="Mapa de tiros de campo">
+          <h3>Mapa de tiros hasta este evento</h3>
+          <div className="bar">
+            <label>
+              Equipo del mapa
+              <select value={team} onChange={(e) => setTeam(e.target.value)}>
+                <option value="">Ambos equipos</option>
+                <option value={home}>{props.name(home)}</option>
+                <option value={away}>{props.name(away)}</option>
+              </select>
+            </label>
+            <label>
+              Resultado del tiro
+              <select value={outcome} onChange={(e) => setOutcome(e.target.value)}>
+                <option value="all">Todos los tiros</option>
+                <option value="made">Anotados</option>
+                <option value="missed">Fallados</option>
+              </select>
+            </label>
+          </div>
+          <p className="note">
+            ● Anotado · × Fallado. {visibleShots.length} tiros visibles. Coordenadas del motor en
+            metros sobre media pista; tiros libres excluidos.
+          </p>
+          <svg
+            viewBox="0 0 15 14"
+            className="replay-court"
+            role="group"
+            aria-label="Media pista con los tiros registrados"
+          >
+            <g className="court-lines" aria-hidden="true">
+              <rect x="0.1" y="0.1" width="14.8" height="13.8" />
+              <rect x="5.05" y="0.1" width="4.9" height="5.7" />
+              <circle cx="7.5" cy="5.8" r="1.8" />
+              <path d="M 0.9 0.1 L 0.9 3 A 6.75 6.75 0 0 0 14.1 3 L 14.1 0.1" />
+              <path d="M 5.7 13.9 A 1.8 1.8 0 0 1 9.3 13.9" />
+              <line x1="6.6" x2="8.4" y1="1.2" y2="1.2" />
+              <circle cx="7.5" cy="1.575" r="0.225" />
+            </g>
+            {visibleShots.map((shot) => {
+              const e = shot.event;
+              const description = `${who(e.playerId)}, periodo ${e.period}, ${replayClock(e.clock)}, ${e.made ? 'anotado' : 'fallado'}`;
+              return (
+                <g
+                  key={shot.at}
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`Ir al tiro: ${description}`}
+                  className={`replay-shot ${e.made ? 'made' : 'missed'} ${shot.at === position ? 'current' : ''}`}
+                  data-event-index={shot.at}
+                  data-x={e.x}
+                  data-y={e.y}
+                  onClick={() => seek(shot.at)}
+                  onKeyDown={(key) => {
+                    if (key.key === 'Enter' || key.key === ' ') {
+                      key.preventDefault();
+                      seek(shot.at);
+                    }
+                  }}
+                >
+                  <title>
+                    {description} · {e.x}, {e.y} m
+                  </title>
+                  <circle className="shot-hit" cx={e.x} cy={e.y} r="0.35" />
+                  <circle cx={e.x} cy={e.y} r="0.18" />
+                  {!e.made && (
+                    <path d={`M ${e.x - 0.11} ${e.y - 0.11} l .22 .22 m -.22 0 l .22 -.22`} />
+                  )}
+                </g>
+              );
+            })}
+          </svg>
+        </section>
+        <aside className="replay-rosters" aria-label="Quintetos registrados">
+          <h3>En pista según el registro</h3>
+          {[
+            { id: home, players: frame.homePlayers },
+            { id: away, players: frame.awayPlayers },
+          ].map(({ id, players }) => (
+            <section key={id}>
+              <h4>{props.name(id)}</h4>
+              {players.length ? (
+                <ol>
+                  {players.map((player) => (
+                    <li key={player}>{who(player)}</li>
+                  ))}
+                </ol>
+              ) : (
+                <p className="note">Quinteto aún no registrado.</p>
+              )}
+            </section>
+          ))}
+          <h3>Últimos eventos reproducidos</h3>
+          <ol className="replay-recent">
+            {frames.slice(Math.max(1, position - 4), position + 1).map((f, index) => (
+              <li key={index}>
+                {replayClock(f.clock)} · {replayEventText(f.event, who)}
+              </li>
+            ))}
+          </ol>
+        </aside>
+      </div>
+    </section>
+  );
+}

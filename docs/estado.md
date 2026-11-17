@@ -87,3 +87,5 @@ Reglas en [`coordinacion.md`](coordinacion.md).
 | #72 | PROBADA | Líderes por competición/temporada con medias, totales y porcentajes, mínimos explícitos y fichas enlazadas; palmarés real conservado de campeones/ascensos/descensos. Segunda parte de #14, sin contrato ni motor. |
 
 | #18 (parte 1) | PROBADA | Menos objetos temporales al emitir eventos: B2 2527→2167 ms en el mismo entorno; 317 huellas idénticas. Informes antes/después propios. Meta del 30 % y paralelismo pendientes; #18 sigue abierta. |
+
+| #15 (parte 1) | PROBADA | Reproductor del registro con marcador, quintetos activos, pausa/velocidad/periodos y mapa de tiros exactos con filtros. Sin posiciones inventadas. Modo directo y visualizador posicional pendientes; #15 sigue abierta. |

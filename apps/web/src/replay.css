@@ -1,0 +1,140 @@
+.replay-viewer {
+  scroll-margin-top: 106px;
+  padding: 20px;
+  margin-bottom: 24px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+.replay-heading {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 16px;
+}
+.replay-heading h2 {
+  margin: 6px 0;
+  font-size: 24px;
+}
+.replay-scoreboard {
+  display: grid;
+  grid-template-columns: 1fr 160px 1fr;
+  align-items: center;
+  gap: 18px;
+  margin: 20px 0;
+  padding: 20px;
+  background: var(--raised);
+  border-top: 2px solid var(--accent);
+  text-align: center;
+}
+.replay-scoreboard > div {
+  display: grid;
+  gap: 8px;
+}
+.replay-scoreboard strong {
+  font-size: 38px;
+}
+.replay-scoreboard span {
+  font-weight: 650;
+}
+.replay-clock strong {
+  font-size: 27px;
+  color: var(--accent);
+}
+.replay-clock small {
+  color: var(--muted);
+}
+.replay-controls {
+  flex-wrap: wrap;
+}
+.replay-controls label,
+.replay-court-panel label {
+  display: grid;
+  gap: 5px;
+  font-size: 12px;
+}
+.replay-progress {
+  display: grid;
+  gap: 8px;
+  margin: 18px 0;
+  font-size: 12px;
+}
+.replay-progress input {
+  width: 100%;
+  padding: 0;
+  accent-color: var(--accent);
+}
+.replay-current {
+  min-height: 44px;
+  padding: 14px;
+  border-left: 3px solid var(--accent);
+  background: var(--raised);
+}
+.replay-grid {
+  display: grid;
+  grid-template-columns: minmax(420px, 1.4fr) minmax(280px, 1fr);
+  gap: 28px;
+}
+.replay-court {
+  display: block;
+  width: 100%;
+  max-height: 570px;
+  margin-top: 16px;
+  background: var(--raised);
+  border-radius: 8px;
+}
+.court-lines {
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 0.04;
+  opacity: 0.75;
+}
+.replay-shot circle {
+  fill: var(--raised);
+  stroke-width: 0.065;
+}
+.replay-shot.made circle {
+  fill: var(--good);
+  stroke: var(--text);
+}
+.replay-shot.missed circle {
+  stroke: var(--danger);
+}
+.replay-shot.missed path {
+  stroke: var(--danger);
+  stroke-width: 0.07;
+}
+.replay-shot {
+  cursor: pointer;
+}
+.replay-shot.current circle {
+  stroke: var(--accent);
+  stroke-width: 0.12;
+}
+.replay-shot:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+.replay-rosters > section {
+  padding: 12px 16px;
+  background: var(--raised);
+  border: 1px solid var(--line);
+  margin: 12px 0;
+}
+.replay-rosters h4 {
+  margin: 0 0 10px;
+  color: var(--accent);
+}
+.replay-rosters li {
+  padding: 4px 0;
+  font-size: 12px;
+}
+.replay-recent {
+  padding-left: 18px;
+  color: var(--muted);
+}
+
+.replay-shot circle.shot-hit {
+  fill: transparent;
+  stroke: none;
+}

@@ -92,3 +92,5 @@ Reglas en [`coordinacion.md`](coordinacion.md).
 
 | #79 | PROBADA | Clubes explícitos en paquetes con IDs estables, alias y referencias conservadas; contrato 8/migración 7, paquetes v7 compatibles y etiquetas de procedencia veraces. Ejemplo ficticio; semilla española y grupos explícitos pendientes. |
 | T-033 | PROBADA | Paneles de gestión: plantilla ordenable por cualquier columna con mapa de color por nivel e insignias de lesión y contrato cumplido; búsqueda de agentes libres; comprobación en navegador con axe (0 violaciones en 5 paneles × 2 temas). Finanzas, competición y partido se revisaron pero no se han rediseñado. |
+
+| T-036 | PROBADA | Versión 0.1.0-alpha.2 preparada (sin publicar): versión en `package.json` y `tauri.conf.json`, notas en `docs/versiones/0.1.0-alpha.2.md` y el flujo de publicación usa esas notas. La publicación y el enlace del README esperan la orden del propietario. |

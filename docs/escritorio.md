@@ -43,6 +43,11 @@ Una versión es una **etiqueta** de Git con la forma `v0.1.0-alpha.1`:
 - También se puede lanzar **a mano** desde _Actions → Publicar versión (Windows) → Run workflow_:
   sin etiqueta solo compila y deja el instalador como **artefacto** descargable durante 14 días (útil
   para probar sin publicar).
+- **Notas de la versión:** si existe `docs/versiones/<versión>.md` (por ejemplo `0.1.0-alpha.2.md`),
+  ese texto se usa como notas de la Release; si no, un texto genérico. Se escribe antes de publicar.
+- **Para publicar** (con el propietario de acuerdo): cambiar la versión en `apps/desktop/package.json` y
+  `tauri.conf.json`, escribir las notas, fusionar, lanzar _Actions → Publicar versión (Windows)_ desde `main`
+  con la etiqueta (por ejemplo `v0.1.0-alpha.2`) y, cuando exista la Release, actualizar el enlace del `README`.
 - Compilar para Windows gasta minutos de GitHub Actions (cuentan el doble): se publica cuando se
   decide, no en cada PR.
 

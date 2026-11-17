@@ -11,3 +11,5 @@ export * from './save';
 export * from './migrations';
 export * from './validate';
 export * from './jsonSchema';
+
+export * from './dataPack';

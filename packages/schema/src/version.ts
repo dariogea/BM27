@@ -14,5 +14,6 @@
  *   6 — T-028: players gain `injury`; rulesets gain timeouts and `technicalFoulsForEjection`;
  *       match events gain `jump_ball`, `timeout` and `injury`, and fouls gain the kinds `technical`
  *       and `unsportsmanlike`.
+ *   7 — #21: universe gains persisted custom namePool and dataPackId; versioned JSON data packs.
  */
-export const SCHEMA_VERSION = 6 as const;
+export const SCHEMA_VERSION = 7 as const;

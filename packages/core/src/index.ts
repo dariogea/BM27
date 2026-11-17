@@ -16,3 +16,5 @@ export * from './finance/economy';
 export * from './market/value';
 export * from './market/market';
 export * from './market/actions';
+
+export * from './data/loader';

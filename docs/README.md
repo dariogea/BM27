@@ -26,3 +26,5 @@ La [portada del proyecto](../README.md) presenta el juego y el resumen visual de
 - [Adaptador y validación de la semilla española (#61)](datos/catalogo-semilla.md).
 
 - [Buscador y fichas del mundo de la partida (#67)](consultas.md).
+
+- [Cargar y crear paquetes de datos (#21)](datos/paquetes.md).

@@ -13,7 +13,15 @@ import type {
 } from '@bm27/schema';
 
 /** Commands the UI sends to the simulation worker. The UI never runs the core itself. */
+export interface DataPackSummary {
+  id: string;
+  name: string;
+  description: string;
+  competitions: { id: string; name: string; teams: number }[];
+}
+
 export type Command =
+  | { id: number; type: 'setDataPack'; json: string | null }
   | (WorldQuery & { id: number })
   | { id: number; type: 'generate'; seed: string }
   | { id: number; type: 'chooseTeam'; teamId: string | null }
@@ -174,6 +182,7 @@ export interface GameView {
 }
 
 export type Reply =
+  | { id: number; type: 'dataPack'; summary: DataPackSummary | null; message: string }
   | { id: number; type: 'world'; result: WorldPayload }
   | { id: number; type: 'slots'; slots: SlotSummary[]; autosave: boolean; message: string }
   | { id: number; type: 'state'; view: GameView; message: string }

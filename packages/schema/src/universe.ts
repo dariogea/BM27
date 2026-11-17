@@ -5,12 +5,18 @@ import { RulesetSchema } from './ruleset';
 import { SeasonProgressSchema, SeasonSchema, TransactionSchema } from './season';
 import { TeamSchema } from './team';
 import { SCHEMA_VERSION } from './version';
+import { NamePoolSchema } from './names';
+export { NamePoolSchema, type NamePool } from './names';
 
 export const UniverseSchema = z
   .object({
     schemaVersion: z.literal(SCHEMA_VERSION),
     /** Seed chosen by the user. All randomness derives from it. */
     seed: z.string(),
+    /** Identity of the external data pack, or null for the built-in generator. */
+    dataPackId: z.string().min(1).nullable(),
+    /** Custom names must survive saving and later youth generation. Null selects built-in names. */
+    namePool: NamePoolSchema.nullable(),
     /** Next season to be simulated (1-based). */
     seasonNumber: z.number().int().min(1),
     /** Counter used to mint ids for newly generated players. */
@@ -160,11 +166,3 @@ export const UniverseConfigSchema = z.object({
     .min(1),
 });
 export type UniverseConfig = z.infer<typeof UniverseConfigSchema>;
-
-export const NamePoolSchema = z.object({
-  cities: z.array(z.object({ name: z.string().min(1), region: z.string().min(1) })).min(1),
-  teamNicknames: z.array(z.string().min(1)).min(1),
-  firstNames: z.array(z.string().min(1)).min(1),
-  lastNames: z.array(z.string().min(1)).min(1),
-});
-export type NamePool = z.infer<typeof NamePoolSchema>;

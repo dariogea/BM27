@@ -9,7 +9,7 @@
     "schemaVersion": {
       "type": "integer",
       "minimum": 0,
-      "maximum": 6
+      "maximum": 7
     },
     "checksum": {
       "type": "string",

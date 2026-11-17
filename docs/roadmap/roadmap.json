@@ -734,9 +734,10 @@
         },
         {
           "t": "Ligas de otros países como paquetes de datos",
-          "s": "pendiente",
+          "s": "hecho",
           "f": "F3",
-          "i": 21
+          "i": 21,
+          "o": "codex"
         },
         {
           "t": "Niveles inferiores (amateur y formativos)",
@@ -1076,28 +1077,37 @@
         },
         {
           "t": "Cargador de paquetes de datos con errores legibles",
-          "s": "pendiente",
+          "s": "hecho",
           "i": 21,
-          "n": "T-022."
+          "n": "JSON validado con campos y relaciones. Identidades explícitas y calendario español pendientes.",
+          "o": "codex"
         },
         {
           "t": "Versionado y compatibilidad de paquetes",
-          "s": "pendiente",
-          "i": 21
+          "s": "hecho",
+          "i": 21,
+          "o": "codex",
+          "n": "Formato 1 / contrato 7. Versiones distintas rechazadas; migración automática de paquetes pendiente."
         },
         {
           "t": "Elegir paquete al crear el universo (web y CLI)",
-          "s": "pendiente",
-          "i": 21
+          "s": "hecho",
+          "i": 21,
+          "o": "codex"
         },
         {
           "t": "Ejemplo mínimo: liga de 8 equipos",
-          "s": "pendiente",
-          "i": 21
+          "s": "hecho",
+          "i": 21,
+          "o": "codex"
         },
         {
           "t": "Guía para crear mods",
-          "s": "pendiente"
+          "s": "en-curso",
+          "p": 25,
+          "i": 21,
+          "o": "codex",
+          "n": "Formato JSON y ejemplo documentados. Editor, herramientas y guía avanzada pendientes."
         },
         {
           "t": "Editor de datos dentro del juego",

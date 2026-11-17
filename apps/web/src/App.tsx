@@ -1,3 +1,4 @@
+import { DataPackPanel } from './DataPackPanel';
 import { WorldView } from './WorldView';
 import type { WorldPayload, WorldQuery } from './worldTypes';
 import { ManagerHeader } from './ManagerHeader';
@@ -11,7 +12,7 @@ import { useEffect, useRef, useState } from 'react';
 import { CompetitionView } from './CompetitionView';
 import { BoxScoreView } from './MatchView';
 import { isDesktop, pickTextFile, saveTextFile } from './platform';
-import type { Command, GameView, Reply } from './protocol';
+import type { Command, DataPackSummary, GameView, Reply } from './protocol';
 import { FinancePanel } from './FinanceView';
 import { MarketPanel } from './MarketView';
 import { LineupEditor, OffseasonPanel, SquadTable, TacticsEditor } from './TeamView';
@@ -85,6 +86,7 @@ export function App() {
     }
   }, [compact]);
   const [seed, setSeed] = useState('bm27');
+  const [dataPack, setDataPack] = useState<DataPackSummary | null>(null);
   const [view, setView] = useState<GameView | null>(null);
   const [tab, setTab] = useState<Tab>('portal');
   const [competitionId, setCompetitionId] = useState('');
@@ -106,6 +108,10 @@ export function App() {
     const reply = await send(command);
     setBusy(false);
     switch (reply.type) {
+      case 'dataPack':
+        setDataPack(reply.summary);
+        setStatus(reply.message);
+        break;
       case 'slots':
         setSlots(reply.slots);
         setAutosave(reply.autosave);
@@ -254,6 +260,11 @@ export function App() {
         <div className={`workspace-actions ${view ? 'playing' : ''}`}>
           <details className="game-tools" open={!view}>
             <summary>Gestión de partida · crear, importar y exportar</summary>
+            <DataPackPanel
+              selected={dataPack}
+              busy={busy}
+              onSelect={(json) => run({ type: 'setDataPack', json }, 'Validando paquete…')}
+            />
             <div className="bar command-bar">
               <label>
                 Semilla{' '}
@@ -263,7 +274,18 @@ export function App() {
                   aria-label="Semilla"
                 />
               </label>
-              <button disabled={busy} onClick={() => run({ type: 'generate', seed }, 'Generando…')}>
+              <button
+                disabled={busy}
+                onClick={() => {
+                  if (
+                    !view ||
+                    window.confirm(
+                      'Generar una partida sustituirá la partida abierta. Guarda antes los cambios que quieras conservar. ¿Continuar?',
+                    )
+                  )
+                    void run({ type: 'generate', seed }, 'Generando…');
+                }}
+              >
                 Generar universo
               </button>
               <button

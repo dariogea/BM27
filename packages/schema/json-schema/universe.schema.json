@@ -4,10 +4,86 @@
   "properties": {
     "schemaVersion": {
       "type": "number",
-      "const": 6
+      "const": 7
     },
     "seed": {
       "type": "string"
+    },
+    "dataPackId": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "namePool": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "cities": {
+              "minItems": 1,
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "region": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "name",
+                  "region"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "teamNicknames": {
+              "minItems": 1,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "firstNames": {
+              "minItems": 1,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "lastNames": {
+              "minItems": 1,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "required": [
+            "cities",
+            "teamNicknames",
+            "firstNames",
+            "lastNames"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
     },
     "seasonNumber": {
       "type": "integer",
@@ -1765,6 +1841,8 @@
   "required": [
     "schemaVersion",
     "seed",
+    "dataPackId",
+    "namePool",
     "seasonNumber",
     "nextPlayerSeq",
     "regions",

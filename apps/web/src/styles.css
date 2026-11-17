@@ -1134,3 +1134,19 @@ button.score-button {
   cursor: pointer;
   color: var(--muted);
 }
+
+.data-pack-selector {
+  overflow-wrap: anywhere;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  background: var(--surface);
+  margin: 10px 0;
+}
+.data-pack-selector h2 {
+  font-size: 14px;
+  margin: 0 0 8px;
+}
+.data-pack-selector p {
+  margin: 8px 0;
+}

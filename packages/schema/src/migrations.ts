@@ -234,6 +234,13 @@ const MIGRATIONS: Record<number, (data: Json) => Json> = {
         })
       : data.rulesets,
   }),
+  // v6 → v7: built-in names and no external pack identity for older saves.
+  6: (data) => ({
+    ...data,
+    schemaVersion: 7,
+    namePool: 'namePool' in data ? data.namePool : null,
+    dataPackId: 'dataPackId' in data ? data.dataPackId : null,
+  }),
 };
 
 export class MigrationError extends Error {

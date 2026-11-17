@@ -22,6 +22,8 @@ import {
   teamPayroll,
   exportSave,
   generateUniverse,
+  generateUniverseFromDataPack,
+  parseDataPack,
   importSave,
   playerAbility,
   playerOverall,
@@ -32,7 +34,14 @@ import {
   setUserTeam,
   standingsOf,
 } from '@bm27/core';
-import type { MatchDetail, MatchResult, Season, TeamTactics, Universe } from '@bm27/schema';
+import type {
+  DataPack,
+  MatchDetail,
+  MatchResult,
+  Season,
+  TeamTactics,
+  Universe,
+} from '@bm27/schema';
 import type {
   Command,
   CompetitionViewData,
@@ -49,6 +58,7 @@ import { ReplayProofs } from './replayProof';
 
 // The whole game state lives here, off the UI thread.
 let universe: Universe | null = null;
+let selectedDataPack: DataPack | null = null;
 const slotStore = new IndexedDbSaveStore();
 /** Universe from which the matches shown on screen can be re-simulated. */
 let replayUniverse: Universe | null = null;
@@ -416,8 +426,33 @@ async function handle(command: Command): Promise<Reply> {
       replayProofs.clear();
       return state(`Partida cargada del dispositivo: temporada ${loaded.seasonNumber}.`);
     }
+    case 'setDataPack': {
+      const pack = command.json === null ? null : parseDataPack(command.json);
+      selectedDataPack = pack;
+      return {
+        id: command.id,
+        type: 'dataPack',
+        summary: pack
+          ? {
+              id: pack.id,
+              name: pack.name,
+              description: pack.description,
+              competitions: pack.config.levels.map((level) => ({
+                id: level.competitionId,
+                name: level.name,
+                teams: level.teamCount,
+              })),
+            }
+          : null,
+        message: pack
+          ? 'Paquete validado para la próxima partida.'
+          : 'Datos predeterminados seleccionados para la próxima partida.',
+      };
+    }
     case 'generate': {
-      universe = generateUniverse({ seed: command.seed });
+      universe = selectedDataPack
+        ? generateUniverseFromDataPack(selectedDataPack, command.seed)
+        : generateUniverse({ seed: command.seed });
       offseasonReport = null;
       replayUniverse = universe;
       myMatches.clear();

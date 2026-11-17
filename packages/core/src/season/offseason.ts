@@ -131,7 +131,7 @@ export function applyOffseason(universe: Universe, playedSeason: Season): Univer
   for (const { teamId, position } of retirements) {
     const level = teamId === null ? lowestLevel : (levelByTeam.get(teamId) ?? lowestLevel);
     prospects.push(
-      generatePlayer(rng, DEFAULT_NAME_POOL, {
+      generatePlayer(rng, universe.namePool ?? DEFAULT_NAME_POOL, {
         id: playerId(nextPlayerSeq++),
         teamId: null,
         quality: (universe.qualityByLevel[String(level)] ?? 50) + MARKET.prospectQualityOffset,

@@ -216,34 +216,77 @@ describe('injuries during a match', () => {
 });
 
 describe('technical and unsportsmanlike fouls', () => {
-  it('give the other team the free throws and the ball', () => {
-    let seen = 0;
+  it('awards free throws to the opponent, preserves possession for a technical and transfers it for an unsportsmanlike foul', () => {
+    const checked = { offensiveTechnical: 0, defensiveTechnical: 0, unsportsmanlike: 0 };
+    const rosters = new Map(
+      [teamA, teamB].map((team) => [team.teamId, new Set(team.players.map((p) => p.id))]),
+    );
     for (const events of matches) {
-      events.forEach((e, index) => {
-        if (e.type !== 'foul' || (e.kind !== 'technical' && e.kind !== 'unsportsmanlike')) return;
-        seen++;
-        expect(e.freeThrows).toBe(e.kind === 'technical' ? 1 : 2);
-        // The free throws follow immediately and are shot by the fouled team.
-        const shots = events
-          .slice(index + 1)
-          .filter((x) => x.type === 'free_throw')
-          .slice(0, e.freeThrows);
-        expect(shots).toHaveLength(e.freeThrows);
-        // The ball goes to the fouled team: the next play of the game is theirs.
+      events.forEach((event, index) => {
+        if (
+          event.type !== 'foul' ||
+          (event.kind !== 'technical' && event.kind !== 'unsportsmanlike')
+        )
+          return;
+        const otherTeamId = event.teamId === teamA.teamId ? teamB.teamId : teamA.teamId;
+        expect(event.freeThrows).toBe(event.kind === 'technical' ? 1 : 2);
+        const shots = events.slice(index + 1, index + 1 + event.freeThrows);
+        expect(shots).toHaveLength(event.freeThrows);
+        for (const shot of shots) {
+          expect(shot.type).toBe('free_throw');
+          if (shot.type === 'free_throw')
+            expect(rosters.get(otherTeamId)!.has(shot.playerId)).toBe(true);
+        }
+        // A held ball or period boundary is a separate entitlement and must not be blamed on this foul.
         const next = events
           .slice(index + 1)
-          .find((x) => x.type === 'shot' || x.type === 'turnover' || x.type === 'foul');
-        if (next && next.period === e.period && next.clock > 0) {
-          expect(next.offenseTeamId).not.toBe(e.teamId);
-        }
+          .find(
+            (e) =>
+              e.type === 'shot' ||
+              e.type === 'turnover' ||
+              e.type === 'foul' ||
+              e.type === 'jump_ball',
+          );
+        if (!next || next.period !== event.period || next.type === 'jump_ball' || next.clock <= 0)
+          return;
+        const entitled = event.kind === 'technical' ? event.offenseTeamId : otherTeamId;
+        expect(
+          next.offenseTeamId,
+          `${event.kind} by ${event.teamId}, previous possession ${event.offenseTeamId}`,
+        ).toBe(entitled);
+        if (event.kind === 'unsportsmanlike') checked.unsportsmanlike++;
+        else if (event.teamId === event.offenseTeamId) checked.offensiveTechnical++;
+        else checked.defensiveTechnical++;
+        if (event.kind === 'technical') expect(next.possession).toBe(event.possession);
       });
     }
-    expect(seen).toBeGreaterThan(30);
+    expect(checked.offensiveTechnical).toBeGreaterThan(5);
+    expect(checked.defensiveTechnical).toBeGreaterThan(5);
+    expect(checked.unsportsmanlike).toBeGreaterThan(10);
+  });
+
+  it('replays a technical foul and its restart identically with the same seed', () => {
+    const index = matches.findIndex((events) =>
+      events.some(
+        (e) => e.type === 'foul' && e.kind === 'technical' && e.teamId === e.offenseTeamId,
+      ),
+    );
+    expect(index).toBeGreaterThanOrEqual(0);
+    expect(
+      simulateMatch({ home: teamA, away: teamB, ruleset: fiba, seed: `incidents-${index}` }),
+    ).toEqual(matches[index]);
   });
 
   it('a second conduct foul ejects the player, who never plays again', () => {
     let ejections = 0;
-    for (const events of matches) {
+    // An explicit rare-event fixture keeps this assertion meaningful when the batch's RNG path changes.
+    const ejection = simulateMatch({
+      home: teamA,
+      away: teamB,
+      ruleset: fiba,
+      seed: 'incidents-506',
+    });
+    for (const events of [...matches, ejection]) {
       const conduct = new Map<string, number>();
       const out = new Set<string>();
       for (const e of events) {
@@ -268,12 +311,34 @@ describe('technical and unsportsmanlike fouls', () => {
     expect(ejections).toBeGreaterThan(0);
   });
 
-  it('a technical foul counts as a personal foul but not as a team foul', () => {
-    // Over many matches the box score still adds up: fouls in the box = foul events.
-    for (const events of matches.slice(0, 20)) {
-      const foulEvents = events.filter((e) => e.type === 'foul').length;
-      expect(foulEvents).toBeGreaterThan(10);
+  it('counts player technical fouls towards the team bonus without changing their one-shot penalty', () => {
+    let decisive = 0;
+    for (const events of matches) {
+      const totals = new Map<string, number>();
+      const technicals = new Map<string, number>();
+      for (const event of events) {
+        if (event.type === 'period_start' && event.period <= fiba.periods) {
+          totals.clear();
+          technicals.clear();
+        }
+        if (event.type !== 'foul') continue;
+        const fouls = (totals.get(event.teamId) ?? 0) + 1;
+        totals.set(event.teamId, fouls);
+        if (event.kind === 'technical') {
+          technicals.set(event.teamId, (technicals.get(event.teamId) ?? 0) + 1);
+          expect(event.freeThrows).toBe(1);
+        }
+        if (event.kind === 'personal' && event.teamId !== event.offenseTeamId) {
+          expect(event.freeThrows).toBe(fouls >= fiba.teamFoulsForBonus ? 2 : 0);
+          if (
+            fouls >= fiba.teamFoulsForBonus &&
+            fouls - (technicals.get(event.teamId) ?? 0) < fiba.teamFoulsForBonus
+          )
+            decisive++;
+        }
+      }
     }
+    expect(decisive).toBeGreaterThan(0);
   });
 });
 

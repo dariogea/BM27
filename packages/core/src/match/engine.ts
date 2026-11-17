@@ -534,8 +534,9 @@ export function simulateMatch(input: MatchInput): MatchEvent[] {
   ): void => {
     const fouler = side.players[index] as SimPlayer;
     side.fouls[index] = (side.fouls[index] as number) + 1;
-    // Technical fouls count against the player but not against the team.
-    if (kind !== 'technical') side.teamFouls++;
+    // All modeled fouls are player fouls: under FIBA they also count against the team.
+    // Coach/bench technicals, which do not count as team fouls, are not modeled here.
+    side.teamFouls++;
     if (kind === 'technical' || kind === 'unsportsmanlike') {
       side.conduct[index] = (side.conduct[index] as number) + 1;
     }
@@ -1289,11 +1290,12 @@ export function simulateMatch(input: MatchInput): MatchEvent[] {
   // Conduct fouls and held balls
   // ---------------------------------------------------------------------------
   /**
-   * Rolls for a technical or unsportsmanlike foul by either team. The fouled team shoots
-   * the free throws (1 for a technical, 2 for an unsportsmanlike foul) and gets the ball.
+   * Rolls for a technical or unsportsmanlike foul by either team. The opponent shoots
+   * the free throws. A technical resumes the prior entitlement; an unsportsmanlike foul
+   * gives the opponent two free throws and the ball.
    * Returns the possession outcome, or null when nothing happened.
    */
-  const conductFoul = (): 'continue' | 'dead' | null => {
+  const conductFoul = (): 'resume' | 'continue' | 'dead' | null => {
     for (const side of [offense, defense]) {
       const roll = rng.next();
       // Fast path (most actions): the roll is above the highest possible chance.
@@ -1315,7 +1317,8 @@ export function simulateMatch(input: MatchInput): MatchEvent[] {
       registerFoul(side, index, shooter, kind, awarded, false);
       freeThrows(shooter, awarded, other);
       deadBall();
-      // The fouled team keeps (or takes) the ball.
+      // A technical does not cancel the attacking team's right to the ball (FIBA 36.3.2).
+      if (kind === 'technical') return 'resume';
       return other === offense ? 'continue' : 'dead';
     }
     return null;
@@ -1383,6 +1386,8 @@ export function simulateMatch(input: MatchInput): MatchEvent[] {
       if (phase !== 'putback') {
         const conduct = conductFoul();
         if (conduct) {
+          canRun = false; // A dead-ball penalty cannot continue a fast break.
+          if (conduct === 'resume') continue; // Preserve the prior phase instead of granting a reset.
           if (conduct === 'continue') {
             phase = 'reset';
             continue;

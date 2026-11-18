@@ -119,3 +119,38 @@ tr.clickable:focus-visible {
   outline: 3px solid var(--accent);
   outline-offset: -3px;
 }
+
+/* --- Finance panel -------------------------------------------------------------------------- */
+.fin-table td,
+.fin-table th {
+  font-variant-numeric: tabular-nums;
+}
+.fin-meter {
+  margin: 12px 0;
+}
+.salary-meter span.meter-over {
+  background: var(--danger);
+}
+.fin-chart {
+  margin: 8px 0 16px;
+}
+.fin-chart svg {
+  width: 100%;
+  max-width: 640px;
+  height: 140px;
+  display: block;
+  background: var(--raised);
+  border: 1px solid var(--line);
+  border-radius: 5px;
+}
+.fin-zero {
+  stroke: var(--muted);
+  stroke-width: 0.5;
+  vector-effect: non-scaling-stroke;
+}
+.fin-bar-good {
+  fill: var(--good);
+}
+.fin-bar-bad {
+  fill: var(--danger);
+}

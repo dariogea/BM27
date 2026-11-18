@@ -463,9 +463,7 @@ async function handle(command: Command): Promise<Reply> {
       replayUniverse = universe;
       myMatches.clear();
       replayProofs.clear();
-      return state(
-        `Universo generado en ${ms()} ms: ${universe.teams.length} equipos. Elige un equipo para dirigirlo.`,
-      );
+      return state(`Partida creada · ${universe.teams.length} clubes.`);
     }
     case 'chooseTeam': {
       universe = setUserTeam(need(), command.teamId);
@@ -492,7 +490,7 @@ async function handle(command: Command): Promise<Reply> {
       universe = signFreeAgent(need(), command.playerId, command.years);
       const p = universe.players.find((x) => x.id === command.playerId)!;
       return state(
-        `Fichado ${p.firstName} ${p.lastName} por ${command.years} temporada(s) a ${p.contract!.salary.toLocaleString('es-ES')} € al año.`,
+        `Fichado ${p.firstName} ${p.lastName} por ${command.years} ${command.years === 1 ? 'temporada' : 'temporadas'} a ${p.contract!.salary.toLocaleString('es-ES')} € al año.`,
       );
     }
     case 'renewContract': {
@@ -516,8 +514,8 @@ async function handle(command: Command): Promise<Reply> {
       const saved = season ? await automatic() : '';
       const reply = state(
         season
-          ? `Temporada ${seasonNumber} terminada (${ms()} ms).${mine} Se han aplicado ascensos, descensos y un año más de edad.${saved}`
-          : `Jornada jugada: ${played.length} partidos en ${ms()} ms.${mine}`,
+          ? `Temporada ${seasonNumber} terminada.${mine}${saved}`
+          : `Jornada jugada: ${played.length} partidos.${mine}`,
       );
       if (command.watch && userTeamId) {
         reply.watchedMatchId = played.find((match) => myMatches.has(match.id))?.id;
@@ -534,9 +532,7 @@ async function handle(command: Command): Promise<Reply> {
         if (season) break;
       }
       const saved = await automatic();
-      return state(
-        `Temporada ${seasonNumber} terminada: ${matches} partidos simulados en ${ms()} ms. Se han aplicado ascensos, descensos y un año más de edad.${saved}`,
-      );
+      return state(`Temporada ${seasonNumber} terminada: ${matches} partidos disputados.${saved}`);
     }
     case 'matchDetail': {
       const u = need();

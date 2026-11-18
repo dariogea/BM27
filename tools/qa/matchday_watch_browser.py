@@ -34,7 +34,7 @@ with sync_playwright() as playwright:
         )
         expect(page.get_by_test_id("status")).to_contain_text("Partida cargada")
 
-    page.get_by_role("button", name="Generar universo", exact=True).click()
+    page.get_by_role("button", name="Nueva partida", exact=True).click()
     expect(page.get_by_test_id("summary")).to_be_visible()
     expect(header.get_by_role("button", name="Jugar y ver")).to_have_count(0)
     page.get_by_role("button", name="Dirigir este equipo", exact=True).click()

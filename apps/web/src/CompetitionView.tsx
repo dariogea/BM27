@@ -148,7 +148,6 @@ export function CompetitionView(props: {
             </option>
           ))}
         </select>
-        <span className="note">Pulsa un partido para ver su box score.</span>
       </div>
       <table>
         <thead>

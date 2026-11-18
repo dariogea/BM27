@@ -26,7 +26,7 @@ export function DataPackPanel(props: {
   return (
     <section className="data-pack-selector" aria-label="Datos para una nueva partida">
       <h2>Datos para una nueva partida</h2>
-      <p>{props.selected ? props.selected.name : 'Universo predeterminado de BM27'}</p>
+      <p>{props.selected ? props.selected.name : 'BM27 · Clubes y jugadores generados'}</p>
       {props.selected && (
         <>
           <p className="note">{props.selected.description}</p>
@@ -63,9 +63,7 @@ export function DataPackPanel(props: {
           Usar datos predeterminados
         </button>
       </div>
-      <p className="note">
-        Se aplica al pulsar «Generar universo». Elige un archivo JSON de hasta 2 MiB.
-      </p>
+      <p className="note">Formato JSON · Máximo 2 MiB</p>
       <input
         ref={input}
         type="file"

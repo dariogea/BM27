@@ -257,12 +257,10 @@ export function SquadTable({ squad }: { squad: SquadPlayer[] }) {
         </tbody>
       </table>
       <p className="note">
-        * titular en el próximo partido. Atributos de 1 a 99 con color según nivel (el número
-        siempre se muestra): <span className="attr attr-t1">bajo</span>{' '}
-        <span className="attr attr-t2">justo</span> <span className="attr attr-t3">bueno</span>{' '}
-        <span className="attr attr-t4">muy bueno</span> <span className="attr attr-t5">élite</span>.
-        Pulsa una cabecera para ordenar por esa columna. Las medias (MIN, PTS, REB, AS) son por
-        partido en la temporada en curso.
+        * titular en el próximo partido. Atributos (1–99):{' '}
+        <span className="attr attr-t1">bajo</span> <span className="attr attr-t2">justo</span>{' '}
+        <span className="attr attr-t3">bueno</span> <span className="attr attr-t4">muy bueno</span>{' '}
+        <span className="attr attr-t5">élite</span>. MIN, PTS, REB y AS por partido.
       </p>
     </div>
   );
@@ -280,10 +278,7 @@ export function OffseasonPanel({ report }: { report: OffseasonReport }) {
   return (
     <div className="panel" data-testid="offseason">
       <h3>Fin de la temporada {report.seasonNumber}: evolución de tu plantilla</h3>
-      <p className="note">
-        Habilidad = media de los 20 atributos. Los jóvenes mejoran hacia su potencial y los
-        veteranos pierden primero físico y luego técnica.
-      </p>
+      <p className="note">Habilidad media de los 20 atributos.</p>
       <table>
         <thead>
           <tr>
@@ -395,10 +390,6 @@ export function TacticsEditor(props: {
         </button>
         {changed && <span className="note">Hay cambios sin guardar.</span>}
       </div>
-      <p className="note">
-        Todas las opciones tienen efecto real en el partido. Las cifras medidas de cada una están en
-        el documento <code>docs/tacticas.md</code>.
-      </p>
     </div>
   );
 }
@@ -422,8 +413,7 @@ export function LineupEditor(props: {
   return (
     <div>
       <p className="note">
-        Los cinco primeros son los titulares, cada uno en el puesto indicado. El resto es el
-        banquillo: cuanto más arriba, más minutos. Estado actual:{' '}
+        Prioridad de rotación ·{' '}
         <strong>
           {props.team.rotation ? 'quinteto elegido por ti' : 'lo decide el entrenador'}
         </strong>

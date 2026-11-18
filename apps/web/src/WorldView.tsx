@@ -121,11 +121,7 @@ export function WorldView(props: {
     <section className="world-browser" data-testid="world-browser">
       <header className="world-heading">
         <div>
-          <span className="eyebrow">Conoce tu competición</span>
           <h1>Mundo del baloncesto</h1>
-          <p className="note">
-            Consulta los jugadores, los clubes y las estadísticas registradas de esta partida.
-          </p>
         </div>
         <span className="status-pill">Temporada {props.view.seasonNumber}</span>
       </header>
@@ -236,12 +232,7 @@ export function WorldView(props: {
           ← Volver a la consulta anterior
         </button>
       )}
-      {!data && !busy && (
-        <p className="empty-state">
-          Elige jugadores o clubes y pulsa «Buscar». Puedes dejar el nombre vacío para explorarlos
-          todos.
-        </p>
-      )}
+
       {data?.kind === 'search' && (
         <>
           <div className="scroll" tabIndex={0} role="region" aria-label="Resultados del buscador">
@@ -360,7 +351,7 @@ export function WorldView(props: {
               </section>
             ))}
           </div>
-          <h4>Estadísticas registradas en esta partida</h4>
+          <h4>Estadísticas por temporada</h4>
           {data.seasons.length === 0 ? (
             <p className="note">Todavía no hay partidos registrados para este jugador.</p>
           ) : (
@@ -417,10 +408,7 @@ export function WorldView(props: {
                   ))}
                 </tbody>
               </table>
-              <p className="note">
-                MIN, PTS, REB y ASI son medias por partido. El historial empieza con los datos
-                conservados de esta partida.
-              </p>
+              <p className="note">MIN, PTS, REB y ASI por partido.</p>
             </div>
           )}
         </article>
@@ -484,7 +472,7 @@ export function WorldView(props: {
               </tbody>
             </table>
           </div>
-          <h4>Últimos resultados registrados</h4>
+          <h4>Últimos resultados</h4>
           {data.results.length === 0 ? (
             <p className="note">El club aún no tiene resultados registrados en la partida.</p>
           ) : (

@@ -74,11 +74,11 @@ export function SavesPanel(props: Props) {
   const [name, setName] = useState('Mi partida');
   return (
     <section>
-      <h2>Partidas de este dispositivo</h2>
-      <p>
-        Estas partidas quedan en esta aplicación y dispositivo. No se sincronizan con otros equipos.
-        Usa «Guardar partida» para conservar también una copia en archivo.
-      </p>
+      {props.canSave ? (
+        <h2>Partidas de este dispositivo</h2>
+      ) : (
+        <h1>Partidas de este dispositivo</h1>
+      )}
       <p className="note">
         Borrar los datos de esta aplicación o navegador elimina sus guardados internos. Los archivos
         exportados son independientes.
@@ -103,7 +103,7 @@ export function SavesPanel(props: Props) {
           Actualizar lista
         </button>
       </div>
-      {!props.canSave && <p className="note">Genera o carga una partida antes de guardar.</p>}
+
       <label>
         <input
           type="checkbox"
@@ -118,9 +118,7 @@ export function SavesPanel(props: Props) {
         conservan.
       </p>
       {props.slots === null ? (
-        <p>
-          Abre o actualiza la lista. Si no hay almacenamiento disponible, puedes usar los archivos.
-        </p>
+        <p>Lista de partidas no disponible.</p>
       ) : props.slots.length === 0 ? (
         <p>No hay partidas guardadas en este dispositivo.</p>
       ) : (

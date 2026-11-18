@@ -6,7 +6,7 @@ export function ClubProvenance(props: { identity: ClubIdentity | null }) {
     <section className="world-provenance" aria-label="Identidad y procedencia del club">
       <h4>Identidad y procedencia</h4>
       {!identity ? (
-        <p className="note">Club generado por la demo; sin identidad externa declarada.</p>
+        <p className="note">Club creado para esta partida.</p>
       ) : (
         <>
           <p>
@@ -18,7 +18,6 @@ export function ClubProvenance(props: { identity: ClubIdentity | null }) {
                 {identity.source.verification === 'unverified'
                   ? 'Referencia sin contrastar.'
                   : 'Verificación declarada por el autor del paquete.'}{' '}
-                BM27 no ha contrastado automáticamente esta referencia.
               </p>
               <p>
                 <a href={identity.source.url} target="_blank" rel="noopener noreferrer">

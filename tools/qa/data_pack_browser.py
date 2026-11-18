@@ -44,7 +44,7 @@ with sync_playwright() as p:
         violations=page.evaluate("""async()=> (await axe.run(document,{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21aa']}})).violations.map(v=>({id:v.id,impact:v.impact,targets:v.nodes.map(n=>n.target)}))""")
         result={'screen':name,'violations':violations,'overflow':page.evaluate('document.documentElement.scrollWidth>innerWidth')}
         reports.append(result);print(json.dumps(result),flush=True)
-    page.get_by_role('button',name='Generar universo',exact=True).click()
+    page.get_by_role('button',name='Nueva partida',exact=True).click()
     state_count(202)
     original=export_file()
     page.get_by_test_id('data-pack-file').set_input_files(str(sample_path))
@@ -58,7 +58,7 @@ with sync_playwright() as p:
     assert page.evaluate('window.bm27Pack.id')==sample['id']
     audit('invalid-pack-keeps-world-and-selection')
     page.once('dialog',lambda dialog:dialog.accept())
-    page.get_by_role('button',name='Generar universo',exact=True).click()
+    page.get_by_role('button',name='Nueva partida',exact=True).click()
     state_count(8)
     page.get_by_role('button',name='Dirigir este equipo',exact=True).click()
     page.get_by_role('button',name='Jugar jornada',exact=True).click()
@@ -91,10 +91,10 @@ with sync_playwright() as p:
     page.wait_for_function('window.bm27Pack===null')
     assert page.evaluate('window.bm27State.teamCount')==8
     page.once('dialog',lambda dialog:dialog.dismiss())
-    page.get_by_role('button',name='Generar universo',exact=True).click()
+    page.get_by_role('button',name='Nueva partida',exact=True).click()
     assert page.evaluate('window.bm27State.teamCount')==8
     page.once('dialog',lambda dialog:dialog.accept())
-    page.get_by_role('button',name='Generar universo',exact=True).click()
+    page.get_by_role('button',name='Nueva partida',exact=True).click()
     state_count(202)
     tools_open()
     page.get_by_test_id('data-pack-file').set_input_files({'name':'large.json','mimeType':'application/json','buffer':b' '*(2*1024*1024+1)})

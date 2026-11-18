@@ -29,7 +29,7 @@ const SHOTS = process.env.BM27_SHOTS;
   };
 
   await page.goto(URL);
-  await page.getByRole('button', { name: 'Generar universo', exact: true }).click();
+  await page.getByRole('button', { name: 'Nueva partida', exact: true }).click();
   await page.getByTestId('summary').waitFor({ timeout: 90000 });
   await page.getByRole('button', { name: 'Dirigir este equipo', exact: true }).click();
   const nav = page.getByRole('navigation', { name: 'Secciones de la partida' });

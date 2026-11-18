@@ -104,3 +104,4 @@ Reglas en [`coordinacion.md`](coordinacion.md).
 | #15 (parte 4) | PROBADA | Desglose por jugador durante la retransmisión y la repetición, selección de equipo y jugadores en pista según la jugada. Totales cotejados con el acta. |
 | #15 (parte 5) | PROBADA | Minutos y segundos por jugador hasta la jugada seleccionada, con cambios de quinteto y de periodo. |
 | #15 (parte 6) | PROBADA | Repetición de posesiones con triple anotado, tapón o robo, con retorno al punto de partida. |
+| #103 | PROBADA | Menú de inicio de PC, opciones avanzadas agrupadas y textos del juego centrados en clubes, partidos y decisiones del mánager. |

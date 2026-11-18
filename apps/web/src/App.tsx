@@ -102,7 +102,7 @@ export function App() {
   const [busy, setBusy] = useState(false);
   const [slots, setSlots] = useState<SlotSummary[] | null>(null);
   const [autosave, setAutosave] = useState(true);
-  const [status, setStatus] = useState('Elige una semilla y pulsa «Generar universo».');
+  const [status, setStatus] = useState('');
   const [error, setError] = useState('');
   /** Bumped whenever the team's saved settings change, to reset the editors. */
   const [revision, setRevision] = useState(0);
@@ -236,6 +236,42 @@ export function App() {
   const revealReport = useCallback(() => setBroadcastFinished(true), []);
   const watchingMatch = tab === 'match' && match?.broadcast && !broadcastFinished;
 
+  const newGameButton = (
+    <button
+      className="new-career"
+      disabled={busy}
+      onClick={() => {
+        if (
+          !view ||
+          window.confirm('¿Sustituir la partida abierta? Se perderán los cambios sin guardar.')
+        )
+          void run({ type: 'generate', seed }, 'Preparando temporada…');
+      }}
+    >
+      Nueva partida
+    </button>
+  );
+  const loadGameButton = (
+    <button
+      disabled={busy}
+      onClick={async () => {
+        if (!isDesktop()) {
+          fileInput.current?.click();
+          return;
+        }
+        try {
+          const json = await pickTextFile();
+          if (json !== null) await run({ type: 'importSave', json }, 'Cargando…');
+        } catch (error) {
+          setError(
+            `No se pudo abrir el archivo: ${error instanceof Error ? error.message : String(error)}`,
+          );
+        }
+      }}
+    >
+      Cargar partida
+    </button>
+  );
   return (
     <main className="app-shell">
       <ManagerHeader
@@ -254,31 +290,26 @@ export function App() {
       />
       <div className="workspace-content" id="workspace">
         <UpdateBanner />
-        {!view && (
+        {!view && tab !== 'saves' && (
           <section className="welcome">
             <div>
-              <span className="eyebrow">Tu próximo proyecto deportivo</span>
-              <h1>El club empieza por tus decisiones.</h1>
-              <p>
-                Prepara tu quinteto, encuentra refuerzos y avanza una temporada en la que cada
-                partido deja huella.
-              </p>
-              <ol className="welcome-steps">
-                <li>Genera una partida o recupera un guardado del dispositivo.</li>
-                <li>Elige un equipo y ajusta su quinteto y sus tácticas.</li>
-                <li>Juega jornadas, consulta resultados y construye tu plantilla.</li>
-              </ol>
+              <h1>
+                Basketball Manager <span>2027</span>
+              </h1>
+              <div className="career-menu">
+                {newGameButton}
+                {loadGameButton}
+                <button disabled={busy} onClick={() => navigate('saves')}>
+                  Mis partidas
+                </button>
+              </div>
             </div>
-            <div className="welcome-court" aria-hidden="true" />
+            <div className="welcome-court" aria-hidden="true">
+              <i />
+              <i />
+            </div>
           </section>
         )}
-        <p className="data-note">
-          {view?.clubData === 'defined'
-            ? 'Clubes definidos por un paquete y jugadores generados. Las fuentes y verificaciones son declaraciones del paquete; no es una base oficial contrastada.'
-            : view?.clubData === 'mixed'
-              ? 'Clubes definidos y generados; jugadores generados. Las referencias declaradas no equivalen a una base oficial contrastada.'
-              : 'Base de demostración: clubes y jugadores generados. El objetivo es representar el baloncesto español con datos contrastados; estas plantillas aún no son las oficiales.'}
-        </p>
         {view && tab !== 'portal' && tab !== 'world' && !watchingMatch && (
           <section className="club-ribbon" aria-label="Resumen de la partida">
             <div className="club-monogram" aria-hidden="true">
@@ -289,9 +320,8 @@ export function App() {
                 .join('') ?? 'BM'}
             </div>
             <div className="club-ribbon-title">
-              <span className="eyebrow">Tu centro de gestión</span>
               <h1>{mine?.name ?? 'Elige tu próximo club'}</h1>
-              <p>{mine?.competitionName ?? 'España · Base de demostración'}</p>
+              <p>{mine?.competitionName ?? 'Sin club'}</p>
             </div>
             <div className="ribbon-stat">
               <span>Temporada</span>
@@ -309,8 +339,17 @@ export function App() {
           </section>
         )}
         <div className={`workspace-actions ${view ? 'playing' : ''}`}>
-          <details className="game-tools" open={!view}>
-            <summary>Gestión de partida · crear, importar y exportar</summary>
+          <details className="game-tools" hidden={!view && tab === 'saves'}>
+            <summary>{view ? 'Opciones de partida' : 'Configurar nueva partida'}</summary>
+            {view && (
+              <p className="data-note">
+                {view.clubData === 'defined'
+                  ? 'Clubes definidos por un paquete y jugadores generados.'
+                  : view.clubData === 'mixed'
+                    ? 'Plantillas generadas · Clubes del paquete y de la partida.'
+                    : 'Plantillas de la partida · clubes y jugadores generados.'}
+              </p>
+            )}
             <DataPackPanel
               selected={dataPack}
               busy={busy}
@@ -325,45 +364,13 @@ export function App() {
                   aria-label="Semilla"
                 />
               </label>
-              <button
-                disabled={busy}
-                onClick={() => {
-                  if (
-                    !view ||
-                    window.confirm(
-                      'Generar una partida sustituirá la partida abierta. Guarda antes los cambios que quieras conservar. ¿Continuar?',
-                    )
-                  )
-                    void run({ type: 'generate', seed }, 'Generando…');
-                }}
-              >
-                Generar universo
-              </button>
-              <button
-                disabled={busy || !view}
-                onClick={() => run({ type: 'exportSave' }, 'Guardando…')}
-              >
-                Guardar partida
-              </button>
-              <button
-                disabled={busy}
-                onClick={async () => {
-                  if (!isDesktop()) {
-                    fileInput.current?.click();
-                    return;
-                  }
-                  try {
-                    const json = await pickTextFile();
-                    if (json !== null) await run({ type: 'importSave', json }, 'Cargando…');
-                  } catch (error) {
-                    setError(
-                      `No se pudo abrir el archivo: ${error instanceof Error ? error.message : String(error)}`,
-                    );
-                  }
-                }}
-              >
-                Cargar partida
-              </button>
+              {view && newGameButton}
+              {view && (
+                <button disabled={busy} onClick={() => run({ type: 'exportSave' }, 'Guardando…')}>
+                  Guardar partida
+                </button>
+              )}
+              {view && loadGameButton}
               <input
                 ref={fileInput}
                 type="file"
@@ -381,7 +388,7 @@ export function App() {
 
           {view && (
             <details className="team-management" open={!mine}>
-              <summary>Cambiar de club · simular temporada</summary>
+              <summary>{mine ? 'Dirección deportiva' : 'Elegir club'}</summary>
               <div className="bar team-toolbar">
                 <label>
                   Equipo{' '}
@@ -421,15 +428,17 @@ export function App() {
             </details>
           )}
 
-          <button
-            disabled={busy}
-            onClick={() => {
-              setTab('saves');
-              void run({ type: 'listSlots' }, 'Abriendo partidas…');
-            }}
-          >
-            Partidas de este dispositivo
-          </button>
+          {view && (
+            <button
+              disabled={busy}
+              onClick={() => {
+                setTab('saves');
+                void run({ type: 'listSlots' }, 'Abriendo partidas…');
+              }}
+            >
+              Partidas de este dispositivo
+            </button>
+          )}
           <p className="status-line" role="status" aria-live="polite" data-testid="status">
             {status}
           </p>
@@ -476,6 +485,9 @@ export function App() {
             initialClubId={portalClubId}
             onBackToPortal={() => navigate('portal')}
           />
+        )}
+        {!view && tab === 'saves' && (
+          <button onClick={() => setTab('portal')}>← Menú principal</button>
         )}
         {tab === 'saves' && (
           <SavesPanel
@@ -535,7 +547,7 @@ export function App() {
               ) : view.seasonInProgress ? (
                 <>Tu equipo no tiene más partidos esta temporada. </>
               ) : (
-                <>La temporada aún no ha empezado: pulsa «Jugar jornada». </>
+                <>Pretemporada. </>
               )}
               {mine.lastMatch && (
                 <>
@@ -562,9 +574,7 @@ export function App() {
               busy={busy}
               onSave={(tactics) => run({ type: 'setTactics', tactics }, 'Guardando tácticas…')}
             />
-            <p className="note">
-              Guarda tus instrucciones antes de jugar para aplicarlas al partido.
-            </p>
+
             <button type="button" disabled={busy} onClick={watchMatch}>
               Jugar y ver
             </button>
@@ -637,7 +647,7 @@ export function App() {
                 onMatch={openMatch}
               />
             ) : (
-              <p className="note">Todavía no se ha jugado ningún partido. Pulsa «Jugar jornada».</p>
+              <p className="note">Temporada sin estrenar.</p>
             )}
           </section>
         )}
@@ -671,7 +681,7 @@ export function App() {
             </>
           ) : (
             <p className="note">
-              Elige un partido en la pestaña «Competición» o pulsa «Ver partido» en «Mi equipo».
+              <button onClick={() => navigate('competition')}>Ver calendario y resultados</button>
             </p>
           ))}
       </div>

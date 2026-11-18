@@ -283,7 +283,7 @@ const SHOTS = process.env.BM27_SHOTS;
     await fp.getByRole('button', { name: 'Dirigir este equipo', exact: true }).click();
     const fnav = fp.getByRole('navigation', { name: 'Secciones de la partida' });
     await fnav.getByRole('button', { name: 'Mi equipo', exact: true }).waitFor();
-    await fp.getByText('Cambiar de club · simular temporada', { exact: true }).click();
+    await fp.getByText('Dirección deportiva', { exact: true }).click();
     await fp
       .getByRole('button', { name: 'Simular hasta el final de la temporada', exact: true })
       .click();

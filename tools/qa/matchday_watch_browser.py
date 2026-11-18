@@ -1,0 +1,94 @@
+"""Compare a watched matchday with quick simulation using a real Worker."""
+import json
+import os
+from pathlib import Path
+
+from playwright.sync_api import expect, sync_playwright
+
+with sync_playwright() as playwright:
+    browser = playwright.chromium.launch(
+        executable_path=os.environ.get("BM27_CHROMIUM", "/usr/bin/chromium"),
+        args=["--no-sandbox", "--no-zygote", "--single-process", "--disable-dev-shm-usage"],
+    )
+    page = browser.new_page(viewport={"width": 1280, "height": 800}, accept_downloads=True)
+    errors = []
+    page.on("pageerror", lambda error: errors.append(str(error)))
+    page.goto(os.environ.get("BM27_WEB_URL", "http://127.0.0.1:5173"))
+    nav = page.get_by_role("navigation", name="Secciones de la partida")
+    header = page.locator(".manager-header")
+    viewer = page.get_by_test_id("replay-viewer")
+    boxscore = page.get_by_test_id("boxscore")
+
+    def save():
+        tools = page.locator("details.game-tools")
+        if not tools.evaluate("(element) => element.open"):
+            tools.locator("summary").click()
+        with page.expect_download() as download:
+            page.get_by_role("button", name="Guardar partida", exact=True).click()
+        tools.locator("summary").click()
+        return Path(download.value.path()).read_bytes()
+
+    def load(contents):
+        page.get_by_test_id("load-file").set_input_files(
+            {"name": "matchday.json", "mimeType": "application/json", "buffer": contents}
+        )
+        expect(page.get_by_test_id("status")).to_contain_text("Partida cargada")
+
+    page.get_by_role("button", name="Generar universo", exact=True).click()
+    expect(page.get_by_test_id("summary")).to_be_visible()
+    expect(header.get_by_role("button", name="Jugar y ver")).to_have_count(0)
+    page.get_by_role("button", name="Dirigir este equipo", exact=True).click()
+    nav.get_by_role("button", name="Tácticas", exact=True).click()
+    pace = page.get_by_role("combobox", name="Ritmo", exact=True)
+    target = "slow" if pace.input_value() != "slow" else "fast"
+    pace.select_option(target)
+    page.get_by_role("button", name="Guardar tácticas", exact=True).click()
+    expect(page.get_by_role("button", name="Guardar tácticas", exact=True)).to_be_disabled()
+    starting_save = save()
+    page.locator(".workspace-content").get_by_role("button", name="Jugar y ver", exact=True).click()
+
+    expect(viewer.get_by_role("heading", name="Retransmisión del partido")).to_be_visible()
+    expect(viewer).to_contain_text(f"Ritmo: {'lento' if target == 'slow' else 'rápido'}")
+    expect(boxscore).to_have_count(0)
+    expect(page.get_by_test_id("summary")).to_have_count(0)
+    timeline = viewer.get_by_role("slider")
+    page.wait_for_function("Number(document.querySelector('.replay-progress input').value) > 1")
+    viewer.get_by_role("button", name="Pausar", exact=True).click()
+    paused = timeline.input_value()
+    page.wait_for_timeout(400)
+    assert timeline.input_value() == paused
+    for width, height, theme in [(1280, 800, "dark"), (1920, 1080, "light")]:
+        page.set_viewport_size({"width": width, "height": height})
+        if theme == "light":
+            page.get_by_text("Apariencia", exact=True).click()
+            page.get_by_role("button", name="☀ Modo claro", exact=True).click()
+            page.get_by_text("Apariencia", exact=True).click()
+        page.add_script_tag(path=os.environ.get("BM27_AXE_PATH", "/tmp/bm27-axe/package/axe.min.js"))
+        violations = page.evaluate("""async () => (await axe.run(document, {runOnly:
+            {type:'tag',values:['wcag2a','wcag2aa','wcag21aa']}})).violations.map(v=>v.id)""")
+        assert not violations, violations
+        assert page.evaluate("document.documentElement.scrollWidth <= innerWidth")
+    viewer.get_by_role("button", name="Saltar al final", exact=True).click()
+    expect(boxscore).to_be_visible()
+    watched = json.loads(save())["payload"]
+    club_id = watched["userTeamId"]
+    match = next(
+        match
+        for competition in watched["currentSeason"]["competitions"]
+        for match in competition["matches"]
+        if club_id in (match["homeTeamId"], match["awayTeamId"])
+    )
+    expect(viewer.get_by_test_id("replay-home-score")).to_have_text(str(match["homeScore"]))
+    expect(viewer.get_by_test_id("replay-away-score")).to_have_text(str(match["awayScore"]))
+
+    load(starting_save)
+    header.get_by_role("button", name="Jugar jornada", exact=True).click()
+    expect(page.get_by_test_id("status")).to_contain_text("Jornada jugada")
+    expect(viewer).to_have_count(0)
+    assert json.loads(save())["payload"] == watched
+    load(starting_save)
+    header.get_by_role("button", name="Jugar y ver", exact=True).click()
+    expect(viewer.get_by_role("heading", name="Retransmisión del partido")).to_be_visible()
+    assert not errors, errors
+    print("PASS: two PC audits, saved tactics, autoplay, pause, skip, exact score, identical simulated state")
+    browser.close()

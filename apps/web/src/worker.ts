@@ -377,7 +377,7 @@ function describeMine(played: MatchResult[], u: Universe, before: string | null)
 async function handle(command: Command): Promise<Reply> {
   const start = performance.now();
   const ms = (): number => Math.round(performance.now() - start);
-  const state = (message: string): Reply => ({
+  const state = (message: string): Extract<Reply, { type: 'state' }> => ({
     id: command.id,
     type: 'state',
     view: viewOf(need()),
@@ -514,11 +514,15 @@ async function handle(command: Command): Promise<Reply> {
       const { season, played } = step();
       const mine = describeMine(played, need(), userTeamId);
       const saved = season ? await automatic() : '';
-      return state(
+      const reply = state(
         season
           ? `Temporada ${seasonNumber} terminada (${ms()} ms).${mine} Se han aplicado ascensos, descensos y un año más de edad.${saved}`
           : `Jornada jugada: ${played.length} partidos en ${ms()} ms.${mine}`,
       );
+      if (command.watch && userTeamId) {
+        reply.watchedMatchId = played.find((match) => myMatches.has(match.id))?.id;
+      }
+      return reply;
     }
     case 'finishSeason': {
       offseasonReport = null;

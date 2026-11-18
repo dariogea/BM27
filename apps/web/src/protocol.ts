@@ -31,7 +31,7 @@ export type Command =
   | { id: number; type: 'signFreeAgent'; playerId: string; years: number }
   | { id: number; type: 'renewContract'; playerId: string; years: number }
   | { id: number; type: 'releasePlayer'; playerId: string }
-  | { id: number; type: 'advance' }
+  | { id: number; type: 'advance'; watch?: boolean }
   | { id: number; type: 'finishSeason' }
   | { id: number; type: 'matchDetail'; matchId: string }
   | { id: number; type: 'exportSave' }
@@ -187,7 +187,7 @@ export type Reply =
   | { id: number; type: 'dataPack'; summary: DataPackSummary | null; message: string }
   | { id: number; type: 'world'; result: WorldPayload }
   | { id: number; type: 'slots'; slots: SlotSummary[]; autosave: boolean; message: string }
-  | { id: number; type: 'state'; view: GameView; message: string }
+  | { id: number; type: 'state'; view: GameView; message: string; watchedMatchId?: string }
   | {
       id: number;
       type: 'matchDetail';

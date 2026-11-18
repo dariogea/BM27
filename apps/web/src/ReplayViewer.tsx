@@ -221,6 +221,7 @@ export function ReplayViewer(props: {
                 <th scope="col" className="name">
                   En pista
                 </th>
+                <th scope="col">Minutos</th>
                 <th scope="col">Puntos</th>
                 {STAT_ROWS.map(([label]) => (
                   <th scope="col" key={label}>
@@ -238,6 +239,7 @@ export function ReplayViewer(props: {
                       {who(playerId)}
                     </th>
                     <td className="name">{onCourt.includes(playerId) ? 'Sí' : '—'}</td>
+                    <td>{replayClock(line.seconds)}</td>
                     <td>{line.points}</td>
                     {STAT_ROWS.map(([label, format]) => (
                       <td key={label}>{format(line)}</td>

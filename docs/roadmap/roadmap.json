@@ -1435,11 +1435,10 @@
         },
         {
           "t": "Estadísticas en vivo durante la reproducción",
-          "s": "en-curso",
-          "p": 85,
+          "s": "hecho",
           "o": "codex",
           "i": 15,
-          "n": "Marcador y estadísticas de equipo y jugador hasta la jugada mostrada. Los minutos individuales quedan en el acta final."
+          "n": "Marcador y estadísticas de equipo y jugador hasta la jugada mostrada. El tiempo en pista de cada jugador sigue el reloj de juego y los cambios de quinteto."
         },
         {
           "t": "Repeticiones de jugadas destacadas",

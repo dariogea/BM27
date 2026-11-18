@@ -95,14 +95,14 @@ with sync_playwright() as playwright:
             for row in player_table.locator("tbody tr").all()
         }
         for row in report.locator("tbody tr").all()[:-1]:
-            name, _, *line = row.get_by_role("cell").all_text_contents()
+            name, *line = row.get_by_role("cell").all_text_contents()
             assert records[name.removesuffix(" *")] == line
         assert player_table.get_by_role("cell", name="Sí", exact=True).count() == 5
     viewer.get_by_role("button", name="Inicio", exact=True).click()
     expect(field_goals).to_have_text(["0/0", "0/0"])
     assert player_table.get_by_role("cell", name="Sí", exact=True).count() == 0
     assert all(
-        cell == "0" or cell == "0/0"
+        cell in ("0", "0/0", "0:00")
         for row in player_table.locator("tbody tr").all()
         for cell in row.get_by_role("cell").all_text_contents()[1:]
     )

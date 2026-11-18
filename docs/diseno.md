@@ -102,3 +102,13 @@ paneles, en tema oscuro y claro. Capturas: [oscuro](screenshots/plantilla-ordena
 | Filas de partido              | Se abren con el ratón sobre la fila o con el botón nativo «Ver partido» de la última columna (accesible con teclado, con el marcador en su etiqueta); la fila conserva su semántica de tabla.                               |
 
 `tools/qa/panels_browser.mjs` comprueba además la ordenación de la clasificación, que **la forma coincide con el estado real de la partida**, el filtro y la apertura con teclado.
+
+### Finanzas (T-039)
+
+| Elemento                             | Cómo funciona                                                                                                                                                                                                                                                 |
+| ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Medidor del presupuesto salarial     | `role="meter"` con el porcentaje de la masa salarial sobre el presupuesto (la barra se limita a 100 %; en rojo si se supera, con el aviso de que solo caben contratos de salario mínimo). Cálculo en [`financeData.ts`](../apps/web/src/financeData.ts).      |
+| Aviso de pérdida                     | Si el resultado previsto es negativo, dice cuántas temporadas faltan para llegar al límite del descubierto **si nada cambia**: una proyección en línea recta con las cifras de la pantalla, no una predicción.                                                |
+| Gráfico del historial (`.fin-chart`) | Barras del resultado de cada temporada cerrada, de la más antigua a la más reciente (verde: beneficio, rojo: pérdida), dentro de un `<figure>` con `role="img"` y una descripción con las cifras exactas; la tabla de debajo sigue siendo la fuente completa. |
+
+`tools/qa/panels_browser.mjs` termina una temporada en una partida nueva y comprueba que la tabla y el gráfico tienen una fila/barra por temporada, que las barras verdes son exactamente las temporadas con beneficio y que el medidor coincide con el estado real. Solo se puede comprobar con una temporada cerrada: la segunda exige renovar contratos antes.

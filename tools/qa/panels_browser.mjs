@@ -261,6 +261,88 @@ const SHOTS = process.env.BM27_SHOTS;
     console.log('(sin BM27_AXE_PATH: se omite la comprobación de accesibilidad)');
   }
 
+  // --- Finance panel with history, on its own fresh game: finish one season (a second one
+  // needs the user to renew contracts first, which the game rightly demands).
+  {
+    const fp = await browser.newPage({ viewport: { width: 1280, height: 800 } });
+    fp.on('pageerror', (e) => errors.push(String(e)));
+    await fp.addInitScript(() => {
+      const RealWorker = window.Worker;
+      window.Worker = class extends RealWorker {
+        constructor(...args) {
+          super(...args);
+          this.addEventListener('message', (event) => {
+            if (event.data.type === 'state') window.bm27ObservedState = event.data.view;
+          });
+        }
+      };
+    });
+    await fp.goto(URL);
+    await fp.getByRole('button', { name: 'Generar universo', exact: true }).click();
+    await fp.getByTestId('summary').waitFor({ timeout: 90000 });
+    await fp.getByRole('button', { name: 'Dirigir este equipo', exact: true }).click();
+    const fnav = fp.getByRole('navigation', { name: 'Secciones de la partida' });
+    await fnav.getByRole('button', { name: 'Mi equipo', exact: true }).waitFor();
+    await fp.getByText('Cambiar de club · simular temporada', { exact: true }).click();
+    await fp
+      .getByRole('button', { name: 'Simular hasta el final de la temporada', exact: true })
+      .click();
+    await fp.waitForFunction(() => window.bm27ObservedState?.finance?.history?.length >= 1, null, {
+      timeout: 120000,
+    });
+    await fnav.getByRole('button', { name: 'Finanzas', exact: true }).click();
+    await fp.getByTestId('finance-history').waitFor();
+    const finance = await fp.evaluate(() => {
+      const view = window.bm27ObservedState.finance;
+      const chart = document.querySelector('.fin-chart svg');
+      return {
+        history: view.history.length,
+        rows: document.querySelectorAll('[data-testid="finance-history"] tbody tr').length,
+        bars: chart ? chart.querySelectorAll('rect').length : -1,
+        label: chart ? chart.getAttribute('aria-label') : '',
+        results: view.history.map((r) => r.result),
+        goodBars: chart ? chart.querySelectorAll('.fin-bar-good').length : -1,
+        meterNow: Number(document.querySelector('[role="meter"]')?.getAttribute('aria-valuenow')),
+        payroll: view.payroll,
+        budget: view.wageBudget,
+      };
+    });
+    check(finance.history >= 1, `hay ${finance.history} temporada cerrada en el historial`);
+    check(
+      finance.rows === finance.history && finance.bars === finance.history,
+      `tabla (${finance.rows}) y gráfico (${finance.bars}) tienen una fila/barra por temporada`,
+    );
+    check(
+      finance.goodBars === finance.results.filter((r) => r >= 0).length,
+      'las barras verdes son exactamente las temporadas con beneficio',
+    );
+    check(
+      finance.label.includes('temporada'),
+      'el gráfico tiene descripción accesible con las cifras',
+    );
+    const expectedUse = Math.min(100, Math.round((100 * finance.payroll) / finance.budget));
+    check(
+      finance.meterNow === expectedUse,
+      `el medidor del presupuesto salarial marca ${finance.meterNow} % (esperado ${expectedUse} %)`,
+    );
+    if (AXE) {
+      await fp.addScriptTag({ path: AXE });
+      const violations = await fp.evaluate(async () =>
+        (
+          await axe.run(document, {
+            runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21aa'] },
+          })
+        ).violations.map((v) => `${v.id} (${v.nodes.length})`),
+      );
+      check(
+        violations.length === 0,
+        `axe Finanzas con historial${violations.length ? ': ' + violations.join(', ') : ''}`,
+      );
+    }
+    if (SHOTS) await fp.screenshot({ path: `${SHOTS}/finanzas-historial.png` });
+    await fp.close();
+  }
+
   check(
     errors.length === 0,
     `sin errores de consola${errors.length ? ': ' + errors.join(' | ') : ''}`,

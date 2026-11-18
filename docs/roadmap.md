@@ -53,7 +53,7 @@ flowchart LR
   F1["F1 Primera versión jugable<br/>59 %"]
   F2["F2 Profundidad de gestión<br/>3 %"]
   F3["F3 Mundo, datos y mods<br/>9 %"]
-  F4["F4 Presentación<br/>26 %"]
+  F4["F4 Presentación<br/>27 %"]
   F5["F5 Distribución<br/>19 %"]
   F6["F6 Pulido y lanzamiento<br/>6 %"]
   F0 --> F1 --> F2 --> F3 --> F4 --> F5 --> F6
@@ -75,7 +75,7 @@ flowchart LR
 | **F1 Primera versión jugable** | 59 % | `████████████░░░░░░░░` | 24/43 | Que el propietario pueda jugar de principio a fin una temporada y varias más sin tocar una terminal, con consultas básicas del mundo. |
 | **F2 Profundidad de gestión** | 3 % | `█░░░░░░░░░░░░░░░░░░░` | 4/184 | Traspasos, cantera y ojeadores, economía con decisiones, entrenador rival con criterio, motor de partido completo. |
 | **F3 Mundo, datos y mods** | 9 % | `██░░░░░░░░░░░░░░░░░░` | 5/63 | Calibración con datos contrastados, paquetes de datos cargables, pirámide completa y otras competiciones. |
-| **F4 Presentación** | 26 % | `█████░░░░░░░░░░░░░░░` | 8/36 | Diseño visual, accesibilidad, partido en 2D, narración, sonido y varios idiomas. |
+| **F4 Presentación** | 27 % | `█████░░░░░░░░░░░░░░░` | 8/36 | Diseño visual, accesibilidad, partido en 2D, narración, sonido y varios idiomas. |
 | **F5 Distribución** | 19 % | `████░░░░░░░░░░░░░░░░` | 2/22 | Instalador de escritorio, versiones alfa y beta en GitHub, actualización automática, firma y otras plataformas. |
 | **F6 Pulido y lanzamiento** | 6 % | `█░░░░░░░░░░░░░░░░░░░` | 1/17 | Tutorial, equilibrio final, documentación, comunidad y lanzamiento. |
 
@@ -146,7 +146,7 @@ Los agentes solo trabajan cuando el propietario lo autoriza (D-052); esto reflej
 | 🔄 En curso | Comprobación automática de procedencia y etiquetado de datos | Datos, mods e idiomas | 25 % | [#61](https://github.com/dariogea/BM27/issues/61) |
 | 🔄 En curso | Ficha de jugador completa | Interfaz web | 60 % | [#67](https://github.com/dariogea/BM27/issues/67) |
 | 🔄 En curso | Accesibilidad (contraste, teclado, lectores de pantalla) | Interfaz web | 50 % | [#23](https://github.com/dariogea/BM27/issues/23) |
-| 🔄 En curso | Tablas ordenables y filtros | Interfaz web | 60 % | [#52](https://github.com/dariogea/BM27/issues/52) |
+| 🔄 En curso | Tablas ordenables y filtros | Interfaz web | 65 % | [#52](https://github.com/dariogea/BM27/issues/52) |
 | 🔄 En curso | Elegir densidad de tablas y tamaño de interfaz | Accesibilidad y preferencias de uso | 40 % | [#52](https://github.com/dariogea/BM27/issues/52) |
 
 ### En curso sin dueño asignado
@@ -494,7 +494,7 @@ _La cara del juego: clara, rápida y accesible._
   - ✅ Sistema de diseño con modo claro y oscuro (`F4` · @codex · [#52](https://github.com/dariogea/BM27/issues/52)) — _Portal de gestión basado en las capturas del propietario: cabecera azul, navegación doble, paneles de actividad/resultados/clasificación/economía, temas persistentes y resoluciones de PC. Evidencia en docs/revisiones/portal-52.md._
   - ✅ Adaptación a distintas resoluciones de PC (`F4` · @codex · [#52](https://github.com/dariogea/BM27/issues/52)) — _El propietario limita el producto a PC. Verificación a 1280×800 y 1920×1080, sin variante móvil._
   - 🔄 Accesibilidad (contraste, teclado, lectores de pantalla) (`F4` · 50 % · @codex · [#23](https://github.com/dariogea/BM27/issues/23)) — _Mejoras en controles, foco y avisos. Falta validar todos los recorridos y tecnologías asistivas._
-  - 🔄 Tablas ordenables y filtros (`F4` · 60 % · @codex · [#52](https://github.com/dariogea/BM27/issues/52)) — _Portal: filtros (Codex). Plantilla y clasificación de la competición: ordenación por cualquier columna; mercado: búsqueda; partidos: filtro «solo los míos» (Claude, T-033/T-038). Faltan finanzas y las tablas del mundo._
+  - 🔄 Tablas ordenables y filtros (`F4` · 65 % · @codex · [#52](https://github.com/dariogea/BM27/issues/52)) — _Portal: filtros (Codex). Plantilla y clasificación de la competición: ordenación por cualquier columna; mercado: búsqueda; partidos: filtro «solo los míos» (Claude, T-033/T-038). Faltan finanzas y las tablas del mundo. Finanzas (T-039): gráfico del historial y medidor salarial._
   - ⬜ Atajos de teclado (`F4`)
   - ⬜ Explicaciones emergentes (tooltips) de cada atributo (`F4`)
   - ⬜ Gráficos de evolución (jugador, club, finanzas) (`F4`)

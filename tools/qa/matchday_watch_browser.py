@@ -55,6 +55,9 @@ with sync_playwright() as playwright:
     field_goals = stats.get_by_role("row").filter(
         has=page.get_by_role("rowheader", name="Tiros de campo", exact=True)
     ).get_by_role("cell")
+    viewer.get_by_text("Estadísticas por jugador", exact=True).click()
+    player_table = viewer.get_by_role("table", name="Jugadores hasta la jugada actual", exact=False)
+    roster_select = viewer.get_by_role("combobox", name="Equipo de la tabla")
     timeline = viewer.get_by_role("slider")
     page.wait_for_function("Number(document.querySelector('.replay-progress input').value) > 1")
     viewer.get_by_role("button", name="Pausar", exact=True).click()
@@ -82,8 +85,25 @@ with sync_playwright() as playwright:
         shown = [row.get_by_role("cell").nth(team).inner_text()
                  for row in stats.locator("tbody tr").all()]
         assert shown == expected, (shown, expected)
+    for side, team in [("home", 0), ("away", 1)]:
+        roster_select.select_option(side)
+        report = boxscore.get_by_role("region", name="Estadísticas del partido").nth(team)
+        records = {
+            row.get_by_role("rowheader").inner_text(): row.get_by_role("cell").all_text_contents()[1:]
+            for row in player_table.locator("tbody tr").all()
+        }
+        for row in report.locator("tbody tr").all()[:-1]:
+            name, _, *line = row.get_by_role("cell").all_text_contents()
+            assert records[name.removesuffix(" *")] == line
+        assert player_table.get_by_role("cell", name="Sí", exact=True).count() == 5
     viewer.get_by_role("button", name="Inicio", exact=True).click()
     expect(field_goals).to_have_text(["0/0", "0/0"])
+    assert player_table.get_by_role("cell", name="Sí", exact=True).count() == 0
+    assert all(
+        cell == "0" or cell == "0/0"
+        for row in player_table.locator("tbody tr").all()
+        for cell in row.get_by_role("cell").all_text_contents()[1:]
+    )
     viewer.get_by_role("button", name="Saltar al final", exact=True).click()
     for team in range(2):
         expect(field_goals.nth(team)).to_have_text(totals.nth(team).get_by_role("cell").nth(3).inner_text())
@@ -107,5 +127,5 @@ with sync_playwright() as playwright:
     header.get_by_role("button", name="Jugar y ver", exact=True).click()
     expect(viewer.get_by_role("heading", name="Retransmisión del partido")).to_be_visible()
     assert not errors, errors
-    print("PASS: two PC audits, saved tactics, autoplay, pause, skip, matching live totals, rewind, exact score, identical simulated state")
+    print("PASS: two PC audits, saved tactics, autoplay, pause, skip, matching team and player lines, rewind, exact score, identical simulated state")
     browser.close()

@@ -16,6 +16,11 @@ const emptyTotals = {
   fouls: 0,
 } satisfies Partial<StatLine>;
 export type ReplayTotals = Readonly<typeof emptyTotals>;
+const emptyPlayer = { points: 0, ...emptyTotals };
+export type ReplayPlayerTotals = Readonly<typeof emptyPlayer>;
+export function replayPlayerTotals(frame: ReplayFrame, id: string): ReplayPlayerTotals {
+  return frame.playerTotals.get(id) ?? emptyPlayer;
+}
 
 export interface ReplayFrame {
   event: MatchEvent | null;
@@ -25,6 +30,7 @@ export interface ReplayFrame {
   awayScore: number;
   homeTotals: ReplayTotals;
   awayTotals: ReplayTotals;
+  playerTotals: ReadonlyMap<string, ReplayPlayerTotals>;
   homePlayers: readonly string[];
   awayPlayers: readonly string[];
 }
@@ -53,7 +59,24 @@ export function buildReplay(detail: MatchDetail): { frames: ReplayFrame[]; shots
     [homeId, { ...emptyTotals }],
     [awayId, { ...emptyTotals }],
   ]);
-  const playerTotals = (id: string) => totals.get(owner(id))!;
+  let playerTotals = new Map<string, ReplayPlayerTotals>();
+  const changes = new Map<string, typeof emptyPlayer>();
+  const credit = (id: string, key: keyof ReplayPlayerTotals, value = 1): void => {
+    const team = owner(id);
+    if (!value) return;
+    let player = changes.get(id);
+    if (!player) {
+      player = { ...(playerTotals.get(id) ?? emptyPlayer) };
+      changes.set(id, player);
+    }
+    player[key] += value;
+    if (key === 'points') {
+      if (team === homeId) homeScore += value;
+      else awayScore += value;
+    } else {
+      totals.get(team)![key] += value;
+    }
+  };
   let homePlayers: readonly string[] = [];
   let awayPlayers: readonly string[] = [];
   const first = detail.events[0];
@@ -66,6 +89,7 @@ export function buildReplay(detail: MatchDetail): { frames: ReplayFrame[]; shots
       awayScore,
       homeTotals: emptyTotals,
       awayTotals: emptyTotals,
+      playerTotals,
       homePlayers,
       awayPlayers,
     },
@@ -81,36 +105,44 @@ export function buildReplay(detail: MatchDetail): { frames: ReplayFrame[]; shots
       if (event.teamId === homeId) homePlayers = replace(homePlayers);
       else if (event.teamId === awayId) awayPlayers = replace(awayPlayers);
     }
-    if (event.type === 'shot' || event.type === 'free_throw') {
-      // Technical free throws may be taken by the team without possession.
-      const teamId = owner(event.playerId);
-      const points = event.made ? (event.type === 'shot' ? event.points : 1) : 0;
-      if (teamId === homeId) homeScore += points;
-      else awayScore += points;
-      const shooter = totals.get(teamId)!;
-      if (event.type === 'shot') {
-        shots.push({ at: index + 1, teamId, event });
-        shooter.fieldGoalsAttempted++;
-        shooter.fieldGoalsMade += Number(event.made);
+    // Attribute each event to its player, including technical free throws and defensive plays.
+    switch (event.type) {
+      case 'shot':
+        shots.push({ at: index + 1, teamId: owner(event.playerId), event });
+        credit(event.playerId, 'points', event.made ? event.points : 0);
+        credit(event.playerId, 'fieldGoalsAttempted');
+        credit(event.playerId, 'fieldGoalsMade', Number(event.made));
         if (event.shotType === 'three') {
-          shooter.threePointersAttempted++;
-          shooter.threePointersMade += Number(event.made);
+          credit(event.playerId, 'threePointersAttempted');
+          credit(event.playerId, 'threePointersMade', Number(event.made));
         }
-        if (event.assistPlayerId) playerTotals(event.assistPlayerId).assists++;
-        if (event.blockPlayerId) playerTotals(event.blockPlayerId).blocks++;
-      } else {
-        shooter.freeThrowsAttempted++;
-        shooter.freeThrowsMade += Number(event.made);
-      }
-    } else if (event.type === 'rebound') {
-      const rebounder = playerTotals(event.playerId);
-      if (event.kind === 'offensive') rebounder.offensiveRebounds++;
-      else rebounder.defensiveRebounds++;
-    } else if (event.type === 'turnover') {
-      playerTotals(event.playerId).turnovers++;
-      if (event.stealPlayerId) playerTotals(event.stealPlayerId).steals++;
-    } else if (event.type === 'foul') {
-      playerTotals(event.playerId).fouls++;
+        if (event.assistPlayerId) credit(event.assistPlayerId, 'assists');
+        if (event.blockPlayerId) credit(event.blockPlayerId, 'blocks');
+        break;
+      case 'free_throw':
+        credit(event.playerId, 'freeThrowsAttempted');
+        credit(event.playerId, 'freeThrowsMade', Number(event.made));
+        credit(event.playerId, 'points', Number(event.made));
+        break;
+      case 'rebound':
+        credit(
+          event.playerId,
+          event.kind === 'offensive' ? 'offensiveRebounds' : 'defensiveRebounds',
+        );
+        break;
+      case 'turnover':
+        credit(event.playerId, 'turnovers');
+        if (event.stealPlayerId) credit(event.stealPlayerId, 'steals');
+        break;
+      case 'foul':
+        credit(event.playerId, 'fouls');
+        break;
+    }
+    // Share unchanged lines and never mutate a frame that the user can rewind to.
+    if (changes.size > 0) {
+      playerTotals = new Map(playerTotals);
+      for (const [id, line] of changes) playerTotals.set(id, line);
+      changes.clear();
     }
     frames.push({
       event,
@@ -120,6 +152,7 @@ export function buildReplay(detail: MatchDetail): { frames: ReplayFrame[]; shots
       awayScore,
       homeTotals: { ...totals.get(homeId)! },
       awayTotals: { ...totals.get(awayId)! },
+      playerTotals,
       homePlayers,
       awayPlayers,
     });

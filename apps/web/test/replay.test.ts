@@ -2,7 +2,7 @@ import { beforeAll, describe, expect, it } from 'vitest';
 import { generateUniverseFromDataPack, simulateCompetitionSeason } from '@bm27/core';
 import type { MatchDetail } from '@bm27/schema';
 import sample from '../../../data/packs/example-eight-clubs.json';
-import { buildReplay, replayClock, replayEventText } from '../src/replayData';
+import { buildReplay, replayClock, replayEventText, replayPlayerTotals } from '../src/replayData';
 
 const matches: MatchDetail[] = [];
 beforeAll(() => {
@@ -33,6 +33,26 @@ describe('event-only match playback', () => {
         expect(frame.period).toBe(match.events[i]!.period);
         expect(frame.clock).toBe(match.events[i]!.clock);
       });
+    }
+  });
+  it('reconstructs each player’s contributions and preserves the stats at earlier cursors', () => {
+    for (const match of matches) {
+      const { frames } = buildReplay(match);
+      for (const team of [match.boxScore.home, match.boxScore.away]) {
+        for (const { starter: _starter, seconds: _seconds, playerId, ...line } of team.players) {
+          expect(replayPlayerTotals(frames[0]!, playerId)).toEqual(
+            Object.fromEntries(Object.keys(line).map((key) => [key, 0])),
+          );
+          expect(replayPlayerTotals(frames.at(-1)!, playerId)).toEqual(line);
+        }
+      }
+      const firstShot = match.events.findIndex((event) => event.type === 'shot');
+      const event = match.events[firstShot];
+      if (!event || event.type !== 'shot') throw new Error('Missing first shot');
+      expect(replayPlayerTotals(frames[firstShot]!, event.playerId).fieldGoalsAttempted).toBe(0);
+      expect(replayPlayerTotals(frames[firstShot + 1]!, event.playerId).fieldGoalsAttempted).toBe(
+        1,
+      );
     }
   });
   it('preserves every field-goal location and only maps field goals, never free throws', () => {

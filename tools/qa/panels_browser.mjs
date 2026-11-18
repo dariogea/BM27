@@ -126,7 +126,7 @@ const SHOTS = process.env.BM27_SHOTS;
           const td = tr.querySelectorAll('td');
           return {
             pos: Number(td[0].textContent),
-            team: td[1].textContent.trim(),
+            team: (td[1].querySelector('.club-name') ?? td[1]).textContent.trim(),
             pf: Number(td[5].textContent),
           };
         }),
@@ -168,7 +168,7 @@ const SHOTS = process.env.BM27_SHOTS;
     let checked = 0;
     for (const tr of rows) {
       const td = tr.querySelectorAll('td');
-      const teamName = td[1].textContent.trim();
+      const teamName = (td[1].querySelector('.club-name') ?? td[1]).textContent.trim();
       const id = Object.keys(names).find((k) => names[k] === teamName);
       const expected = comp.matches
         .filter((m) => m.homeTeamId === id || m.awayTeamId === id)

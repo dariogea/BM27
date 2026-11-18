@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { formOf, sortStandings, winShare, type StandingKey } from './competitionData';
+import { ClubBadge } from './ClubBadge';
 import './panels.css';
 import type { CompetitionViewData } from './protocol';
 
@@ -130,7 +131,10 @@ export function CompetitionView(props: {
                     }
                   >
                     <td>{row.position}</td>
-                    <td className="name">{name(row.teamId)}</td>
+                    <td className="name">
+                      <ClubBadge teamId={row.teamId} name={name(row.teamId)} />
+                      <span className="club-name">{name(row.teamId)}</span>
+                    </td>
                     <td>{row.played}</td>
                     <td>{row.wins}</td>
                     <td>{row.losses}</td>

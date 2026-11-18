@@ -1,3 +1,5 @@
+import { ClubBadge } from './ClubBadge';
+import { DEFAULT_PALETTE, isPaletteId, paletteVars, type PaletteId } from './palette';
 import { ReplayViewer } from './ReplayViewer';
 import { DataPackPanel } from './DataPackPanel';
 import { WorldView } from './WorldView';
@@ -75,6 +77,26 @@ export function App() {
       /* Settings persistence is optional. */
     }
   }, [theme]);
+  const [palette, setPalette] = useState<PaletteId>(() => {
+    try {
+      const stored = localStorage.getItem('bm27-palette');
+      return isPaletteId(stored) ? stored : DEFAULT_PALETTE;
+    } catch {
+      return DEFAULT_PALETTE;
+    }
+  });
+  useEffect(() => {
+    const root = document.documentElement;
+    root.dataset.palette = palette;
+    for (const [name, value] of Object.entries(paletteVars(palette, theme))) {
+      root.style.setProperty(name, value);
+    }
+    try {
+      localStorage.setItem('bm27-palette', palette);
+    } catch {
+      /* Settings persistence is optional. */
+    }
+  }, [palette, theme]);
   const [compact, setCompact] = useState(() => {
     try {
       return localStorage.getItem('bm27-compact') === 'true';
@@ -279,6 +301,8 @@ export function App() {
         active={tab}
         busy={busy}
         theme={theme}
+        palette={palette}
+        onPalette={setPalette}
         compact={compact}
         onTheme={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
         onCompact={setCompact}
@@ -312,13 +336,13 @@ export function App() {
         )}
         {view && tab !== 'portal' && tab !== 'world' && !watchingMatch && (
           <section className="club-ribbon" aria-label="Resumen de la partida">
-            <div className="club-monogram" aria-hidden="true">
-              {mine?.name
-                .split(' ')
-                .map((word) => word[0])
-                .slice(0, 2)
-                .join('') ?? 'BM'}
-            </div>
+            {mine ? (
+              <ClubBadge teamId={mine.teamId} name={mine.name} size="md" />
+            ) : (
+              <div className="club-monogram" aria-hidden="true">
+                BM
+              </div>
+            )}
             <div className="club-ribbon-title">
               <h1>{mine?.name ?? 'Elige tu próximo club'}</h1>
               <p>{mine?.competitionName ?? 'Sin club'}</p>

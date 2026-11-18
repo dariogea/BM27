@@ -57,7 +57,9 @@ with sync_playwright() as playwright:
     ).get_by_role("cell")
     viewer.get_by_text("Estadísticas por jugador", exact=True).click()
     player_table = viewer.get_by_role("table", name="Jugadores hasta la jugada actual", exact=False)
-    roster_select = viewer.get_by_role("combobox", name="Equipo de la tabla")
+    roster_select = viewer.get_by_role("combobox", name="Consultar estadísticas de")
+    expect(roster_select.locator("option:checked")).to_contain_text("Tu equipo")
+    expect(roster_select.get_by_role("option", name="Rival", exact=False)).to_have_count(1)
     timeline = viewer.get_by_role("slider")
     page.wait_for_function("Number(document.querySelector('.replay-progress input').value) > 1")
     viewer.get_by_role("button", name="Pausar", exact=True).click()
@@ -126,6 +128,19 @@ with sync_playwright() as playwright:
     load(starting_save)
     header.get_by_role("button", name="Jugar y ver", exact=True).click()
     expect(viewer.get_by_role("heading", name="Retransmisión del partido")).to_be_visible()
+    # Manage the away club from the same fixture and check the default again.
+    load(starting_save)
+    if match["awayTeamId"] != club_id:
+        club_tools = page.locator("details.team-management")
+        if not club_tools.evaluate("(element) => element.open"):
+            club_tools.locator("summary").click()
+        page.get_by_role("combobox", name="Equipo", exact=True).select_option(match["awayTeamId"])
+        page.get_by_role("button", name="Dirigir este equipo", exact=True).click()
+    header.get_by_role("button", name="Jugar y ver", exact=True).click()
+    expect(viewer.get_by_role("heading", name="Retransmisión del partido")).to_be_visible()
+    viewer.get_by_text("Estadísticas por jugador", exact=True).click()
+    expect(roster_select).to_have_value("away")
+    expect(roster_select.locator("option:checked")).to_contain_text("Tu equipo")
     assert not errors, errors
     print("PASS: two PC audits, saved tactics, autoplay, pause, skip, matching team and player lines, rewind, exact score, identical simulated state")
     browser.close()

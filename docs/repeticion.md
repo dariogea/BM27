@@ -44,8 +44,9 @@ los rebotes ofensivos y defensivos, asistencias, robos, tapones, pérdidas y fal
 corresponden a la jugada que ves. Si retrocedes, la tabla vuelve a los totales de ese momento.
 Al terminar coinciden con el acta.
 
-Abre **Estadísticas por jugador** y elige un equipo para ver los puntos y esas mismas diez
-estadísticas de sus jugadores hasta la jugada actual. La columna **En pista** sigue las
+Abre **Estadísticas por jugador** para ver los puntos y esas mismas diez estadísticas hasta
+la jugada actual. Si tu club juega, la tabla abre **Tu equipo** y puedes consultar al **Rival**.
+La columna **En pista** sigue las
 alineaciones y sustituciones registradas. Los minutos individuales se consultan en el acta final.
 
 ## Mapa de tiros

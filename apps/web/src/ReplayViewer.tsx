@@ -23,6 +23,7 @@ const STAT_ROWS: [string, (totals: ReplayTotals) => string | number][] = [
 ];
 
 export function ReplayViewer(props: {
+  managedTeamId: string | null;
   broadcast?: boolean;
   instructions?: string;
   onFinish?: () => void;
@@ -38,7 +39,7 @@ export function ReplayViewer(props: {
   const [cursor, setCursor] = useState(0);
   const [playing, setPlaying] = useState(props.broadcast ?? false);
   const [rate, setRate] = useState(5);
-  const [rosterSide, setRosterSide] = useState<'home' | 'away'>('home');
+  const [selectedRosterSide, setRosterSide] = useState<'home' | 'away' | null>(null);
   const [team, setTeam] = useState('');
   const [outcome, setOutcome] = useState('all');
   const projection = useMemo(() => {
@@ -94,6 +95,12 @@ export function ReplayViewer(props: {
   );
   const home = props.detail.boxScore.home.teamId;
   const away = props.detail.boxScore.away.teamId;
+  const managingThisMatch = props.managedTeamId === home || props.managedTeamId === away;
+  const rosterSide = selectedRosterSide ?? (props.managedTeamId === away ? 'away' : 'home');
+  const rosterLabel = (id: string): string =>
+    managingThisMatch
+      ? `${id === props.managedTeamId ? 'Tu equipo' : 'Rival'} · ${props.name(id)}`
+      : props.name(id);
   const roster = props.detail.boxScore[rosterSide];
   const onCourt = rosterSide === 'home' ? frame.homePlayers : frame.awayPlayers;
   return (
@@ -194,13 +201,13 @@ export function ReplayViewer(props: {
       <details className="replay-player-stats">
         <summary>Estadísticas por jugador</summary>
         <label className="bar">
-          Equipo de la tabla
+          Consultar estadísticas de
           <select
             value={rosterSide}
             onChange={(e) => setRosterSide(e.target.value === 'away' ? 'away' : 'home')}
           >
-            <option value="home">{props.name(home)}</option>
-            <option value="away">{props.name(away)}</option>
+            <option value="home">{rosterLabel(home)}</option>
+            <option value="away">{rosterLabel(away)}</option>
           </select>
         </label>
         <div className="scroll" tabIndex={0} role="region" aria-label="Tabla de jugadores">

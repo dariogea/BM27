@@ -51,6 +51,10 @@ with sync_playwright() as playwright:
     expect(viewer).to_contain_text(f"Ritmo: {'lento' if target == 'slow' else 'rápido'}")
     expect(boxscore).to_have_count(0)
     expect(page.get_by_test_id("summary")).to_have_count(0)
+    stats = viewer.get_by_role("table", name="Estadísticas hasta la jugada actual")
+    field_goals = stats.get_by_role("row").filter(
+        has=page.get_by_role("rowheader", name="Tiros de campo", exact=True)
+    ).get_by_role("cell")
     timeline = viewer.get_by_role("slider")
     page.wait_for_function("Number(document.querySelector('.replay-progress input').value) > 1")
     viewer.get_by_role("button", name="Pausar", exact=True).click()
@@ -70,6 +74,19 @@ with sync_playwright() as playwright:
         assert page.evaluate("document.documentElement.scrollWidth <= innerWidth")
     viewer.get_by_role("button", name="Saltar al final", exact=True).click()
     expect(boxscore).to_be_visible()
+    totals = boxscore.get_by_role("row").filter(
+        has=page.get_by_role("cell", name="Total", exact=True)
+    )
+    for team in range(2):
+        expected = totals.nth(team).get_by_role("cell").all_text_contents()[3:]
+        shown = [row.get_by_role("cell").nth(team).inner_text()
+                 for row in stats.locator("tbody tr").all()]
+        assert shown == expected, (shown, expected)
+    viewer.get_by_role("button", name="Inicio", exact=True).click()
+    expect(field_goals).to_have_text(["0/0", "0/0"])
+    viewer.get_by_role("button", name="Saltar al final", exact=True).click()
+    for team in range(2):
+        expect(field_goals.nth(team)).to_have_text(totals.nth(team).get_by_role("cell").nth(3).inner_text())
     watched = json.loads(save())["payload"]
     club_id = watched["userTeamId"]
     match = next(
@@ -90,5 +107,5 @@ with sync_playwright() as playwright:
     header.get_by_role("button", name="Jugar y ver", exact=True).click()
     expect(viewer.get_by_role("heading", name="Retransmisión del partido")).to_be_visible()
     assert not errors, errors
-    print("PASS: two PC audits, saved tactics, autoplay, pause, skip, exact score, identical simulated state")
+    print("PASS: two PC audits, saved tactics, autoplay, pause, skip, matching live totals, rewind, exact score, identical simulated state")
     browser.close()

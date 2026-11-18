@@ -1,4 +1,21 @@
-import type { MatchDetail, MatchEvent } from '@bm27/schema';
+import type { MatchDetail, MatchEvent, StatLine } from '@bm27/schema';
+
+const emptyTotals = {
+  fieldGoalsMade: 0,
+  fieldGoalsAttempted: 0,
+  threePointersMade: 0,
+  threePointersAttempted: 0,
+  freeThrowsMade: 0,
+  freeThrowsAttempted: 0,
+  offensiveRebounds: 0,
+  defensiveRebounds: 0,
+  assists: 0,
+  steals: 0,
+  blocks: 0,
+  turnovers: 0,
+  fouls: 0,
+} satisfies Partial<StatLine>;
+export type ReplayTotals = Readonly<typeof emptyTotals>;
 
 export interface ReplayFrame {
   event: MatchEvent | null;
@@ -6,6 +23,8 @@ export interface ReplayFrame {
   clock: number;
   homeScore: number;
   awayScore: number;
+  homeTotals: ReplayTotals;
+  awayTotals: ReplayTotals;
   homePlayers: readonly string[];
   awayPlayers: readonly string[];
 }
@@ -30,6 +49,11 @@ export function buildReplay(detail: MatchDetail): { frames: ReplayFrame[]; shots
   };
   let homeScore = 0;
   let awayScore = 0;
+  const totals = new Map([
+    [homeId, { ...emptyTotals }],
+    [awayId, { ...emptyTotals }],
+  ]);
+  const playerTotals = (id: string) => totals.get(owner(id))!;
   let homePlayers: readonly string[] = [];
   let awayPlayers: readonly string[] = [];
   const first = detail.events[0];
@@ -40,6 +64,8 @@ export function buildReplay(detail: MatchDetail): { frames: ReplayFrame[]; shots
       clock: first?.clock ?? 0,
       homeScore,
       awayScore,
+      homeTotals: emptyTotals,
+      awayTotals: emptyTotals,
       homePlayers,
       awayPlayers,
     },
@@ -61,7 +87,30 @@ export function buildReplay(detail: MatchDetail): { frames: ReplayFrame[]; shots
       const points = event.made ? (event.type === 'shot' ? event.points : 1) : 0;
       if (teamId === homeId) homeScore += points;
       else awayScore += points;
-      if (event.type === 'shot') shots.push({ at: index + 1, teamId, event });
+      const shooter = totals.get(teamId)!;
+      if (event.type === 'shot') {
+        shots.push({ at: index + 1, teamId, event });
+        shooter.fieldGoalsAttempted++;
+        shooter.fieldGoalsMade += Number(event.made);
+        if (event.shotType === 'three') {
+          shooter.threePointersAttempted++;
+          shooter.threePointersMade += Number(event.made);
+        }
+        if (event.assistPlayerId) playerTotals(event.assistPlayerId).assists++;
+        if (event.blockPlayerId) playerTotals(event.blockPlayerId).blocks++;
+      } else {
+        shooter.freeThrowsAttempted++;
+        shooter.freeThrowsMade += Number(event.made);
+      }
+    } else if (event.type === 'rebound') {
+      const rebounder = playerTotals(event.playerId);
+      if (event.kind === 'offensive') rebounder.offensiveRebounds++;
+      else rebounder.defensiveRebounds++;
+    } else if (event.type === 'turnover') {
+      playerTotals(event.playerId).turnovers++;
+      if (event.stealPlayerId) playerTotals(event.stealPlayerId).steals++;
+    } else if (event.type === 'foul') {
+      playerTotals(event.playerId).fouls++;
     }
     frames.push({
       event,
@@ -69,6 +118,8 @@ export function buildReplay(detail: MatchDetail): { frames: ReplayFrame[]; shots
       clock: event.clock,
       homeScore,
       awayScore,
+      homeTotals: { ...totals.get(homeId)! },
+      awayTotals: { ...totals.get(awayId)! },
       homePlayers,
       awayPlayers,
     });

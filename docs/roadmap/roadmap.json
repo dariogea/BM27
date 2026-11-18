@@ -1436,10 +1436,10 @@
         {
           "t": "Estadísticas en vivo durante la reproducción",
           "s": "en-curso",
-          "p": 15,
+          "p": 60,
           "o": "codex",
           "i": 15,
-          "n": "Marcador reconstruido evento a evento. Estadísticas completas durante la reproducción pendientes."
+          "n": "Marcador y diez estadísticas de equipo reconstruidos hasta la jugada mostrada. Queda el desglose por jugador."
         },
         {
           "t": "Repeticiones de jugadas destacadas",

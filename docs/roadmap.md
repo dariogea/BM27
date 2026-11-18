@@ -53,7 +53,7 @@ flowchart LR
   F1["F1 Primera versión jugable<br/>59 %"]
   F2["F2 Profundidad de gestión<br/>3 %"]
   F3["F3 Mundo, datos y mods<br/>9 %"]
-  F4["F4 Presentación<br/>21 %"]
+  F4["F4 Presentación<br/>22 %"]
   F5["F5 Distribución<br/>19 %"]
   F6["F6 Pulido y lanzamiento<br/>6 %"]
   F0 --> F1 --> F2 --> F3 --> F4 --> F5 --> F6
@@ -75,7 +75,7 @@ flowchart LR
 | **F1 Primera versión jugable** | 59 % | `████████████░░░░░░░░` | 24/43 | Que el propietario pueda jugar de principio a fin una temporada y varias más sin tocar una terminal, con consultas básicas del mundo. |
 | **F2 Profundidad de gestión** | 3 % | `█░░░░░░░░░░░░░░░░░░░` | 4/184 | Traspasos, cantera y ojeadores, economía con decisiones, entrenador rival con criterio, motor de partido completo. |
 | **F3 Mundo, datos y mods** | 9 % | `██░░░░░░░░░░░░░░░░░░` | 5/63 | Calibración con datos contrastados, paquetes de datos cargables, pirámide completa y otras competiciones. |
-| **F4 Presentación** | 21 % | `████░░░░░░░░░░░░░░░░` | 6/36 | Diseño visual, accesibilidad, partido en 2D, narración, sonido y varios idiomas. |
+| **F4 Presentación** | 22 % | `████░░░░░░░░░░░░░░░░` | 6/36 | Diseño visual, accesibilidad, partido en 2D, narración, sonido y varios idiomas. |
 | **F5 Distribución** | 19 % | `████░░░░░░░░░░░░░░░░` | 2/22 | Instalador de escritorio, versiones alfa y beta en GitHub, actualización automática, firma y otras plataformas. |
 | **F6 Pulido y lanzamiento** | 6 % | `█░░░░░░░░░░░░░░░░░░░` | 1/17 | Tutorial, equilibrio final, documentación, comunidad y lanzamiento. |
 
@@ -96,7 +96,7 @@ flowchart LR
 | **Datos, mods e idiomas** | 53 % | `███████████░░░░░░░░░` | 6 | 3 | 3 | 0 | 1 | Reglamentos, competiciones y contenido como datos: añadir una liga no debe tocar el motor. |
 | **Guardado y persistencia** | 60 % | `████████████░░░░░░░░` | 6 | 0 | 4 | 0 | 0 | Las partidas no se pierden, son compactas y se pueden recuperar. |
 | **Interfaz web** | 56 % | `███████████░░░░░░░░░` | 14 | 3 | 11 | 0 | 0 | La cara del juego: clara, rápida y accesible. |
-| **Visualización del partido** | 46 % | `█████████░░░░░░░░░░░` | 4 | 1 | 2 | 0 | 2 | Ver el partido, no solo leerlo, derivado siempre del registro de eventos. |
+| **Visualización del partido** | 51 % | `██████████░░░░░░░░░░` | 4 | 1 | 2 | 0 | 2 | Ver el partido, no solo leerlo, derivado siempre del registro de eventos. |
 | **Aplicación de escritorio y distribución** | 35 % | `███████░░░░░░░░░░░░░` | 2 | 4 | 4 | 0 | 2 | Que el propietario instale y actualice el juego sin pasar por GitHub. |
 | **Calidad, pruebas y herramientas** | 46 % | `█████████░░░░░░░░░░░` | 6 | 0 | 5 | 0 | 2 | Poder fiarse de lo construido y detectar a tiempo lo que se rompe. |
 | **Proceso y coordinación** | 70 % | `██████████████░░░░░░` | 7 | 0 | 1 | 2 | 0 | Que dos agentes y un propietario no programador trabajen sin estorbarse. |
@@ -147,7 +147,7 @@ Los agentes solo trabajan cuando el propietario lo autoriza (D-052); esto reflej
 | 🔄 En curso | Ficha de jugador completa | Interfaz web | 60 % | [#67](https://github.com/dariogea/BM27/issues/67) |
 | 🔄 En curso | Accesibilidad (contraste, teclado, lectores de pantalla) | Interfaz web | 50 % | [#23](https://github.com/dariogea/BM27/issues/23) |
 | 🔄 En curso | Tablas ordenables y filtros | Interfaz web | 45 % | [#52](https://github.com/dariogea/BM27/issues/52) |
-| 🔄 En curso | Estadísticas en vivo durante la reproducción | Visualización del partido | 15 % | [#15](https://github.com/dariogea/BM27/issues/15) |
+| 🔄 En curso | Estadísticas en vivo durante la reproducción | Visualización del partido | 60 % | [#15](https://github.com/dariogea/BM27/issues/15) |
 | 🔄 En curso | Elegir densidad de tablas y tamaño de interfaz | Accesibilidad y preferencias de uso | 40 % | [#52](https://github.com/dariogea/BM27/issues/52) |
 
 ### En curso sin dueño asignado
@@ -504,7 +504,7 @@ _La cara del juego: clara, rápida y accesible._
 
 </details>
 
-<details><summary><b>Visualización del partido</b> — 46 % `██████░░░░░░`</summary>
+<details><summary><b>Visualización del partido</b> — 51 % `██████░░░░░░`</summary>
 
 _Ver el partido, no solo leerlo, derivado siempre del registro de eventos._
 
@@ -513,7 +513,7 @@ _Ver el partido, no solo leerlo, derivado siempre del registro de eventos._
 - ✅ Mapa de tiros del partido (`F4` · @codex · [#15](https://github.com/dariogea/BM27/issues/15)) — _Reproductor del registro de un partido ya simulado: marcador, periodos, controles, tiros exactos y filtros, probado en PC._
 - ✅ Control de velocidad, pausa y salto de periodo (`F4` · @codex · [#15](https://github.com/dariogea/BM27/issues/15)) — _Reproductor del registro de un partido ya simulado: marcador, periodos, controles, tiros exactos y filtros, probado en PC._
 - ✅ Retransmisión de la jornada con opción de saltar (`F4` · @codex · [#15](https://github.com/dariogea/BM27/issues/15)) — _Jugar y ver muestra el partido jugada a jugada con el plan guardado. El motor calcula el resultado al empezar. Órdenes durante el encuentro pendientes._
-- 🔄 Estadísticas en vivo durante la reproducción (`F4` · 15 % · @codex · [#15](https://github.com/dariogea/BM27/issues/15)) — _Marcador reconstruido evento a evento. Estadísticas completas durante la reproducción pendientes._
+- 🔄 Estadísticas en vivo durante la reproducción (`F4` · 60 % · @codex · [#15](https://github.com/dariogea/BM27/issues/15)) — _Marcador y diez estadísticas de equipo reconstruidos hasta la jugada mostrada. Queda el desglose por jugador._
 - ⬜ Repeticiones de jugadas destacadas (`F4`)
 - 💡 Sonido y ambiente (`F4`)
 - 💡 Visualización 3D (`F4`) — _Fuera del alcance inicial._

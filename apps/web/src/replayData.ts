@@ -1,4 +1,26 @@
-import type { MatchDetail, MatchEvent } from '@bm27/schema';
+import type { MatchDetail, MatchEvent, StatLine } from '@bm27/schema';
+
+const emptyTotals = {
+  fieldGoalsMade: 0,
+  fieldGoalsAttempted: 0,
+  threePointersMade: 0,
+  threePointersAttempted: 0,
+  freeThrowsMade: 0,
+  freeThrowsAttempted: 0,
+  offensiveRebounds: 0,
+  defensiveRebounds: 0,
+  assists: 0,
+  steals: 0,
+  blocks: 0,
+  turnovers: 0,
+  fouls: 0,
+} satisfies Partial<StatLine>;
+export type ReplayTotals = Readonly<typeof emptyTotals>;
+const emptyPlayer = { points: 0, seconds: 0, ...emptyTotals };
+export type ReplayPlayerTotals = Readonly<typeof emptyPlayer>;
+export function replayPlayerTotals(frame: ReplayFrame, id: string): ReplayPlayerTotals {
+  return frame.playerTotals.get(id) ?? emptyPlayer;
+}
 
 export interface ReplayFrame {
   event: MatchEvent | null;
@@ -6,6 +28,9 @@ export interface ReplayFrame {
   clock: number;
   homeScore: number;
   awayScore: number;
+  homeTotals: ReplayTotals;
+  awayTotals: ReplayTotals;
+  playerTotals: ReadonlyMap<string, ReplayPlayerTotals>;
   homePlayers: readonly string[];
   awayPlayers: readonly string[];
 }
@@ -30,6 +55,28 @@ export function buildReplay(detail: MatchDetail): { frames: ReplayFrame[]; shots
   };
   let homeScore = 0;
   let awayScore = 0;
+  const totals = new Map([
+    [homeId, { ...emptyTotals }],
+    [awayId, { ...emptyTotals }],
+  ]);
+  let playerTotals = new Map<string, ReplayPlayerTotals>();
+  const changes = new Map<string, typeof emptyPlayer>();
+  const credit = (id: string, key: keyof ReplayPlayerTotals, value = 1): void => {
+    const team = owner(id);
+    if (!value) return;
+    let player = changes.get(id);
+    if (!player) {
+      player = { ...(playerTotals.get(id) ?? emptyPlayer) };
+      changes.set(id, player);
+    }
+    player[key] += value;
+    if (key === 'points') {
+      if (team === homeId) homeScore += value;
+      else awayScore += value;
+    } else if (key !== 'seconds') {
+      totals.get(team)![key] += value;
+    }
+  };
   let homePlayers: readonly string[] = [];
   let awayPlayers: readonly string[] = [];
   const first = detail.events[0];
@@ -40,12 +87,22 @@ export function buildReplay(detail: MatchDetail): { frames: ReplayFrame[]; shots
       clock: first?.clock ?? 0,
       homeScore,
       awayScore,
+      homeTotals: emptyTotals,
+      awayTotals: emptyTotals,
+      playerTotals,
       homePlayers,
       awayPlayers,
     },
   ];
   const shots: ReplayShot[] = [];
   for (const [index, event] of detail.events.entries()) {
+    // The five players on court BEFORE this event played the preceding interval.
+    const previous = frames[index]!;
+    const seconds = previous.period === event.period ? previous.clock - event.clock : 0;
+    if (seconds > 0) {
+      for (const id of homePlayers) credit(id, 'seconds', seconds);
+      for (const id of awayPlayers) credit(id, 'seconds', seconds);
+    }
     if (event.type === 'lineup') {
       if (event.teamId === homeId) homePlayers = [...event.playerIds];
       else if (event.teamId === awayId) awayPlayers = [...event.playerIds];
@@ -55,13 +112,44 @@ export function buildReplay(detail: MatchDetail): { frames: ReplayFrame[]; shots
       if (event.teamId === homeId) homePlayers = replace(homePlayers);
       else if (event.teamId === awayId) awayPlayers = replace(awayPlayers);
     }
-    if (event.type === 'shot' || event.type === 'free_throw') {
-      // Technical free throws may be taken by the team without possession.
-      const teamId = owner(event.playerId);
-      const points = event.made ? (event.type === 'shot' ? event.points : 1) : 0;
-      if (teamId === homeId) homeScore += points;
-      else awayScore += points;
-      if (event.type === 'shot') shots.push({ at: index + 1, teamId, event });
+    // Attribute each event to its player, including technical free throws and defensive plays.
+    switch (event.type) {
+      case 'shot':
+        shots.push({ at: index + 1, teamId: owner(event.playerId), event });
+        credit(event.playerId, 'points', event.made ? event.points : 0);
+        credit(event.playerId, 'fieldGoalsAttempted');
+        credit(event.playerId, 'fieldGoalsMade', Number(event.made));
+        if (event.shotType === 'three') {
+          credit(event.playerId, 'threePointersAttempted');
+          credit(event.playerId, 'threePointersMade', Number(event.made));
+        }
+        if (event.assistPlayerId) credit(event.assistPlayerId, 'assists');
+        if (event.blockPlayerId) credit(event.blockPlayerId, 'blocks');
+        break;
+      case 'free_throw':
+        credit(event.playerId, 'freeThrowsAttempted');
+        credit(event.playerId, 'freeThrowsMade', Number(event.made));
+        credit(event.playerId, 'points', Number(event.made));
+        break;
+      case 'rebound':
+        credit(
+          event.playerId,
+          event.kind === 'offensive' ? 'offensiveRebounds' : 'defensiveRebounds',
+        );
+        break;
+      case 'turnover':
+        credit(event.playerId, 'turnovers');
+        if (event.stealPlayerId) credit(event.stealPlayerId, 'steals');
+        break;
+      case 'foul':
+        credit(event.playerId, 'fouls');
+        break;
+    }
+    // Share unchanged lines and never mutate a frame that the user can rewind to.
+    if (changes.size > 0) {
+      playerTotals = new Map(playerTotals);
+      for (const [id, line] of changes) playerTotals.set(id, line);
+      changes.clear();
     }
     frames.push({
       event,
@@ -69,6 +157,9 @@ export function buildReplay(detail: MatchDetail): { frames: ReplayFrame[]; shots
       clock: event.clock,
       homeScore,
       awayScore,
+      homeTotals: { ...totals.get(homeId)! },
+      awayTotals: { ...totals.get(awayId)! },
+      playerTotals,
       homePlayers,
       awayPlayers,
     });

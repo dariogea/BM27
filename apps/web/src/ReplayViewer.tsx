@@ -1,9 +1,29 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { MatchDetail } from '@bm27/schema';
-import { buildReplay, replayClock, replayEventText } from './replayData';
+import {
+  buildReplay,
+  replayClock,
+  replayEventText,
+  replayPlayerTotals,
+  type ReplayTotals,
+} from './replayData';
 import './replay.css';
 
+const STAT_ROWS: [string, (totals: ReplayTotals) => string | number][] = [
+  ['Tiros de campo', (s) => `${s.fieldGoalsMade}/${s.fieldGoalsAttempted}`],
+  ['Triples', (s) => `${s.threePointersMade}/${s.threePointersAttempted}`],
+  ['Tiros libres', (s) => `${s.freeThrowsMade}/${s.freeThrowsAttempted}`],
+  ['Rebotes ofensivos', (s) => s.offensiveRebounds],
+  ['Rebotes defensivos', (s) => s.defensiveRebounds],
+  ['Asistencias', (s) => s.assists],
+  ['Robos', (s) => s.steals],
+  ['Tapones', (s) => s.blocks],
+  ['Pérdidas', (s) => s.turnovers],
+  ['Faltas', (s) => s.fouls],
+];
+
 export function ReplayViewer(props: {
+  managedTeamId: string | null;
   broadcast?: boolean;
   instructions?: string;
   onFinish?: () => void;
@@ -19,6 +39,7 @@ export function ReplayViewer(props: {
   const [cursor, setCursor] = useState(0);
   const [playing, setPlaying] = useState(props.broadcast ?? false);
   const [rate, setRate] = useState(5);
+  const [selectedRosterSide, setRosterSide] = useState<'home' | 'away' | null>(null);
   const [team, setTeam] = useState('');
   const [outcome, setOutcome] = useState('all');
   const projection = useMemo(() => {
@@ -74,6 +95,14 @@ export function ReplayViewer(props: {
   );
   const home = props.detail.boxScore.home.teamId;
   const away = props.detail.boxScore.away.teamId;
+  const managingThisMatch = props.managedTeamId === home || props.managedTeamId === away;
+  const rosterSide = selectedRosterSide ?? (props.managedTeamId === away ? 'away' : 'home');
+  const rosterLabel = (id: string): string =>
+    managingThisMatch
+      ? `${id === props.managedTeamId ? 'Tu equipo' : 'Rival'} · ${props.name(id)}`
+      : props.name(id);
+  const roster = props.detail.boxScore[rosterSide];
+  const onCourt = rosterSide === 'home' ? frame.homePlayers : frame.awayPlayers;
   return (
     <section
       className="replay-viewer"
@@ -169,6 +198,59 @@ export function ReplayViewer(props: {
       <p className="replay-current" data-testid="replay-event">
         {replayEventText(frame.event, who)}
       </p>
+      <details className="replay-player-stats">
+        <summary>Estadísticas por jugador</summary>
+        <label className="bar">
+          Consultar estadísticas de
+          <select
+            value={rosterSide}
+            onChange={(e) => setRosterSide(e.target.value === 'away' ? 'away' : 'home')}
+          >
+            <option value="home">{rosterLabel(home)}</option>
+            <option value="away">{rosterLabel(away)}</option>
+          </select>
+        </label>
+        <div className="scroll" tabIndex={0} role="region" aria-label="Tabla de jugadores">
+          <table>
+            <caption>Jugadores hasta la jugada actual · {props.name(roster.teamId)}</caption>
+            <thead>
+              <tr>
+                <th scope="col" className="name">
+                  Jugador
+                </th>
+                <th scope="col" className="name">
+                  En pista
+                </th>
+                <th scope="col">Minutos</th>
+                <th scope="col">Puntos</th>
+                {STAT_ROWS.map(([label]) => (
+                  <th scope="col" key={label}>
+                    {label}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {roster.players.map(({ playerId }) => {
+                const line = replayPlayerTotals(frame, playerId);
+                return (
+                  <tr key={playerId}>
+                    <th scope="row" className="name">
+                      {who(playerId)}
+                    </th>
+                    <td className="name">{onCourt.includes(playerId) ? 'Sí' : '—'}</td>
+                    <td>{replayClock(line.seconds)}</td>
+                    <td>{line.points}</td>
+                    {STAT_ROWS.map(([label, format]) => (
+                      <td key={label}>{format(line)}</td>
+                    ))}
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </details>
       <div className="replay-grid">
         <section className="replay-court-panel" aria-label="Mapa de tiros de campo">
           <h3>Mapa de tiros hasta este evento</h3>
@@ -243,7 +325,26 @@ export function ReplayViewer(props: {
             })}
           </svg>
         </section>
-        <aside className="replay-rosters" aria-label="Quintetos registrados">
+        <aside className="replay-rosters" aria-label="Estadísticas y quintetos registrados">
+          <table className="replay-stats">
+            <caption>Estadísticas hasta la jugada actual</caption>
+            <thead>
+              <tr>
+                <th scope="col">Dato</th>
+                <th scope="col">{props.name(home)}</th>
+                <th scope="col">{props.name(away)}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {STAT_ROWS.map(([label, format]) => (
+                <tr key={label}>
+                  <th scope="row">{label}</th>
+                  <td>{format(frame.homeTotals)}</td>
+                  <td>{format(frame.awayTotals)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
           <h3>En pista según el registro</h3>
           {[
             { id: home, players: frame.homePlayers },

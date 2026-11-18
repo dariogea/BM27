@@ -651,6 +651,7 @@ export function App() {
                 detail={match.detail}
                 playerNames={match.playerNames}
                 name={name}
+                managedTeamId={view.userTeamId}
                 broadcast={match.broadcast}
                 onFinish={match.broadcast ? revealReport : undefined}
                 instructions={

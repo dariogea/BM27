@@ -99,4 +99,7 @@ Reglas en [`coordinacion.md`](coordinacion.md).
 
 | #15 (parte 2) | PROBADA | Jugar y ver abre la retransmisión de la jornada con el plan táctico aplicado y el acta al terminar. Órdenes durante el partido y posiciones de jugadores pendientes. |
 
+| #15 (parte 3) | PROBADA | Diez estadísticas de equipo durante la retransmisión y la repetición, con cifras hasta la jugada seleccionada y cotejadas con el acta. |
+| #15 (parte 4) | PROBADA | Desglose por jugador durante la retransmisión y la repetición, selección de equipo y jugadores en pista según la jugada. Totales cotejados con el acta. |
+| #15 (parte 5) | PROBADA | Minutos y segundos por jugador hasta la jugada seleccionada, con cambios de quinteto y de periodo. |
 | T-039 | PROBADA | Panel «Finanzas»: medidor del presupuesto salarial, aviso de cuántas temporadas faltan para el descubierto si nada cambia, gráfico del resultado por temporada y tabla alineada; 9 tests de la lógica y 6 comprobaciones nuevas en navegador. Gráfico probado con una sola temporada cerrada. |

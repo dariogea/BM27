@@ -20,6 +20,7 @@ export function ManagerHeader(props: {
   onTheme: () => void;
   onCompact: (compact: boolean) => void;
   onNavigate: (tab: Tab) => void;
+  onWatch: () => void;
   onAdvance: () => void;
 }) {
   const { view, active } = props;
@@ -72,6 +73,16 @@ export function ManagerHeader(props: {
               {view?.seasonInProgress ? `Jornada ${view.step}` : 'Preparación de temporada'}
             </span>
           </div>
+          {view?.myTeam && (
+            <button
+              type="button"
+              className="watch-match-button"
+              onClick={props.onWatch}
+              disabled={props.busy}
+            >
+              Jugar y ver
+            </button>
+          )}
           <button
             className="continue-button"
             disabled={props.busy || !view}

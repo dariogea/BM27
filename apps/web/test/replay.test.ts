@@ -2,7 +2,7 @@ import { beforeAll, describe, expect, it } from 'vitest';
 import { generateUniverseFromDataPack, simulateCompetitionSeason } from '@bm27/core';
 import type { MatchDetail } from '@bm27/schema';
 import sample from '../../../data/packs/example-eight-clubs.json';
-import { buildReplay, replayClock, replayEventText } from '../src/replayData';
+import { buildReplay, replayClock, replayEventText, replayPlayerTotals } from '../src/replayData';
 
 const matches: MatchDetail[] = [];
 beforeAll(() => {
@@ -23,6 +23,10 @@ describe('event-only match playback', () => {
         homeScore: match.boxScore.home.points,
         awayScore: match.boxScore.away.points,
       });
+      expect(match.boxScore.home.totals).toMatchObject(frames.at(-1)!.homeTotals);
+      expect(match.boxScore.away.totals).toMatchObject(frames.at(-1)!.awayTotals);
+      expect(Object.values(frames[0]!.homeTotals).every((value) => value === 0)).toBe(true);
+      expect(Object.values(frames[0]!.awayTotals).every((value) => value === 0)).toBe(true);
       expect(JSON.stringify(match)).toBe(before);
       frames.slice(1).forEach((frame, i) => {
         expect(frame.event).toEqual(match.events[i]);
@@ -30,6 +34,66 @@ describe('event-only match playback', () => {
         expect(frame.clock).toBe(match.events[i]!.clock);
       });
     }
+  });
+  it('reconstructs each player’s contributions and preserves the stats at earlier cursors', () => {
+    for (const match of matches) {
+      const { frames } = buildReplay(match);
+      for (const team of [match.boxScore.home, match.boxScore.away]) {
+        for (const { starter: _starter, playerId, ...line } of team.players) {
+          expect(replayPlayerTotals(frames[0]!, playerId)).toEqual(
+            Object.fromEntries(Object.keys(line).map((key) => [key, 0])),
+          );
+          expect(replayPlayerTotals(frames.at(-1)!, playerId)).toEqual(line);
+        }
+      }
+      const firstShot = match.events.findIndex((event) => event.type === 'shot');
+      const event = match.events[firstShot];
+      if (!event || event.type !== 'shot') throw new Error('Missing first shot');
+      expect(replayPlayerTotals(frames[firstShot]!, event.playerId).fieldGoalsAttempted).toBe(0);
+      expect(replayPlayerTotals(frames[firstShot + 1]!, event.playerId).fieldGoalsAttempted).toBe(
+        1,
+      );
+    }
+  });
+  it('counts the outgoing shift at a substitution and resumes only when the game clock moves', () => {
+    const match = matches[0]!;
+    const { teamId, players } = match.boxScore.home;
+    const ids = players.map((p) => p.playerId);
+    const outgoing = ids[0]!;
+    const incoming = ids[5]!;
+    const base = { possession: 0, offenseTeamId: teamId };
+    const { frames } = buildReplay({
+      ...match,
+      events: [
+        { ...base, seq: 0, period: 4, clock: 60, type: 'period_start', periodSeconds: 60 },
+        {
+          ...base,
+          seq: 1,
+          period: 4,
+          clock: 60,
+          type: 'lineup',
+          teamId,
+          playerIds: ids.slice(0, 5),
+        },
+        {
+          ...base,
+          seq: 2,
+          period: 4,
+          clock: 10,
+          type: 'substitution',
+          teamId,
+          playerOutId: outgoing,
+          playerInId: incoming,
+        },
+        { ...base, seq: 3, period: 4, clock: 10, type: 'timeout', teamId, reason: 'rest' },
+        { ...base, seq: 4, period: 4, clock: 0, type: 'period_end' },
+        { ...base, seq: 5, period: 5, clock: 300, type: 'period_start', periodSeconds: 300 },
+        { ...base, seq: 6, period: 5, clock: 290, type: 'timeout', teamId, reason: 'rest' },
+      ],
+    });
+    const seconds = (id: string) => frames.map((frame) => replayPlayerTotals(frame, id).seconds);
+    expect(seconds(outgoing)).toEqual([0, 0, 0, 50, 50, 50, 50, 50]);
+    expect(seconds(incoming)).toEqual([0, 0, 0, 0, 0, 10, 10, 20]);
   });
   it('preserves every field-goal location and only maps field goals, never free throws', () => {
     for (const match of matches) {
@@ -88,7 +152,14 @@ describe('event-only match playback', () => {
         made: true,
       },
     ];
-    expect(buildReplay(match).frames.at(-1)).toMatchObject({ homeScore: 0, awayScore: 1 });
+    const { frames } = buildReplay(match);
+    expect(frames[0]!.awayTotals.freeThrowsAttempted).toBe(0);
+    expect(frames[1]).toMatchObject({
+      homeScore: 0,
+      awayScore: 1,
+      homeTotals: { freeThrowsMade: 0, freeThrowsAttempted: 0 },
+      awayTotals: { freeThrowsMade: 1, freeThrowsAttempted: 1 },
+    });
   });
   it('rejects scoring by players outside the acta rather than silently guessing a club', () => {
     const match = structuredClone(matches[0]!);

@@ -11,7 +11,7 @@ import type { SlotSummary } from './slotStore';
 import type { MatchDetail, TeamTactics } from '@bm27/schema';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { CompetitionView } from './CompetitionView';
-import { BoxScoreView } from './MatchView';
+import { BoxScoreView, describeTactics } from './MatchView';
 import { isDesktop, pickTextFile, saveTextFile } from './platform';
 import type { Command, DataPackSummary, GameView, Reply } from './protocol';
 import { FinancePanel } from './FinanceView';
@@ -55,6 +55,7 @@ interface ShownMatch {
   detail: MatchDetail;
   playerNames: Record<string, string>;
   tactics: Record<string, TeamTactics>;
+  broadcast?: boolean;
 }
 
 export function App() {
@@ -97,6 +98,7 @@ export function App() {
   const [competitionId, setCompetitionId] = useState('');
   const [teamChoice, setTeamChoice] = useState('');
   const [match, setMatch] = useState<ShownMatch | null>(null);
+  const [broadcastFinished, setBroadcastFinished] = useState(false);
   const [busy, setBusy] = useState(false);
   const [slots, setSlots] = useState<SlotSummary[] | null>(null);
   const [autosave, setAutosave] = useState(true);
@@ -111,6 +113,11 @@ export function App() {
     setError('');
     setStatus(working);
     const reply = await send(command);
+    const watching = command.type === 'advance' && command.watch;
+    const broadcast =
+      watching && reply.type === 'state' && reply.watchedMatchId
+        ? await send({ type: 'matchDetail', matchId: reply.watchedMatchId })
+        : null;
     setBusy(false);
     switch (reply.type) {
       case 'dataPack':
@@ -129,6 +136,31 @@ export function App() {
       case 'state': {
         setView(reply.view);
         setStatus(reply.message);
+        if (watching) {
+          if (broadcast?.type === 'matchDetail') {
+            setMatch({
+              detail: broadcast.detail,
+              playerNames: broadcast.playerNames,
+              tactics: broadcast.tactics,
+              broadcast: true,
+            });
+            setBroadcastFinished(false);
+            setTab('match');
+            setStatus('');
+          } else {
+            const notice =
+              broadcast?.type === 'error'
+                ? `No se pudo abrir la retransmisión. ${broadcast.message}`
+                : 'Tu equipo no juega en este turno.';
+            setMatch(null);
+            setStatus(`${reply.message} ${notice}`);
+            setTab('portal');
+          }
+        }
+        if (command.type === 'advance' && !watching && match?.broadcast) {
+          setMatch(null);
+          if (tab === 'match') setTab('portal');
+        }
         setRevision((n) => n + 1);
         const mine = reply.view.myTeam;
         if (
@@ -199,6 +231,11 @@ export function App() {
   const openMatch = (matchId: string): Promise<void> =>
     run({ type: 'matchDetail', matchId }, 'Abriendo partido…');
 
+  const watchMatch = () =>
+    void run({ type: 'advance', watch: true }, 'Preparando la retransmisión…');
+  const revealReport = useCallback(() => setBroadcastFinished(true), []);
+  const watchingMatch = tab === 'match' && match?.broadcast && !broadcastFinished;
+
   return (
     <main className="app-shell">
       <ManagerHeader
@@ -210,6 +247,7 @@ export function App() {
         onTheme={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
         onCompact={setCompact}
         onNavigate={navigate}
+        onWatch={watchMatch}
         onAdvance={() => {
           void run({ type: 'advance' }, 'Jugando jornada…');
         }}
@@ -241,7 +279,7 @@ export function App() {
               ? 'Clubes definidos y generados; jugadores generados. Las referencias declaradas no equivalen a una base oficial contrastada.'
               : 'Base de demostración: clubes y jugadores generados. El objetivo es representar el baloncesto español con datos contrastados; estas plantillas aún no son las oficiales.'}
         </p>
-        {view && tab !== 'portal' && tab !== 'world' && (
+        {view && tab !== 'portal' && tab !== 'world' && !watchingMatch && (
           <section className="club-ribbon" aria-label="Resumen de la partida">
             <div className="club-monogram" aria-hidden="true">
               {mine?.name
@@ -402,7 +440,7 @@ export function App() {
           </p>
         )}
 
-        {view && (
+        {view && !watchingMatch && (
           <>
             <p className="note" data-testid="summary">
               Temporada {view.seasonNumber}
@@ -524,6 +562,12 @@ export function App() {
               busy={busy}
               onSave={(tactics) => run({ type: 'setTactics', tactics }, 'Guardando tácticas…')}
             />
+            <p className="note">
+              Guarda tus instrucciones antes de jugar para aplicarlas al partido.
+            </p>
+            <button type="button" disabled={busy} onClick={watchMatch}>
+              Jugar y ver
+            </button>
           </section>
         )}
 
@@ -603,17 +647,27 @@ export function App() {
           (match ? (
             <>
               <ReplayViewer
-                key={match.detail.result.id}
+                key={`${match.detail.result.id}/${match.broadcast ?? false}`}
                 detail={match.detail}
                 playerNames={match.playerNames}
                 name={name}
+                managedTeamId={view.userTeamId}
+                broadcast={match.broadcast}
+                onFinish={match.broadcast ? revealReport : undefined}
+                instructions={
+                  match.broadcast && view.userTeamId
+                    ? describeTactics(match.tactics[view.userTeamId])
+                    : undefined
+                }
               />
-              <BoxScoreView
-                detail={match.detail}
-                playerNames={match.playerNames}
-                tactics={match.tactics}
-                name={name}
-              />
+              {!watchingMatch && (
+                <BoxScoreView
+                  detail={match.detail}
+                  playerNames={match.playerNames}
+                  tactics={match.tactics}
+                  name={name}
+                />
+              )}
             </>
           ) : (
             <p className="note">

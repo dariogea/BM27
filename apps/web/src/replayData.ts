@@ -16,7 +16,7 @@ const emptyTotals = {
   fouls: 0,
 } satisfies Partial<StatLine>;
 export type ReplayTotals = Readonly<typeof emptyTotals>;
-const emptyPlayer = { points: 0, ...emptyTotals };
+const emptyPlayer = { points: 0, seconds: 0, ...emptyTotals };
 export type ReplayPlayerTotals = Readonly<typeof emptyPlayer>;
 export function replayPlayerTotals(frame: ReplayFrame, id: string): ReplayPlayerTotals {
   return frame.playerTotals.get(id) ?? emptyPlayer;
@@ -73,7 +73,7 @@ export function buildReplay(detail: MatchDetail): { frames: ReplayFrame[]; shots
     if (key === 'points') {
       if (team === homeId) homeScore += value;
       else awayScore += value;
-    } else {
+    } else if (key !== 'seconds') {
       totals.get(team)![key] += value;
     }
   };
@@ -96,6 +96,13 @@ export function buildReplay(detail: MatchDetail): { frames: ReplayFrame[]; shots
   ];
   const shots: ReplayShot[] = [];
   for (const [index, event] of detail.events.entries()) {
+    // The five players on court BEFORE this event played the preceding interval.
+    const previous = frames[index]!;
+    const seconds = previous.period === event.period ? previous.clock - event.clock : 0;
+    if (seconds > 0) {
+      for (const id of homePlayers) credit(id, 'seconds', seconds);
+      for (const id of awayPlayers) credit(id, 'seconds', seconds);
+    }
     if (event.type === 'lineup') {
       if (event.teamId === homeId) homePlayers = [...event.playerIds];
       else if (event.teamId === awayId) awayPlayers = [...event.playerIds];

@@ -47,7 +47,7 @@ Al terminar coinciden con el acta.
 Abre **Estadísticas por jugador** para ver los puntos y esas mismas diez estadísticas hasta
 la jugada actual. Si tu club juega, la tabla abre **Tu equipo** y puedes consultar al **Rival**.
 La columna **En pista** sigue las
-alineaciones y sustituciones registradas. Los minutos individuales se consultan en el acta final.
+alineaciones y sustituciones registradas. La columna Minutos muestra el tiempo acumulado en pista hasta esa jugada, en minutos y segundos. El reloj de juego también cuenta las prórrogas.
 
 ## Mapa de tiros
 
@@ -67,7 +67,7 @@ la pantalla se detiene su temporizador; volver comienza de nuevo. La repetición
 ## Límites y siguiente entrega
 
 Esta entrega cubre la retransmisión al avanzar la jornada de #15. Quedan pendientes las órdenes
-durante el partido, los minutos individuales durante la reproducción y las posiciones de los jugadores.
+durante el partido y las posiciones de los jugadores.
 No se dibujan trayectorias ficticias para dar por terminado el visualizador posicional 2D. El motor
 sigue teniendo sus decisiones de entrenador y otros componentes marcados como PLACEHOLDER.
 
@@ -81,7 +81,7 @@ reconstruir con las entradas conservadas de ese partido.
   pausa, salto al final, totales individuales cotejados con el acta y marcador contrastado con la partida. Comparación de todo el guardado
   tras avanzar la misma jornada con y sin retransmisión. Dos comprobaciones en Chromium para PC.
 
-- `apps/web/test/replay.test.ts`: siete pruebas sobre una competición completa de ocho clubes:
+- `apps/web/test/replay.test.ts`: ocho pruebas sobre una competición completa de ocho clubes:
   resultado de cada partido contra su acta, reloj/eventos, coordenadas, quintetos y sustituciones,
   conservación de las instantáneas previas, atribución de tiros libres técnicos, jugador ajeno al acta
   rechazado y descripciones de los eventos encontrados. Las consultas dejan el registro intacto.

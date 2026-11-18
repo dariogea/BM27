@@ -39,7 +39,7 @@ describe('event-only match playback', () => {
     for (const match of matches) {
       const { frames } = buildReplay(match);
       for (const team of [match.boxScore.home, match.boxScore.away]) {
-        for (const { starter: _starter, seconds: _seconds, playerId, ...line } of team.players) {
+        for (const { starter: _starter, playerId, ...line } of team.players) {
           expect(replayPlayerTotals(frames[0]!, playerId)).toEqual(
             Object.fromEntries(Object.keys(line).map((key) => [key, 0])),
           );
@@ -54,6 +54,46 @@ describe('event-only match playback', () => {
         1,
       );
     }
+  });
+  it('counts the outgoing shift at a substitution and resumes only when the game clock moves', () => {
+    const match = matches[0]!;
+    const { teamId, players } = match.boxScore.home;
+    const ids = players.map((p) => p.playerId);
+    const outgoing = ids[0]!;
+    const incoming = ids[5]!;
+    const base = { possession: 0, offenseTeamId: teamId };
+    const { frames } = buildReplay({
+      ...match,
+      events: [
+        { ...base, seq: 0, period: 4, clock: 60, type: 'period_start', periodSeconds: 60 },
+        {
+          ...base,
+          seq: 1,
+          period: 4,
+          clock: 60,
+          type: 'lineup',
+          teamId,
+          playerIds: ids.slice(0, 5),
+        },
+        {
+          ...base,
+          seq: 2,
+          period: 4,
+          clock: 10,
+          type: 'substitution',
+          teamId,
+          playerOutId: outgoing,
+          playerInId: incoming,
+        },
+        { ...base, seq: 3, period: 4, clock: 10, type: 'timeout', teamId, reason: 'rest' },
+        { ...base, seq: 4, period: 4, clock: 0, type: 'period_end' },
+        { ...base, seq: 5, period: 5, clock: 300, type: 'period_start', periodSeconds: 300 },
+        { ...base, seq: 6, period: 5, clock: 290, type: 'timeout', teamId, reason: 'rest' },
+      ],
+    });
+    const seconds = (id: string) => frames.map((frame) => replayPlayerTotals(frame, id).seconds);
+    expect(seconds(outgoing)).toEqual([0, 0, 0, 50, 50, 50, 50, 50]);
+    expect(seconds(incoming)).toEqual([0, 0, 0, 0, 0, 10, 10, 20]);
   });
   it('preserves every field-goal location and only maps field goals, never free throws', () => {
     for (const match of matches) {

@@ -23,6 +23,10 @@ describe('event-only match playback', () => {
         homeScore: match.boxScore.home.points,
         awayScore: match.boxScore.away.points,
       });
+      expect(match.boxScore.home.totals).toMatchObject(frames.at(-1)!.homeTotals);
+      expect(match.boxScore.away.totals).toMatchObject(frames.at(-1)!.awayTotals);
+      expect(Object.values(frames[0]!.homeTotals).every((value) => value === 0)).toBe(true);
+      expect(Object.values(frames[0]!.awayTotals).every((value) => value === 0)).toBe(true);
       expect(JSON.stringify(match)).toBe(before);
       frames.slice(1).forEach((frame, i) => {
         expect(frame.event).toEqual(match.events[i]);
@@ -88,7 +92,14 @@ describe('event-only match playback', () => {
         made: true,
       },
     ];
-    expect(buildReplay(match).frames.at(-1)).toMatchObject({ homeScore: 0, awayScore: 1 });
+    const { frames } = buildReplay(match);
+    expect(frames[0]!.awayTotals.freeThrowsAttempted).toBe(0);
+    expect(frames[1]).toMatchObject({
+      homeScore: 0,
+      awayScore: 1,
+      homeTotals: { freeThrowsMade: 0, freeThrowsAttempted: 0 },
+      awayTotals: { freeThrowsMade: 1, freeThrowsAttempted: 1 },
+    });
   });
   it('rejects scoring by players outside the acta rather than silently guessing a club', () => {
     const match = structuredClone(matches[0]!);

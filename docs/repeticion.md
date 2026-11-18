@@ -37,6 +37,13 @@ Los quintetos de ambos clubes proceden de los eventos de alineación y sustituci
 aparezca su evento inicial, el panel indica que aún no están registrados. Se muestran en listas:
 el registro no proporciona la posición o trayectoria de los diez jugadores sobre la pista.
 
+## Estadísticas por equipo
+
+La tabla junto a la pista acumula los tiros de campo, triples y tiros libres (aciertos/intentos),
+los rebotes ofensivos y defensivos, asistencias, robos, tapones, pérdidas y faltas. Las cifras
+corresponden a la jugada que ves. Si retrocedes, la tabla vuelve a los totales de ese momento.
+Al terminar coinciden con el acta. El desglose por jugador se consulta en el acta final.
+
 ## Mapa de tiros
 
 Muestra únicamente los tiros de campo ocurridos hasta el evento seleccionado. Los tiros libres
@@ -55,7 +62,7 @@ la pantalla se detiene su temporizador; volver comienza de nuevo. La repetición
 ## Límites y siguiente entrega
 
 Esta entrega cubre la retransmisión al avanzar la jornada de #15. Quedan pendientes las órdenes
-durante el partido, las estadísticas completas durante la reproducción y las posiciones de los jugadores.
+durante el partido, el desglose por jugador durante la reproducción y las posiciones de los jugadores.
 No se dibujan trayectorias ficticias para dar por terminado el visualizador posicional 2D. El motor
 sigue teniendo sus decisiones de entrenador y otros componentes marcados como PLACEHOLDER.
 

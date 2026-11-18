@@ -1,7 +1,20 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { MatchDetail } from '@bm27/schema';
-import { buildReplay, replayClock, replayEventText } from './replayData';
+import { buildReplay, replayClock, replayEventText, type ReplayTotals } from './replayData';
 import './replay.css';
+
+const STAT_ROWS: [string, (totals: ReplayTotals) => string | number][] = [
+  ['Tiros de campo', (s) => `${s.fieldGoalsMade}/${s.fieldGoalsAttempted}`],
+  ['Triples', (s) => `${s.threePointersMade}/${s.threePointersAttempted}`],
+  ['Tiros libres', (s) => `${s.freeThrowsMade}/${s.freeThrowsAttempted}`],
+  ['Rebotes ofensivos', (s) => s.offensiveRebounds],
+  ['Rebotes defensivos', (s) => s.defensiveRebounds],
+  ['Asistencias', (s) => s.assists],
+  ['Robos', (s) => s.steals],
+  ['Tapones', (s) => s.blocks],
+  ['Pérdidas', (s) => s.turnovers],
+  ['Faltas', (s) => s.fouls],
+];
 
 export function ReplayViewer(props: {
   broadcast?: boolean;
@@ -243,7 +256,26 @@ export function ReplayViewer(props: {
             })}
           </svg>
         </section>
-        <aside className="replay-rosters" aria-label="Quintetos registrados">
+        <aside className="replay-rosters" aria-label="Estadísticas y quintetos registrados">
+          <table className="replay-stats">
+            <caption>Estadísticas hasta la jugada actual</caption>
+            <thead>
+              <tr>
+                <th scope="col">Dato</th>
+                <th scope="col">{props.name(home)}</th>
+                <th scope="col">{props.name(away)}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {STAT_ROWS.map(([label, format]) => (
+                <tr key={label}>
+                  <th scope="row">{label}</th>
+                  <td>{format(frame.homeTotals)}</td>
+                  <td>{format(frame.awayTotals)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
           <h3>En pista según el registro</h3>
           {[
             { id: home, players: frame.homePlayers },

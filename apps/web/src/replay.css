@@ -138,3 +138,22 @@
   fill: transparent;
   stroke: none;
 }
+
+.replay-stats {
+  width: 100%;
+  table-layout: fixed;
+  font-variant-numeric: tabular-nums;
+}
+.replay-stats caption,
+.replay-stats th[scope='row'] {
+  text-align: left;
+}
+.replay-stats caption {
+  color: var(--accent);
+  font-weight: 700;
+}
+.replay-stats th,
+.replay-stats td {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}

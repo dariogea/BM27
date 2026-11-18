@@ -1261,7 +1261,7 @@
               "s": "hecho",
               "i": 67,
               "o": "codex",
-              "n": "Buscador paginado y fichas enlazadas en Mundo, con datos del Worker y verificación real en PC."
+              "n": "Buscador paginado y fichas enlazadas en Mundo, con acceso también desde la clasificación y el próximo rival del Portal (#83)."
             },
             {
               "t": "Ficha de jugador completa",

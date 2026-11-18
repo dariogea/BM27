@@ -34,6 +34,7 @@ export function PortalView(props: {
   competitionId: string;
   onCompetition: (id: string) => void;
   onNavigate: (tab: Tab) => void;
+  onClub: (id: string) => void;
   onMatch: (id: string) => Promise<void>;
   busy: boolean;
 }) {
@@ -41,6 +42,16 @@ export function PortalView(props: {
   const mine = view.myTeam;
   const [filter, setFilter] = useState<'all' | 'sport' | 'market'>('all');
   const name = (id: string): string => view.teamNames[id] ?? id;
+  const clubButton = (id: string, className = '') => (
+    <button
+      type="button"
+      className={`text-action portal-club-link ${className}`}
+      onClick={() => props.onClub(id)}
+      disabled={props.busy}
+    >
+      {name(id)}
+    </button>
+  );
   const competition = view.competitions.find((c) => c.id === props.competitionId);
   const table = view.tables.find((c) => c.competitionId === props.competitionId);
   // A table can belong to the previous season after promotion; retain its actual season label.
@@ -372,7 +383,7 @@ export function PortalView(props: {
                     {group.standings.map((row) => (
                       <tr key={row.teamId} className={row.teamId === mine?.teamId ? 'mine' : ''}>
                         <td>{row.position}</td>
-                        <td className="name">{name(row.teamId)}</td>
+                        <td className="name">{clubButton(row.teamId)}</td>
                         <td>{row.played}</td>
                         <td>{row.wins}</td>
                         <td>{row.losses}</td>
@@ -396,7 +407,7 @@ export function PortalView(props: {
                   <span className="mini-badge" aria-hidden="true">
                     {name(id).slice(0, 1)}
                   </span>
-                  {name(id)}
+                  {clubButton(id)}
                 </li>
               ))}
             </ul>
@@ -408,7 +419,7 @@ export function PortalView(props: {
         <Panel title="Próximo rival">
           {mine?.nextMatch ? (
             <>
-              <strong className="opponent-name">{name(mine.nextMatch.opponentId)}</strong>
+              {clubButton(mine.nextMatch.opponentId, 'opponent-name')}
               <p>
                 Jornada {mine.nextMatch.round} · {mine.nextMatch.home ? 'En casa' : 'A domicilio'}
               </p>

@@ -94,3 +94,5 @@ Reglas en [`coordinacion.md`](coordinacion.md).
 | T-033 | PROBADA | Paneles de gestión: plantilla ordenable por cualquier columna con mapa de color por nivel e insignias de lesión y contrato cumplido; búsqueda de agentes libres; comprobación en navegador con axe (0 violaciones en 5 paneles × 2 temas). Finanzas, competición y partido se revisaron pero no se han rediseñado. |
 
 | T-036 | PROBADA | Versión 0.1.0-alpha.2 preparada (sin publicar): versión en `package.json` y `tauri.conf.json`, notas en `docs/versiones/0.1.0-alpha.2.md` y el flujo de publicación usa esas notas. **Publicada el 17-11-2026** (Release `v0.1.0-alpha.2`, pre-lanzamiento, 1.460.875 bytes); el enlace del README apunta a ella. Sin probar en un Windows real. |
+
+| #83 | PROBADA | Fichas de clubes desde la clasificación, inscritos y próximo rival del Portal. Teclado, retorno al Portal y datos de paquetes verificados en navegador para PC. |

@@ -9,7 +9,7 @@ import type { Tab } from './navigation';
 import { SavesPanel } from './SavesPanel';
 import type { SlotSummary } from './slotStore';
 import type { MatchDetail, TeamTactics } from '@bm27/schema';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { CompetitionView } from './CompetitionView';
 import { BoxScoreView } from './MatchView';
 import { isDesktop, pickTextFile, saveTextFile } from './platform';
@@ -40,12 +40,15 @@ function useSimulation() {
     };
   }, []);
 
-  return (command: Pending): Promise<Reply> =>
-    new Promise((resolve) => {
-      const id = nextId.current++;
-      waiting.current.set(id, resolve);
-      workerRef.current?.postMessage({ ...command, id });
-    });
+  return useCallback(
+    (command: Pending): Promise<Reply> =>
+      new Promise((resolve) => {
+        const id = nextId.current++;
+        waiting.current.set(id, resolve);
+        workerRef.current?.postMessage({ ...command, id });
+      }),
+    [],
+  );
 }
 
 interface ShownMatch {
@@ -90,6 +93,7 @@ export function App() {
   const [dataPack, setDataPack] = useState<DataPackSummary | null>(null);
   const [view, setView] = useState<GameView | null>(null);
   const [tab, setTab] = useState<Tab>('portal');
+  const [portalClubId, setPortalClubId] = useState<string | null>(null);
   const [competitionId, setCompetitionId] = useState('');
   const [teamChoice, setTeamChoice] = useState('');
   const [match, setMatch] = useState<ShownMatch | null>(null);
@@ -133,6 +137,7 @@ export function App() {
           command.type === 'loadSlot'
         ) {
           setMatch(null);
+          setPortalClubId(null);
           setCompetitionId(mine?.competitionId ?? reply.view.competitions[0]?.id ?? '');
           setTeamChoice(reply.view.userTeamId ?? reply.view.competitions[0]?.teamIds[0] ?? '');
           setTab('portal');
@@ -172,14 +177,18 @@ export function App() {
     }
   };
 
-  const requestWorld = async (query: WorldQuery): Promise<WorldPayload> => {
-    const reply = await send(query);
-    if (reply.type === 'world') return reply.result;
-    if (reply.type === 'error') throw new Error(reply.message);
-    throw new Error('No se pudo completar la consulta.');
-  };
+  const requestWorld = useCallback(
+    async (query: WorldQuery): Promise<WorldPayload> => {
+      const reply = await send(query);
+      if (reply.type === 'world') return reply.result;
+      if (reply.type === 'error') throw new Error(reply.message);
+      throw new Error('No se pudo completar la consulta.');
+    },
+    [send],
+  );
 
   const navigate = (next: Tab): void => {
+    setPortalClubId(null);
     setTab(next);
     if (next === 'saves') void run({ type: 'listSlots' }, 'Abriendo partidas…');
   };
@@ -414,10 +423,22 @@ export function App() {
             onCompetition={setCompetitionId}
             onNavigate={navigate}
             onMatch={openMatch}
+            onClub={(id) => {
+              setPortalClubId(id);
+              setTab('world');
+            }}
             busy={busy}
           />
         )}
-        {view && tab === 'world' && <WorldView key={revision} view={view} request={requestWorld} />}
+        {view && tab === 'world' && (
+          <WorldView
+            key={JSON.stringify([revision, portalClubId])}
+            view={view}
+            request={requestWorld}
+            initialClubId={portalClubId}
+            onBackToPortal={() => navigate('portal')}
+          />
+        )}
         {tab === 'saves' && (
           <SavesPanel
             slots={slots}

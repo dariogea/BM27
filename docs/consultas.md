@@ -54,10 +54,17 @@ Las herramientas externas de navegador son las documentadas en la [revisión del
 No se añaden dependencias al juego. La comprobación automática no equivale a una certificación de
 accesibilidad ni a una prueba del instalador Windows.
 
+## Abrir un club desde el Portal
+
+Pulsa el nombre de un club en la clasificación o en la lista de inscritos antes de la primera
+jornada. También puedes pulsar el nombre del próximo rival. Se abre su ficha con el foco en ella,
+y desde la plantilla puedes consultar a sus jugadores. Usa **Volver al Portal** para regresar a
+la misma competición o **Mundo** en la cabecera para abrir el buscador.
+
 ## Qué sigue pendiente
 
 Las entregas #67 y #72 cubren buscador, fichas, líderes y palmarés de #14. Quedan trayectoria más
-detallada y entrada directa desde la clasificación. Los cinco paneles reservados por Claude no se han modificado.
+detallada y acceso directo desde la pantalla Competición. Los cinco paneles reservados por Claude no se han modificado.
 Los datos siguen siendo los de la demo generada; el catálogo español de #61 aún no se carga en la partida.
 
 Validación de la primera entrega (#67): **265/265 pruebas** (`pnpm test --maxWorkers=2`), lint, formato,

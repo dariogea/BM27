@@ -1417,19 +1417,21 @@
           "s": "hecho",
           "i": 15,
           "o": "codex",
-          "n": "Reproductor del registro de un partido ya simulado: marcador, periodos, controles, tiros exactos y filtros, probado en PC. Modo directo pendiente."
+          "n": "Reproductor del registro de un partido ya simulado: marcador, periodos, controles, tiros exactos y filtros, probado en PC."
         },
         {
           "t": "Control de velocidad, pausa y salto de periodo",
           "s": "hecho",
           "i": 15,
           "o": "codex",
-          "n": "Reproductor del registro de un partido ya simulado: marcador, periodos, controles, tiros exactos y filtros, probado en PC. Modo directo pendiente."
+          "n": "Reproductor del registro de un partido ya simulado: marcador, periodos, controles, tiros exactos y filtros, probado en PC."
         },
         {
-          "t": "Modo ver en directo con opción de saltar",
-          "s": "pendiente",
-          "i": 15
+          "t": "Retransmisión de la jornada con opción de saltar",
+          "s": "hecho",
+          "i": 15,
+          "o": "codex",
+          "n": "Jugar y ver muestra el partido jugada a jugada con el plan guardado. El motor calcula el resultado al empezar. Órdenes durante el encuentro pendientes."
         },
         {
           "t": "Estadísticas en vivo durante la reproducción",

@@ -4,6 +4,9 @@ import { buildReplay, replayClock, replayEventText } from './replayData';
 import './replay.css';
 
 export function ReplayViewer(props: {
+  broadcast?: boolean;
+  instructions?: string;
+  onFinish?: () => void;
   detail: MatchDetail;
   playerNames: Record<string, string>;
   name: (id: string) => string;
@@ -14,7 +17,7 @@ export function ReplayViewer(props: {
     region.current?.scrollIntoView({ block: 'start' });
   }, []);
   const [cursor, setCursor] = useState(0);
-  const [playing, setPlaying] = useState(false);
+  const [playing, setPlaying] = useState(props.broadcast ?? false);
   const [rate, setRate] = useState(5);
   const [team, setTeam] = useState('');
   const [outcome, setOutcome] = useState('all');
@@ -27,8 +30,16 @@ export function ReplayViewer(props: {
   }, [props.detail]);
   const last = (projection.data?.frames.length ?? 1) - 1;
   const position = Math.min(cursor, last);
+  const final = projection.data?.frames[last];
+  const valid =
+    final?.homeScore === props.detail.boxScore.home.points &&
+    final?.awayScore === props.detail.boxScore.away.points;
+  const { onFinish } = props;
   useEffect(() => {
-    if (!playing) return;
+    if (position === last && last > 0) onFinish?.();
+  }, [position, last, onFinish]);
+  useEffect(() => {
+    if (!playing || !valid) return;
     if (cursor >= last) {
       setPlaying(false);
       return;
@@ -38,7 +49,7 @@ export function ReplayViewer(props: {
       1000 / rate,
     );
     return () => window.clearTimeout(timer);
-  }, [playing, cursor, last, rate]);
+  }, [playing, cursor, last, rate, valid]);
   if (!projection.data)
     return (
       <p className="error" role="alert">
@@ -47,10 +58,6 @@ export function ReplayViewer(props: {
     );
   const { frames, shots } = projection.data;
   const frame = frames[position]!;
-  const final = frames[last]!;
-  const valid =
-    final.homeScore === props.detail.boxScore.home.points &&
-    final.awayScore === props.detail.boxScore.away.points;
   const who = (id: string) => props.playerNames[id] ?? id;
   const seek = (at: number) => {
     setPlaying(false);
@@ -78,14 +85,20 @@ export function ReplayViewer(props: {
       <div className="replay-heading">
         <div>
           <span className="eyebrow">El partido, evento a evento</span>
-          <h2>Repetición y mapa de tiros</h2>
+          <h2>{props.broadcast ? 'Retransmisión del partido' : 'Repetición y mapa de tiros'}</h2>
         </div>
         <span className="status-pill">{playing ? 'Reproduciendo' : 'En pausa'}</span>
       </div>
       <p className="note">
-        Reproduce un partido ya simulado. Los quintetos y tiros salen del registro; este no contiene
-        posiciones ni movimientos de los diez jugadores.
+        {props.broadcast
+          ? 'El partido se calcula al empezar. La retransmisión va mostrando las jugadas con el plan guardado antes de la jornada.'
+          : 'Reproduce un partido ya simulado. Los quintetos y tiros salen del registro.'}
       </p>
+      {props.instructions && (
+        <p className="note">
+          <strong>Tu plan aplicado</strong> · {props.instructions}
+        </p>
+      )}
       {!valid && (
         <p className="error" role="alert">
           El registro no coincide con el marcador del acta. No se puede verificar esta repetición.

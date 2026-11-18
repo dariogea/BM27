@@ -5,6 +5,18 @@ Después de jugar una jornada, pulsa **Ver partido**. También puedes abrir un p
 y la narración que ya existían. Es una repetición de un partido calculado, no un partido que se
 esté simulando en directo.
 
+## Ver la jornada mientras se muestra el partido
+
+Dirige un club y pulsa **Jugar y ver** en la cabecera o en **Tácticas**. Allí puedes ajustar y
+guardar tus instrucciones antes de empezar. Si el club juega ese turno, la retransmisión se abre
+automáticamente y muestra el plan aplicado, el marcador, las jugadas y el mapa de tiros. El acta
+aparece al final o al pulsar **Saltar al final**. Si el club descansa, el Portal lo indica.
+**Jugar jornada** conserva el avance rápido.
+
+El motor resuelve el encuentro al comenzar y la pantalla va mostrando el registro. Las órdenes
+durante el partido y los movimientos de los jugadores sobre la pista quedan pendientes.
+**PLACEHOLDER:** las decisiones automáticas de entrenador conservan el modelo actual.
+
 ## Cómo se usa en PC
 
 - **Reproducir / Pausar:** recorre los eventos. La velocidad se expresa en eventos por segundo,
@@ -38,12 +50,12 @@ están en el marcador y la narración, pero no se dibujan como tiros de campo.
 
 Las coordenadas pertenecen a la simulación provisional del motor, no a mediciones de partidos reales.
 La reproducción no cambia tácticas, jugadores, resultados ni guardados, y no utiliza azar. Al salir de
-la pantalla se detiene su temporizador; volver abre la repetición pausada desde el comienzo.
+la pantalla se detiene su temporizador; volver comienza de nuevo. La repetición normal empieza pausada y la retransmisión se inicia automáticamente.
 
 ## Límites y siguiente entrega
 
-Esta entrega no cierra #15. Siguen pendientes la presentación al avanzar una jornada en modo
-«directo», las estadísticas completas durante la reproducción y las posiciones de los jugadores.
+Esta entrega cubre la retransmisión al avanzar la jornada de #15. Quedan pendientes las órdenes
+durante el partido, las estadísticas completas durante la reproducción y las posiciones de los jugadores.
 No se dibujan trayectorias ficticias para dar por terminado el visualizador posicional 2D. El motor
 sigue teniendo sus decisiones de entrenador y otros componentes marcados como PLACEHOLDER.
 
@@ -52,6 +64,10 @@ repeticiones del Worker sigue siendo la misma: una visualización solo recibe de
 reconstruir con las entradas conservadas de ese partido.
 
 ## Comprobaciones reales
+
+- `python tools/qa/matchday_watch_browser.py`: plan táctico guardado, reproducción automática,
+  pausa, salto al final y marcador cotejado con la partida. Comparación de todo el guardado
+  tras avanzar la misma jornada con y sin retransmisión. Dos comprobaciones en Chromium para PC.
 
 - `apps/web/test/replay.test.ts`: seis pruebas sobre una competición completa de ocho clubes:
   resultado de cada partido contra su acta, reloj/eventos, coordenadas, quintetos y sustituciones,

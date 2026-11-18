@@ -1162,3 +1162,7 @@ button.portal-club-link.opponent-name {
   font-size: 15px;
   font-weight: 700;
 }
+
+.watch-match-button {
+  white-space: nowrap;
+}

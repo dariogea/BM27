@@ -42,7 +42,12 @@ el registro no proporciona la posición o trayectoria de los diez jugadores sobr
 La tabla junto a la pista acumula los tiros de campo, triples y tiros libres (aciertos/intentos),
 los rebotes ofensivos y defensivos, asistencias, robos, tapones, pérdidas y faltas. Las cifras
 corresponden a la jugada que ves. Si retrocedes, la tabla vuelve a los totales de ese momento.
-Al terminar coinciden con el acta. El desglose por jugador se consulta en el acta final.
+Al terminar coinciden con el acta.
+
+Abre **Estadísticas por jugador** para ver los puntos y esas mismas diez estadísticas hasta
+la jugada actual. Si tu club juega, la tabla abre **Tu equipo** y puedes consultar al **Rival**.
+La columna **En pista** sigue las
+alineaciones y sustituciones registradas. Los minutos individuales se consultan en el acta final.
 
 ## Mapa de tiros
 
@@ -62,7 +67,7 @@ la pantalla se detiene su temporizador; volver comienza de nuevo. La repetición
 ## Límites y siguiente entrega
 
 Esta entrega cubre la retransmisión al avanzar la jornada de #15. Quedan pendientes las órdenes
-durante el partido, el desglose por jugador durante la reproducción y las posiciones de los jugadores.
+durante el partido, los minutos individuales durante la reproducción y las posiciones de los jugadores.
 No se dibujan trayectorias ficticias para dar por terminado el visualizador posicional 2D. El motor
 sigue teniendo sus decisiones de entrenador y otros componentes marcados como PLACEHOLDER.
 
@@ -73,10 +78,10 @@ reconstruir con las entradas conservadas de ese partido.
 ## Comprobaciones reales
 
 - `python tools/qa/matchday_watch_browser.py`: plan táctico guardado, reproducción automática,
-  pausa, salto al final y marcador cotejado con la partida. Comparación de todo el guardado
+  pausa, salto al final, totales individuales cotejados con el acta y marcador contrastado con la partida. Comparación de todo el guardado
   tras avanzar la misma jornada con y sin retransmisión. Dos comprobaciones en Chromium para PC.
 
-- `apps/web/test/replay.test.ts`: seis pruebas sobre una competición completa de ocho clubes:
+- `apps/web/test/replay.test.ts`: siete pruebas sobre una competición completa de ocho clubes:
   resultado de cada partido contra su acta, reloj/eventos, coordenadas, quintetos y sustituciones,
   conservación de las instantáneas previas, atribución de tiros libres técnicos, jugador ajeno al acta
   rechazado y descripciones de los eventos encontrados. Las consultas dejan el registro intacto.

@@ -1436,10 +1436,10 @@
         {
           "t": "Estadísticas en vivo durante la reproducción",
           "s": "en-curso",
-          "p": 60,
+          "p": 85,
           "o": "codex",
           "i": 15,
-          "n": "Marcador y diez estadísticas de equipo reconstruidos hasta la jugada mostrada. Queda el desglose por jugador."
+          "n": "Marcador y estadísticas de equipo y jugador hasta la jugada mostrada. Los minutos individuales quedan en el acta final."
         },
         {
           "t": "Repeticiones de jugadas destacadas",

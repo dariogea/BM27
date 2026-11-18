@@ -157,3 +157,16 @@
   white-space: normal;
   overflow-wrap: anywhere;
 }
+
+.replay-player-stats {
+  margin: 12px 0 20px;
+}
+.replay-player-stats label {
+  margin: 10px 0;
+}
+.replay-player-stats th[scope='row'] {
+  text-align: left;
+}
+.replay-player-stats td {
+  font-variant-numeric: tabular-nums;
+}

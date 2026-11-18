@@ -1442,7 +1442,10 @@
         },
         {
           "t": "Repeticiones de jugadas destacadas",
-          "s": "pendiente"
+          "s": "hecho",
+          "o": "codex",
+          "i": 15,
+          "n": "Se puede repetir una posesión hasta el triple anotado, tapón o robo y volver al punto anterior del partido."
         },
         {
           "t": "Sonido y ambiente",

@@ -203,11 +203,15 @@ const SHOTS = process.env.BM27_SHOTS;
   await page.getByLabel('Solo mis partidos').check();
   const mineRows = await page.locator('table:has(th:text-is("Local")) tbody tr').count();
   check(mineRows === 1 && allRows > 1, `«Solo mis partidos» deja 1 partido de ${allRows}`);
-  // Keyboard: Enter on a match row opens its box score.
-  await page.locator('table:has(th:text-is("Local")) tbody tr').first().focus();
+  // Keyboard: the native "Ver partido" button of a row opens its box score with Enter.
+  await page
+    .locator('table:has(th:text-is("Local")) tbody tr')
+    .first()
+    .getByRole('button', { name: /Ver el box score/ })
+    .focus();
   await page.keyboard.press('Enter');
   await page.getByTestId('boxscore').first().waitFor({ timeout: 30000 });
-  check(true, 'Intro sobre un partido abre su box score');
+  check(true, 'Intro sobre el botón «Ver partido» abre su box score');
   await nav.getByRole('button', { name: 'Competición', exact: true }).click();
   await page.getByLabel('Solo mis partidos').uncheck();
 

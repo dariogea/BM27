@@ -226,8 +226,8 @@ export function CompetitionView(props: {
           Solo mis partidos
         </label>
         <span className="note">
-          Pulsa un partido (o usa Intro) para ver su box score. {matches.length}{' '}
-          {matches.length === 1 ? 'partido' : 'partidos'}.
+          Pulsa un partido, o su botón «Ver partido» (accesible con el teclado), para ver su box
+          score. {matches.length} {matches.length === 1 ? 'partido' : 'partidos'}.
         </span>
       </div>
       <div className="scroll" tabIndex={0} role="region" aria-label="Partidos de la jornada">
@@ -239,6 +239,7 @@ export function CompetitionView(props: {
               <th>Pts</th>
               <th className="name">Visitante</th>
               <th>Prórrogas</th>
+              <th>Detalle</th>
             </tr>
           </thead>
           <tbody>
@@ -246,22 +247,27 @@ export function CompetitionView(props: {
               <tr
                 key={m.id}
                 className={`clickable ${m.id === props.selectedMatchId ? 'selected' : ''}`}
-                tabIndex={0}
-                aria-label={`Ver el box score: ${name(m.homeTeamId)} ${m.homeScore}, ${name(m.awayTeamId)} ${m.awayScore}`}
                 aria-selected={m.id === props.selectedMatchId}
                 onClick={() => props.onMatch(m.id)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    props.onMatch(m.id);
-                  }
-                }}
               >
                 <td className="name">{name(m.homeTeamId)}</td>
                 <td>{m.homeScore}</td>
                 <td>{m.awayScore}</td>
                 <td className="name">{name(m.awayTeamId)}</td>
                 <td>{m.overtimePeriods || ''}</td>
+                <td>
+                  <button
+                    type="button"
+                    className="text-action"
+                    aria-label={`Ver el box score: ${name(m.homeTeamId)} ${m.homeScore}, ${name(m.awayTeamId)} ${m.awayScore}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      props.onMatch(m.id);
+                    }}
+                  >
+                    Ver partido
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>

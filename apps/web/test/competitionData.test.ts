@@ -129,4 +129,13 @@ describe('formOf', () => {
     expect(formOf([game('m', 'regular', 1, 'a', 'b', 70, 80)], 'b')).toEqual(['W']);
     expect(formOf([game('m', 'regular', 1, 'a', 'b', 70, 80)], 'a')).toEqual(['L']);
   });
+
+  it('keeps the playing order of a long series (ids are text: game 10 sorts before game 2)', () => {
+    // An 11-game series in the same round, delivered in the order played; the team wins only 7–11.
+    const series = Array.from({ length: 11 }, (_, i) =>
+      game(`s-p1-1-${i + 1}`, 'playoff', 1, 'a', 'b', i + 1 >= 7 ? 90 : 60, 80),
+    );
+    expect(formOf(series, 'a')).toEqual(['W', 'W', 'W', 'W', 'W']);
+    expect(formOf(series, 'a', 11)).toEqual([...'LLLLLLWWWWW']);
+  });
 });

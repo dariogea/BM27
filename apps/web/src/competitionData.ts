@@ -68,17 +68,16 @@ export type FormResult = 'W' | 'L';
 
 /**
  * Last results of a team in this competition, oldest first, from the matches played so far.
- * Regular-season games come before playoff games; inside a stage the round decides.
+ * Regular-season games come before playoff games; inside a stage the round decides, and games of
+ * the same round keep the order they were received in.
  */
 export function formOf(matches: readonly MatchResult[], teamId: string, count = 5): FormResult[] {
+  // Array.prototype.sort is stable: inside a stage and round, games keep the order in which the
+  // game delivered them, which is the order they were played (ids are text and sort wrongly once
+  // a series reaches its 10th game).
   return matches
     .filter((m) => m.homeTeamId === teamId || m.awayTeamId === teamId)
-    .sort(
-      (a, b) =>
-        (a.stage === b.stage ? 0 : a.stage === 'regular' ? -1 : 1) ||
-        a.round - b.round ||
-        (a.id < b.id ? -1 : a.id > b.id ? 1 : 0),
-    )
+    .sort((a, b) => (a.stage === b.stage ? 0 : a.stage === 'regular' ? -1 : 1) || a.round - b.round)
     .slice(-count)
     .map((m): FormResult => {
       const own = m.homeTeamId === teamId ? m.homeScore : m.awayScore;

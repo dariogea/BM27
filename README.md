@@ -80,7 +80,7 @@ terminar la experiencia. Los pesos son hipótesis de planificación publicadas, 
 
 ## Avance del desarrollo
 
-**Preparación estimada para lanzamiento: 17 %** `█████░░░░░░░░░░░░░░░░░░░░░░░░░`
+**Preparación estimada para lanzamiento: 18 %** `█████░░░░░░░░░░░░░░░░░░░░░░░░░`
 
 475 elementos organizados en 7 fases y 34 áreas de desarrollo. El índice pondera la profundidad y el producto terminado; no es una comparación medida con otro juego ni una fecha de entrega.
 
@@ -94,7 +94,7 @@ flowchart LR
   F1["F1 Primera versión jugable<br/>59 %"]
   F2["F2 Profundidad de gestión<br/>3 %"]
   F3["F3 Mundo, datos y mods<br/>9 %"]
-  F4["F4 Presentación<br/>24 %"]
+  F4["F4 Presentación<br/>27 %"]
   F5["F5 Distribución<br/>19 %"]
   F6["F6 Pulido y lanzamiento<br/>6 %"]
   F0 --> F1 --> F2 --> F3 --> F4 --> F5 --> F6
@@ -104,7 +104,7 @@ flowchart LR
 - **F1 · Primera versión jugable**: 59 % `████████████░░░░░░░░`
 - **F2 · Profundidad de gestión**: 3 % `█░░░░░░░░░░░░░░░░░░░`
 - **F3 · Mundo, datos y mods**: 9 % `██░░░░░░░░░░░░░░░░░░`
-- **F4 · Presentación**: 24 % `█████░░░░░░░░░░░░░░░`
+- **F4 · Presentación**: 27 % `█████░░░░░░░░░░░░░░░`
 - **F5 · Distribución**: 19 % `████░░░░░░░░░░░░░░░░`
 - **F6 · Pulido y lanzamiento**: 6 % `█░░░░░░░░░░░░░░░░░░░`
 

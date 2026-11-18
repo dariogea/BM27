@@ -38,6 +38,7 @@ export function ReplayViewer(props: {
   }, []);
   const [cursor, setCursor] = useState(0);
   const [playing, setPlaying] = useState(props.broadcast ?? false);
+  const [clip, setClip] = useState<{ end: number; returnTo: number } | null>(null);
   const [rate, setRate] = useState(5);
   const [selectedRosterSide, setRosterSide] = useState<'home' | 'away' | null>(null);
   const [team, setTeam] = useState('');
@@ -61,7 +62,7 @@ export function ReplayViewer(props: {
   }, [position, last, onFinish]);
   useEffect(() => {
     if (!playing || !valid) return;
-    if (cursor >= last) {
+    if (cursor >= (clip?.end ?? last)) {
       setPlaying(false);
       return;
     }
@@ -70,18 +71,22 @@ export function ReplayViewer(props: {
       1000 / rate,
     );
     return () => window.clearTimeout(timer);
-  }, [playing, cursor, last, rate, valid]);
+  }, [playing, cursor, last, rate, valid, clip]);
   if (!projection.data)
     return (
       <p className="error" role="alert">
         No se puede reproducir el registro: {projection.error}
       </p>
     );
-  const { frames, shots } = projection.data;
+  const { frames, shots, highlights } = projection.data;
   const frame = frames[position]!;
+  const availableHighlights = highlights
+    .filter((h) => h.end <= (clip?.returnTo ?? position))
+    .reverse();
   const who = (id: string) => props.playerNames[id] ?? id;
   const seek = (at: number) => {
     setPlaying(false);
+    setClip(null);
     setCursor(Math.max(0, Math.min(at, last)));
   };
   const nextPeriod = frames.findIndex(
@@ -159,6 +164,7 @@ export function ReplayViewer(props: {
         </button>
         <button
           onClick={() => {
+            if (clip && position >= clip.end) setClip(null);
             if (position >= last) setCursor(0);
             setPlaying((value) => !value);
           }}
@@ -198,6 +204,33 @@ export function ReplayViewer(props: {
       <p className="replay-current" data-testid="replay-event">
         {replayEventText(frame.event, who)}
       </p>
+      <div className="bar">
+        <label>
+          Repetir jugada destacada
+          <select
+            value={clip?.end ?? ''}
+            disabled={!valid || availableHighlights.length === 0}
+            onChange={(e) => {
+              const highlight = availableHighlights.find((h) => h.end === Number(e.target.value));
+              if (!highlight) return;
+              setClip({ end: highlight.end, returnTo: clip?.returnTo ?? position });
+              setCursor(highlight.start);
+              setPlaying(true);
+            }}
+          >
+            <option value="" disabled>
+              Elegir jugada
+            </option>
+            {availableHighlights.map((h) => (
+              <option key={h.end} value={h.end}>
+                P{frames[h.end]!.period} · {replayClock(frames[h.end]!.clock)} · {h.label} ·{' '}
+                {who(h.playerId)} · {props.name(h.teamId)}
+              </option>
+            ))}
+          </select>
+        </label>
+        {clip && <button onClick={() => seek(clip.returnTo)}>Volver al punto anterior</button>}
+      </div>
       <details className="replay-player-stats">
         <summary>Estadísticas por jugador</summary>
         <label className="bar">

@@ -1367,7 +1367,7 @@
               "p": 65,
               "i": 52,
               "o": "codex",
-              "n": "Portal: filtros (Codex). Plantilla y clasificación: ordenación por columna; mercado: búsqueda; partidos: «solo los míos»; finanzas: gráfico y medidor (Claude, T-033/T-038/T-039). Faltan las tablas del mundo."
+              "n": "Portal: filtros (Codex). Plantilla y clasificación de la competición: ordenación por cualquier columna; mercado: búsqueda; partidos: filtro «solo los míos» (Claude, T-033/T-038). Faltan finanzas y las tablas del mundo. Finanzas (T-039): gráfico del historial y medidor salarial."
             },
             {
               "t": "Atajos de teclado",
@@ -1442,7 +1442,10 @@
         },
         {
           "t": "Repeticiones de jugadas destacadas",
-          "s": "pendiente"
+          "s": "hecho",
+          "o": "codex",
+          "i": 15,
+          "n": "Se puede repetir una posesión hasta el triple anotado, tapón o robo y volver al punto anterior del partido."
         },
         {
           "t": "Sonido y ambiente",

@@ -84,6 +84,42 @@ p .attr {
   color: var(--danger);
 }
 
+/* --- Standings: form of the last results (letter + colour, never colour alone) ------------- */
+.form {
+  display: inline-flex;
+  gap: 2px;
+}
+.form-chip {
+  display: inline-block;
+  min-width: 18px;
+  padding: 0 3px;
+  border-radius: 3px;
+  font-size: 11px;
+  font-weight: 700;
+  text-align: center;
+  line-height: 1.6;
+}
+.form-W {
+  background: var(--soft-good);
+  color: var(--good);
+}
+.form-L {
+  background: var(--soft-bad);
+  color: var(--danger);
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+tr.clickable:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: -3px;
+}
+
 /* --- Finance panel -------------------------------------------------------------------------- */
 .fin-table td,
 .fin-table th {

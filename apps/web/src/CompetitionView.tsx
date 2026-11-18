@@ -1,5 +1,9 @@
 import { useMemo, useState } from 'react';
+import { formOf, sortStandings, winShare, type StandingKey } from './competitionData';
+import './panels.css';
 import type { CompetitionViewData } from './protocol';
+
+const FORM_LABELS = { W: 'Victoria', L: 'Derrota' } as const;
 
 export function CompetitionView(props: {
   competition: CompetitionViewData;
@@ -12,6 +16,43 @@ export function CompetitionView(props: {
   const [stage, setStage] = useState<'regular' | 'playoff'>('regular');
   // null = follow the latest round played
   const [chosenRound, setRound] = useState<number | null>(null);
+  const [sort, setSort] = useState<{ key: StandingKey; descending: boolean }>({
+    key: 'position',
+    descending: false,
+  });
+  const [onlyMine, setOnlyMine] = useState(false);
+  const header = (key: StandingKey, label: string, title?: string, className?: string) => {
+    const active = sort.key === key;
+    return (
+      <th
+        className={className}
+        title={title}
+        aria-sort={active ? (sort.descending ? 'descending' : 'ascending') : 'none'}
+      >
+        <button
+          type="button"
+          className="th-sort"
+          onClick={() =>
+            setSort(
+              active
+                ? { key, descending: !sort.descending }
+                : {
+                    key,
+                    descending:
+                      key !== 'name' &&
+                      key !== 'position' &&
+                      key !== 'pointsAgainst' &&
+                      key !== 'losses',
+                  },
+            )
+          }
+        >
+          {label}
+          <span aria-hidden="true">{active ? (sort.descending ? ' ▼' : ' ▲') : ''}</span>
+        </button>
+      </th>
+    );
+  };
   const promoted = new Set(competition.promotedTeamIds);
   const relegated = new Set(competition.relegatedTeamIds);
   const inPlayoffs = new Set(
@@ -23,7 +64,14 @@ export function CompetitionView(props: {
     return [...set].sort((a, b) => a - b);
   }, [competition, stage]);
   const round = chosenRound ?? rounds[rounds.length - 1] ?? 1;
-  const matches = competition.matches.filter((m) => m.stage === stage && m.round === round);
+  const matches = competition.matches.filter(
+    (m) =>
+      m.stage === stage &&
+      m.round === round &&
+      (!onlyMine ||
+        (props.userTeamId !== null &&
+          (m.homeTeamId === props.userTeamId || m.awayTeamId === props.userTeamId))),
+  );
 
   return (
     <section>
@@ -38,7 +86,8 @@ export function CompetitionView(props: {
       <p className="note">
         <span className="up">Verde</span>: asciende · <span className="down">Rojo</span>: desciende
         · <span className="playoff">Azul</span>: juega playoffs. Desempates: victorias,
-        enfrentamientos directos, diferencia de puntos.
+        enfrentamientos directos, diferencia de puntos. Pulsa una cabecera para ordenar (el orden
+        oficial es «#»). «Forma»: últimos 5 resultados, el más reciente a la derecha.
       </p>
       <div className="columns">
         {competition.groups.map((group) => (
@@ -53,18 +102,20 @@ export function CompetitionView(props: {
             <table>
               <thead>
                 <tr>
-                  <th>#</th>
-                  <th className="name">Equipo</th>
-                  <th>PJ</th>
-                  <th>G</th>
-                  <th>P</th>
-                  <th>PF</th>
-                  <th>PC</th>
-                  <th>Dif</th>
+                  {header('position', '#', 'Orden oficial de la clasificación')}
+                  {header('name', 'Equipo', undefined, 'name')}
+                  {header('played', 'PJ', 'Partidos jugados')}
+                  {header('wins', 'G', 'Victorias')}
+                  {header('losses', 'P', 'Derrotas')}
+                  {header('pointsFor', 'PF', 'Puntos a favor')}
+                  {header('pointsAgainst', 'PC', 'Puntos en contra')}
+                  {header('difference', 'Dif', 'Diferencia de puntos')}
+                  {header('percentage', '%G', 'Porcentaje de victorias')}
+                  <th title="Últimos 5 resultados, el más reciente a la derecha">Forma</th>
                 </tr>
               </thead>
               <tbody>
-                {group.standings.map((row) => (
+                {sortStandings(group.standings, sort.key, sort.descending, name).map((row) => (
                   <tr
                     key={row.teamId}
                     className={
@@ -86,6 +137,21 @@ export function CompetitionView(props: {
                     <td>{row.pointsFor}</td>
                     <td>{row.pointsAgainst}</td>
                     <td>{row.pointsFor - row.pointsAgainst}</td>
+                    <td>{row.played ? `${Math.round(100 * winShare(row))} %` : '–'}</td>
+                    <td>
+                      <span className="form">
+                        {formOf(competition.matches, row.teamId).map((result, i) => (
+                          <span
+                            key={i}
+                            className={`form-chip form-${result}`}
+                            title={FORM_LABELS[result]}
+                          >
+                            {result === 'W' ? 'G' : 'P'}
+                            <span className="sr-only"> ({FORM_LABELS[result]})</span>
+                          </span>
+                        ))}
+                      </span>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -97,30 +163,32 @@ export function CompetitionView(props: {
       {competition.playoffSeries.length > 0 && (
         <>
           <h3>Playoffs</h3>
-          <table>
-            <thead>
-              <tr>
-                <th>Ronda</th>
-                <th className="name">Mejor clasificado</th>
-                <th>Resultado</th>
-                <th className="name">Rival</th>
-                <th className="name">Pasa</th>
-              </tr>
-            </thead>
-            <tbody>
-              {competition.playoffSeries.map((s, i) => (
-                <tr key={i}>
-                  <td>{s.round}</td>
-                  <td className="name">
-                    ({s.highSeed}) {name(s.highSeedTeamId)}
-                  </td>
-                  <td>{s.lowSeedTeamId ? `${s.highSeedWins}–${s.lowSeedWins}` : 'exento'}</td>
-                  <td className="name">{s.lowSeedTeamId ? name(s.lowSeedTeamId) : '—'}</td>
-                  <td className="name">{s.winnerTeamId ? name(s.winnerTeamId) : 'en juego'}</td>
+          <div className="scroll" tabIndex={0} role="region" aria-label="Series de playoffs">
+            <table>
+              <thead>
+                <tr>
+                  <th>Ronda</th>
+                  <th className="name">Mejor clasificado</th>
+                  <th>Resultado</th>
+                  <th className="name">Rival</th>
+                  <th className="name">Pasa</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {competition.playoffSeries.map((s, i) => (
+                  <tr key={i}>
+                    <td>{s.round}</td>
+                    <td className="name">
+                      ({s.highSeed}) {name(s.highSeedTeamId)}
+                    </td>
+                    <td>{s.lowSeedTeamId ? `${s.highSeedWins}–${s.lowSeedWins}` : 'exento'}</td>
+                    <td className="name">{s.lowSeedTeamId ? name(s.lowSeedTeamId) : '—'}</td>
+                    <td className="name">{s.winnerTeamId ? name(s.winnerTeamId) : 'en juego'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </>
       )}
 
@@ -148,34 +216,63 @@ export function CompetitionView(props: {
             </option>
           ))}
         </select>
-        <span className="note">Pulsa un partido para ver su box score.</span>
+        <label>
+          <input
+            type="checkbox"
+            checked={onlyMine}
+            disabled={props.userTeamId === null}
+            onChange={(e) => setOnlyMine(e.target.checked)}
+          />{' '}
+          Solo mis partidos
+        </label>
+        <span className="note">
+          Pulsa un partido, o su botón «Ver partido» (accesible con el teclado), para ver su box
+          score. {matches.length} {matches.length === 1 ? 'partido' : 'partidos'}.
+        </span>
       </div>
-      <table>
-        <thead>
-          <tr>
-            <th className="name">Local</th>
-            <th>Pts</th>
-            <th>Pts</th>
-            <th className="name">Visitante</th>
-            <th>Prórrogas</th>
-          </tr>
-        </thead>
-        <tbody>
-          {matches.map((m) => (
-            <tr
-              key={m.id}
-              className={`clickable ${m.id === props.selectedMatchId ? 'selected' : ''}`}
-              onClick={() => props.onMatch(m.id)}
-            >
-              <td className="name">{name(m.homeTeamId)}</td>
-              <td>{m.homeScore}</td>
-              <td>{m.awayScore}</td>
-              <td className="name">{name(m.awayTeamId)}</td>
-              <td>{m.overtimePeriods || ''}</td>
+      <div className="scroll" tabIndex={0} role="region" aria-label="Partidos de la jornada">
+        <table>
+          <thead>
+            <tr>
+              <th className="name">Local</th>
+              <th>Pts</th>
+              <th>Pts</th>
+              <th className="name">Visitante</th>
+              <th>Prórrogas</th>
+              <th>Detalle</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {matches.map((m) => (
+              <tr
+                key={m.id}
+                className={`clickable ${m.id === props.selectedMatchId ? 'selected' : ''}`}
+                aria-selected={m.id === props.selectedMatchId}
+                onClick={() => props.onMatch(m.id)}
+              >
+                <td className="name">{name(m.homeTeamId)}</td>
+                <td>{m.homeScore}</td>
+                <td>{m.awayScore}</td>
+                <td className="name">{name(m.awayTeamId)}</td>
+                <td>{m.overtimePeriods || ''}</td>
+                <td>
+                  <button
+                    type="button"
+                    className="text-action"
+                    aria-label={`Ver el box score: ${name(m.homeTeamId)} ${m.homeScore}, ${name(m.awayTeamId)} ${m.awayScore}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      props.onMatch(m.id);
+                    }}
+                  >
+                    Ver partido
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </section>
   );
 }

@@ -68,8 +68,9 @@ export function FinancePanel(props: { finance: FinanceData; seasonNumber: number
         </div>
         {use > 100 && (
           <p className="note">
-            La masa salarial supera el presupuesto salarial: solo podrás fichar contratos de salario
-            mínimo.
+            La masa salarial actual (que incluye contratos que vencen este año) supera el
+            presupuesto salarial. El mercado comprueba el límite con los contratos que siguen
+            vigentes: mira la pestaña «Mercado» para saber cuánto cabe de verdad.
           </p>
         )}
       </div>
@@ -108,8 +109,8 @@ export function FinancePanel(props: { finance: FinanceData; seasonNumber: number
         <p className="warn" role="status">
           Con estos números la temporada que viene pierde {euros(-projectedResult)}.{' '}
           {untilLimit === 0
-            ? 'La caja llegaría al límite del descubierto en la próxima temporada.'
-            : `Si nada cambia, la caja llegaría al límite del descubierto en ${untilLimit} ${untilLimit === 1 ? 'temporada' : 'temporadas'}.`}{' '}
+            ? 'La caja llegaría al límite del descubierto durante la próxima temporada.'
+            : `Si nada cambia, la caja aguanta ${untilLimit} ${untilLimit === 1 ? 'temporada completa' : 'temporadas completas'} con esta pérdida y llegaría al límite del descubierto durante la temporada ${untilLimit + 1} a partir de ahora.`}{' '}
           (Proyección en línea recta con los datos de arriba, no una predicción.)
         </p>
       )}

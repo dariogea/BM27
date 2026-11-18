@@ -13,8 +13,9 @@ export function wageUse(payroll: number, wageBudget: number): number {
 }
 
 /**
- * Whole seasons the club can keep losing money at the projected rate before its cash reaches the
- * overdraft limit. Null when the projection is not a loss. 0 means it would cross the limit within
+ * Whole seasons of margin: how many seasons in a row the club can lose the projected amount and
+ * still be inside the overdraft limit. The limit is therefore crossed during the following season
+ * (the one after those N). Null when the projection is not a loss. 0 means it would cross the limit within
  * the next season; a club already past the limit also gets 0.
  *
  * It is a straight-line projection of the numbers shown ("if nothing changes"), not a forecast.

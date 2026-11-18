@@ -1,3 +1,4 @@
+import { PALETTES, type PaletteId } from './palette';
 import type { GameView } from './protocol';
 import { requiresTeam, TABS, type Tab } from './navigation';
 
@@ -17,6 +18,8 @@ export function ManagerHeader(props: {
   busy: boolean;
   theme: 'dark' | 'light';
   compact: boolean;
+  palette: PaletteId;
+  onPalette: (palette: PaletteId) => void;
   onTheme: () => void;
   onCompact: (compact: boolean) => void;
   onNavigate: (tab: Tab) => void;
@@ -57,6 +60,23 @@ export function ManagerHeader(props: {
               <button onClick={props.onTheme}>
                 {props.theme === 'dark' ? '☀ Modo claro' : '☾ Modo oscuro'}
               </button>
+              <div role="group" aria-label="Paleta de color" className="palette-choice">
+                {PALETTES.map((p) => (
+                  <button
+                    key={p.id}
+                    type="button"
+                    aria-pressed={props.palette === p.id}
+                    onClick={() => props.onPalette(p.id)}
+                  >
+                    <span
+                      className="palette-swatch"
+                      aria-hidden="true"
+                      style={{ background: p[props.theme].accent }}
+                    />
+                    {p.label}
+                  </button>
+                ))}
+              </div>
               <label>
                 <input
                   type="checkbox"

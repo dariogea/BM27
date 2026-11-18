@@ -25,12 +25,12 @@ con las temporadas. El objetivo es un gestor deportivo profundo, explicable y du
 
 ## Descargar para Windows
 
-**[⬇ Descargar BM27 v0.1.0-alpha.2 para Windows (.exe, 1,5 MB)](https://github.com/dariogea/BM27/releases/download/v0.1.0-alpha.2/BM27_0.1.0-alpha.2_x64-setup.exe)**
+**[⬇ Descargar BM27 v0.1.0-alpha.3 para Windows (.exe, 1,5 MB)](https://github.com/dariogea/BM27/releases/download/v0.1.0-alpha.3/BM27_0.1.0-alpha.3_x64-setup.exe)**
 
 Versión **alfa** ([todas las versiones](https://github.com/dariogea/BM27/releases)). Pasos:
 
 1. Entra en GitHub con tu cuenta (el repositorio es privado: sin sesión el enlace da «404»).
-2. Pulsa el enlace de arriba: se descarga `BM27_0.1.0-alpha.2_x64-setup.exe`.
+2. Pulsa el enlace de arriba: se descarga `BM27_0.1.0-alpha.3_x64-setup.exe`.
 3. Ábrelo con doble clic. Se instala solo para tu usuario, sin permisos de administrador.
 4. Si Windows dice **«Windows protegió su PC»**, pulsa **«Más información»** y **«Ejecutar de todos modos»** (el instalador no está firmado con un certificado de pago).
 5. Abre **BM27** desde el menú Inicio. Arriba verás la franja del launcher con la versión y la búsqueda de actualizaciones.

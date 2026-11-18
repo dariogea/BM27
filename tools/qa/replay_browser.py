@@ -24,7 +24,7 @@ with sync_playwright() as p:
         };
     ''')
     page.goto(os.environ.get('BM27_WEB_URL','http://127.0.0.1:5173'),wait_until='domcontentloaded')
-    page.get_by_role('button',name='Generar universo',exact=True).click()
+    page.get_by_role('button',name='Nueva partida',exact=True).click()
     page.get_by_test_id('summary').wait_for()
     page.get_by_role('button',name='Dirigir este equipo',exact=True).click()
     page.get_by_role('button',name='Jugar jornada',exact=True).click()
@@ -33,7 +33,7 @@ with sync_playwright() as p:
     viewer.wait_for()
     expect(viewer).to_be_focused()
     detail=page.evaluate('window.bm27Detail')
-    slider=viewer.get_by_role('slider',name='Recorrer el registro',exact=True)
+    slider=viewer.get_by_role('slider',name='Secuencia de juego',exact=True)
     def cursor():return int(slider.input_value())
     def scores():return [int(viewer.get_by_test_id('replay-home-score').inner_text()),int(viewer.get_by_test_id('replay-away-score').inner_text())]
     owners={r['playerId']:side for side in ['home','away'] for r in detail['boxScore'][side]['players']}
@@ -58,7 +58,7 @@ with sync_playwright() as p:
     viewer.get_by_role('button',name='Siguiente periodo',exact=True).click()
     assert scores()==expected_scores(cursor())
     assert detail['events'][cursor()-1]['type']=='period_start' and detail['events'][cursor()-1]['period']==2
-    viewer.get_by_role('button',name='Evento siguiente',exact=True).click()
+    viewer.get_by_role('button',name='Jugada siguiente',exact=True).click()
     assert scores()==expected_scores(cursor())
     for width,label in [(1280,'desktop'),(1920,'wide')]:
         page.set_viewport_size({'width':width,'height':800 if width==1280 else 1080})

@@ -118,16 +118,11 @@ export function ReplayViewer(props: {
     >
       <div className="replay-heading">
         <div>
-          <span className="eyebrow">El partido, evento a evento</span>
           <h2>{props.broadcast ? 'Retransmisión del partido' : 'Repetición y mapa de tiros'}</h2>
         </div>
         <span className="status-pill">{playing ? 'Reproduciendo' : 'En pausa'}</span>
       </div>
-      <p className="note">
-        {props.broadcast
-          ? 'El partido se calcula al empezar. La retransmisión va mostrando las jugadas con el plan guardado antes de la jornada.'
-          : 'Reproduce un partido ya simulado. Los quintetos y tiros salen del registro.'}
-      </p>
+
       {props.instructions && (
         <p className="note">
           <strong>Tu plan aplicado</strong> · {props.instructions}
@@ -147,7 +142,7 @@ export function ReplayViewer(props: {
           <span>Periodo {frame.period}</span>
           <strong>{replayClock(frame.clock)}</strong>
           <small>
-            {position} / {last} eventos
+            {position} / {last}
           </small>
         </div>
         <div>
@@ -160,7 +155,7 @@ export function ReplayViewer(props: {
           Inicio
         </button>
         <button onClick={() => seek(position - 1)} disabled={position === 0}>
-          Evento anterior
+          Jugada anterior
         </button>
         <button
           onClick={() => {
@@ -173,7 +168,7 @@ export function ReplayViewer(props: {
           {playing ? 'Pausar' : 'Reproducir'}
         </button>
         <button onClick={() => seek(position + 1)} disabled={position >= last}>
-          Evento siguiente
+          Jugada siguiente
         </button>
         <button onClick={() => seek(nextPeriod)} disabled={nextPeriod < 0}>
           Siguiente periodo
@@ -184,14 +179,14 @@ export function ReplayViewer(props: {
         <label>
           Velocidad
           <select value={rate} onChange={(e) => setRate(Number(e.target.value))}>
-            <option value={2}>2 eventos/s</option>
-            <option value={5}>5 eventos/s</option>
-            <option value={10}>10 eventos/s</option>
+            <option value={2}>Lenta</option>
+            <option value={5}>Normal</option>
+            <option value={10}>Rápida</option>
           </select>
         </label>
       </div>
       <label className="replay-progress">
-        Recorrer el registro
+        Secuencia de juego
         <input
           type="range"
           min={0}
@@ -305,10 +300,7 @@ export function ReplayViewer(props: {
               </select>
             </label>
           </div>
-          <p className="note">
-            ● Anotado · × Fallado. {visibleShots.length} tiros visibles. Coordenadas del motor en
-            metros sobre media pista; tiros libres excluidos.
-          </p>
+          <p className="note">● Anotado · × Fallado · {visibleShots.length} tiros de campo</p>
           <svg
             viewBox="0 0 15 14"
             className="replay-court"
@@ -378,7 +370,7 @@ export function ReplayViewer(props: {
               ))}
             </tbody>
           </table>
-          <h3>En pista según el registro</h3>
+          <h3>Quintetos en pista</h3>
           {[
             { id: home, players: frame.homePlayers },
             { id: away, players: frame.awayPlayers },
@@ -392,11 +384,11 @@ export function ReplayViewer(props: {
                   ))}
                 </ol>
               ) : (
-                <p className="note">Quinteto aún no registrado.</p>
+                <p className="note">Antes del salto inicial.</p>
               )}
             </section>
           ))}
-          <h3>Últimos eventos reproducidos</h3>
+          <h3>Últimas jugadas</h3>
           <ol className="replay-recent">
             {frames.slice(Math.max(1, position - 4), position + 1).map((f, index) => (
               <li key={index}>

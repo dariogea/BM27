@@ -28,12 +28,11 @@ function write(key: string, value: string): void {
 }
 
 const REASONS: Record<Extract<UpdateResult, { kind: 'unavailable' }>['reason'], string> = {
-  'private-or-missing':
-    'No se puede leer el repositorio sin permiso (es privado). Pega abajo un token de GitHub de solo lectura.',
+  'private-or-missing': 'Acceso a las actualizaciones restringido.',
   'rate-limited': 'GitHub ha limitado las consultas. Se reintentará al abrir el juego otra vez.',
   offline: 'Sin conexión con GitHub.',
   'bad-answer': 'GitHub respondió algo inesperado.',
-  'bad-version': 'Esta compilación no tiene un número de versión conocido.',
+  'bad-version': 'No se pudo identificar la versión instalada.',
 };
 
 /**
@@ -68,76 +67,75 @@ export function UpdateBanner() {
 
   return (
     <section className="update-banner" aria-label="Actualizaciones">
-      <div className="update-line" role="status">
-        <strong>BM27 {APP_VERSION}</strong>
-        {checking && <span> · Buscando actualizaciones…</span>}
-        {!checking && result?.kind === 'up-to-date' && <span> · Estás en la última versión.</span>}
-        {!checking && available && (
-          <span className="update-new">
-            {' '}
-            · Hay una versión nueva: <strong>{available.release.name}</strong>
-            {available.release.prerelease ? ' (preliminar)' : ''}
-          </span>
-        )}
-        {!checking && result?.kind === 'unavailable' && <span> · {REASONS[result.reason]}</span>}
-        <button className="text-action" disabled={checking} onClick={() => void check()}>
-          Buscar ahora
-        </button>
-        {available && link && (
-          <button
-            className="text-action"
-            onClick={async () => {
-              try {
-                await navigator.clipboard.writeText(link);
-                setCopied(true);
-              } catch {
-                setCopied(false);
-              }
-            }}
-          >
-            {copied ? 'Enlace copiado' : 'Copiar enlace de descarga'}
+      <details open={Boolean(available)}>
+        <summary>{available ? 'Actualización disponible' : 'Actualizaciones'}</summary>
+        <div className="update-line" role="status">
+          <strong>BM27 {APP_VERSION}</strong>
+          {checking && <span> · Buscando actualizaciones…</span>}
+          {!checking && result?.kind === 'up-to-date' && (
+            <span> · Estás en la última versión.</span>
+          )}
+          {!checking && available && (
+            <span className="update-new">
+              {' '}
+              · Hay una versión nueva: <strong>{available.release.name}</strong>
+              {available.release.prerelease ? ' (preliminar)' : ''}
+            </span>
+          )}
+          {!checking && result?.kind === 'unavailable' && <span> · {REASONS[result.reason]}</span>}
+          <button className="text-action" disabled={checking} onClick={() => void check()}>
+            Buscar ahora
           </button>
-        )}
-      </div>
-      {available && (
-        <p className="note">
-          Pega el enlace en tu navegador (con tu sesión de GitHub abierta), descarga el instalador y
-          ejecútalo: la partida guardada se conserva.
-        </p>
-      )}
-      <details className="update-settings">
-        <summary>Ajustes de actualización</summary>
-        <div className="bar">
-          <label>
-            Repositorio de versiones{' '}
-            <input
-              value={repo}
-              aria-label="Repositorio de versiones"
-              onChange={(e) => {
-                setRepo(e.target.value);
-                write(REPO_KEY, e.target.value === DEFAULT_RELEASES_REPO ? '' : e.target.value);
+          {available && link && (
+            <button
+              className="text-action"
+              onClick={async () => {
+                try {
+                  await navigator.clipboard.writeText(link);
+                  setCopied(true);
+                } catch {
+                  setCopied(false);
+                }
               }}
-            />
-          </label>
-          <label>
-            Token de GitHub (opcional){' '}
-            <input
-              type="password"
-              value={token}
-              aria-label="Token de GitHub"
-              autoComplete="off"
-              onChange={(e) => {
-                setToken(e.target.value);
-                write(TOKEN_KEY, e.target.value);
-              }}
-            />
-          </label>
+            >
+              {copied ? 'Enlace copiado' : 'Copiar enlace de descarga'}
+            </button>
+          )}
         </div>
-        <p className="note">
-          El token solo se guarda en este ordenador y solo se envía a GitHub para leer las
-          versiones. Hace falta mientras el repositorio sea privado: créalo en GitHub como token de
-          acceso de solo lectura (permiso «Contents: Read-only») limitado a este repositorio.
-        </p>
+        <details className="update-settings">
+          <summary>Ajustes de actualización</summary>
+          <div className="bar">
+            <label>
+              Repositorio de versiones{' '}
+              <input
+                value={repo}
+                aria-label="Repositorio de versiones"
+                onChange={(e) => {
+                  setRepo(e.target.value);
+                  write(REPO_KEY, e.target.value === DEFAULT_RELEASES_REPO ? '' : e.target.value);
+                }}
+              />
+            </label>
+            <label>
+              Token de GitHub (opcional){' '}
+              <input
+                type="password"
+                value={token}
+                aria-label="Token de GitHub"
+                autoComplete="off"
+                onChange={(e) => {
+                  setToken(e.target.value);
+                  write(TOKEN_KEY, e.target.value);
+                }}
+              />
+            </label>
+          </div>
+          <p className="note">
+            El token solo se guarda en este ordenador y solo se envía a GitHub para leer las
+            versiones. Hace falta mientras el repositorio sea privado: créalo en GitHub como token
+            de acceso de solo lectura (permiso «Contents: Read-only») limitado a este repositorio.
+          </p>
+        </details>
       </details>
     </section>
   );

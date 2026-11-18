@@ -7,9 +7,9 @@ economía y listas de nombres. No hace falta modificar el motor. El paquete de e
 ## Probarlo en PC
 
 1. Descarga [el ejemplo de ocho clubes](../../data/packs/example-eight-clubs.json).
-2. Abre **Gestión de partida** y pulsa **Cargar paquete de datos**.
+2. Abre **Configurar nueva partida** (u **Opciones de partida** durante una carrera) y pulsa **Cargar paquete de datos**.
 3. Selecciona el archivo. BM27 valida su contenido y muestra sus competiciones.
-4. Pulsa **Generar universo**. Si ya hay una partida abierta, confirma su sustitución después de
+4. Pulsa **Nueva partida**. Si ya hay una partida abierta, confirma su sustitución después de
    guardar los cambios que quieras conservar.
 
 Seleccionar o quitar un paquete no cambia la partida actual. **Usar datos predeterminados** prepara

@@ -470,7 +470,7 @@ _Las partidas no se pierden, son compactas y se pueden recuperar._
 _La cara del juego: clara, rápida y accesible._
 
 - **Pantallas existentes** — 100 %
-  - ✅ Generar universo y elegir equipo (`F1`)
+  - ✅ Nueva partida y elección de club (`F1` · @codex · [#103](https://github.com/dariogea/BM27/issues/103)) — _Menú de PC con accesos a nueva partida, carga y guardados locales. Configuración avanzada bajo demanda._
   - ✅ Clasificación y calendario (`F1`)
   - ✅ Detalle del partido (box score y narración) (`F1`)
   - ✅ Plantilla y tácticas (`F1`)

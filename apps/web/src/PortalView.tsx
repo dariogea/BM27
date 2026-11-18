@@ -103,7 +103,7 @@ export function PortalView(props: {
         id: 'result',
         category: 'sport',
         title: `${name(last.match.homeTeamId)} ${last.match.homeScore}–${last.match.awayScore} ${name(last.match.awayTeamId)}`,
-        detail: `Resultado registrado · Temporada ${last.season} · ${last.match.stage === 'regular' ? 'Jornada' : 'Playoffs, ronda'} ${last.match.round}`,
+        detail: `Temporada ${last.season} · ${last.match.stage === 'regular' ? 'Jornada' : 'Playoffs, ronda'} ${last.match.round}`,
         tab: 'team',
       });
     if (mine.nextMatch)
@@ -111,7 +111,7 @@ export function PortalView(props: {
         id: 'next',
         category: 'sport',
         title: `Prepara el partido contra ${name(mine.nextMatch.opponentId)}`,
-        detail: `Jornada ${mine.nextMatch.round} · ${mine.nextMatch.home ? 'En casa' : 'A domicilio'}. Revisa el quinteto y las tácticas antes de continuar.`,
+        detail: `Jornada ${mine.nextMatch.round} · ${mine.nextMatch.home ? 'En casa' : 'A domicilio'}`,
         tab: 'tactics',
       });
     for (const [index, move] of (market?.moves.slice(-5).reverse() ?? []).entries()) {
@@ -126,12 +126,8 @@ export function PortalView(props: {
     activities.push({
       id: 'management',
       category: 'sport',
-      title: view.seasonInProgress
-        ? 'La temporada está en marcha'
-        : 'Prepara tu proyecto deportivo',
-      detail: view.seasonInProgress
-        ? 'Los próximos partidos usarán el quinteto y las tácticas que guardes.'
-        : 'Revisa contratos, refuerzos y rotación antes de la primera jornada.',
+      title: 'Rotación de la plantilla',
+      detail: mine.rotation ? 'Quinteto elegido por el mánager' : 'Quinteto a cargo del entrenador',
       tab: 'lineup',
     });
   }
@@ -192,12 +188,9 @@ export function PortalView(props: {
         </ul>
         {shownActivities.length === 0 && (
           <p className="empty-state">
-            {mine
-              ? 'No hay actividad de esta categoría.'
-              : 'Elige un equipo para recibir aquí la actividad de tu club.'}
+            {mine ? 'No hay actividad de esta categoría.' : 'Sin club asignado.'}
           </p>
         )}
-        <p className="panel-footnote">Actividad derivada de tu partida.</p>
       </Panel>
 
       <div className="portal-main-column">
@@ -209,11 +202,11 @@ export function PortalView(props: {
             </div>
             <div className="feature-content">
               <span className="eyebrow">{mine?.competitionName ?? 'Tu próxima carrera'}</span>
-              <h2>{mine?.name ?? 'Un club. Tu manera de competir.'}</h2>
+              <h2>{mine?.name ?? 'Sin club'}</h2>
               <p>
                 {mine
                   ? `${mine.squad.length} jugadores · ${mine.position ? `${mine.position}º en la clasificación` : 'Preparando la temporada'}`
-                  : 'Escoge un equipo en el selector superior y empieza a dirigir.'}
+                  : 'Pretemporada'}
               </p>
               {mine && (
                 <button onClick={() => props.onNavigate('team')}>
@@ -290,9 +283,7 @@ export function PortalView(props: {
               </table>
             </div>
           ) : (
-            <p className="empty-state">
-              Todavía no hay resultados de tu club. Elige equipo y juega una jornada.
-            </p>
+            <p className="empty-state">Sin partidos disputados.</p>
           )}
           {last && (
             <button
@@ -396,7 +387,7 @@ export function PortalView(props: {
           </>
         ) : (
           <>
-            <p className="empty-state">La clasificación se generará al empezar la temporada.</p>
+            <p className="empty-state">Pretemporada · Clubes inscritos</p>
             <ul
               className="competition-clubs"
               tabIndex={0}
@@ -448,7 +439,7 @@ export function PortalView(props: {
               </button>
             </>
           ) : (
-            <p className="empty-state">Elige un club para consultar sus cuentas.</p>
+            <p className="empty-state">Sin club asignado.</p>
           )}
         </Panel>
         <Panel title="Presupuesto salarial">
@@ -494,7 +485,7 @@ export function PortalView(props: {
               </button>
             </>
           ) : (
-            <p className="empty-state">Elige equipo para gestionar sus contratos.</p>
+            <p className="empty-state">Sin club asignado.</p>
           )}
         </Panel>
         <button className="portal-save-link" onClick={() => props.onNavigate('saves')}>

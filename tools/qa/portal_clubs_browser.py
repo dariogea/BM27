@@ -67,7 +67,7 @@ with sync_playwright() as playwright:
         assert not violations, violations
         assert page.evaluate("document.documentElement.scrollWidth <= innerWidth")
 
-    page.get_by_role("button", name="Generar universo", exact=True).click()
+    page.get_by_role("button", name="Nueva partida", exact=True).click()
     registered.wait_for()
     before = save()
     verify_club(registered.get_by_role("button").first, keyboard=True)
@@ -126,7 +126,7 @@ with sync_playwright() as playwright:
     )
     expect(page.get_by_text("8 clubes definidos individualmente. Jugadores generados.", exact=True)).to_be_visible()
     page.once("dialog", lambda dialog: dialog.accept())
-    page.get_by_role("button", name="Generar universo", exact=True).click()
+    page.get_by_role("button", name="Nueva partida", exact=True).click()
     page.wait_for_function("window.bm27State?.clubData === 'defined'")
     verify_club(registered.get_by_role("button", name="Valle Norte Canastas", exact=True))
     expect(profile).to_contain_text("Club de Baloncesto Valle Norte 1")

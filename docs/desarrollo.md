@@ -38,7 +38,7 @@ pnpm web
 
 Abre en el navegador la dirección que aparece (normalmente <http://localhost:5173>). Después:
 
-1. Escribe una semilla (cualquier texto) y pulsa **Generar universo**.
+1. Pulsa **Nueva partida**. La semilla se puede cambiar en **Configurar nueva partida**.
 2. Elige un equipo en el desplegable y pulsa **Dirigir este equipo**.
 3. En las pestañas **Tácticas** y **Quinteto** puedes cambiar cómo juega tu equipo y quién sale de
    titular. Los cambios se aplican desde el siguiente partido.

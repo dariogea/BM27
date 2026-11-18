@@ -86,8 +86,8 @@ export function CompetitionView(props: {
       <p className="note">
         <span className="up">Verde</span>: asciende · <span className="down">Rojo</span>: desciende
         · <span className="playoff">Azul</span>: juega playoffs. Desempates: victorias,
-        enfrentamientos directos, diferencia de puntos. Pulsa una cabecera para ordenar (el orden
-        oficial es «#»). «Forma»: últimos 5 resultados, el más reciente a la derecha.
+        enfrentamientos directos, diferencia de puntos. Forma: últimos cinco partidos, del más
+        antiguo al más reciente.
       </p>
       <div className="columns">
         {competition.groups.map((group) => (
@@ -226,8 +226,7 @@ export function CompetitionView(props: {
           Solo mis partidos
         </label>
         <span className="note">
-          Pulsa un partido, o su botón «Ver partido» (accesible con el teclado), para ver su box
-          score. {matches.length} {matches.length === 1 ? 'partido' : 'partidos'}.
+          {matches.length} {matches.length === 1 ? 'partido' : 'partidos'}.
         </span>
       </div>
       <div className="scroll" tabIndex={0} role="region" aria-label="Partidos de la jornada">
@@ -259,7 +258,7 @@ export function CompetitionView(props: {
                   <button
                     type="button"
                     className="text-action"
-                    aria-label={`Ver el box score: ${name(m.homeTeamId)} ${m.homeScore}, ${name(m.awayTeamId)} ${m.awayScore}`}
+                    aria-label={`Ver el acta: ${name(m.homeTeamId)} ${m.homeScore}, ${name(m.awayTeamId)} ${m.awayScore}`}
                     onClick={(e) => {
                       e.stopPropagation();
                       props.onMatch(m.id);

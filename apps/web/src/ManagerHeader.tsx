@@ -26,7 +26,7 @@ export function ManagerHeader(props: {
   const { view, active } = props;
   const group = active === 'lineup' ? 'team' : active === 'match' ? 'competition' : active;
   return (
-    <header className="manager-header">
+    <header className={view ? 'manager-header' : 'manager-header title-header'}>
       <div className="manager-topbar">
         <a className="manager-brand" href="#workspace" aria-label="BM27, ir al contenido">
           <span className="basketball-mark" aria-hidden="true">
@@ -53,7 +53,7 @@ export function ManagerHeader(props: {
           <details className="appearance-menu">
             <summary>Apariencia</summary>
             <div className="appearance-panel">
-              <strong>Tu espacio de trabajo</strong>
+              <strong>Apariencia del juego</strong>
               <button onClick={props.onTheme}>
                 {props.theme === 'dark' ? '☀ Modo claro' : '☾ Modo oscuro'}
               </button>
@@ -93,7 +93,7 @@ export function ManagerHeader(props: {
         </div>
       </div>
       <div className="manager-subbar">
-        <span className="workspace-label">{view?.myTeam?.name ?? 'BM27 · Demo'}</span>
+        <span className="workspace-label">{view?.myTeam?.name ?? 'Sin club'}</span>
         <nav className="secondary-nav" aria-label="Secciones de la partida">
           {TABS.map(([id, label]) => (
             <button
@@ -107,7 +107,6 @@ export function ManagerHeader(props: {
             </button>
           ))}
         </nav>
-        <span className="demo-indicator">EN DESARROLLO</span>
       </div>
     </header>
   );

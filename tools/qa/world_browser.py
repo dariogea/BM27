@@ -26,7 +26,7 @@ with sync_playwright() as p:
         };
     """)
     page.goto(os.environ.get('BM27_WEB_URL', 'http://127.0.0.1:5173'), wait_until='domcontentloaded')
-    page.get_by_role('button', name='Generar universo', exact=True).click()
+    page.get_by_role('button', name='Nueva partida', exact=True).click()
     page.get_by_test_id('summary').wait_for()
     page.get_by_role('button', name='Dirigir este equipo', exact=True).click()
     page.get_by_role('button', name='Jugar jornada', exact=True).click()

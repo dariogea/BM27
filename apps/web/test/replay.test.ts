@@ -218,7 +218,7 @@ describe('event-only match playback', () => {
     expect(replayClock(900)).toBe('15:00');
     expect(replayClock(3)).toBe('0:03');
     expect(replayClock(0)).toBe('0:00');
-    expect(replayEventText(null, (id) => id)).toContain('Reproducir');
+    expect(replayEventText(null, (id) => id)).toContain('salto inicial');
     for (const match of matches)
       for (const event of match.events)
         expect(replayEventText(event, (id) => id).length).toBeGreaterThan(3);

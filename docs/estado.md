@@ -102,5 +102,6 @@ Reglas en [`coordinacion.md`](coordinacion.md).
 | #15 (parte 4) | PROBADA | Desglose por jugador durante la retransmisión y la repetición, selección de equipo y jugadores en pista según la jugada. Totales cotejados con el acta. |
 | #15 (parte 5) | PROBADA | Minutos y segundos por jugador hasta la jugada seleccionada, con cambios de quinteto y de periodo. |
 | #15 (parte 6) | PROBADA | Repetición de posesiones con triple anotado, tapón o robo, con retorno al punto de partida. |
+| #103 | PROBADA | Menú de inicio de PC, opciones avanzadas agrupadas y textos del juego centrados en clubes, partidos y decisiones del mánager. |
 | T-038 | PROBADA | Panel «Competición»: clasificación ordenable con % de victorias y forma (últimos 5, comprobada contra el estado real), filtro «solo mis partidos» y filas de partido accesibles por teclado; 7 tests nuevos de la lógica y 7 comprobaciones nuevas en navegador. axe sin violaciones (oscuro y claro). Finanzas sigue sin rediseñar. |
 | T-039 | PROBADA | Panel «Finanzas»: medidor del presupuesto salarial, aviso de cuántas temporadas faltan para el descubierto si nada cambia, gráfico del resultado por temporada y tabla alineada; 9 tests de la lógica y 6 comprobaciones nuevas en navegador. Gráfico probado con una sola temporada cerrada. |

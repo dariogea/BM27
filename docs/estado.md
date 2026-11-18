@@ -96,3 +96,5 @@ Reglas en [`coordinacion.md`](coordinacion.md).
 | T-036 | PROBADA | Versión 0.1.0-alpha.2 preparada (sin publicar): versión en `package.json` y `tauri.conf.json`, notas en `docs/versiones/0.1.0-alpha.2.md` y el flujo de publicación usa esas notas. **Publicada el 17-11-2026** (Release `v0.1.0-alpha.2`, pre-lanzamiento, 1.460.875 bytes); el enlace del README apunta a ella. Sin probar en un Windows real. |
 
 | #83 | PROBADA | Fichas de clubes desde la clasificación, inscritos y próximo rival del Portal. Teclado, retorno al Portal y datos de paquetes verificados en navegador para PC. |
+
+| T-038 | PROBADA | Panel «Competición»: clasificación ordenable con % de victorias y forma (últimos 5, comprobada contra el estado real), filtro «solo mis partidos» y filas de partido accesibles por teclado; 7 tests nuevos de la lógica y 7 comprobaciones nuevas en navegador. axe sin violaciones (oscuro y claro). Finanzas sigue sin rediseñar. |

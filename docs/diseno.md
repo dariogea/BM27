@@ -91,3 +91,14 @@ Reglas propias en [`panels.css`](../apps/web/src/panels.css); solo usa las varia
 juega una jornada y verifica la ordenación, la búsqueda y que axe (WCAG 2 A/AA) no encuentra nada en los cinco
 paneles, en tema oscuro y claro. Capturas: [oscuro](screenshots/plantilla-ordenable-oscuro.png),
 [claro](screenshots/plantilla-ordenable-claro.png).
+
+### Competición (T-038)
+
+| Elemento                      | Cómo funciona                                                                                                                                                                                                               |
+| ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Clasificación ordenable       | Mismas cabeceras `.th-sort` que la plantilla. «#» es el orden oficial; al ordenar por otra columna, los empates conservan el orden oficial. Lógica en [`competitionData.ts`](../apps/web/src/competitionData.ts) con tests. |
+| Forma (`.form`, `.form-chip`) | Últimos 5 resultados del equipo en esa competición, el más reciente a la derecha, con letra **G/P** además del color y texto para lectores de pantalla (`.sr-only`). Se calcula con los partidos jugados, no se inventa.    |
+| «Solo mis partidos»           | Filtra la lista de la jornada elegida por el club del usuario (desactivado si no diriges ningún equipo).                                                                                                                    |
+| Filas de partido              | Se abren con ratón o con Intro/Espacio (`tabIndex`, `aria-label` con el marcador).                                                                                                                                          |
+
+`tools/qa/panels_browser.mjs` comprueba además la ordenación de la clasificación, que **la forma coincide con el estado real de la partida**, el filtro y la apertura con teclado.

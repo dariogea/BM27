@@ -35,6 +35,9 @@ Versión **alfa** ([todas las versiones](https://github.com/dariogea/BM27/releas
 4. Si Windows dice **«Windows protegió su PC»**, pulsa **«Más información»** y **«Ejecutar de todos modos»** (el instalador no está firmado con un certificado de pago).
 5. Abre **BM27** desde el menú Inicio. Arriba verás la franja del launcher con la versión y la búsqueda de actualizaciones.
 
+Comprobación opcional: la huella SHA-256 del archivo es
+`ace7c104cf7c51b9585d341f0f6820c8dd2d4440b3cb1b194432e80adc0b8ef4`.
+
 **Limitaciones:** los clubes y jugadores son generados; nadie ha ejecutado aún este instalador en un Windows real; la
 comprobación de actualizaciones necesita un token de lectura mientras el repositorio sea privado
 (ver [`docs/escritorio.md`](docs/escritorio.md)).

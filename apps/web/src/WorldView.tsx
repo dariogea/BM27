@@ -39,6 +39,8 @@ type SearchQuery = Extract<WorldQuery, { type: 'worldSearch' }>;
 
 export function WorldView(props: {
   view: GameView;
+  initialClubId: string | null;
+  onBackToPortal: () => void;
   request: (query: WorldQuery) => Promise<WorldPayload>;
 }) {
   const [text, setText] = useState('');
@@ -48,7 +50,9 @@ export function WorldView(props: {
   const [data, setData] = useState<WorldPayload | null>(null);
   const [history, setHistory] = useState<WorldPayload[]>([]);
   const [applied, setApplied] = useState<SearchQuery | null>(null);
+  const { initialClubId, request } = props;
   const [busy, setBusy] = useState(false);
+  const [openingClub, setOpeningClub] = useState(initialClubId !== null);
   const [error, setError] = useState('');
   const profile = useRef<HTMLElement>(null);
   useEffect(() => {
@@ -57,6 +61,25 @@ export function WorldView(props: {
       profile.current?.scrollIntoView({ block: 'start' });
     }
   }, [data]);
+  useEffect(() => {
+    if (initialClubId === null) return;
+    let active = true;
+    void request({ type: 'worldClub', teamId: initialClubId })
+      .then((result) => {
+        if (active) setData(result);
+      })
+      .catch((error: unknown) => {
+        if (active) setError(error instanceof Error ? error.message : String(error));
+      })
+      .finally(() => {
+        if (active) {
+          setOpeningClub(false);
+        }
+      });
+    return () => {
+      active = false;
+    };
+  }, [initialClubId, request]);
   const reset = (): void => {
     setData(null);
     setHistory([]);
@@ -84,6 +107,16 @@ export function WorldView(props: {
   const club = (id: string): void => {
     void execute({ type: 'worldClub', teamId: id }, true);
   };
+  if (openingClub) {
+    return (
+      <section className="world-browser" aria-label="Ficha del club">
+        <button type="button" onClick={props.onBackToPortal}>
+          ← Volver al Portal
+        </button>
+        <p role="status">Abriendo ficha del club…</p>
+      </section>
+    );
+  }
   return (
     <section className="world-browser" data-testid="world-browser">
       <header className="world-heading">
@@ -96,6 +129,11 @@ export function WorldView(props: {
         </div>
         <span className="status-pill">Temporada {props.view.seasonNumber}</span>
       </header>
+      {initialClubId !== null && (
+        <button type="button" onClick={props.onBackToPortal}>
+          ← Volver al Portal
+        </button>
+      )}
       <LeagueRecords view={props.view} request={props.request} onPlayer={player} onClub={club} />
       <h2>Buscador de jugadores y clubes</h2>
       <form

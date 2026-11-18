@@ -40,8 +40,20 @@ export interface ReplayShot {
   event: Extract<MatchEvent, { type: 'shot' }>;
 }
 
+export interface ReplayHighlight {
+  start: number;
+  end: number;
+  label: 'Triple' | 'Tapón' | 'Robo';
+  playerId: string;
+  teamId: string;
+}
+
 /** Exact snapshots of recorded events. No simulated positions or random calls. */
-export function buildReplay(detail: MatchDetail): { frames: ReplayFrame[]; shots: ReplayShot[] } {
+export function buildReplay(detail: MatchDetail): {
+  frames: ReplayFrame[];
+  shots: ReplayShot[];
+  highlights: ReplayHighlight[];
+} {
   const homeId = detail.boxScore.home.teamId;
   const awayId = detail.boxScore.away.teamId;
   const teamByPlayer = new Map([
@@ -95,9 +107,22 @@ export function buildReplay(detail: MatchDetail): { frames: ReplayFrame[]; shots
     },
   ];
   const shots: ReplayShot[] = [];
+  const highlights: ReplayHighlight[] = [];
+  let possessionStart = 0;
   for (const [index, event] of detail.events.entries()) {
     // The five players on court BEFORE this event played the preceding interval.
     const previous = frames[index]!;
+    if (previous.period !== event.period || previous.event?.possession !== event.possession) {
+      possessionStart = index;
+    }
+    const highlight = (label: ReplayHighlight['label'], playerId: string) =>
+      highlights.push({
+        start: possessionStart,
+        end: index + 1,
+        label,
+        playerId,
+        teamId: owner(playerId),
+      });
     const seconds = previous.period === event.period ? previous.clock - event.clock : 0;
     if (seconds > 0) {
       for (const id of homePlayers) credit(id, 'seconds', seconds);
@@ -115,6 +140,8 @@ export function buildReplay(detail: MatchDetail): { frames: ReplayFrame[]; shots
     // Attribute each event to its player, including technical free throws and defensive plays.
     switch (event.type) {
       case 'shot':
+        if (event.shotType === 'three' && event.made) highlight('Triple', event.playerId);
+        if (event.blockPlayerId) highlight('Tapón', event.blockPlayerId);
         shots.push({ at: index + 1, teamId: owner(event.playerId), event });
         credit(event.playerId, 'points', event.made ? event.points : 0);
         credit(event.playerId, 'fieldGoalsAttempted');
@@ -138,6 +165,7 @@ export function buildReplay(detail: MatchDetail): { frames: ReplayFrame[]; shots
         );
         break;
       case 'turnover':
+        if (event.stealPlayerId) highlight('Robo', event.stealPlayerId);
         credit(event.playerId, 'turnovers');
         if (event.stealPlayerId) credit(event.stealPlayerId, 'steals');
         break;
@@ -164,13 +192,15 @@ export function buildReplay(detail: MatchDetail): { frames: ReplayFrame[]; shots
       awayPlayers,
     });
   }
-  return { frames, shots };
+  return { frames, shots, highlights };
 }
 
 export function replayEventText(event: MatchEvent | null, who: (id: string) => string): string {
   if (!event) return 'Pulsa Reproducir para recorrer el registro del partido.';
   switch (event.type) {
     case 'shot':
+      if (event.blockPlayerId)
+        return `Tapón de ${who(event.blockPlayerId)} al tiro de ${who(event.playerId)}.`;
       return `${who(event.playerId)}: ${event.made ? 'canasta' : 'fallo'} de ${event.shotType === 'three' ? 3 : 2} puntos.`;
     case 'free_throw':
       return `${who(event.playerId)}: tiro libre ${event.made ? 'anotado' : 'fallado'}.`;

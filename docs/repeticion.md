@@ -27,6 +27,8 @@ durante el partido y los movimientos de los jugadores sobre la pista quedan pend
 - **Recorrer el registro:** permite desplazarse con ratón o teclado; Inicio/Fin y flechas funcionan
   con el control enfocado. Desplazarse manualmente pausa la reproducción.
 
+En **Repetir jugada destacada** puedes elegir un triple anotado, un tapón o un robo que ya haya aparecido. La repetición empieza al inicio de la posesión registrada y se detiene en la acción elegida. **Volver al punto anterior** recupera el momento desde el que abriste la jugada.
+
 El reloj muestra los segundos que quedaban en el periodo al registrarse el evento. No se inventan
 segundos intermedios. El marcador se reconstruye sumando canastas y tiros libres; estos últimos se
 atribuyen al club del tirador, también en una técnica cuando el derecho al balón es del otro equipo.
@@ -81,7 +83,7 @@ reconstruir con las entradas conservadas de ese partido.
   pausa, salto al final, totales individuales cotejados con el acta y marcador contrastado con la partida. Comparación de todo el guardado
   tras avanzar la misma jornada con y sin retransmisión. Dos comprobaciones en Chromium para PC.
 
-- `apps/web/test/replay.test.ts`: ocho pruebas sobre una competición completa de ocho clubes:
+- `apps/web/test/replay.test.ts`: nueve pruebas sobre una competición completa de ocho clubes:
   resultado de cada partido contra su acta, reloj/eventos, coordenadas, quintetos y sustituciones,
   conservación de las instantáneas previas, atribución de tiros libres técnicos, jugador ajeno al acta
   rechazado y descripciones de los eventos encontrados. Las consultas dejan el registro intacto.

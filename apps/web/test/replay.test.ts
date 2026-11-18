@@ -95,6 +95,43 @@ describe('event-only match playback', () => {
     expect(seconds(outgoing)).toEqual([0, 0, 0, 50, 50, 50, 50, 50]);
     expect(seconds(incoming)).toEqual([0, 0, 0, 0, 0, 10, 10, 20]);
   });
+  it('clips each highlight from the first event of its possession and credits the actual player', () => {
+    const seen = new Set<string>();
+    for (const match of matches) {
+      const { highlights } = buildReplay(match);
+      const expected = match.events.filter(
+        (e) =>
+          (e.type === 'shot' && ((e.made && e.shotType === 'three') || e.blockPlayerId)) ||
+          (e.type === 'turnover' && e.stealPlayerId),
+      );
+      expect(highlights.map((h) => match.events[h.end - 1])).toEqual(expected);
+      for (const h of highlights) {
+        const event = match.events[h.end - 1]!;
+        const previous = match.events[h.start - 1];
+        expect(previous?.period === event.period && previous.possession === event.possession).toBe(
+          false,
+        );
+        expect(
+          match.events
+            .slice(h.start, h.end)
+            .every((e) => e.period === event.period && e.possession === event.possession),
+        ).toBe(true);
+        const actor =
+          event.type === 'shot'
+            ? (event.blockPlayerId ?? event.playerId)
+            : event.type === 'turnover'
+              ? event.stealPlayerId
+              : undefined;
+        expect(h.playerId).toBe(actor);
+        const team = match.boxScore.home.players.some((p) => p.playerId === actor)
+          ? match.boxScore.home
+          : match.boxScore.away;
+        expect(h.teamId).toBe(team.teamId);
+        seen.add(h.label);
+      }
+    }
+    expect(seen).toEqual(new Set(['Triple', 'Tapón', 'Robo']));
+  });
   it('preserves every field-goal location and only maps field goals, never free throws', () => {
     for (const match of matches) {
       const { shots } = buildReplay(match);

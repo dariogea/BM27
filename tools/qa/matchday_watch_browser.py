@@ -109,6 +109,18 @@ with sync_playwright() as playwright:
     viewer.get_by_role("button", name="Saltar al final", exact=True).click()
     for team in range(2):
         expect(field_goals.nth(team)).to_have_text(totals.nth(team).get_by_role("cell").nth(3).inner_text())
+    picker = viewer.get_by_role("combobox", name="Repetir jugada destacada")
+    end = timeline.input_value()
+    chosen = picker.locator("option").nth(1).get_attribute("value")
+    picker.select_option(chosen)
+    expect(timeline).to_have_value(chosen)
+    expect(viewer.get_by_role("button", name="Reproducir", exact=True)).to_be_visible()
+    viewer.get_by_role("button", name="Volver al punto anterior").click()
+    expect(timeline).to_have_value(end)
+    viewer.get_by_role("button", name="Inicio", exact=True).click()
+    expect(picker).to_be_disabled()
+    expect(picker.locator("option")).to_have_count(1)
+    viewer.get_by_role("button", name="Saltar al final", exact=True).click()
     watched = json.loads(save())["payload"]
     club_id = watched["userTeamId"]
     match = next(

@@ -1,4 +1,4 @@
-/* global axe, document */
+/* global axe, document, window */
 /**
  * Browser check of the management panels (T-033). PC only: 1280 × 800.
  *
@@ -22,6 +22,18 @@ const SHOTS = process.env.BM27_SHOTS;
   const browser = await chromium.launch();
   const page = await browser.newPage({ viewport: { width: 1280, height: 800 } });
   const errors = [];
+  // Keep the last state the Worker sent, to compare the screen with the real game state.
+  await page.addInitScript(() => {
+    const RealWorker = window.Worker;
+    window.Worker = class extends RealWorker {
+      constructor(...args) {
+        super(...args);
+        this.addEventListener('message', (event) => {
+          if (event.data.type === 'state') window.bm27ObservedState = event.data.view;
+        });
+      }
+    };
+  });
   page.on('pageerror', (e) => errors.push(String(e)));
   const check = (ok, what) => {
     console.log(`${ok ? 'OK  ' : 'FALLA'} ${what}`);
@@ -90,6 +102,118 @@ const SHOTS = process.env.BM27_SHOTS;
     (await page.locator('.squad-table tbody tr').count()) >= 12,
     'la plantilla conserva todas las filas',
   );
+
+  // --- Competition panel: sorting, form, "only mine" filter and keyboard access.
+  await page.getByRole('button', { name: 'Jugar jornada', exact: true }).click();
+  await page
+    .waitForFunction(
+      () =>
+        document.body.textContent.includes('2 jornadas jugadas') ||
+        document.body.textContent.includes('jornada 2'),
+      null,
+      { timeout: 90000 },
+    )
+    .catch(() => {});
+  await nav.getByRole('button', { name: 'Competición', exact: true }).click();
+  await page.getByText('Clasificación ·').first().waitFor();
+  const standing = () =>
+    page
+      .locator('[aria-label^="Clasificación:"]')
+      .first()
+      .locator('tbody tr')
+      .evaluateAll((trs) =>
+        trs.map((tr) => {
+          const td = tr.querySelectorAll('td');
+          return {
+            pos: Number(td[0].textContent),
+            team: td[1].textContent.trim(),
+            pf: Number(td[5].textContent),
+          };
+        }),
+      );
+  const official = await standing();
+  check(
+    official.every((r, i) => i === 0 || official[i - 1].pos < r.pos),
+    'la clasificación empieza en el orden oficial',
+  );
+  const group = page.locator('[aria-label^="Clasificación:"]').first();
+  await group.getByRole('button', { name: 'PF', exact: true }).click();
+  const byPf = await standing();
+  check(
+    byPf.every((r, i) => i === 0 || byPf[i - 1].pf >= r.pf),
+    'PF ordena de mayor a menor',
+  );
+  await group.getByRole('button', { name: 'PF', exact: true }).click();
+  const byPfAsc = await standing();
+  check(
+    byPfAsc.every((r, i) => i === 0 || byPfAsc[i - 1].pf <= r.pf),
+    'segunda pulsación ordena de menor a mayor',
+  );
+  check(byPf.length === official.length, 'ordenar no pierde equipos');
+  await group.getByRole('button', { name: '#', exact: true }).click();
+  await group
+    .getByRole('button', { name: '#', exact: true })
+    .click()
+    .catch(() => {});
+  // Form against the real state of the game.
+  const formOk = await page.evaluate(() => {
+    const view = window.bm27ObservedState;
+    const comp = view.tables.find((t) => t.competitionId === view.myTeam.competitionId);
+    const names = view.teamNames;
+    const rows = [
+      ...document
+        .querySelectorAll('[aria-label^="Clasificación:"]')[0]
+        .querySelectorAll('tbody tr'),
+    ];
+    let checked = 0;
+    for (const tr of rows) {
+      const td = tr.querySelectorAll('td');
+      const teamName = td[1].textContent.trim();
+      const id = Object.keys(names).find((k) => names[k] === teamName);
+      const expected = comp.matches
+        .filter((m) => m.homeTeamId === id || m.awayTeamId === id)
+        .sort(
+          (a, b) =>
+            (a.stage === b.stage ? 0 : a.stage === 'regular' ? -1 : 1) ||
+            a.round - b.round ||
+            (a.id < b.id ? -1 : 1),
+        )
+        .slice(-5)
+        .map((m) =>
+          (m.homeTeamId === id ? m.homeScore : m.awayScore) >
+          (m.homeTeamId === id ? m.awayScore : m.homeScore)
+            ? 'G'
+            : 'P',
+        )
+        .join('');
+      const shown = [...td[9].querySelectorAll('.form-chip')]
+        .map((c) => c.firstChild.textContent)
+        .join('');
+      if (expected !== shown) return `${teamName}: esperado ${expected}, se ve ${shown}`;
+      checked++;
+    }
+    return checked > 0 ? 'ok' : 'sin filas';
+  });
+  check(
+    formOk === 'ok',
+    `la forma coincide con los resultados reales${formOk === 'ok' ? '' : ': ' + formOk}`,
+  );
+  // "Only mine" filter.
+  const allRows = await page.locator('table:has(th:text-is("Local")) tbody tr').count();
+  await page.getByLabel('Solo mis partidos').check();
+  const mineRows = await page.locator('table:has(th:text-is("Local")) tbody tr').count();
+  check(mineRows === 1 && allRows > 1, `«Solo mis partidos» deja 1 partido de ${allRows}`);
+  // Keyboard: the native "Ver partido" button of a row opens its box score with Enter.
+  await page
+    .locator('table:has(th:text-is("Local")) tbody tr')
+    .first()
+    .getByRole('button', { name: /Ver el box score/ })
+    .focus();
+  await page.keyboard.press('Enter');
+  await page.getByTestId('boxscore').first().waitFor({ timeout: 30000 });
+  check(true, 'Intro sobre el botón «Ver partido» abre su box score');
+  await nav.getByRole('button', { name: 'Competición', exact: true }).click();
+  await page.getByLabel('Solo mis partidos').uncheck();
 
   // --- axe on the five panels, both themes.
   if (AXE) {

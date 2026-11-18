@@ -98,3 +98,5 @@ Reglas en [`coordinacion.md`](coordinacion.md).
 | #83 | PROBADA | Fichas de clubes desde la clasificación, inscritos y próximo rival del Portal. Teclado, retorno al Portal y datos de paquetes verificados en navegador para PC. |
 
 | #15 (parte 2) | PROBADA | Jugar y ver abre la retransmisión de la jornada con el plan táctico aplicado y el acta al terminar. Órdenes durante el partido y posiciones de jugadores pendientes. |
+
+| T-039 | PROBADA | Panel «Finanzas»: medidor del presupuesto salarial, aviso de cuántas temporadas faltan para el descubierto si nada cambia, gráfico del resultado por temporada y tabla alineada; 9 tests de la lógica y 6 comprobaciones nuevas en navegador. Gráfico probado con una sola temporada cerrada. |

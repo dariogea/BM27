@@ -91,3 +91,13 @@ Reglas propias en [`panels.css`](../apps/web/src/panels.css); solo usa las varia
 juega una jornada y verifica la ordenación, la búsqueda y que axe (WCAG 2 A/AA) no encuentra nada en los cinco
 paneles, en tema oscuro y claro. Capturas: [oscuro](screenshots/plantilla-ordenable-oscuro.png),
 [claro](screenshots/plantilla-ordenable-claro.png).
+
+### Finanzas (T-039)
+
+| Elemento                             | Cómo funciona                                                                                                                                                                                                                                                 |
+| ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Medidor del presupuesto salarial     | `role="meter"` con el porcentaje de la masa salarial sobre el presupuesto (la barra se limita a 100 %; en rojo si se supera, con el aviso de que solo caben contratos de salario mínimo). Cálculo en [`financeData.ts`](../apps/web/src/financeData.ts).      |
+| Aviso de pérdida                     | Si el resultado previsto es negativo, dice cuántas temporadas faltan para llegar al límite del descubierto **si nada cambia**: una proyección en línea recta con las cifras de la pantalla, no una predicción.                                                |
+| Gráfico del historial (`.fin-chart`) | Barras del resultado de cada temporada cerrada, de la más antigua a la más reciente (verde: beneficio, rojo: pérdida), dentro de un `<figure>` con `role="img"` y una descripción con las cifras exactas; la tabla de debajo sigue siendo la fuente completa. |
+
+`tools/qa/panels_browser.mjs` termina una temporada en una partida nueva y comprueba que la tabla y el gráfico tienen una fila/barra por temporada, que las barras verdes son exactamente las temporadas con beneficio y que el medidor coincide con el estado real. Solo se puede comprobar con una temporada cerrada: la segunda exige renovar contratos antes.

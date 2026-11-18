@@ -1364,10 +1364,10 @@
             {
               "t": "Tablas ordenables y filtros",
               "s": "en-curso",
-              "p": 45,
+              "p": 65,
               "i": 52,
               "o": "codex",
-              "n": "Portal: filtro de actividad y selector de competición (Codex). Plantilla: ordenación por cualquier columna y mapa de color por nivel. Mercado: búsqueda de agentes libres (T-033, Claude). Faltan las demás tablas."
+              "n": "Portal: filtros (Codex). Plantilla y clasificación: ordenación por columna; mercado: búsqueda; partidos: «solo los míos»; finanzas: gráfico y medidor (Claude, T-033/T-038/T-039). Faltan las tablas del mundo."
             },
             {
               "t": "Atajos de teclado",

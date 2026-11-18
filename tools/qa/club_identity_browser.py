@@ -37,7 +37,7 @@ with sync_playwright() as p:
         return Path(info.value.path()).read_text()
     def generate(count,origin):
         tools_open();page.once('dialog',lambda dialog:dialog.accept())
-        page.get_by_role('button',name='Generar universo',exact=True).click()
+        page.get_by_role('button',name='Nueva partida',exact=True).click()
         page.wait_for_function('([count,origin])=>window.bm27State?.teamCount===count && window.bm27State?.clubData===origin',arg=[count,origin])
     def nav(name):page.get_by_role('navigation',name='Secciones de la partida').get_by_role('button',name=name,exact=True).click()
     def profile(name):
@@ -54,7 +54,7 @@ with sync_playwright() as p:
         violations=page.evaluate("""async()=> (await axe.run(document,{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21aa']}})).violations.map(v=>({id:v.id,impact:v.impact,targets:v.nodes.map(n=>n.target)}))""")
         row={'screen':name,'violations':violations,'overflow':page.evaluate('document.documentElement.scrollWidth>innerWidth')}
         reports.append(row);print(json.dumps(row),flush=True)
-    page.get_by_role('button',name='Generar universo',exact=True).click()
+    page.get_by_role('button',name='Nueva partida',exact=True).click()
     page.wait_for_function('window.bm27State?.teamCount===202')
     original=export_file()
     page.get_by_test_id('data-pack-file').set_input_files(str(sample_path))

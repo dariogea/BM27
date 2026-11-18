@@ -41,7 +41,7 @@ const SHOTS = process.env.BM27_SHOTS;
   };
 
   await page.goto(URL);
-  await page.getByRole('button', { name: 'Generar universo', exact: true }).click();
+  await page.getByRole('button', { name: 'Nueva partida', exact: true }).click();
   await page.getByTestId('summary').waitFor({ timeout: 90000 });
   await page.getByRole('button', { name: 'Dirigir este equipo', exact: true }).click();
   const nav = page.getByRole('navigation', { name: 'Secciones de la partida' });
@@ -207,7 +207,7 @@ const SHOTS = process.env.BM27_SHOTS;
   await page
     .locator('table:has(th:text-is("Local")) tbody tr')
     .first()
-    .getByRole('button', { name: /Ver el box score/ })
+    .getByRole('button', { name: /Ver el acta/ })
     .focus();
   await page.keyboard.press('Enter');
   await page.getByTestId('boxscore').first().waitFor({ timeout: 30000 });
@@ -278,12 +278,12 @@ const SHOTS = process.env.BM27_SHOTS;
       };
     });
     await fp.goto(URL);
-    await fp.getByRole('button', { name: 'Generar universo', exact: true }).click();
+    await fp.getByRole('button', { name: 'Nueva partida', exact: true }).click();
     await fp.getByTestId('summary').waitFor({ timeout: 90000 });
     await fp.getByRole('button', { name: 'Dirigir este equipo', exact: true }).click();
     const fnav = fp.getByRole('navigation', { name: 'Secciones de la partida' });
     await fnav.getByRole('button', { name: 'Mi equipo', exact: true }).waitFor();
-    await fp.getByText('Cambiar de club · simular temporada', { exact: true }).click();
+    await fp.getByText('Dirección deportiva', { exact: true }).click();
     await fp
       .getByRole('button', { name: 'Simular hasta el final de la temporada', exact: true })
       .click();

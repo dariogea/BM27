@@ -164,8 +164,8 @@ export function LeagueRecords(props: {
         {busy
           ? 'Consultando estadísticas…'
           : data
-            ? `Temporada ${data.season} · ${data.completed ? 'Cerrada' : 'En curso / sin cerrar'} · ${data.total} registros elegibles`
-            : 'Elige los filtros y pulsa «Consultar líderes».'}
+            ? `Temporada ${data.season} · ${data.completed ? 'Cerrada' : 'En curso'} · ${data.total} jugadores clasificados`
+            : ''}
       </p>
       {data && (
         <>

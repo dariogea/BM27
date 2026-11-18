@@ -1224,8 +1224,11 @@
           "t": "Pantallas existentes",
           "c": [
             {
-              "t": "Generar universo y elegir equipo",
-              "s": "hecho"
+              "t": "Nueva partida y elección de club",
+              "s": "hecho",
+              "o": "codex",
+              "i": 103,
+              "n": "Menú de PC con accesos a nueva partida, carga y guardados locales. Configuración avanzada bajo demanda."
             },
             {
               "t": "Clasificación y calendario",

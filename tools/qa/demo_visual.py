@@ -23,6 +23,9 @@ with sync_playwright() as p:
     """)
     page.goto(os.environ.get('BM27_WEB_URL','http://127.0.0.1:5173'),wait_until='domcontentloaded',timeout=20000)
     def audit(name):
+        visible = page.locator("body").inner_text()
+        for stale in ("EN DESARROLLO", "BM27 · Demo", "docs/tacticas.md", "Coordenadas del motor"):
+            assert stale not in visible, (name, stale)
         page.wait_for_timeout(200)
         page.add_script_tag(path=axe_path)
         report=page.evaluate('''async () => { const r=await axe.run(document,{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21aa']}}); return r.violations.map(v=>({id:v.id,impact:v.impact,nodes:v.nodes.map(n=>({target:n.target,summary:n.failureSummary}))})); }''')
@@ -40,7 +43,11 @@ with sync_playwright() as p:
             audit('welcome-'+label+'-'+theme)
             page.screenshot(path=f'{output_dir}/welcome-{label}-{theme}.png',full_page=True)
     page.set_viewport_size({'width':1280,'height':900})
-    page.get_by_role('button',name='Generar universo',exact=True).click()
+    page.get_by_role('button',name='Mis partidas',exact=True).click()
+    page.get_by_role('heading',name='Partidas de este dispositivo').wait_for()
+    page.get_by_role('button',name='Menú principal',exact=False).click()
+    page.get_by_role('heading',name='Basketball Manager 2027').wait_for()
+    page.get_by_role('button',name='Nueva partida',exact=True).click()
     page.get_by_test_id('summary').wait_for(timeout=60000)
     def preseason_audits(stage):
         for width,label in [(1280,'desktop'),(1920,'wide')]:

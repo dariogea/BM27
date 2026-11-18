@@ -8,7 +8,7 @@ la partida ni certifica sus participantes o reglamentos**.
 ## Probar el ejemplo
 
 Carga [example-eight-defined-clubs.json](../../data/packs/example-eight-defined-clubs.json) desde
-**Gestión de partida → Cargar paquete de datos** y pulsa **Generar universo**. Contiene ocho clubes
+**Configurar nueva partida → Cargar paquete de datos** y pulsa **Nueva partida**. Contiene ocho clubes
 **ficticios** con plantillas generadas, usando el mismo reglamento de demostración de dos periodos
 de quince minutos. También se puede simular desde la raíz:
 
@@ -18,7 +18,7 @@ pnpm sim --pack data/packs/example-eight-defined-clubs.json --seed clubes --seas
 
 En **Mundo**, busca un club y abre su ficha. El bloque **Identidad y procedencia** separa su nombre
 de referencia del nombre visible y muestra las referencias que haya declarado el autor del paquete.
-La cabecera distingue clubes generados de clubes definidos; no presenta estos últimos como una
+El menú de opciones distingue clubes generados de clubes definidos; no presenta estos últimos como una
 base oficial. La selección de un paquete prepara la siguiente partida y no cambia la que está abierta.
 
 El ejemplo incluye una referencia sin contrastar a su propio archivo del repositorio; no se hace

@@ -163,7 +163,6 @@ function PlayByPlay(props: {
             </option>
           ))}
         </select>
-        <span className="note">Texto generado a partir del registro de eventos del partido.</span>
       </div>
       <table data-testid="playbyplay">
         <thead>
@@ -200,7 +199,7 @@ export function BoxScoreView(props: {
   return (
     <section data-testid="boxscore">
       <h2>
-        Box score · {name(home.teamId)} {home.points} – {away.points} {name(away.teamId)}
+        Acta del partido · {name(home.teamId)} {home.points} – {away.points} {name(away.teamId)}
       </h2>
       <table>
         <thead>
@@ -228,9 +227,7 @@ export function BoxScoreView(props: {
           ))}
         </tbody>
       </table>
-      <p className="note">
-        Estadísticas derivadas de {detail.events.length} eventos del registro del partido.
-      </p>
+
       <p className="note">
         <strong>Tácticas de {name(home.teamId)}:</strong>{' '}
         {describeTactics(props.tactics[home.teamId])}

@@ -196,7 +196,7 @@ export function buildReplay(detail: MatchDetail): {
 }
 
 export function replayEventText(event: MatchEvent | null, who: (id: string) => string): string {
-  if (!event) return 'Pulsa Reproducir para recorrer el registro del partido.';
+  if (!event) return 'Antes del salto inicial.';
   switch (event.type) {
     case 'shot':
       if (event.blockPlayerId)
@@ -207,7 +207,7 @@ export function replayEventText(event: MatchEvent | null, who: (id: string) => s
     case 'substitution':
       return `Entra ${who(event.playerInId)} por ${who(event.playerOutId)}.`;
     case 'lineup':
-      return 'Quinteto inicial registrado.';
+      return 'Quinteto inicial.';
     case 'period_start':
       return `Empieza el periodo ${event.period}.`;
     case 'period_end':
@@ -223,7 +223,7 @@ export function replayEventText(event: MatchEvent | null, who: (id: string) => s
     case 'injury':
       return `${who(event.playerId)} se lesiona: ${event.gamesOut} partidos de baja.`;
     case 'timeout':
-      return 'Tiempo muerto registrado.';
+      return 'Tiempo muerto.';
     case 'jump_ball':
       return event.kind === 'opening'
         ? 'Salto inicial.'

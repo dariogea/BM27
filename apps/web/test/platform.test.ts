@@ -56,3 +56,39 @@ describe('saving and opening files in the desktop app', () => {
     expect(await pickTextFile()).toBeNull();
   });
 });
+
+it('uses the CSV native filter and writes exactly the exported content', async () => {
+  const { saveTextFile } = await import('../src/platform');
+  fake.window = { __TAURI_INTERNALS__: {} };
+  save.mockResolvedValue('/selected/leaders.csv');
+  const result = await saveTextFile('leaders.csv', 'contents', 'csv');
+  expect(save).toHaveBeenCalledWith({
+    defaultPath: 'leaders.csv',
+    filters: [{ name: 'Tabla CSV de BM27', extensions: ['csv'] }],
+  });
+  expect(writeTextFile).toHaveBeenCalledWith('/selected/leaders.csv', 'contents');
+  expect(result).toEqual({ kind: 'saved', where: '/selected/leaders.csv' });
+});
+
+it('preserves the JSON save behavior for existing callers', async () => {
+  const { saveTextFile } = await import('../src/platform');
+  fake.window = { __TAURI_INTERNALS__: {} };
+  save.mockResolvedValue('/selected/game.json');
+  await saveTextFile('game.json', '{"save":true}');
+  expect(save).toHaveBeenCalledWith({
+    defaultPath: 'game.json',
+    filters: [{ name: 'Partida de BM27', extensions: ['json'] }],
+  });
+  expect(writeTextFile).toHaveBeenCalledWith('/selected/game.json', '{"save":true}');
+});
+
+it('does not write a cancelled export and passes native write failures to the caller', async () => {
+  const { saveTextFile } = await import('../src/platform');
+  fake.window = { __TAURI_INTERNALS__: {} };
+  save.mockResolvedValue(null);
+  expect(await saveTextFile('leaders.csv', 'contents', 'csv')).toEqual({ kind: 'cancelled' });
+  expect(writeTextFile).not.toHaveBeenCalled();
+  save.mockResolvedValue('/selected/leaders.csv');
+  writeTextFile.mockRejectedValue(new Error('disk full'));
+  await expect(saveTextFile('leaders.csv', 'contents', 'csv')).rejects.toThrow('disk full');
+});

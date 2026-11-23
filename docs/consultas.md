@@ -146,3 +146,15 @@ las estrellas de titular conservan la convocatoria preparada por el motor.
 Los lesionados aparecen en la plantilla completa, en el mercado y en la rotación, incluso cuando
 están fuera de la convocatoria. La regla de emergencia del motor con menos de ocho sanos sigue
 siendo PLACEHOLDER y puede hacer jugar a los menos lesionados.
+
+## Exportar líderes (#124)
+
+Tras consultar los líderes, **Exportar tabla CSV** guarda exactamente las filas de la tabla
+visible, hasta 50, en su orden de clasificación. Cada fila identifica competición, temporada,
+estado, métrica, cálculo, unidades, filtros de muestra y base numérica. Los valores conservan
+su precisión, aunque la pantalla redondee a un decimal.
+
+El archivo usa UTF-8 con marca de codificación, separador de punto y coma y coma decimal para
+hojas de cálculo en español. Los nombres se entrecomillan y se preservan como texto.
+En el navegador se descarga el archivo. En escritorio se selecciona el destino mediante el
+diálogo nativo con extensión CSV. Cancelar o fallar la exportación no altera la partida.

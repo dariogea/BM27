@@ -109,9 +109,30 @@ with sync_playwright() as p:
     records.get_by_role('combobox',name='Temporada de los líderes',exact=True).select_option('1')
     totals=consult()
     assert totals['season']==1 and all(r['value']==r['numerator'] for r in totals['rows'])
-    records.get_by_role('region',name='Tabla de líderes',exact=True).locator('tbody tr').first.get_by_role('button').first.click()
-    page.get_by_test_id('player-profile').wait_for()
-    expect(page.get_by_test_id('player-profile')).to_be_focused()
+    histories = {}
+    for season in payload['history']:
+        for competition in season['competitions']:
+            for stats in competition['playerStats']:
+                if stats['games'] > 0:
+                    histories.setdefault(stats['playerId'], []).append((season['seasonNumber'], stats))
+    row_index, player_row = next((index, row) for index, row in enumerate(totals['rows'])
+                                 if len(histories.get(row['playerId'], [])) >= 2)
+    records.get_by_role('region',name='Tabla de líderes',exact=True).locator('tbody tr').nth(row_index).get_by_role('button').first.click()
+    profile=page.get_by_test_id('player-profile')
+    expect(profile).to_be_focused()
+    trend=profile.get_by_role('figure',name='Evolución por temporada')
+    recorded=sorted(histories[player_row['playerId']],key=lambda item:item[0])
+    for metric in ['points','rebounds','assists','minutes']:
+        trend.get_by_role('combobox',name='Estadística de evolución').select_option(metric)
+        bars=trend.locator('li')
+        expect(bars).to_have_count(len(recorded))
+        for idx,(season,stats) in enumerate(recorded):
+            value = {'points':stats['points'], 'rebounds':stats['offensiveRebounds']+stats['defensiveRebounds'],
+                     'assists':stats['assists'], 'minutes':stats['seconds']/60}[metric] / stats['games']
+            expect(bars.nth(idx)).to_contain_text(f'Temporada {season}')
+            shown = float(bars.nth(idx).locator('strong').inner_text().replace(',','.'))
+            assert math.isclose(shown,value,abs_tol=0.051)
+    audit('actual-player-evolution')
     records.get_by_role('region',name='Palmarés de la competición',exact=True).get_by_role('button').first.click()
     page.get_by_test_id('club-profile').wait_for()
     expect(page.get_by_test_id('club-profile')).to_be_focused()

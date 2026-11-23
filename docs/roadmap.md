@@ -13,8 +13,8 @@
 ```mermaid
 pie showData title Elementos por estado
   "Hecho" : 128
-  "En curso" : 25
-  "Pendiente" : 291
+  "En curso" : 26
+  "Pendiente" : 290
   "Bloqueado" : 2
   "Idea" : 29
 ```
@@ -108,7 +108,7 @@ flowchart LR
 | **Cantera y formación** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Desarrollar un sistema de formación con entradas, recursos y salidas, más allá del relevo automático. |
 | **Ojeo y reclutamiento** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Convertir la búsqueda de jugadores en información adquirida, contrastable y con límites. |
 | **Carrera del entrenador** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Permitir una trayectoria profesional con reputación y responsabilidades separadas del club. |
-| **Análisis estadístico y toma de decisiones** | 8 % | `██░░░░░░░░░░░░░░░░░░` | 0 | 2 | 10 | 0 | 0 | Transformar los registros del motor en información útil, contextualizada y verificable. |
+| **Análisis estadístico y toma de decisiones** | 13 % | `███░░░░░░░░░░░░░░░░░` | 0 | 3 | 9 | 0 | 0 | Transformar los registros del motor en información útil, contextualizada y verificable. |
 | **Inscripción y administración deportiva** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Hacer explícitas las condiciones para competir y fichar, manteniendo las reglas como datos. |
 | **Calendario y logística deportiva** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Que los desplazamientos, descansos y cambios de fecha tengan una planificación coherente. |
 | **Instalaciones y operaciones del club** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Gestionar mejoras materiales con capacidad, plazos, mantenimiento y efectos concretos. |
@@ -150,6 +150,7 @@ Los agentes solo trabajan cuando el propietario lo autoriza (D-052); esto reflej
 | 🔄 En curso | Tablas ordenables y filtros | Interfaz web | 65 % | [#52](https://github.com/dariogea/BM27/issues/52) |
 | 🔄 En curso | Atajos de teclado | Interfaz web | 35 % | [#139](https://github.com/dariogea/BM27/issues/139) |
 | 🔄 En curso | Normalizar estadísticas por posesión y por minuto | Análisis estadístico y toma de decisiones | 50 % | [#118](https://github.com/dariogea/BM27/issues/118) |
+| 🔄 En curso | Mostrar evolución temporal sin mezclar temporadas | Análisis estadístico y toma de decisiones | 50 % | [#142](https://github.com/dariogea/BM27/issues/142) |
 | 🔄 En curso | Exportar consultas estadísticas con sus unidades | Análisis estadístico y toma de decisiones | 50 % | [#124](https://github.com/dariogea/BM27/issues/124) |
 | 🔄 En curso | Elegir densidad de tablas y tamaño de interfaz | Accesibilidad y preferencias de uso | 40 % | [#52](https://github.com/dariogea/BM27/issues/52) |
 
@@ -743,7 +744,7 @@ _Permitir una trayectoria profesional con reputación y responsabilidades separa
 
 </details>
 
-<details><summary><b>Análisis estadístico y toma de decisiones</b> — 8 % `█░░░░░░░░░░░`</summary>
+<details><summary><b>Análisis estadístico y toma de decisiones</b> — 13 % `██░░░░░░░░░░`</summary>
 
 _Transformar los registros del motor en información útil, contextualizada y verificable._
 
@@ -757,9 +758,9 @@ _Transformar los registros del motor en información útil, contextualizada y ve
   - ⬜ Analizar perfiles de rivales con el mismo criterio (`F2`)
   - ⬜ Desglosar resultados por tipo de jugada y zona (`F2`)
   - ⬜ Relacionar ajustes tácticos con cambios de rendimiento (`F2`)
-- **Herramientas de consulta** — 13 %
+- **Herramientas de consulta** — 25 %
   - ⬜ Guardar filtros y comparaciones frecuentes (`F2`)
-  - ⬜ Mostrar evolución temporal sin mezclar temporadas (`F2`)
+  - 🔄 Mostrar evolución temporal sin mezclar temporadas (`F2` · 50 % · @codex · [#142](https://github.com/dariogea/BM27/issues/142)) — _En la ficha de jugador, comparación de medias por temporada y club a partir del historial real._
   - 🔄 Exportar consultas estadísticas con sus unidades (`F2` · 50 % · @codex · [#124](https://github.com/dariogea/BM27/issues/124)) — _Tabla visible de líderes exportable en CSV con filtros, muestra y unidades. Resto de consultas pendiente._
   - ⬜ Enlazar cada cifra de partido con los eventos de origen (`F2`)
 

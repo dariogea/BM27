@@ -1,3 +1,4 @@
+import { readSaveFile } from './compressedSave';
 import { ClubBadge } from './ClubBadge';
 import { DEFAULT_PALETTE, isPaletteId, paletteVars, type PaletteId } from './palette';
 import { ReplayViewer } from './ReplayViewer';
@@ -14,7 +15,7 @@ import type { MatchDetail, TeamTactics } from '@bm27/schema';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { CompetitionView } from './CompetitionView';
 import { BoxScoreView, describeTactics } from './MatchView';
-import { isDesktop, pickTextFile, saveTextFile } from './platform';
+import { isDesktop, pickSaveFile, saveCompressedFile, saveTextFile } from './platform';
 import type { Command, DataPackSummary, GameView, Reply } from './protocol';
 import { FinancePanel } from './FinanceView';
 import { MarketPanel } from './MarketView';
@@ -153,7 +154,7 @@ export function App() {
   const [revision, setRevision] = useState(0);
   const fileInput = useRef<HTMLInputElement>(null);
 
-  const run = async (command: Pending, working: string): Promise<void> => {
+  const run = async (command: Pending, working: string, compressed = false): Promise<void> => {
     setBusy(true);
     setError('');
     setStatus(working);
@@ -163,7 +164,7 @@ export function App() {
       watching && reply.type === 'state' && reply.watchedMatchId
         ? await send({ type: 'matchDetail', matchId: reply.watchedMatchId })
         : null;
-    setBusy(false);
+    if (reply.type !== 'save') setBusy(false);
     switch (reply.type) {
       case 'dataPack':
         setDataPack(reply.summary);
@@ -237,12 +238,13 @@ export function App() {
         setStatus('');
         break;
       case 'save': {
-        const size = `${(reply.json.length / 1024 / 1024).toFixed(1)} MB`;
         try {
-          const result = await saveTextFile(reply.fileName, reply.json);
+          const result = compressed
+            ? await saveCompressedFile(`${reply.fileName}.gz`, reply.json)
+            : await saveTextFile(reply.fileName, reply.json);
           setStatus(
             result.kind === 'saved'
-              ? `Partida guardada en ${result.where} (${size}).`
+              ? `Partida guardada en ${result.where}.`
               : 'Guardado cancelado.',
           );
         } catch (error) {
@@ -250,6 +252,8 @@ export function App() {
             `No se pudo guardar el archivo: ${error instanceof Error ? error.message : String(error)}`,
           );
           setStatus('');
+        } finally {
+          setBusy(false);
         }
         break;
       }
@@ -315,7 +319,7 @@ export function App() {
           return;
         }
         try {
-          const json = await pickTextFile();
+          const json = await pickSaveFile();
           if (json !== null) await run({ type: 'importSave', json }, 'Cargando…');
         } catch (error) {
           setError(
@@ -442,17 +446,34 @@ export function App() {
                   Guardar partida
                 </button>
               )}
+              {view && typeof CompressionStream !== 'undefined' && (
+                <button
+                  disabled={busy}
+                  onClick={() => run({ type: 'exportSave' }, 'Comprimiendo partida…', true)}
+                >
+                  Guardar partida comprimida
+                </button>
+              )}
               {view && loadGameButton}
               <input
                 ref={fileInput}
                 type="file"
-                accept="application/json,.json"
+                accept="application/json,application/gzip,.json,.gz"
                 hidden
                 data-testid="load-file"
                 onChange={async (e) => {
                   const file = e.target.files?.[0];
                   e.target.value = '';
-                  if (file) await run({ type: 'importSave', json: await file.text() }, 'Cargando…');
+                  if (!file) return;
+                  setBusy(true);
+                  setStatus('Cargando…');
+                  try {
+                    await run({ type: 'importSave', json: await readSaveFile(file) }, 'Cargando…');
+                  } catch (error) {
+                    setError(error instanceof Error ? error.message : String(error));
+                    setStatus('');
+                    setBusy(false);
+                  }
                 }}
               />
             </div>

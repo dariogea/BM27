@@ -118,3 +118,5 @@ Reglas en [`coordinacion.md`](coordinacion.md).
 | #121 | PROBADA | Filtros combinables de plantilla y visibilidad de todos los lesionados, con el orden de convocatoria conservado. |
 
 | #124 | PROBADA | Exportación CSV de la tabla de líderes con temporada, filtros, unidades y base de cálculo. |
+
+| #128 | PROBADA | Guardar y cargar partidas portables en JSON y gzip con validación del guardado. |

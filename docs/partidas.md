@@ -13,12 +13,16 @@ ranura también pide confirmación.
 
 ## Guardado automático
 
-Está activado inicialmente y se puede desactivar desde el panel. Al terminar una temporada, tanto
-jugando la última jornada como simulando hasta el final, se guarda el estado posterior al cierre.
-La ranura **Guardado automático** se sobrescribe a sí misma; las ranuras manuales no cambian. La
-preferencia se conserva al cerrar y volver a abrir la aplicación.
+Está activado inicialmente y se puede desactivar desde el panel. Se guarda después de cada jornada,
+también con **Jugar y ver**, y al simular hasta el final de la temporada. Se conservan dos ranuras,
+**Guardado automático** y **Guardado automático anterior**. La rotación de las dos copias se confirma
+en una sola transacción. Las ranuras manuales se conservan y la preferencia persiste al reiniciar.
 
-Si falla el autoguardado por falta de espacio, la temporada no se pierde de la memoria: aparece un
+El menú principal ofrece **Continuar** con el club y la temporada del guardado más reciente.
+Si esa copia no se puede abrir, **Mis partidas** permite elegir la anterior. Cargar una copia
+no crea un nuevo autoguardado hasta que se juega otra jornada.
+
+Si falla el autoguardado por falta de espacio, la partida sigue abierta en memoria: aparece un
 aviso y puedes exportarla inmediatamente con **Guardar partida**.
 
 ## Copias portables
@@ -44,4 +48,4 @@ de esta entrega cubren el adaptador y el Worker, además del recorrido de navega
 
 ## Acceso desde el portal
 
-«Partidas» en la navegación superior o «Partidas de este dispositivo» abre las ranuras internas. Los botones para importar/exportar archivos están en «Gestión de partida», bajo la cabecera.
+«Partidas» en la navegación superior o «Partidas de este dispositivo» abre las ranuras internas. Los botones para importar/exportar archivos están en «Opciones de partida», bajo la cabecera.

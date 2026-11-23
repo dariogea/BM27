@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { SlotSummary } from './slotStore';
+import { automaticSaveLabel, type SlotSummary } from './slotStore';
 
 interface Props {
   slots: SlotSummary[] | null;
@@ -25,7 +25,7 @@ function SavedRow({
     <tr>
       <td>
         {slot.automatic ? (
-          <strong>Guardado automático</strong>
+          <strong>{automaticSaveLabel(slot.name)}</strong>
         ) : (
           <label>
             Nombre{' '}
@@ -111,12 +111,9 @@ export function SavesPanel(props: Props) {
           disabled={props.busy || props.slots === null}
           onChange={(e) => props.onAutosave(e.target.checked)}
         />{' '}
-        Guardar automáticamente al terminar cada temporada
+        Guardar automáticamente después de cada jornada
       </label>
-      <p className="note">
-        El guardado automático sustituye solo su propia ranura. Tus guardados con nombre se
-        conservan.
-      </p>
+      <p className="note">Se conserva el autoguardado más reciente y una copia del anterior.</p>
       {props.slots === null ? (
         <p>Lista de partidas no disponible.</p>
       ) : props.slots.length === 0 ? (

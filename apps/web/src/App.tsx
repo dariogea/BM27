@@ -124,6 +124,18 @@ export function App() {
   const [busy, setBusy] = useState(false);
   const [slots, setSlots] = useState<SlotSummary[] | null>(null);
   const [autosave, setAutosave] = useState(true);
+  useEffect(() => {
+    let active = true;
+    void send({ type: 'listSlots' }).then((reply) => {
+      if (active && reply.type === 'slots') {
+        setSlots(reply.slots);
+        setAutosave(reply.autosave);
+      }
+    });
+    return () => {
+      active = false;
+    };
+  }, [send]);
   const [status, setStatus] = useState('');
   const [error, setError] = useState('');
   /** Bumped whenever the team's saved settings change, to reset the editors. */
@@ -157,6 +169,7 @@ export function App() {
         break;
       case 'state': {
         setView(reply.view);
+        setError(reply.storageWarning ?? '');
         setStatus(reply.message);
         if (watching) {
           if (broadcast?.type === 'matchDetail') {
@@ -320,6 +333,21 @@ export function App() {
               <h1>
                 Basketball Manager <span>2027</span>
               </h1>
+              {slots?.[0] && (
+                <div className="continue-career">
+                  <button
+                    disabled={busy}
+                    onClick={() =>
+                      void run({ type: 'loadSlot', name: slots[0]!.name }, 'Continuando partida…')
+                    }
+                  >
+                    Continuar
+                  </button>
+                  <p>
+                    {slots[0].team} · Temporada {slots[0].season}
+                  </p>
+                </div>
+              )}
               <div className="career-menu">
                 {newGameButton}
                 {loadGameButton}

@@ -187,7 +187,14 @@ export type Reply =
   | { id: number; type: 'dataPack'; summary: DataPackSummary | null; message: string }
   | { id: number; type: 'world'; result: WorldPayload }
   | { id: number; type: 'slots'; slots: SlotSummary[]; autosave: boolean; message: string }
-  | { id: number; type: 'state'; view: GameView; message: string; watchedMatchId?: string }
+  | {
+      id: number;
+      type: 'state';
+      view: GameView;
+      message: string;
+      watchedMatchId?: string;
+      storageWarning?: string;
+    }
   | {
       id: number;
       type: 'matchDetail';

@@ -39,6 +39,7 @@ function CapBar({ market }: { market: MarketData }) {
 }
 
 export function MarketPanel(props: {
+  onPlayer: (id: string) => void;
   team: MyTeamView;
   market: MarketData;
   seasonNumber: number;
@@ -110,7 +111,13 @@ export function MarketPanel(props: {
                 return (
                   <tr key={p.id} className={expired ? 'down' : ''}>
                     <td className="name">
-                      {p.firstName} {p.lastName}
+                      <button
+                        className="text-action"
+                        data-player-id={p.id}
+                        onClick={() => props.onPlayer(p.id)}
+                      >
+                        {p.firstName} {p.lastName}
+                      </button>
                     </td>
                     <td>{p.age}</td>
                     <td>{overall.toFixed(0)}</td>
@@ -238,7 +245,13 @@ export function MarketPanel(props: {
             {agents.slice(0, 60).map(({ player: p, overall, askingSalary }) => (
               <tr key={p.id}>
                 <td className="name">
-                  {p.firstName} {p.lastName}
+                  <button
+                    className="text-action"
+                    data-player-id={p.id}
+                    onClick={() => props.onPlayer(p.id)}
+                  >
+                    {p.firstName} {p.lastName}
+                  </button>
                 </td>
                 <td>{p.positions.join('/')}</td>
                 <td>{p.age}</td>

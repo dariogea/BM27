@@ -117,6 +117,17 @@ export function App() {
   const [view, setView] = useState<GameView | null>(null);
   const [tab, setTab] = useState<Tab>('portal');
   const [portalClubId, setPortalClubId] = useState<string | null>(null);
+  const [profilePlayerId, setProfilePlayerId] = useState<string | null>(null);
+  const [profileOrigin, setProfileOrigin] = useState<Tab>('portal');
+  const returnPlayerFocus = useRef<string | null>(null);
+  useEffect(() => {
+    if (tab === 'world' || !returnPlayerFocus.current) return;
+    const button = [...document.querySelectorAll<HTMLButtonElement>('[data-player-id]')].find(
+      (element) => element.dataset.playerId === returnPlayerFocus.current,
+    );
+    button?.focus();
+    returnPlayerFocus.current = null;
+  }, [tab]);
   const [competitionId, setCompetitionId] = useState('');
   const [teamChoice, setTeamChoice] = useState('');
   const [match, setMatch] = useState<ShownMatch | null>(null);
@@ -205,6 +216,7 @@ export function App() {
         ) {
           setMatch(null);
           setPortalClubId(null);
+          setProfilePlayerId(null);
           setCompetitionId(mine?.competitionId ?? reply.view.competitions[0]?.id ?? '');
           setTeamChoice(reply.view.userTeamId ?? reply.view.competitions[0]?.teamIds[0] ?? '');
           setTab('portal');
@@ -256,6 +268,7 @@ export function App() {
 
   const navigate = (next: Tab): void => {
     setPortalClubId(null);
+    setProfilePlayerId(null);
     setTab(next);
     if (next === 'saves') void run({ type: 'listSlots' }, 'Abriendo partidas…');
   };
@@ -266,6 +279,13 @@ export function App() {
   const openMatch = (matchId: string): Promise<void> =>
     run({ type: 'matchDetail', matchId }, 'Abriendo partido…');
 
+  const openPlayer = (playerId: string): void => {
+    returnPlayerFocus.current = playerId;
+    setProfileOrigin(tab);
+    setPortalClubId(null);
+    setProfilePlayerId(playerId);
+    setTab('world');
+  };
   const watchMatch = () =>
     void run({ type: 'advance', watch: true }, 'Preparando la retransmisión…');
   const revealReport = useCallback(() => setBroadcastFinished(true), []);
@@ -524,6 +544,8 @@ export function App() {
             onMatch={openMatch}
             onClub={(id) => {
               setPortalClubId(id);
+              setProfilePlayerId(null);
+              setProfileOrigin('portal');
               setTab('world');
             }}
             busy={busy}
@@ -531,11 +553,19 @@ export function App() {
         )}
         {view && tab === 'world' && (
           <WorldView
-            key={JSON.stringify([revision, portalClubId])}
+            key={JSON.stringify([revision, portalClubId, profilePlayerId])}
             view={view}
             request={requestWorld}
             initialClubId={portalClubId}
-            onBackToPortal={() => navigate('portal')}
+            initialPlayerId={profilePlayerId}
+            backLabel={
+              profileOrigin === 'market'
+                ? 'Volver al Mercado'
+                : profileOrigin === 'team'
+                  ? 'Volver a Mi equipo'
+                  : 'Volver al Portal'
+            }
+            onBackToPortal={() => navigate(profileOrigin)}
           />
         )}
         {!view && tab === 'saves' && (
@@ -613,7 +643,7 @@ export function App() {
               )}
             </p>
             {view.offseason && <OffseasonPanel report={view.offseason} />}
-            <SquadTable squad={mine.squad} />
+            <SquadTable squad={mine.squad} onPlayer={openPlayer} />
           </section>
         )}
 
@@ -650,6 +680,7 @@ export function App() {
             <h2>Mercado de {mine.name}</h2>
             <MarketPanel
               team={mine}
+              onPlayer={openPlayer}
               market={view.market}
               seasonNumber={view.seasonNumber}
               busy={busy}

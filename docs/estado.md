@@ -108,3 +108,5 @@ Reglas en [`coordinacion.md`](coordinacion.md).
 | T-040 | PROBADA | Cinco paletas de acento (violeta, azul, verde, ámbar, rojo) elegibles en Apariencia, con contraste AA comprobado por tests y axe sin violaciones en 5 paletas × 2 temas; emblema de club con colores **generados** (no reales) en cabecera y clasificación. Nombres, logos y colores reales **no incluidos**: faltan datos contrastados y licencias. |
 
 | #109 | PROBADA | Autoguardado por jornada con copia anterior atómica y Continuar en el menú principal. Preferencia y guardados manuales conservados. |
+
+| #112 | PROBADA | Fichas directas desde plantilla y mercado, con retorno a la pantalla de origen y al nombre enfocado. |

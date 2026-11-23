@@ -1,3 +1,5 @@
+import { leadersCsv } from './leaderCsv';
+import { saveTextFile } from './platform';
 import { useState } from 'react';
 import type { GameView } from './protocol';
 import type { WorldPayload, WorldQuery } from './worldTypes';
@@ -24,7 +26,36 @@ export function LeagueRecords(props: {
   const [data, setData] = useState<LeagueRecordsPayload | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
-  const changed = () => setData(null);
+  const [exporting, setExporting] = useState(false);
+  const [exportStatus, setExportStatus] = useState('');
+  const changed = () => {
+    setData(null);
+    setExportStatus('');
+  };
+  const exportTable = async (): Promise<void> => {
+    if (!data) return;
+    setExporting(true);
+    setError('');
+    setExportStatus('');
+    try {
+      const result = await saveTextFile(
+        `bm27-lideres-t${data.season}.csv`,
+        leadersCsv(data),
+        'csv',
+      );
+      setExportStatus(
+        result.kind === 'saved'
+          ? `Tabla exportada · ${data.rows.length} jugadores`
+          : 'Exportación cancelada.',
+      );
+    } catch (error) {
+      setError(
+        `No se pudo exportar la tabla. ${error instanceof Error ? error.message : String(error)}`,
+      );
+    } finally {
+      setExporting(false);
+    }
+  };
   const percentage = metric.endsWith('Percent');
   return (
     <section className="league-records" aria-label="Líderes y palmarés">
@@ -192,6 +223,17 @@ export function LeagueRecords(props: {
       </p>
       {data && (
         <>
+          <div className="bar">
+            <button
+              disabled={exporting || data.rows.length === 0}
+              onClick={() => void exportTable()}
+            >
+              {exporting ? 'Exportando…' : 'Exportar tabla CSV'}
+            </button>
+            <span className="note" role="status">
+              {exportStatus}
+            </span>
+          </div>
           <h3>
             {data.competitionName} · temporada {data.season}
           </h3>

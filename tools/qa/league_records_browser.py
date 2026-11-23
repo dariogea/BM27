@@ -1,3 +1,5 @@
+import csv
+import io
 import json
 import math
 import os
@@ -82,6 +84,20 @@ with sync_playwright() as p:
                 assert math.isclose(row['value'],source['points'] * 2400 / source['seconds'])
             expect(records.get_by_role('columnheader',name='Por 40 min',exact=True)).to_be_visible()
             audit(label+'-'+theme+'-per40-minimum-time')
+            with page.expect_download() as download:
+                records.get_by_role('button',name='Exportar tabla CSV',exact=True).click()
+            exported=list(csv.DictReader(io.StringIO(Path(download.value.path()).read_text(encoding='utf-8-sig')),delimiter=';'))
+            assert len(exported)==len(per40['rows'])
+            for exported_row,source in zip(exported,per40['rows']):
+                assert exported_row['Jugador']==source['name']
+                assert exported_row['Club']==source['teamName']
+                assert exported_row['Unidad']=='por 40 min'
+                assert exported_row['Unidad de la base']=='segundos'
+                assert exported_row['Factor de escala']=='2400'
+                assert math.isclose(float(exported_row['Valor'].replace(',','.')),source['value'])
+                assert exported_row['Mínimo de minutos']=='50'
+            expect(records.get_by_text('Tabla exportada',exact=False)).to_be_visible()
+
             records.get_by_role('spinbutton',name='Mínimo de minutos',exact=True).fill('0')
             records.get_by_role('combobox',name='Estadística',exact=True).select_option('threePointPercent')
             records.get_by_role('spinbutton',name='Mínimo de intentos',exact=True).fill('5')

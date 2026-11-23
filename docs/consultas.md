@@ -158,3 +158,7 @@ El archivo usa UTF-8 con marca de codificación, separador de punto y coma y com
 hojas de cálculo en español. Los nombres se entrecomillan y se preservan como texto.
 En el navegador se descarga el archivo. En escritorio se selecciona el destino mediante el
 diálogo nativo con extensión CSV. Cancelar o fallar la exportación no altera la partida.
+
+## Evolución del jugador (#142)
+
+Cuando hay al menos dos registros con partidos jugados, la ficha permite comparar las medias de puntos, rebotes, asistencias y minutos. Cada barra indica la temporada, el club, la competición y los partidos de su muestra. La tabla histórica sigue disponible.

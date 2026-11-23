@@ -128,3 +128,5 @@ Reglas en [`coordinacion.md`](coordinacion.md).
 | #136 | PROBADA | Recuperación explícita después de un autoguardado dañado y protección de la copia anterior en el primer guardado posterior. |
 
 | #139 | PROBADA | Atajos de teclado del reproductor con los controles internos operativos. |
+
+| #142 | PROBADA | Gráfico de puntos, rebotes, asistencias y minutos por partido en la ficha del jugador, con temporadas y clubes por separado. |

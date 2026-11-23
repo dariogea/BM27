@@ -122,3 +122,49 @@
   background: var(--raised);
   overflow-wrap: anywhere;
 }
+
+.player-trend {
+  display: grid;
+  gap: 10px;
+  margin: 0 0 16px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+.player-trend figcaption {
+  font-weight: 700;
+}
+.player-trend label {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.player-trend ol {
+  display: grid;
+  gap: 8px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.player-trend li {
+  display: grid;
+  grid-template-columns: minmax(14rem, 1fr) minmax(5rem, 1fr) 4em 6em;
+  gap: 12px;
+  align-items: center;
+  font-variant-numeric: tabular-nums;
+}
+.player-trend-track {
+  display: block;
+  height: 7px;
+  border-radius: 6px;
+  background: var(--raised);
+}
+.player-trend-track span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--accent);
+}
+.player-trend small {
+  color: var(--muted);
+}

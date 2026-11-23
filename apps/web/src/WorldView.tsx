@@ -1,3 +1,4 @@
+import { PlayerTrend } from './PlayerTrend';
 import { ClubProvenance } from './ClubProvenance';
 import { LeagueRecords } from './LeagueRecords';
 import { useEffect, useRef, useState } from 'react';
@@ -363,6 +364,7 @@ export function WorldView(props: {
             ))}
           </div>
           <h4>Estadísticas por temporada</h4>
+          <PlayerTrend key={data.id} seasons={data.seasons} />
           {data.seasons.length === 0 ? (
             <p className="note">Todavía no hay partidos registrados para este jugador.</p>
           ) : (

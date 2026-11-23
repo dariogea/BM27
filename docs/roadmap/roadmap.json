@@ -2257,7 +2257,11 @@
             },
             {
               "t": "Mostrar evolución temporal sin mezclar temporadas",
-              "s": "pendiente"
+              "s": "en-curso",
+              "p": 50,
+              "i": 142,
+              "o": "codex",
+              "n": "En la ficha de jugador, comparación de medias por temporada y club a partir del historial real."
             },
             {
               "t": "Exportar consultas estadísticas con sus unidades",

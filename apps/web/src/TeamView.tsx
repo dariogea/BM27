@@ -124,7 +124,13 @@ function Attr({ value }: { value: number }) {
   );
 }
 
-export function SquadTable({ squad }: { squad: SquadPlayer[] }) {
+export function SquadTable({
+  squad,
+  onPlayer,
+}: {
+  squad: SquadPlayer[];
+  onPlayer: (id: string) => void;
+}) {
   const [sort, setSort] = useState<{ key: SortKey; descending: boolean }>({
     key: 'order',
     descending: false,
@@ -208,7 +214,13 @@ export function SquadTable({ squad }: { squad: SquadPlayer[] }) {
             return (
               <tr key={p.id} className={index < 5 ? 'starter' : ''}>
                 <td className="name">
-                  {p.firstName} {p.lastName}
+                  <button
+                    className="text-action"
+                    data-player-id={p.id}
+                    onClick={() => onPlayer(p.id)}
+                  >
+                    {p.firstName} {p.lastName}
+                  </button>
                   {index < 5 ? ' *' : ''}
                   {p.injury ? (
                     <span

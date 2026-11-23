@@ -107,3 +107,9 @@ python tools/qa/league_records_browser.py
 ![Líderes y palmarés en PC](screenshots/league-leaders-desktop-dark.png)
 
 Validación de #72: **280/280 pruebas** de la suite completa, lint, tipos, formato y compilación correctos. Las diez comprobaciones específicas y las dieciséis de regresión del buscador/fichas pasaron sin errores JavaScript, desbordamiento global ni infracciones axe detectadas.
+
+## Acceso desde la plantilla y el mercado (#112)
+
+Los nombres de la plantilla, de los contratos y de los agentes libres abren su ficha completa.
+El botón de regreso vuelve a la pantalla de origen y enfoca el nombre desde el que se abrió.
+Las consultas conservan las reglas de visibilidad del potencial y no modifican la partida.

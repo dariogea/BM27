@@ -479,7 +479,7 @@ _La cara del juego: clara, rápida y accesible._
   - ✅ Guardar y cargar (`F1`)
 - **Pantallas por hacer** — 47 %
   - ✅ Plantilla y tácticas de cualquier equipo (`F1` · @codex · [#67](https://github.com/dariogea/BM27/issues/67)) — _Buscador paginado y fichas enlazadas en Mundo, con acceso también desde la clasificación y el próximo rival del Portal (#83)._
-  - 🔄 Ficha de jugador completa (`F1` · 60 % · @codex · [#67](https://github.com/dariogea/BM27/issues/67)) — _Atributos, contrato, lesión y estadísticas conservadas. Potencial rival oculto; trayectoria detallada y ojeo pendientes._
+  - 🔄 Ficha de jugador completa (`F1` · 60 % · @codex · [#67](https://github.com/dariogea/BM27/issues/67)) — _Atributos, contrato, lesión y estadísticas conservadas. Acceso desde plantilla y mercado con retorno por teclado (#112). Potencial rival oculto; trayectoria detallada y ojeo pendientes._
   - ✅ Líderes estadísticos (`F1` · @codex · [#72](https://github.com/dariogea/BM27/issues/72)) — _Consultas de datos conservados por competición y temporada. Líderes con muestras explícitas; palmarés solo de temporadas cerradas, sin títulos anteriores a la partida._
   - ✅ Palmarés (`F1` · @codex · [#72](https://github.com/dariogea/BM27/issues/72)) — _Consultas de datos conservados por competición y temporada. Líderes con muestras explícitas; palmarés solo de temporadas cerradas, sin títulos anteriores a la partida._
   - ✅ Buscador de jugadores y equipos (`F1` · @codex · [#67](https://github.com/dariogea/BM27/issues/67)) — _Buscador paginado y fichas enlazadas en Mundo, con datos del Worker y verificación real en PC._

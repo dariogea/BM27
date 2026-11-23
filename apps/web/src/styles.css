@@ -1215,3 +1215,18 @@ button.portal-club-link.opponent-name {
 .watch-match-button {
   white-space: nowrap;
 }
+
+.continue-career {
+  margin-bottom: 20px;
+}
+.continue-career > button {
+  min-width: 190px;
+  background: var(--accent);
+  color: var(--accent-text);
+  border-color: var(--accent);
+}
+.continue-career p {
+  margin: 8px 0;
+  color: var(--muted);
+  font-size: 13px;
+}

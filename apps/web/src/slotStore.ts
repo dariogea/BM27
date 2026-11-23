@@ -2,6 +2,11 @@ import { exportSave, importSave, type SaveStore } from '@bm27/core';
 import type { Universe } from '@bm27/schema';
 
 export const AUTO_SAVE = '__bm27_autosave__';
+export const PREVIOUS_AUTO_SAVE = '__bm27_autosave_previous__';
+export const isAutomaticSlot = (name: string): boolean =>
+  name === AUTO_SAVE || name === PREVIOUS_AUTO_SAVE;
+export const automaticSaveLabel = (name: string): string =>
+  name === PREVIOUS_AUTO_SAVE ? 'Guardado automático anterior' : 'Guardado automático';
 export interface SlotSummary {
   name: string;
   seed: string;
@@ -115,13 +120,25 @@ export class IndexedDbSaveStore implements SaveStore {
         team: universe.teams.find((t) => t.id === universe.userTeamId)?.name ?? 'Sin equipo',
         updatedAt: new Date().toISOString(),
         bytes: new TextEncoder().encode(json).byteLength,
-        automatic: name === AUTO_SAVE,
+        automatic: isAutomaticSlot(name),
       };
       const db = await this.open();
       const tx = db.transaction(['payloads', 'summaries'], 'readwrite');
       const done = finished(tx);
-      tx.objectStore('payloads').put({ name, json });
-      tx.objectStore('summaries').put(summary);
+      const data = tx.objectStore('payloads');
+      const meta = tx.objectStore('summaries');
+      if (name === AUTO_SAVE) {
+        const previousData = data.get(AUTO_SAVE) as IDBRequest<Payload | undefined>;
+        const previousSummary = meta.get(AUTO_SAVE) as IDBRequest<SlotSummary | undefined>;
+        previousSummary.onsuccess = () => {
+          if (previousData.result && previousSummary.result) {
+            data.put({ ...previousData.result, name: PREVIOUS_AUTO_SAVE });
+            meta.put({ ...previousSummary.result, name: PREVIOUS_AUTO_SAVE });
+          }
+        };
+      }
+      data.put({ name, json });
+      meta.put(summary);
       await done;
     });
   }
@@ -147,7 +164,10 @@ export class IndexedDbSaveStore implements SaveStore {
         finished(tx),
       ]);
       return rows.sort(
-        (a, b) => b.updatedAt.localeCompare(a.updatedAt) || a.name.localeCompare(b.name),
+        (a, b) =>
+          b.updatedAt.localeCompare(a.updatedAt) ||
+          Number(a.name === PREVIOUS_AUTO_SAVE) - Number(b.name === PREVIOUS_AUTO_SAVE) ||
+          a.name.localeCompare(b.name),
       );
     });
   }
@@ -167,7 +187,7 @@ export class IndexedDbSaveStore implements SaveStore {
   async rename(oldName: string, newName: string): Promise<void> {
     oldName = checkedName(oldName);
     newName = checkedName(newName);
-    if (oldName === AUTO_SAVE || newName === AUTO_SAVE)
+    if (isAutomaticSlot(oldName) || isAutomaticSlot(newName))
       throw new Error('El nombre del guardado automático está reservado.');
     if (oldName === newName) return;
     return this.perform(async () => {

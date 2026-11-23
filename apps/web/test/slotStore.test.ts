@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { IDBFactory } from 'fake-indexeddb';
 import { advanceSeason, generateUniverse } from '@bm27/core';
-import { AUTO_SAVE, IndexedDbSaveStore } from '../src/slotStore';
+import { AUTO_SAVE, PREVIOUS_AUTO_SAVE, IndexedDbSaveStore } from '../src/slotStore';
 
 const world = generateUniverse({ seed: 'internal-saves' });
 const open: IndexedDbSaveStore[] = [];
@@ -99,6 +99,22 @@ describe('IndexedDB save slots', () => {
     quota.mockRestore();
     await retry.save('Nueva', world);
     expect(await retry.load('Nueva')).toEqual(world);
+  });
+  it('rotates only the automatic slot and keeps the previous complete snapshot', async () => {
+    const db = store();
+    const next = { ...world, seed: 'next-checkpoint' };
+    const latest = { ...world, seed: 'latest-checkpoint' };
+    await db.save('Manual', world);
+    await db.save(AUTO_SAVE, world);
+    await db.save(AUTO_SAVE, next);
+    expect(await db.load(PREVIOUS_AUTO_SAVE)).toEqual(world);
+    await db.save(AUTO_SAVE, latest);
+    expect(await db.load(AUTO_SAVE)).toEqual(latest);
+    expect(await db.load(PREVIOUS_AUTO_SAVE)).toEqual(next);
+    expect(await db.load('Manual')).toEqual(world);
+    expect((await db.summaries()).filter((row) => row.automatic)).toHaveLength(2);
+    await expect(db.rename(PREVIOUS_AUTO_SAVE, 'Copy')).rejects.toThrow('reservado');
+    await expect(db.rename('Manual', PREVIOUS_AUTO_SAVE)).rejects.toThrow('reservado');
   });
   it('rejects empty or oversized names and reports missing saves', async () => {
     const db = store();

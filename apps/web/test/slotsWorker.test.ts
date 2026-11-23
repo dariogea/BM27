@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { IDBFactory } from 'fake-indexeddb';
 import type { Command, Reply } from '../src/protocol';
-import { AUTO_SAVE } from '../src/slotStore';
+import { AUTO_SAVE, PREVIOUS_AUTO_SAVE } from '../src/slotStore';
 
 let factory: IDBFactory;
 let send: (command: Command) => Promise<Reply>;
@@ -93,5 +93,32 @@ it('failed automatic storage reports the problem while retaining the completed s
   if (ended.type !== 'state') throw Error('Season lost');
   expect(ended.view.seasonNumber).toBe(2);
   expect(ended.message).toContain('No se pudo completar el guardado automático');
+  expect(ended.storageWarning).toContain('No se pudo completar el guardado automático');
   expect((await send({ id: 3, type: 'exportSave' })).type).toBe('save');
+});
+
+it('checkpoints each matchday, restores its predecessor, and keeps disabled autosaves untouched', async () => {
+  await send({ id: 1, type: 'generate', seed: 'matchday-checkpoint' });
+  await send({ id: 2, type: 'saveSlot', name: 'Manual' });
+  const first = await send({ id: 3, type: 'advance' });
+  const second = await send({ id: 4, type: 'advance' });
+  if (first.type !== 'state' || second.type !== 'state') throw Error('Matchday failed');
+  expect(first.message).toContain('Guardado automático completado');
+  const loaded = await send({ id: 5, type: 'loadSlot', name: PREVIOUS_AUTO_SAVE });
+  if (loaded.type !== 'state') throw Error('Checkpoint missing');
+  expect(loaded.view).toEqual(first.view);
+  expect(await send({ id: 6, type: 'saveSlot', name: PREVIOUS_AUTO_SAVE })).toMatchObject({
+    type: 'error',
+  });
+  const replayed = await send({ id: 7, type: 'advance' });
+  if (replayed.type !== 'state') throw Error('Replay failed');
+  expect(replayed.view).toEqual(second.view);
+  await send({ id: 8, type: 'setAutosave', enabled: false });
+  await send({ id: 9, type: 'advance' });
+  const unchanged = await send({ id: 10, type: 'loadSlot', name: AUTO_SAVE });
+  if (unchanged.type !== 'state') throw Error('Checkpoint missing');
+  expect(unchanged.view).toEqual(second.view);
+  const manual = await send({ id: 11, type: 'loadSlot', name: 'Manual' });
+  if (manual.type !== 'state') throw Error('Manual save lost');
+  expect(manual.view.step).toBe(0);
 });

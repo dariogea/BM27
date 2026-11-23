@@ -1,5 +1,5 @@
 import { queryWorld } from './worldData';
-import { AUTO_SAVE, IndexedDbSaveStore } from './slotStore';
+import { AUTO_SAVE, isAutomaticSlot, IndexedDbSaveStore } from './slotStore';
 /// <reference lib="webworker" />
 import {
   advanceSeason,
@@ -377,11 +377,13 @@ function describeMine(played: MatchResult[], u: Universe, before: string | null)
 async function handle(command: Command): Promise<Reply> {
   const start = performance.now();
   const ms = (): number => Math.round(performance.now() - start);
+  let storageWarning: string | undefined;
   const state = (message: string): Extract<Reply, { type: 'state' }> => ({
     id: command.id,
     type: 'state',
     view: viewOf(need()),
     message,
+    ...(storageWarning ? { storageWarning } : {}),
   });
 
   const slots = async (message: string): Promise<Reply> => ({
@@ -399,14 +401,15 @@ async function handle(command: Command): Promise<Reply> {
       }
       return '';
     } catch (error) {
-      return ` No se pudo completar el guardado automático: ${error instanceof Error ? error.message : String(error)} La partida sigue abierta; guarda una copia en archivo.`;
+      storageWarning = `No se pudo completar el guardado automático: ${error instanceof Error ? error.message : String(error)} La partida sigue abierta; guarda una copia en archivo.`;
+      return ` ${storageWarning}`;
     }
   };
   switch (command.type) {
     case 'listSlots':
       return slots('Partidas guardadas en este dispositivo.');
     case 'saveSlot': {
-      if (command.name.trim() === AUTO_SAVE)
+      if (isAutomaticSlot(command.name.trim()))
         throw new Error('Ese nombre está reservado para el guardado automático.');
       await slotStore.save(command.name, need());
       return slots('Partida guardada en el dispositivo.');
@@ -511,11 +514,11 @@ async function handle(command: Command): Promise<Reply> {
       const seasonNumber = need().seasonNumber;
       const { season, played } = step();
       const mine = describeMine(played, need(), userTeamId);
-      const saved = season ? await automatic() : '';
+      const saved = await automatic();
       const reply = state(
         season
           ? `Temporada ${seasonNumber} terminada.${mine}${saved}`
-          : `Jornada jugada: ${played.length} partidos.${mine}`,
+          : `Jornada jugada: ${played.length} partidos.${mine}${saved}`,
       );
       if (command.watch && userTeamId) {
         reply.watchedMatchId = played.find((match) => myMatches.has(match.id))?.id;

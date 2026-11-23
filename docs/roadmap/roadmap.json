@@ -1173,15 +1173,15 @@
           "t": "Varias ranuras con nombre dentro de la aplicación",
           "s": "hecho",
           "i": 16,
-          "n": "IndexedDB local con nombres, metadatos, renombrado y protección de otras ranuras; autoguardado de fin de temporada configurable. Archivos como copia portable.",
+          "n": "IndexedDB local con nombres, metadatos, renombrado y protección de otras ranuras; autoguardado por jornada configurable. Archivos como copia portable.",
           "o": "codex"
         },
         {
-          "t": "Guardado automático al cerrar temporada",
+          "t": "Guardado automático por jornada y al cerrar temporada",
           "s": "hecho",
           "i": 16,
           "o": "codex",
-          "n": "IndexedDB local con nombres, metadatos, renombrado y protección de otras ranuras; autoguardado de fin de temporada configurable. Archivos como copia portable."
+          "n": "IndexedDB local con nombres, metadatos, renombrado y protección de otras ranuras; autoguardado por jornada configurable. Archivos como copia portable."
         },
         {
           "t": "Política de historial y compactación",
@@ -1203,8 +1203,11 @@
         },
         {
           "t": "Copias de seguridad automáticas",
-          "s": "pendiente",
-          "f": "F2"
+          "s": "hecho",
+          "f": "F2",
+          "o": "codex",
+          "i": 109,
+          "n": "Autoguardado actual y copia anterior rotados atómicamente al terminar cada jornada. Menú Continuar con el guardado más reciente."
         },
         {
           "t": "Repeticiones verificadas y rechazo de detalles no verificables al cargar",

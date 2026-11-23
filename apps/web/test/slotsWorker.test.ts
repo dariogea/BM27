@@ -1,3 +1,4 @@
+import { exportSave, importSave, prepareTeam } from '@bm27/core';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { IDBFactory } from 'fake-indexeddb';
 import type { Command, Reply } from '../src/protocol';
@@ -121,4 +122,26 @@ it('checkpoints each matchday, restores its predecessor, and keeps disabled auto
   const manual = await send({ id: 11, type: 'loadSlot', name: 'Manual' });
   if (manual.type !== 'state') throw Error('Manual save lost');
   expect(manual.view.step).toBe(0);
+});
+
+it('shows injured squad members without changing the prepared starting five', async () => {
+  const generated = await send({ id: 1, type: 'generate', seed: 'squad-injury-visibility' });
+  if (generated.type !== 'state') throw Error('Generation failed');
+  const teamId = generated.view.competitions[0]!.teamIds[0]!;
+  await send({ id: 2, type: 'chooseTeam', teamId });
+  const saved = await send({ id: 3, type: 'exportSave' });
+  if (saved.type !== 'save') throw Error('Export failed');
+  const world = importSave(saved.json);
+  const team = world.teams.find((t) => t.id === teamId)!;
+  const players = new Map(world.players.map((p) => [p.id, p]));
+  for (const id of team.playerIds.slice(0, 2)) players.get(id)!.injury = { gamesRemaining: 3 };
+  const expectedStarters = prepareTeam(team, players)
+    .players.slice(0, 5)
+    .map((p) => p.id);
+  const loaded = await send({ id: 4, type: 'importSave', json: exportSave(world) });
+  if (loaded.type !== 'state' || !loaded.view.myTeam) throw Error('Load failed');
+  const roster = loaded.view.myTeam.squad;
+  expect(roster).toHaveLength(team.playerIds.length);
+  expect(roster.filter((row) => row.player.injury)).toHaveLength(2);
+  expect(roster.slice(0, 5).map((row) => row.player.id)).toEqual(expectedStarters);
 });

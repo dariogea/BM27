@@ -135,7 +135,19 @@ export function SquadTable({
     key: 'order',
     descending: false,
   });
-  const rows = squad.map((row, index) => ({ row, index }));
+  const [query, setQuery] = useState('');
+  const [position, setPosition] = useState<Position | ''>('');
+  const [availability, setAvailability] = useState('all');
+  const rows = squad
+    .map((row, index) => ({ row, index }))
+    .filter(
+      ({ row: { player } }) =>
+        `${player.firstName} ${player.lastName}`
+          .toLocaleLowerCase('es')
+          .includes(query.trim().toLocaleLowerCase('es')) &&
+        (!position || player.positions.includes(position)) &&
+        (availability === 'all' || Boolean(player.injury) === (availability === 'injured')),
+    );
   if (sort.key !== 'order') {
     rows.sort((x, y) => {
       const a = sortValue(x.row, sort.key);
@@ -173,107 +185,148 @@ export function SquadTable({
     );
   };
   return (
-    <div className="scroll" tabIndex={0} role="region" aria-label="Plantilla y estadísticas">
-      <table className="squad-table">
-        <thead>
-          <tr>
-            {header('name', 'Jugador', 'Ordenar por nombre', 'name')}
-            {header('pos', 'Pos')}
-            {header('age', 'Edad')}
-            {header('height', 'Alt')}
-            {header('overall', 'VAL', 'Valoración global')}
-            {header(
-              'potential',
-              'POT',
-              'Techo de habilidad si se desarrolla del todo (solo lo ves en tu equipo)',
-            )}
-            {header('close', 'Aro', 'Tiro cerca del aro')}
-            {header('mid', 'Med', 'Media distancia')}
-            {header('three', 'Tri', 'Triple')}
-            {header('pass', 'Pas', 'Pase')}
-            {header('handle', 'Bot', 'Bote')}
-            {header('perimeter', 'DEx', 'Defensa exterior')}
-            {header('interior', 'DIn', 'Defensa interior')}
-            {header('rebound', 'Reb', 'Rebote defensivo')}
-            {header('speed', 'Vel', 'Velocidad')}
-            {header('stamina', 'Res', 'Resistencia')}
-            {header('salary', 'Salario', 'Salario anual')}
-            {header('until', 'Hasta', 'Última temporada del contrato')}
-            {header('games', 'PJ')}
-            {header('minutes', 'MIN')}
-            {header('points', 'PTS')}
-            {header('rebounds', 'REB')}
-            {header('assists', 'AS')}
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map(({ row, index }) => {
-            const { player: p, overall, stats, contract, expired } = row;
-            const a = p.attributes;
-            const games = stats?.games ?? 0;
-            return (
-              <tr key={p.id} className={index < 5 ? 'starter' : ''}>
-                <td className="name">
-                  <button
-                    className="text-action"
-                    data-player-id={p.id}
-                    onClick={() => onPlayer(p.id)}
-                  >
-                    {p.firstName} {p.lastName}
-                  </button>
-                  {index < 5 ? ' *' : ''}
-                  {p.injury ? (
-                    <span
-                      className="badge badge-injury"
-                      title="Lesionado: no juega hasta que se recupere"
+    <div>
+      <div className="bar" role="search" aria-label="Filtrar plantilla">
+        <label>
+          Jugador de la plantilla
+          <input type="search" value={query} onChange={(e) => setQuery(e.target.value)} />
+        </label>
+        <label>
+          Posición de la plantilla
+          <select value={position} onChange={(e) => setPosition(e.target.value as Position | '')}>
+            <option value="">Todas las posiciones</option>
+            {Object.entries(POSITION_LABELS).map(([id, label]) => (
+              <option key={id} value={id}>
+                {label}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label>
+          Disponibilidad
+          <select value={availability} onChange={(e) => setAvailability(e.target.value)}>
+            <option value="all">Todos</option>
+            <option value="healthy">Disponibles</option>
+            <option value="injured">Lesionados</option>
+          </select>
+        </label>
+        <button
+          disabled={!query && !position && availability === 'all'}
+          onClick={() => {
+            setQuery('');
+            setPosition('');
+            setAvailability('all');
+          }}
+        >
+          Limpiar filtros
+        </button>
+        <span className="note" role="status">
+          {rows.length} de {squad.length} jugadores
+        </span>
+      </div>
+      {rows.length === 0 && (
+        <p className="empty-state">No hay jugadores que cumplan estos filtros.</p>
+      )}
+      <div className="scroll" tabIndex={0} role="region" aria-label="Plantilla y estadísticas">
+        <table className="squad-table">
+          <thead>
+            <tr>
+              {header('name', 'Jugador', 'Ordenar por nombre', 'name')}
+              {header('pos', 'Pos')}
+              {header('age', 'Edad')}
+              {header('height', 'Alt')}
+              {header('overall', 'VAL', 'Valoración global')}
+              {header(
+                'potential',
+                'POT',
+                'Techo de habilidad si se desarrolla del todo (solo lo ves en tu equipo)',
+              )}
+              {header('close', 'Aro', 'Tiro cerca del aro')}
+              {header('mid', 'Med', 'Media distancia')}
+              {header('three', 'Tri', 'Triple')}
+              {header('pass', 'Pas', 'Pase')}
+              {header('handle', 'Bot', 'Bote')}
+              {header('perimeter', 'DEx', 'Defensa exterior')}
+              {header('interior', 'DIn', 'Defensa interior')}
+              {header('rebound', 'Reb', 'Rebote defensivo')}
+              {header('speed', 'Vel', 'Velocidad')}
+              {header('stamina', 'Res', 'Resistencia')}
+              {header('salary', 'Salario', 'Salario anual')}
+              {header('until', 'Hasta', 'Última temporada del contrato')}
+              {header('games', 'PJ')}
+              {header('minutes', 'MIN')}
+              {header('points', 'PTS')}
+              {header('rebounds', 'REB')}
+              {header('assists', 'AS')}
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map(({ row, index }) => {
+              const { player: p, overall, stats, contract, expired } = row;
+              const a = p.attributes;
+              const games = stats?.games ?? 0;
+              return (
+                <tr key={p.id} className={index < 5 ? 'starter' : ''}>
+                  <td className="name">
+                    <button
+                      className="text-action"
+                      data-player-id={p.id}
+                      onClick={() => onPlayer(p.id)}
                     >
-                      Lesión · {p.injury.gamesRemaining}{' '}
-                      {p.injury.gamesRemaining === 1 ? 'partido' : 'partidos'}
-                    </span>
-                  ) : null}
-                </td>
-                <td>{p.positions.join('/')}</td>
-                <td>{p.age}</td>
-                <td>{p.heightCm}</td>
-                <Attr value={Math.round(overall)} />
-                <Attr value={p.potential} />
-                <Attr value={a.offensive.closeShot} />
-                <Attr value={a.offensive.midRange} />
-                <Attr value={a.offensive.threePoint} />
-                <Attr value={a.offensive.passing} />
-                <Attr value={a.offensive.ballHandling} />
-                <Attr value={a.defensive.perimeterDefense} />
-                <Attr value={a.defensive.interiorDefense} />
-                <Attr value={a.defensive.defensiveRebound} />
-                <Attr value={a.physical.speed} />
-                <Attr value={a.physical.stamina} />
-                <td>{contract ? `${Math.round(contract.salary / 1000)} k€` : '–'}</td>
-                <td>
-                  {contract ? contract.endSeason : '–'}
-                  {expired ? (
-                    <span className="badge badge-expired" title="Contrato cumplido: renuévalo">
-                      Cumplido
-                    </span>
-                  ) : null}
-                </td>
-                <td>{games || '–'}</td>
-                <td>{stats && games ? minutes(Math.round(stats.seconds / games)) : '–'}</td>
-                <td>{per(stats?.points ?? 0, games)}</td>
-                <td>
-                  {per((stats?.offensiveRebounds ?? 0) + (stats?.defensiveRebounds ?? 0), games)}
-                </td>
-                <td>{per(stats?.assists ?? 0, games)}</td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-      <p className="note">
-        * titular en el próximo partido. Atributos (1–99):{' '}
-        <span className="attr attr-t1">bajo</span> <span className="attr attr-t2">justo</span>{' '}
-        <span className="attr attr-t3">bueno</span> <span className="attr attr-t4">muy bueno</span>{' '}
-        <span className="attr attr-t5">élite</span>. MIN, PTS, REB y AS por partido.
-      </p>
+                      {p.firstName} {p.lastName}
+                    </button>
+                    {index < 5 ? ' *' : ''}
+                    {p.injury ? (
+                      <span className="badge badge-injury" title="Tiempo de recuperación pendiente">
+                        Lesión · {p.injury.gamesRemaining}{' '}
+                        {p.injury.gamesRemaining === 1 ? 'partido' : 'partidos'}
+                      </span>
+                    ) : null}
+                  </td>
+                  <td>{p.positions.join('/')}</td>
+                  <td>{p.age}</td>
+                  <td>{p.heightCm}</td>
+                  <Attr value={Math.round(overall)} />
+                  <Attr value={p.potential} />
+                  <Attr value={a.offensive.closeShot} />
+                  <Attr value={a.offensive.midRange} />
+                  <Attr value={a.offensive.threePoint} />
+                  <Attr value={a.offensive.passing} />
+                  <Attr value={a.offensive.ballHandling} />
+                  <Attr value={a.defensive.perimeterDefense} />
+                  <Attr value={a.defensive.interiorDefense} />
+                  <Attr value={a.defensive.defensiveRebound} />
+                  <Attr value={a.physical.speed} />
+                  <Attr value={a.physical.stamina} />
+                  <td>{contract ? `${Math.round(contract.salary / 1000)} k€` : '–'}</td>
+                  <td>
+                    {contract ? contract.endSeason : '–'}
+                    {expired ? (
+                      <span className="badge badge-expired" title="Contrato cumplido: renuévalo">
+                        Cumplido
+                      </span>
+                    ) : null}
+                  </td>
+                  <td>{games || '–'}</td>
+                  <td>{stats && games ? minutes(Math.round(stats.seconds / games)) : '–'}</td>
+                  <td>{per(stats?.points ?? 0, games)}</td>
+                  <td>
+                    {per((stats?.offensiveRebounds ?? 0) + (stats?.defensiveRebounds ?? 0), games)}
+                  </td>
+                  <td>{per(stats?.assists ?? 0, games)}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+        <p className="note">
+          * titular en el próximo partido. Atributos (1–99):{' '}
+          <span className="attr attr-t1">bajo</span> <span className="attr attr-t2">justo</span>{' '}
+          <span className="attr attr-t3">bueno</span>{' '}
+          <span className="attr attr-t4">muy bueno</span>{' '}
+          <span className="attr attr-t5">élite</span>. MIN, PTS, REB y AS por partido.
+        </p>
+      </div>
     </div>
   );
 }

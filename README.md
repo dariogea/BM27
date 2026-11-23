@@ -91,7 +91,7 @@ Las barras de fase muestran cobertura del plan; el índice global usa pesos dist
 ```mermaid
 flowchart LR
   F0["F0 Fundaciones<br/>76 %"]
-  F1["F1 Primera versión jugable<br/>59 %"]
+  F1["F1 Primera versión jugable<br/>60 %"]
   F2["F2 Profundidad de gestión<br/>5 %"]
   F3["F3 Mundo, datos y mods<br/>9 %"]
   F4["F4 Presentación<br/>27 %"]
@@ -101,7 +101,7 @@ flowchart LR
 ```
 
 - **F0 · Fundaciones**: 76 % `███████████████░░░░░`
-- **F1 · Primera versión jugable**: 59 % `████████████░░░░░░░░`
+- **F1 · Primera versión jugable**: 60 % `████████████░░░░░░░░`
 - **F2 · Profundidad de gestión**: 5 % `█░░░░░░░░░░░░░░░░░░░`
 - **F3 · Mundo, datos y mods**: 9 % `██░░░░░░░░░░░░░░░░░░`
 - **F4 · Presentación**: 27 % `█████░░░░░░░░░░░░░░░`

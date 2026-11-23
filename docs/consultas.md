@@ -125,3 +125,14 @@ sin partido de esa jornada. La lista procede de los encuentros del núcleo y con
 La consulta no inicia otra temporada ni altera resultados. Antes de empezar una temporada
 el calendario sigue pendiente de generación. La interfaz no asigna fechas civiles ni anticipa
 cruces de playoffs que aún no estén decididos.
+
+## Rendimiento por tiempo jugado (#118)
+
+En **Mundo → Líderes y palmarés**, el cálculo **Por 40 minutos** divide la producción por el
+tiempo total realmente jugado y la multiplica por 40. El dato se basa en segundos conservados,
+incluidas las prórrogas. Una competición de otra duración mantiene esa misma unidad comparativa.
+
+El filtro **Mínimo de minutos** sirve para acotar la muestra, también al consultar porcentajes.
+Las cifras de tiro siguen siendo aciertos entre intentos. Los jugadores sin tiempo jugado no
+entran en las tasas por 40 minutos. Las consultas muestran las unidades y la base del cálculo.
+La producción por posesión todavía no se ofrece.

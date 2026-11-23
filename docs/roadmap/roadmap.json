@@ -2195,7 +2195,11 @@
           "c": [
             {
               "t": "Normalizar estadísticas por posesión y por minuto",
-              "s": "pendiente"
+              "s": "en-curso",
+              "p": 50,
+              "o": "codex",
+              "i": 118,
+              "n": "Líderes por 40 minutos a partir de los segundos reales en pista y filtro mínimo de minutos. Normalización por posesiones pendiente."
             },
             {
               "t": "Calcular eficiencia de tiro y uso de posesiones",

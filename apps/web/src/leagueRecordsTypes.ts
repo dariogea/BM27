@@ -8,6 +8,7 @@ export const LEADER_METRICS = {
   threePointPercent: '% triples',
   freeThrowPercent: '% tiros libres',
 } as const;
+export type LeaderMode = 'average' | 'total' | 'per40';
 export type LeaderMetric = keyof typeof LEADER_METRICS;
 export interface LeagueRecordsQuery {
   type: 'worldRecords';
@@ -15,9 +16,10 @@ export interface LeagueRecordsQuery {
   /** Zero chooses the latest recorded season, including a season in progress. */
   season: number;
   metric: LeaderMetric;
-  mode: 'average' | 'total';
+  mode: LeaderMode;
   minGames: number;
   minAttempts: number;
+  minMinutes?: number;
 }
 export interface LeagueRecordsPayload {
   kind: 'records';
@@ -27,10 +29,11 @@ export interface LeagueRecordsPayload {
   completed: boolean;
   seasons: number[];
   metric: LeaderMetric;
-  mode: 'average' | 'total';
+  mode: LeaderMode;
   total: number;
   minGames: number;
   minAttempts: number;
+  minMinutes?: number;
   rows: {
     rank: number;
     playerId: string;

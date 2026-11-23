@@ -12,8 +12,8 @@ export function queryLeagueRecords(
 ): LeagueRecordsPayload {
   if (
     !Object.hasOwn(LEADER_METRICS, query.metric) ||
-    !['average', 'total'].includes(query.mode) ||
-    ![query.season, query.minGames, query.minAttempts].every(
+    !['average', 'total', 'per40'].includes(query.mode) ||
+    ![query.season, query.minGames, query.minAttempts, query.minMinutes ?? 0].every(
       (n) => Number.isSafeInteger(n) && n >= 0,
     )
   )
@@ -42,6 +42,7 @@ export function queryLeagueRecords(
   const players = new Map(world.players.map((p) => [p.id, `${p.firstName} ${p.lastName}`]));
   const isPercentage = query.metric.endsWith('Percent');
   function fraction(s: PlayerSeasonStats): [number, number] {
+    const divisor = query.mode === 'average' ? s.games : query.mode === 'per40' ? s.seconds : 1;
     switch (query.metric) {
       case 'fieldGoalPercent':
         return [s.fieldGoalsMade, s.fieldGoalsAttempted];
@@ -50,13 +51,15 @@ export function queryLeagueRecords(
       case 'freeThrowPercent':
         return [s.freeThrowsMade, s.freeThrowsAttempted];
       case 'rebounds':
-        return [s.offensiveRebounds + s.defensiveRebounds, query.mode === 'average' ? s.games : 1];
+        return [s.offensiveRebounds + s.defensiveRebounds, divisor];
       default:
-        return [s[query.metric], query.mode === 'average' ? s.games : 1];
+        return [s[query.metric], divisor];
     }
   }
   const rows = (record?.stats ?? [])
-    .filter((s) => s.games > 0 && s.games >= query.minGames)
+    .filter(
+      (s) => s.games > 0 && s.games >= query.minGames && s.seconds >= (query.minMinutes ?? 0) * 60,
+    )
     .flatMap((s) => {
       const [numerator, denominator] = fraction(s);
       if (denominator <= 0 || (isPercentage && denominator < query.minAttempts)) return [];
@@ -70,7 +73,8 @@ export function queryLeagueRecords(
           games: s.games,
           numerator,
           denominator,
-          value: (numerator / denominator) * (isPercentage ? 100 : 1),
+          value:
+            (numerator / denominator) * (isPercentage ? 100 : query.mode === 'per40' ? 2400 : 1),
         },
       ];
     })
@@ -96,6 +100,7 @@ export function queryLeagueRecords(
     mode: query.mode,
     minGames: query.minGames,
     minAttempts: query.minAttempts,
+    minMinutes: query.minMinutes ?? 0,
     total: rows.length,
     rows: rows.slice(0, 50),
     honours: [...world.history]

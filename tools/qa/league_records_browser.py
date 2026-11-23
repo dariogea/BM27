@@ -71,6 +71,18 @@ with sync_playwright() as p:
             if width==1280 and theme=='dark':
                 page.evaluate('window.scrollTo(0,0)')
                 page.screenshot(path='docs/screenshots/league-leaders-desktop-dark.png',full_page=True)
+            records.get_by_role('combobox',name='Cálculo',exact=True).select_option('per40')
+            records.get_by_role('spinbutton',name='Mínimo de minutos',exact=True).fill('50')
+            per40=consult()
+            assert per40['rows']
+            for row in per40['rows']:
+                source=next(s for s in payload['history'][1]['competitions'][0]['playerStats']
+                            if s['playerId']==row['playerId'] and s['teamId']==row['teamId'])
+                assert source['seconds'] >= 3000
+                assert math.isclose(row['value'],source['points'] * 2400 / source['seconds'])
+            expect(records.get_by_role('columnheader',name='Por 40 min',exact=True)).to_be_visible()
+            audit(label+'-'+theme+'-per40-minimum-time')
+            records.get_by_role('spinbutton',name='Mínimo de minutos',exact=True).fill('0')
             records.get_by_role('combobox',name='Estadística',exact=True).select_option('threePointPercent')
             records.get_by_role('spinbutton',name='Mínimo de intentos',exact=True).fill('5')
             pct=consult()
@@ -105,4 +117,4 @@ with sync_playwright() as p:
 Path('/tmp/bm27-league-browser-results.json').write_text(json.dumps({'results':reports,'errors':errors},ensure_ascii=False,indent=2))
 assert not errors,errors
 assert not any(r['violations'] or r['overflow'] for r in reports),'See report'
-print('PASS: 10 PC checks; real season totals, averages, percentages, honours, links, filters and unchanged save; no current champion invented.')
+print(f'PASS: {len(reports)} PC checks; real season totals, averages, percentages, honours, links, filters and unchanged save; no current champion invented.')

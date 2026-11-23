@@ -91,13 +91,19 @@ with sync_playwright() as playwright:
         roster_select.select_option(side)
         report = boxscore.get_by_role("region", name="Estadísticas del partido").nth(team)
         records = {
-            row.get_by_role("rowheader").inner_text(): row.get_by_role("cell").all_text_contents()[1:]
+            row.get_by_role("rowheader").inner_text(): row.get_by_role("cell").all_text_contents()[1:-1]
             for row in player_table.locator("tbody tr").all()
         }
         for row in report.locator("tbody tr").all()[:-1]:
             name, *line = row.get_by_role("cell").all_text_contents()
             assert records[name.removesuffix(" *")] == line
         assert player_table.get_by_role("cell", name="Sí", exact=True).count() == 5
+        margin = int(viewer.get_by_test_id("replay-home-score").inner_text()) - int(
+            viewer.get_by_test_id("replay-away-score").inner_text()
+        )
+        expect(player_table.get_by_role("columnheader", name="+/−")).to_be_visible()
+        assert sum(int(row.get_by_role("cell").last.inner_text())
+                   for row in player_table.locator("tbody tr").all()) == (5 if team == 0 else -5) * margin
     viewer.get_by_role("button", name="Inicio", exact=True).click()
     expect(field_goals).to_have_text(["0/0", "0/0"])
     assert player_table.get_by_role("cell", name="Sí", exact=True).count() == 0

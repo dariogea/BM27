@@ -40,10 +40,12 @@ describe('event-only match playback', () => {
       const { frames } = buildReplay(match);
       for (const team of [match.boxScore.home, match.boxScore.away]) {
         for (const { starter: _starter, playerId, ...line } of team.players) {
-          expect(replayPlayerTotals(frames[0]!, playerId)).toEqual(
-            Object.fromEntries(Object.keys(line).map((key) => [key, 0])),
-          );
-          expect(replayPlayerTotals(frames.at(-1)!, playerId)).toEqual(line);
+          expect(replayPlayerTotals(frames[0]!, playerId)).toEqual({
+            ...Object.fromEntries(Object.keys(line).map((key) => [key, 0])),
+            plusMinus: 0,
+          });
+          const { plusMinus: _margin, ...actual } = replayPlayerTotals(frames.at(-1)!, playerId);
+          expect(actual).toEqual(line);
         }
       }
       const firstShot = match.events.findIndex((event) => event.type === 'shot');
@@ -53,6 +55,34 @@ describe('event-only match playback', () => {
       expect(replayPlayerTotals(frames[firstShot + 1]!, event.playerId).fieldGoalsAttempted).toBe(
         1,
       );
+    }
+  });
+  it('credits the score differential only to the players on court at each score change', () => {
+    for (const match of matches) {
+      const { frames } = buildReplay(match);
+      for (let i = 1; i < frames.length; i++) {
+        const before = frames[i - 1]!;
+        const after = frames[i]!;
+        const delta = after.homeScore - before.homeScore - (after.awayScore - before.awayScore);
+        if (!delta) continue;
+        for (const [team, active, sign] of [
+          [match.boxScore.home, before.homePlayers, 1],
+          [match.boxScore.away, before.awayPlayers, -1],
+        ] as const) {
+          for (const { playerId } of team.players) {
+            const change =
+              replayPlayerTotals(after, playerId).plusMinus -
+              replayPlayerTotals(before, playerId).plusMinus;
+            expect(change).toBe(active.includes(playerId) ? delta * sign : 0);
+          }
+        }
+      }
+      const end = frames.at(-1)!;
+      const total = match.boxScore.home.players.reduce(
+        (sum, row) => sum + replayPlayerTotals(end, row.playerId).plusMinus,
+        0,
+      );
+      expect(total).toBe(5 * (end.homeScore - end.awayScore));
     }
   });
   it('counts the outgoing shift at a substitution and resumes only when the game clock moves', () => {

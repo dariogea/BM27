@@ -132,3 +132,5 @@ Reglas en [`coordinacion.md`](coordinacion.md).
 | #142 | PROBADA | Gráfico de puntos, rebotes, asistencias y minutos por partido en la ficha del jugador, con temporadas y clubes por separado. |
 
 | #145 | PROBADA | Acta con desglose de tiros de campo por zona y jugada. Aciertos, intentos y puntos cotejados con los eventos y el acta. |
+
+| #149 | PROBADA | Diferencial de marcador de cada jugador hasta la jugada actual, calculado con quintetos y anotaciones. |

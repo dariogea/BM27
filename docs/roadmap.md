@@ -13,8 +13,8 @@
 ```mermaid
 pie showData title Elementos por estado
   "Hecho" : 128
-  "En curso" : 27
-  "Pendiente" : 289
+  "En curso" : 28
+  "Pendiente" : 288
   "Bloqueado" : 2
   "Idea" : 29
 ```
@@ -51,7 +51,7 @@ La cobertura del inventario es 30 %; no debe confundirse con preparación comerc
 flowchart LR
   F0["F0 Fundaciones<br/>76 %"]
   F1["F1 Primera versión jugable<br/>60 %"]
-  F2["F2 Profundidad de gestión<br/>5 %"]
+  F2["F2 Profundidad de gestión<br/>6 %"]
   F3["F3 Mundo, datos y mods<br/>9 %"]
   F4["F4 Presentación<br/>28 %"]
   F5["F5 Distribución<br/>19 %"]
@@ -73,7 +73,7 @@ flowchart LR
 | --- | ---: | --- | ---: | --- |
 | **F0 Fundaciones** | 76 % | `███████████████░░░░░` | 82/110 | Núcleo determinista, motor de partido, mundo persistente, mercado y finanzas, y la forma de trabajar de los dos agentes. |
 | **F1 Primera versión jugable** | 60 % | `████████████░░░░░░░░` | 24/43 | Que el propietario pueda jugar de principio a fin una temporada y varias más sin tocar una terminal, con consultas básicas del mundo. |
-| **F2 Profundidad de gestión** | 5 % | `█░░░░░░░░░░░░░░░░░░░` | 6/184 | Traspasos, cantera y ojeadores, economía con decisiones, entrenador rival con criterio, motor de partido completo. |
+| **F2 Profundidad de gestión** | 6 % | `█░░░░░░░░░░░░░░░░░░░` | 6/184 | Traspasos, cantera y ojeadores, economía con decisiones, entrenador rival con criterio, motor de partido completo. |
 | **F3 Mundo, datos y mods** | 9 % | `██░░░░░░░░░░░░░░░░░░` | 5/63 | Calibración con datos contrastados, paquetes de datos cargables, pirámide completa y otras competiciones. |
 | **F4 Presentación** | 28 % | `██████░░░░░░░░░░░░░░` | 8/36 | Diseño visual, accesibilidad, partido en 2D, narración, sonido y varios idiomas. |
 | **F5 Distribución** | 19 % | `████░░░░░░░░░░░░░░░░` | 2/22 | Instalador de escritorio, versiones alfa y beta en GitHub, actualización automática, firma y otras plataformas. |
@@ -108,7 +108,7 @@ flowchart LR
 | **Cantera y formación** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Desarrollar un sistema de formación con entradas, recursos y salidas, más allá del relevo automático. |
 | **Ojeo y reclutamiento** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Convertir la búsqueda de jugadores en información adquirida, contrastable y con límites. |
 | **Carrera del entrenador** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Permitir una trayectoria profesional con reputación y responsabilidades separadas del club. |
-| **Análisis estadístico y toma de decisiones** | 18 % | `████░░░░░░░░░░░░░░░░` | 0 | 4 | 8 | 0 | 0 | Transformar los registros del motor en información útil, contextualizada y verificable. |
+| **Análisis estadístico y toma de decisiones** | 22 % | `████░░░░░░░░░░░░░░░░` | 0 | 5 | 7 | 0 | 0 | Transformar los registros del motor en información útil, contextualizada y verificable. |
 | **Inscripción y administración deportiva** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Hacer explícitas las condiciones para competir y fichar, manteniendo las reglas como datos. |
 | **Calendario y logística deportiva** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Que los desplazamientos, descansos y cambios de fecha tengan una planificación coherente. |
 | **Instalaciones y operaciones del club** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Gestionar mejoras materiales con capacidad, plazos, mantenimiento y efectos concretos. |
@@ -150,6 +150,7 @@ Los agentes solo trabajan cuando el propietario lo autoriza (D-052); esto reflej
 | 🔄 En curso | Tablas ordenables y filtros | Interfaz web | 65 % | [#52](https://github.com/dariogea/BM27/issues/52) |
 | 🔄 En curso | Atajos de teclado | Interfaz web | 35 % | [#139](https://github.com/dariogea/BM27/issues/139) |
 | 🔄 En curso | Normalizar estadísticas por posesión y por minuto | Análisis estadístico y toma de decisiones | 50 % | [#118](https://github.com/dariogea/BM27/issues/118) |
+| 🔄 En curso | Distinguir rendimiento individual y contexto del equipo | Análisis estadístico y toma de decisiones | 50 % | [#149](https://github.com/dariogea/BM27/issues/149) |
 | 🔄 En curso | Desglosar resultados por tipo de jugada y zona | Análisis estadístico y toma de decisiones | 60 % | [#145](https://github.com/dariogea/BM27/issues/145) |
 | 🔄 En curso | Mostrar evolución temporal sin mezclar temporadas | Análisis estadístico y toma de decisiones | 50 % | [#142](https://github.com/dariogea/BM27/issues/142) |
 | 🔄 En curso | Exportar consultas estadísticas con sus unidades | Análisis estadístico y toma de decisiones | 50 % | [#124](https://github.com/dariogea/BM27/issues/124) |
@@ -745,14 +746,14 @@ _Permitir una trayectoria profesional con reputación y responsabilidades separa
 
 </details>
 
-<details><summary><b>Análisis estadístico y toma de decisiones</b> — 18 % `██░░░░░░░░░░`</summary>
+<details><summary><b>Análisis estadístico y toma de decisiones</b> — 22 % `███░░░░░░░░░`</summary>
 
 _Transformar los registros del motor en información útil, contextualizada y verificable._
 
-- **Métricas deportivas** — 13 %
+- **Métricas deportivas** — 25 %
   - 🔄 Normalizar estadísticas por posesión y por minuto (`F2` · 50 % · @codex · [#118](https://github.com/dariogea/BM27/issues/118)) — _Líderes por 40 minutos a partir de los segundos reales en pista y filtro mínimo de minutos. Normalización por posesiones pendiente._
   - ⬜ Calcular eficiencia de tiro y uso de posesiones (`F2`)
-  - ⬜ Distinguir rendimiento individual y contexto del equipo (`F2`)
+  - 🔄 Distinguir rendimiento individual y contexto del equipo (`F2` · 50 % · @codex · [#149](https://github.com/dariogea/BM27/issues/149)) — _Diferencial de puntos durante los minutos en pista de cada jugador a partir del registro del partido._
   - ⬜ Advertir cuando una muestra es demasiado pequeña (`F2`)
 - **Quintetos y enfrentamientos** — 15 %
   - ⬜ Comparar rendimiento de combinaciones de cinco jugadores (`F2`)

@@ -120,3 +120,5 @@ Reglas en [`coordinacion.md`](coordinacion.md).
 | #124 | PROBADA | Exportación CSV de la tabla de líderes con temporada, filtros, unidades y base de cálculo. |
 
 | #128 | PROBADA | Guardar y cargar partidas portables en JSON y gzip con validación del guardado. |
+
+| #131 | PROBADA | El acta y la narración identifican mitades, cuartos, otros periodos y prórrogas según el partido. |

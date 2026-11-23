@@ -75,6 +75,48 @@ describe('recorded league leaders and honours', () => {
       expect(result.completed).toBe(true);
     }
   });
+  it('normalizes counting stats by actual playing seconds and applies the minutes minimum', () => {
+    const before = JSON.stringify(world);
+    for (const metric of ['points', 'rebounds', 'assists', 'steals', 'blocks'] as const) {
+      const result = queryLeagueRecords(world, query({ metric, mode: 'per40', minMinutes: 100 }));
+      const stats = world.history[0]!.competitions[0]!.playerStats;
+      for (const row of result.rows) {
+        const actual = stats.find((s) => s.playerId === row.playerId && s.teamId === row.teamId)!;
+        const amount =
+          metric === 'rebounds'
+            ? actual.offensiveRebounds + actual.defensiveRebounds
+            : actual[metric];
+        expect(actual.seconds).toBeGreaterThanOrEqual(6000);
+        expect(row.value).toBeCloseTo((amount * 2400) / actual.seconds, 10);
+        expect(row.denominator).toBe(actual.seconds);
+      }
+      expect(result.rows.length).toBeGreaterThan(0);
+    }
+    expect(JSON.stringify(world)).toBe(before);
+  });
+  it('excludes zero playing time and keeps shooting percentage units independent of per40 mode', () => {
+    const altered = structuredClone(world);
+    const stats = altered.history[0]!.competitions[0]!.playerStats.slice(0, 3);
+    stats.forEach((s, i) => {
+      s.games = 2;
+      s.seconds = i * 600;
+      s.points = 10;
+      s.freeThrowsMade = 1;
+      s.freeThrowsAttempted = 2;
+    });
+    altered.history[0]!.competitions[0]!.playerStats = stats;
+    const result = queryLeagueRecords(altered, query({ mode: 'per40', minMinutes: 11 }));
+    expect(result.rows).toHaveLength(1);
+    expect(result.rows[0]!.value).toBe(20);
+    expect(queryLeagueRecords(altered, query({ mode: 'per40' })).rows).toHaveLength(2);
+    const percentages = queryLeagueRecords(
+      altered,
+      query({ metric: 'freeThrowPercent', mode: 'per40' }),
+    );
+    expect(percentages.rows.every((row) => row.value === 50)).toBe(true);
+    expect(() => queryLeagueRecords(altered, query({ minMinutes: -1 }))).toThrow('Filtros');
+    expect(() => queryLeagueRecords(altered, query({ minMinutes: NaN }))).toThrow('Filtros');
+  });
   it('uses totals when selected and preserves the statistical club after a player changes membership', () => {
     const altered = structuredClone(world);
     const stats = altered.history[0]!.competitions[0]!.playerStats;

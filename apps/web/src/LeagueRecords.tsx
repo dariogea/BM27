@@ -1,7 +1,12 @@
 import { useState } from 'react';
 import type { GameView } from './protocol';
 import type { WorldPayload, WorldQuery } from './worldTypes';
-import { LEADER_METRICS, type LeaderMetric, type LeagueRecordsPayload } from './leagueRecordsTypes';
+import {
+  LEADER_METRICS,
+  type LeaderMetric,
+  type LeaderMode,
+  type LeagueRecordsPayload,
+} from './leagueRecordsTypes';
 
 export function LeagueRecords(props: {
   view: GameView;
@@ -12,8 +17,9 @@ export function LeagueRecords(props: {
   const [competitionId, setCompetition] = useState(props.view.competitions[0]?.id ?? '');
   const [season, setSeason] = useState(0);
   const [metric, setMetric] = useState<LeaderMetric>('points');
-  const [mode, setMode] = useState<'average' | 'total'>('average');
+  const [mode, setMode] = useState<LeaderMode>('average');
   const [minGames, setMinGames] = useState(1);
+  const [minMinutes, setMinMinutes] = useState(0);
   const [minAttempts, setMinAttempts] = useState(10);
   const [data, setData] = useState<LeagueRecordsPayload | null>(null);
   const [busy, setBusy] = useState(false);
@@ -42,6 +48,7 @@ export function LeagueRecords(props: {
               mode,
               minGames,
               minAttempts,
+              minMinutes,
             });
             if (result.kind !== 'records') throw new Error('Respuesta de estadísticas no válida.');
             setData(result);
@@ -113,12 +120,13 @@ export function LeagueRecords(props: {
             value={mode}
             disabled={busy || percentage}
             onChange={(e) => {
-              setMode(e.target.value as 'average' | 'total');
+              setMode(e.target.value as LeaderMode);
               changed();
             }}
           >
             <option value="average">Por partido</option>
             <option value="total">Total</option>
+            <option value="per40">Por 40 minutos</option>
           </select>
         </label>
         <label>
@@ -132,6 +140,21 @@ export function LeagueRecords(props: {
             disabled={busy}
             onChange={(e) => {
               setMinGames(e.target.valueAsNumber);
+              changed();
+            }}
+          />
+        </label>
+        <label>
+          Mínimo de minutos
+          <input
+            type="number"
+            min={0}
+            step={1}
+            required
+            value={minMinutes}
+            disabled={busy}
+            onChange={(e) => {
+              setMinMinutes(e.target.valueAsNumber);
               changed();
             }}
           />
@@ -177,8 +200,11 @@ export function LeagueRecords(props: {
               ? `Porcentaje de aciertos sobre intentos; mínimo ${data.minAttempts} intentos.`
               : data.mode === 'average'
                 ? 'Media por partido jugado.'
-                : 'Total acumulado.'}{' '}
-            Mínimo {data.minGames} partidos. Hasta 50 registros; empates con la misma posición.
+                : data.mode === 'per40'
+                  ? 'Rendimiento por 40 minutos en pista.'
+                  : 'Total acumulado.'}{' '}
+            Mínimo {data.minGames} partidos y {data.minMinutes ?? 0} minutos. Hasta 50 registros;
+            empates con la misma posición.
           </p>
           {data.rows.length === 0 ? (
             <p>No hay jugadores que cumplan estos filtros.</p>
@@ -192,7 +218,11 @@ export function LeagueRecords(props: {
                     <th className="name">Jugador</th>
                     <th className="name">Club registrado</th>
                     <th>PJ</th>
-                    <th>Valor</th>
+                    <th>
+                      {data.mode === 'per40' && !data.metric.endsWith('Percent')
+                        ? 'Por 40 min'
+                        : 'Valor'}
+                    </th>
                     <th>Base del cálculo</th>
                   </tr>
                 </thead>
@@ -222,7 +252,10 @@ export function LeagueRecords(props: {
                         {data.metric.endsWith('Percent') ? '%' : ''}
                       </td>
                       <td>
-                        {row.numerator} / {row.denominator}
+                        {row.numerator} /{' '}
+                        {data.mode === 'per40' && !data.metric.endsWith('Percent')
+                          ? `${(row.denominator / 60).toLocaleString('es-ES', { maximumFractionDigits: 2 })} min × 40`
+                          : row.denominator}
                       </td>
                     </tr>
                   ))}

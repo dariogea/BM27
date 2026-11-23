@@ -1192,9 +1192,11 @@
         },
         {
           "t": "Compresión del archivo",
-          "s": "pendiente",
+          "s": "hecho",
           "f": "F2",
-          "i": 17
+          "i": 128,
+          "o": "codex",
+          "n": "Exportación y carga de partidas portables en gzip. Se conserva el JSON interior con su validación de integridad."
         },
         {
           "t": "Recuperación ante archivo corrupto",

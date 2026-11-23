@@ -1,3 +1,5 @@
+import { compressSave, readSaveFile } from './compressedSave';
+
 /**
  * Differences between running in a browser and running inside the BM27 desktop app (Tauri).
  *
@@ -32,9 +34,16 @@ export async function saveTextFile(
     await writeTextFile(path, text);
     return { kind: 'saved', where: path };
   }
-  const url = URL.createObjectURL(
-    new Blob([text], { type: format === 'csv' ? 'text/csv;charset=utf-8' : 'application/json' }),
+  return download(
+    fileName,
+    new Blob([text], {
+      type: format === 'csv' ? 'text/csv;charset=utf-8' : 'application/json',
+    }),
   );
+}
+
+function download(fileName: string, blob: Blob): SaveResult {
+  const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
   link.href = url;
   link.download = fileName;
@@ -53,4 +62,31 @@ export async function pickTextFile(): Promise<string | null> {
   const path = await open({ multiple: false, directory: false, filters: FILTERS });
   if (typeof path !== 'string') return null;
   return readTextFile(path);
+}
+
+export async function saveCompressedFile(fileName: string, json: string): Promise<SaveResult> {
+  if (!isDesktop()) return download(fileName, await compressSave(json));
+
+  const { save } = await import('@tauri-apps/plugin-dialog');
+  const { writeFile } = await import('@tauri-apps/plugin-fs');
+  const path = await save({
+    defaultPath: fileName,
+    filters: [{ name: 'Partida comprimida de BM27', extensions: ['gz'] }],
+  });
+  if (!path) return { kind: 'cancelled' };
+  const blob = await compressSave(json);
+  await writeFile(path, new Uint8Array(await blob.arrayBuffer()));
+  return { kind: 'saved', where: path };
+}
+
+export async function pickSaveFile(): Promise<string | null> {
+  const { open } = await import('@tauri-apps/plugin-dialog');
+  const { readFile } = await import('@tauri-apps/plugin-fs');
+  const path = await open({
+    multiple: false,
+    directory: false,
+    filters: [{ name: 'Partida de BM27', extensions: ['json', 'gz'] }],
+  });
+  if (typeof path !== 'string') return null;
+  return readSaveFile(new Blob([Uint8Array.from(await readFile(path))]));
 }

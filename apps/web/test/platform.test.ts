@@ -4,8 +4,10 @@ const save = vi.fn();
 const open = vi.fn();
 const writeTextFile = vi.fn();
 const readTextFile = vi.fn();
+const readFile = vi.fn();
+const writeFile = vi.fn();
 vi.mock('@tauri-apps/plugin-dialog', () => ({ save, open }));
-vi.mock('@tauri-apps/plugin-fs', () => ({ writeTextFile, readTextFile }));
+vi.mock('@tauri-apps/plugin-fs', () => ({ writeTextFile, readTextFile, readFile, writeFile }));
 
 type FakeWindow = { __TAURI_INTERNALS__?: unknown };
 const fake = globalThis as unknown as { window?: FakeWindow };
@@ -91,4 +93,22 @@ it('does not write a cancelled export and passes native write failures to the ca
   save.mockResolvedValue('/selected/leaders.csv');
   writeTextFile.mockRejectedValue(new Error('disk full'));
   await expect(saveTextFile('leaders.csv', 'contents', 'csv')).rejects.toThrow('disk full');
+});
+
+it('round trips gzip via the desktop file dialogs and skips a cancelled write', async () => {
+  const { pickSaveFile, saveCompressedFile } = await import('../src/platform');
+  fake.window = { __TAURI_INTERNALS__: {} };
+  const name = 'season.json.gz';
+  save.mockResolvedValueOnce(null);
+  expect(await saveCompressedFile(name, '{}')).toEqual({ kind: 'cancelled' });
+  expect(writeFile).not.toHaveBeenCalled();
+  save.mockResolvedValueOnce(name);
+  await saveCompressedFile(name, '{"team":"Peña"}');
+  expect(writeFile).toHaveBeenCalledWith(name, expect.any(Uint8Array));
+  readFile.mockResolvedValueOnce(writeFile.mock.calls[0]![1]);
+  open.mockResolvedValueOnce(name);
+  expect(await pickSaveFile()).toBe('{"team":"Peña"}');
+  readFile.mockResolvedValueOnce(new TextEncoder().encode('{}'));
+  open.mockResolvedValueOnce('legacy.json');
+  expect(await pickSaveFile()).toBe('{}');
 });

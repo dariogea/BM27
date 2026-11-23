@@ -31,6 +31,8 @@ Los botones **Guardar partida** y **Cargar partida** siguen utilizando archivos 
 escritorio abren los diálogos nativos; en el navegador permiten descargar o seleccionar el archivo.
 Son la forma de transferir una partida a otro equipo y de guardar una copia independiente.
 
+En **Opciones de partida**, **Guardar partida comprimida** crea un archivo .json.gz. **Cargar partida** acepta ambos formatos y comprueba la integridad del guardado.
+
 Los guardados internos no se sincronizan con la nube. Cada dirección de la web o instalación dispone
 de su propio almacenamiento. Borrar los datos del navegador o de la aplicación elimina estas
 ranuras: conserva archivos externos para los guardados importantes. No se promete que sobrevivan a

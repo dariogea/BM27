@@ -122,3 +122,5 @@ Reglas en [`coordinacion.md`](coordinacion.md).
 | #128 | PROBADA | Guardar y cargar partidas portables en JSON y gzip con validación del guardado. |
 
 | #131 | PROBADA | El acta y la narración identifican mitades, cuartos, otros periodos y prórrogas según el partido. |
+
+| #127 | PROBADA | Portada actualizada con las entregas jugables, el instalador v0.1.0-alpha.11 publicado y su huella SHA-256 verificada. |

@@ -471,7 +471,7 @@ _La cara del juego: clara, rápida y accesible._
 
 - **Pantallas existentes** — 100 %
   - ✅ Nueva partida y elección de club (`F1` · @codex · [#103](https://github.com/dariogea/BM27/issues/103)) — _Menú de PC con accesos a nueva partida, carga y guardados locales. Configuración avanzada bajo demanda._
-  - ✅ Clasificación y calendario (`F1`)
+  - ✅ Clasificación y calendario (`F1` · @codex · [#115](https://github.com/dariogea/BM27/issues/115)) — _Clasificación y jornadas jugadas o programadas de la liga regular. Filtro del club dirigido y descansos; probado con grupo impar._
   - ✅ Detalle del partido (box score y narración) (`F1`)
   - ✅ Plantilla y tácticas (`F1`)
   - ✅ Mercado de agentes libres (`F1`)

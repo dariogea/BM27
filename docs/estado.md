@@ -110,3 +110,5 @@ Reglas en [`coordinacion.md`](coordinacion.md).
 | #109 | PROBADA | Autoguardado por jornada con copia anterior atómica y Continuar en el menú principal. Preferencia y guardados manuales conservados. |
 
 | #112 | PROBADA | Fichas directas desde plantilla y mercado, con retorno a la pantalla de origen y al nombre enfocado. |
+
+| #115 | PROBADA | Calendario futuro de liga regular con encuentros programados, filtro del club dirigido y descansos en grupos impares. |

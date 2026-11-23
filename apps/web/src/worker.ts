@@ -80,6 +80,7 @@ function tablesOf(u: Universe): CompetitionViewData[] {
       groups: standingsOf(c),
       playoffSeries: c.playoffSeries,
       matches: c.matches,
+      fixtures: c.fixtures,
       championTeamId: null,
       promotedTeamIds: [],
       relegatedTeamIds: [],

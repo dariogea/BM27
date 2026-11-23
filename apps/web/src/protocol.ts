@@ -2,6 +2,7 @@ import type { WorldPayload, WorldQuery } from './worldTypes';
 import type { SlotSummary } from './slotStore';
 import type {
   Contract,
+  Fixture,
   GroupSeason,
   TeamFinanceRecord,
   MatchDetail,
@@ -50,6 +51,7 @@ export interface CompetitionViewData {
   groups: GroupSeason[];
   playoffSeries: PlayoffSeriesState[];
   matches: MatchResult[];
+  fixtures?: Fixture[];
   championTeamId: string | null;
   promotedTeamIds: string[];
   relegatedTeamIds: string[];

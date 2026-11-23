@@ -1,5 +1,11 @@
 import { useMemo, useState } from 'react';
-import { formOf, sortStandings, winShare, type StandingKey } from './competitionData';
+import {
+  competitionSchedule,
+  formOf,
+  sortStandings,
+  winShare,
+  type StandingKey,
+} from './competitionData';
 import { ClubBadge } from './ClubBadge';
 import './panels.css';
 import type { CompetitionViewData } from './protocol';
@@ -60,14 +66,14 @@ export function CompetitionView(props: {
     competition.playoffSeries.flatMap((s) => [s.highSeedTeamId, s.lowSeedTeamId ?? '']),
   );
 
-  const rounds = useMemo(() => {
-    const set = new Set(competition.matches.filter((m) => m.stage === stage).map((m) => m.round));
-    return [...set].sort((a, b) => a - b);
-  }, [competition, stage]);
-  const round = chosenRound ?? rounds[rounds.length - 1] ?? 1;
-  const matches = competition.matches.filter(
+  const schedule = useMemo(() => competitionSchedule(competition, stage), [competition, stage]);
+  const rounds = [...new Set(schedule.map((game) => game.round))];
+  const latestPlayed = competition.matches
+    .filter((match) => match.stage === stage)
+    .reduce((last, match) => Math.max(last, match.round), 1);
+  const round = chosenRound ?? latestPlayed;
+  const matches = schedule.filter(
     (m) =>
-      m.stage === stage &&
       m.round === round &&
       (!onlyMine ||
         (props.userTeamId !== null &&
@@ -233,6 +239,13 @@ export function CompetitionView(props: {
           {matches.length} {matches.length === 1 ? 'partido' : 'partidos'}.
         </span>
       </div>
+      {matches.length === 0 && (
+        <p className="note">
+          {onlyMine
+            ? 'Tu equipo no tiene partido en esta jornada.'
+            : 'Sin partidos en esta jornada.'}
+        </p>
+      )}
       <div className="scroll" tabIndex={0} role="region" aria-label="Partidos de la jornada">
         <table>
           <thead>
@@ -249,27 +262,31 @@ export function CompetitionView(props: {
             {matches.map((m) => (
               <tr
                 key={m.id}
-                className={`clickable ${m.id === props.selectedMatchId ? 'selected' : ''}`}
+                className={`${m.result ? 'clickable' : ''} ${m.id === props.selectedMatchId ? 'selected' : ''}`}
                 aria-selected={m.id === props.selectedMatchId}
-                onClick={() => props.onMatch(m.id)}
+                onClick={m.result ? () => props.onMatch(m.id) : undefined}
               >
                 <td className="name">{name(m.homeTeamId)}</td>
-                <td>{m.homeScore}</td>
-                <td>{m.awayScore}</td>
+                <td>{m.result?.homeScore ?? '—'}</td>
+                <td>{m.result?.awayScore ?? '—'}</td>
                 <td className="name">{name(m.awayTeamId)}</td>
-                <td>{m.overtimePeriods || ''}</td>
+                <td>{m.result?.overtimePeriods || ''}</td>
                 <td>
-                  <button
-                    type="button"
-                    className="text-action"
-                    aria-label={`Ver el acta: ${name(m.homeTeamId)} ${m.homeScore}, ${name(m.awayTeamId)} ${m.awayScore}`}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      props.onMatch(m.id);
-                    }}
-                  >
-                    Ver partido
-                  </button>
+                  {m.result ? (
+                    <button
+                      type="button"
+                      className="text-action"
+                      aria-label={`Ver el acta: ${name(m.homeTeamId)} ${m.result.homeScore}, ${name(m.awayTeamId)} ${m.result.awayScore}`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        props.onMatch(m.id);
+                      }}
+                    >
+                      Ver partido
+                    </button>
+                  ) : (
+                    <span className="note">Programado</span>
+                  )}
                 </td>
               </tr>
             ))}

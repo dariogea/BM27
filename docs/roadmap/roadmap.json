@@ -1243,8 +1243,11 @@
               "n": "Clasificación y jornadas jugadas o programadas de la liga regular. Filtro del club dirigido y descansos; probado con grupo impar."
             },
             {
-              "t": "Detalle del partido (box score y narración)",
-              "s": "hecho"
+              "t": "Detalle del partido (acta y narración)",
+              "s": "hecho",
+              "i": 131,
+              "o": "codex",
+              "n": "El acta y la narración distinguen el formato reglamentario del partido y sus prórrogas."
             },
             {
               "t": "Plantilla y tácticas",

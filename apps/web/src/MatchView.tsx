@@ -107,13 +107,34 @@ function describeEvent(event: MatchEvent, who: (id: string) => string): string |
   }
 }
 
+function periodLabels(detail: MatchDetail, short = false): string[] {
+  const total = detail.boxScore.home.periodPoints.length;
+  const regulation = total - detail.result.overtimePeriods;
+  const label =
+    regulation === 2
+      ? short
+        ? 'M'
+        : 'Mitad '
+      : regulation === 4
+        ? short
+          ? 'C'
+          : 'Cuarto '
+        : short
+          ? 'P'
+          : 'Periodo ';
+  const overtime = short ? 'PR' : 'Prórroga ';
+  return Array.from({ length: total }, (_, i) =>
+    i < regulation ? `${label}${i + 1}` : `${overtime}${i - regulation + 1}`,
+  );
+}
+
 function PlayByPlay(props: {
   detail: MatchDetail;
   playerNames: Record<string, string>;
   name: (teamId: string) => string;
 }) {
   const { detail } = props;
-  const periods = detail.boxScore.home.periodPoints.length;
+  const periods = periodLabels(detail);
   const [period, setPeriod] = useState(1);
   const who = (id: string): string => props.playerNames[id] ?? id;
   const homeId = detail.boxScore.home.teamId;
@@ -157,9 +178,9 @@ function PlayByPlay(props: {
           onChange={(e) => setPeriod(Number(e.target.value))}
           aria-label="Periodo"
         >
-          {Array.from({ length: periods }, (_, i) => (
+          {periods.map((label, i) => (
             <option key={i} value={i + 1}>
-              {i < 4 ? `Cuarto ${i + 1}` : `Prórroga ${i - 3}`}
+              {label}
             </option>
           ))}
         </select>
@@ -205,8 +226,8 @@ export function BoxScoreView(props: {
         <thead>
           <tr>
             <th className="name">Equipo</th>
-            {home.periodPoints.map((_, i) => (
-              <th key={i}>{i < 4 ? `C${i + 1}` : `PR${i - 3}`}</th>
+            {periodLabels(detail, true).map((label) => (
+              <th key={label}>{label}</th>
             ))}
             <th>Total</th>
             <th>Posesiones</th>

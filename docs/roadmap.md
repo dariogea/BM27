@@ -13,8 +13,8 @@
 ```mermaid
 pie showData title Elementos por estado
   "Hecho" : 128
-  "En curso" : 24
-  "Pendiente" : 292
+  "En curso" : 25
+  "Pendiente" : 291
   "Bloqueado" : 2
   "Idea" : 29
 ```
@@ -53,7 +53,7 @@ flowchart LR
   F1["F1 Primera versión jugable<br/>60 %"]
   F2["F2 Profundidad de gestión<br/>5 %"]
   F3["F3 Mundo, datos y mods<br/>9 %"]
-  F4["F4 Presentación<br/>27 %"]
+  F4["F4 Presentación<br/>28 %"]
   F5["F5 Distribución<br/>19 %"]
   F6["F6 Pulido y lanzamiento<br/>6 %"]
   F0 --> F1 --> F2 --> F3 --> F4 --> F5 --> F6
@@ -75,7 +75,7 @@ flowchart LR
 | **F1 Primera versión jugable** | 60 % | `████████████░░░░░░░░` | 24/43 | Que el propietario pueda jugar de principio a fin una temporada y varias más sin tocar una terminal, con consultas básicas del mundo. |
 | **F2 Profundidad de gestión** | 5 % | `█░░░░░░░░░░░░░░░░░░░` | 6/184 | Traspasos, cantera y ojeadores, economía con decisiones, entrenador rival con criterio, motor de partido completo. |
 | **F3 Mundo, datos y mods** | 9 % | `██░░░░░░░░░░░░░░░░░░` | 5/63 | Calibración con datos contrastados, paquetes de datos cargables, pirámide completa y otras competiciones. |
-| **F4 Presentación** | 27 % | `█████░░░░░░░░░░░░░░░` | 8/36 | Diseño visual, accesibilidad, partido en 2D, narración, sonido y varios idiomas. |
+| **F4 Presentación** | 28 % | `██████░░░░░░░░░░░░░░` | 8/36 | Diseño visual, accesibilidad, partido en 2D, narración, sonido y varios idiomas. |
 | **F5 Distribución** | 19 % | `████░░░░░░░░░░░░░░░░` | 2/22 | Instalador de escritorio, versiones alfa y beta en GitHub, actualización automática, firma y otras plataformas. |
 | **F6 Pulido y lanzamiento** | 6 % | `█░░░░░░░░░░░░░░░░░░░` | 1/17 | Tutorial, equilibrio final, documentación, comunidad y lanzamiento. |
 
@@ -95,7 +95,7 @@ flowchart LR
 | **Mundo persistente** | 40 % | `████████░░░░░░░░░░░░` | 4 | 0 | 5 | 0 | 1 | Un mundo que sigue vivo y estable durante decenas de temporadas, sin inflarse ni hundirse. |
 | **Datos, mods e idiomas** | 53 % | `███████████░░░░░░░░░` | 6 | 3 | 3 | 0 | 1 | Reglamentos, competiciones y contenido como datos: añadir una liga no debe tocar el motor. |
 | **Guardado y persistencia** | 85 % | `█████████████████░░░` | 8 | 1 | 1 | 0 | 0 | Las partidas no se pierden, son compactas y se pueden recuperar. |
-| **Interfaz web** | 56 % | `███████████░░░░░░░░░` | 14 | 3 | 11 | 0 | 0 | La cara del juego: clara, rápida y accesible. |
+| **Interfaz web** | 58 % | `████████████░░░░░░░░` | 14 | 4 | 10 | 0 | 0 | La cara del juego: clara, rápida y accesible. |
 | **Visualización del partido** | 67 % | `█████████████░░░░░░░` | 6 | 0 | 1 | 0 | 2 | Ver el partido, no solo leerlo, derivado siempre del registro de eventos. |
 | **Aplicación de escritorio y distribución** | 35 % | `███████░░░░░░░░░░░░░` | 2 | 4 | 4 | 0 | 2 | Que el propietario instale y actualice el juego sin pasar por GitHub. |
 | **Calidad, pruebas y herramientas** | 46 % | `█████████░░░░░░░░░░░` | 6 | 0 | 5 | 0 | 2 | Poder fiarse de lo construido y detectar a tiempo lo que se rompe. |
@@ -148,6 +148,7 @@ Los agentes solo trabajan cuando el propietario lo autoriza (D-052); esto reflej
 | 🔄 En curso | Ficha de jugador completa | Interfaz web | 60 % | [#67](https://github.com/dariogea/BM27/issues/67) |
 | 🔄 En curso | Accesibilidad (contraste, teclado, lectores de pantalla) | Interfaz web | 50 % | [#23](https://github.com/dariogea/BM27/issues/23) |
 | 🔄 En curso | Tablas ordenables y filtros | Interfaz web | 65 % | [#52](https://github.com/dariogea/BM27/issues/52) |
+| 🔄 En curso | Atajos de teclado | Interfaz web | 35 % | [#139](https://github.com/dariogea/BM27/issues/139) |
 | 🔄 En curso | Normalizar estadísticas por posesión y por minuto | Análisis estadístico y toma de decisiones | 50 % | [#118](https://github.com/dariogea/BM27/issues/118) |
 | 🔄 En curso | Exportar consultas estadísticas con sus unidades | Análisis estadístico y toma de decisiones | 50 % | [#124](https://github.com/dariogea/BM27/issues/124) |
 | 🔄 En curso | Elegir densidad de tablas y tamaño de interfaz | Accesibilidad y preferencias de uso | 40 % | [#52](https://github.com/dariogea/BM27/issues/52) |
@@ -468,7 +469,7 @@ _Las partidas no se pierden, son compactas y se pueden recuperar._
 
 </details>
 
-<details><summary><b>Interfaz web</b> — 56 % `███████░░░░░`</summary>
+<details><summary><b>Interfaz web</b> — 58 % `███████░░░░░`</summary>
 
 _La cara del juego: clara, rápida y accesible._
 
@@ -493,12 +494,12 @@ _La cara del juego: clara, rápida y accesible._
   - ⬜ Instalaciones y patrocinadores (`F2` · [#12](https://github.com/dariogea/BM27/issues/12))
   - ⬜ Ajustes del juego (`F4`)
   - ⬜ Ayuda y glosario (`F4`)
-- **Calidad de la interfaz** — 39 %
+- **Calidad de la interfaz** — 44 %
   - ✅ Sistema de diseño con modo claro y oscuro (`F4` · @codex · [#52](https://github.com/dariogea/BM27/issues/52)) — _Portal de gestión basado en las capturas del propietario: cabecera azul, navegación doble, paneles de actividad/resultados/clasificación/economía, temas persistentes y resoluciones de PC. Evidencia en docs/revisiones/portal-52.md._
   - ✅ Adaptación a distintas resoluciones de PC (`F4` · @codex · [#52](https://github.com/dariogea/BM27/issues/52)) — _El propietario limita el producto a PC. Verificación a 1280×800 y 1920×1080, sin variante móvil._
   - 🔄 Accesibilidad (contraste, teclado, lectores de pantalla) (`F4` · 50 % · @codex · [#23](https://github.com/dariogea/BM27/issues/23)) — _Mejoras en controles, foco y avisos. Falta validar todos los recorridos y tecnologías asistivas._
   - 🔄 Tablas ordenables y filtros (`F4` · 65 % · @codex · [#52](https://github.com/dariogea/BM27/issues/52)) — _Plantilla: filtros combinables de nombre, posición y disponibilidad con visibilidad de lesionados (#121). Portal: filtros (Codex). Plantilla y clasificación de la competición: ordenación por cualquier columna; mercado: búsqueda; partidos: filtro «solo los míos» (Claude, T-033/T-038). Faltan finanzas y las tablas del mundo. Finanzas (T-039): gráfico del historial y medidor salarial._
-  - ⬜ Atajos de teclado (`F4`)
+  - 🔄 Atajos de teclado (`F4` · 35 % · @codex · [#139](https://github.com/dariogea/BM27/issues/139)) — _Reproducción, pausa, avance por jugadas e inicio/fin con el teclado en el reproductor._
   - ⬜ Explicaciones emergentes (tooltips) de cada atributo (`F4`)
   - ⬜ Gráficos de evolución (jugador, club, finanzas) (`F4`)
   - ⬜ Rendimiento con miles de filas (`F4`)

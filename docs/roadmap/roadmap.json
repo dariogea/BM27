@@ -2219,7 +2219,11 @@
             },
             {
               "t": "Distinguir rendimiento individual y contexto del equipo",
-              "s": "pendiente"
+              "s": "en-curso",
+              "p": 50,
+              "i": 149,
+              "o": "codex",
+              "n": "Diferencial de puntos durante los minutos en pista de cada jugador a partir del registro del partido."
             },
             {
               "t": "Advertir cuando una muestra es demasiado pequeña",

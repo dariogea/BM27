@@ -16,7 +16,7 @@ const emptyTotals = {
   fouls: 0,
 } satisfies Partial<StatLine>;
 export type ReplayTotals = Readonly<typeof emptyTotals>;
-const emptyPlayer = { points: 0, seconds: 0, ...emptyTotals };
+const emptyPlayer = { points: 0, seconds: 0, plusMinus: 0, ...emptyTotals };
 export type ReplayPlayerTotals = Readonly<typeof emptyPlayer>;
 export function replayPlayerTotals(frame: ReplayFrame, id: string): ReplayPlayerTotals {
   return frame.playerTotals.get(id) ?? emptyPlayer;
@@ -85,7 +85,7 @@ export function buildReplay(detail: MatchDetail): {
     if (key === 'points') {
       if (team === homeId) homeScore += value;
       else awayScore += value;
-    } else if (key !== 'seconds') {
+    } else if (key !== 'seconds' && key !== 'plusMinus') {
       totals.get(team)![key] += value;
     }
   };
@@ -172,6 +172,11 @@ export function buildReplay(detail: MatchDetail): {
       case 'foul':
         credit(event.playerId, 'fouls');
         break;
+    }
+    const marginChange = homeScore - previous.homeScore - (awayScore - previous.awayScore);
+    if (marginChange) {
+      for (const id of homePlayers) credit(id, 'plusMinus', marginChange);
+      for (const id of awayPlayers) credit(id, 'plusMinus', -marginChange);
     }
     // Share unchanged lines and never mutate a frame that the user can rewind to.
     if (changes.size > 0) {

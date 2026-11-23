@@ -280,6 +280,9 @@ export function ReplayViewer(props: {
                     {label}
                   </th>
                 ))}
+                <th scope="col" title="Diferencia de puntos del equipo con el jugador en pista">
+                  +/−
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -296,6 +299,10 @@ export function ReplayViewer(props: {
                     {STAT_ROWS.map(([label, format]) => (
                       <td key={label}>{format(line)}</td>
                     ))}
+                    <td>
+                      {line.plusMinus > 0 ? '+' : ''}
+                      {line.plusMinus}
+                    </td>
                   </tr>
                 );
               })}

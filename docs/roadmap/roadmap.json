@@ -1388,7 +1388,11 @@
             },
             {
               "t": "Atajos de teclado",
-              "s": "pendiente"
+              "s": "en-curso",
+              "p": 35,
+              "i": 139,
+              "o": "codex",
+              "n": "Reproducción, pausa, avance por jugadas e inicio/fin con el teclado en el reproductor."
             },
             {
               "t": "Explicaciones emergentes (tooltips) de cada atributo",

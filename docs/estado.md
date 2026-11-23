@@ -126,3 +126,5 @@ Reglas en [`coordinacion.md`](coordinacion.md).
 | #127 | PROBADA | Portada actualizada con las entregas jugables, el instalador v0.1.0-alpha.11 publicado y su huella SHA-256 verificada. |
 
 | #136 | PROBADA | Recuperación explícita después de un autoguardado dañado y protección de la copia anterior en el primer guardado posterior. |
+
+| #139 | PROBADA | Atajos de teclado del reproductor con los controles internos operativos. |

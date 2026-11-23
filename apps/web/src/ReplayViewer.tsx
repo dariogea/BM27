@@ -89,6 +89,12 @@ export function ReplayViewer(props: {
     setClip(null);
     setCursor(Math.max(0, Math.min(at, last)));
   };
+  const togglePlayback = (): void => {
+    if (!valid || last === 0) return;
+    if (clip && position >= clip.end) setClip(null);
+    if (position >= last) setCursor(0);
+    setPlaying(!playing);
+  };
   const nextPeriod = frames.findIndex(
     (f, index) => index > position && f.event?.type === 'period_start' && f.period > frame.period,
   );
@@ -112,8 +118,33 @@ export function ReplayViewer(props: {
     <section
       className="replay-viewer"
       ref={region}
-      tabIndex={-1}
+      tabIndex={0}
       aria-label="Repetición del registro"
+      aria-keyshortcuts="Space ArrowLeft ArrowRight Home End"
+      onKeyDown={(event) => {
+        if (event.target !== event.currentTarget || event.altKey || event.ctrlKey || event.metaKey)
+          return;
+        switch (event.key) {
+          case ' ':
+            if (!event.repeat) togglePlayback();
+            break;
+          case 'ArrowLeft':
+            seek(position - 1);
+            break;
+          case 'ArrowRight':
+            seek(position + 1);
+            break;
+          case 'Home':
+            seek(0);
+            break;
+          case 'End':
+            seek(last);
+            break;
+          default:
+            return;
+        }
+        event.preventDefault();
+      }}
       data-testid="replay-viewer"
     >
       <div className="replay-heading">
@@ -157,14 +188,7 @@ export function ReplayViewer(props: {
         <button onClick={() => seek(position - 1)} disabled={position === 0}>
           Jugada anterior
         </button>
-        <button
-          onClick={() => {
-            if (clip && position >= clip.end) setClip(null);
-            if (position >= last) setCursor(0);
-            setPlaying((value) => !value);
-          }}
-          disabled={!valid || last === 0}
-        >
+        <button onClick={togglePlayback} disabled={!valid || last === 0}>
           {playing ? 'Pausar' : 'Reproducir'}
         </button>
         <button onClick={() => seek(position + 1)} disabled={position >= last}>

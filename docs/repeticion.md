@@ -102,3 +102,5 @@ compilación y `roadmap:check` correctos. Las diez comprobaciones específicas y
 pasaron sin errores de navegador, desbordamiento global ni infracciones axe detectadas. El reproductor
 recibe el foco al abrirse y queda por debajo de la cabecera fija; esto se comprobó también en el
 recorrido específico final.
+
+Con el foco en el reproductor, **Espacio** reproduce o pausa, las flechas **←** y **→** cambian de jugada y **Inicio** y **Fin** saltan a los extremos. Los botones, el selector de velocidad y el deslizador mantienen sus propios controles de teclado.

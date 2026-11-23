@@ -104,3 +104,5 @@ recibe el foco al abrirse y queda por debajo de la cabecera fija; esto se compro
 recorrido específico final.
 
 Con el foco en el reproductor, **Espacio** reproduce o pausa, las flechas **←** y **→** cambian de jugada y **Inicio** y **Fin** saltan a los extremos. Los botones, el selector de velocidad y el deslizador mantienen sus propios controles de teclado.
+
+En el acta, **Análisis de tiros de campo** permite agrupar por zona o por tipo de jugada. Se muestran los aciertos, los intentos, el porcentaje y los puntos de campo de ambos equipos. Las categorías sin intentos muestran un guion en el porcentaje.

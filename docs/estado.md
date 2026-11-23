@@ -130,3 +130,5 @@ Reglas en [`coordinacion.md`](coordinacion.md).
 | #139 | PROBADA | Atajos de teclado del reproductor con los controles internos operativos. |
 
 | #142 | PROBADA | Gráfico de puntos, rebotes, asistencias y minutos por partido en la ficha del jugador, con temporadas y clubes por separado. |
+
+| #145 | PROBADA | Acta con desglose de tiros de campo por zona y jugada. Aciertos, intentos y puntos cotejados con los eventos y el acta. |

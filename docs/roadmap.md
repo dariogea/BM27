@@ -13,8 +13,8 @@
 ```mermaid
 pie showData title Elementos por estado
   "Hecho" : 128
-  "En curso" : 26
-  "Pendiente" : 290
+  "En curso" : 27
+  "Pendiente" : 289
   "Bloqueado" : 2
   "Idea" : 29
 ```
@@ -43,7 +43,7 @@ Gestor de baloncesto comercial completo, con la profundidad de gestión como ref
 - ⬜ **R6** Instalación, actualizaciones y compatibilidad verificadas en los sistemas soportados
 - ⬜ **R7** Equilibrio, rendimiento, licencias y criterios de lanzamiento cerrados
 
-La cobertura del inventario es 29 %; no debe confundirse con preparación comercial.
+La cobertura del inventario es 30 %; no debe confundirse con preparación comercial.
 
 ## Fases (del punto A al Z)
 
@@ -108,7 +108,7 @@ flowchart LR
 | **Cantera y formación** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Desarrollar un sistema de formación con entradas, recursos y salidas, más allá del relevo automático. |
 | **Ojeo y reclutamiento** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Convertir la búsqueda de jugadores en información adquirida, contrastable y con límites. |
 | **Carrera del entrenador** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Permitir una trayectoria profesional con reputación y responsabilidades separadas del club. |
-| **Análisis estadístico y toma de decisiones** | 13 % | `███░░░░░░░░░░░░░░░░░` | 0 | 3 | 9 | 0 | 0 | Transformar los registros del motor en información útil, contextualizada y verificable. |
+| **Análisis estadístico y toma de decisiones** | 18 % | `████░░░░░░░░░░░░░░░░` | 0 | 4 | 8 | 0 | 0 | Transformar los registros del motor en información útil, contextualizada y verificable. |
 | **Inscripción y administración deportiva** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Hacer explícitas las condiciones para competir y fichar, manteniendo las reglas como datos. |
 | **Calendario y logística deportiva** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Que los desplazamientos, descansos y cambios de fecha tengan una planificación coherente. |
 | **Instalaciones y operaciones del club** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Gestionar mejoras materiales con capacidad, plazos, mantenimiento y efectos concretos. |
@@ -150,6 +150,7 @@ Los agentes solo trabajan cuando el propietario lo autoriza (D-052); esto reflej
 | 🔄 En curso | Tablas ordenables y filtros | Interfaz web | 65 % | [#52](https://github.com/dariogea/BM27/issues/52) |
 | 🔄 En curso | Atajos de teclado | Interfaz web | 35 % | [#139](https://github.com/dariogea/BM27/issues/139) |
 | 🔄 En curso | Normalizar estadísticas por posesión y por minuto | Análisis estadístico y toma de decisiones | 50 % | [#118](https://github.com/dariogea/BM27/issues/118) |
+| 🔄 En curso | Desglosar resultados por tipo de jugada y zona | Análisis estadístico y toma de decisiones | 60 % | [#145](https://github.com/dariogea/BM27/issues/145) |
 | 🔄 En curso | Mostrar evolución temporal sin mezclar temporadas | Análisis estadístico y toma de decisiones | 50 % | [#142](https://github.com/dariogea/BM27/issues/142) |
 | 🔄 En curso | Exportar consultas estadísticas con sus unidades | Análisis estadístico y toma de decisiones | 50 % | [#124](https://github.com/dariogea/BM27/issues/124) |
 | 🔄 En curso | Elegir densidad de tablas y tamaño de interfaz | Accesibilidad y preferencias de uso | 40 % | [#52](https://github.com/dariogea/BM27/issues/52) |
@@ -744,7 +745,7 @@ _Permitir una trayectoria profesional con reputación y responsabilidades separa
 
 </details>
 
-<details><summary><b>Análisis estadístico y toma de decisiones</b> — 13 % `██░░░░░░░░░░`</summary>
+<details><summary><b>Análisis estadístico y toma de decisiones</b> — 18 % `██░░░░░░░░░░`</summary>
 
 _Transformar los registros del motor en información útil, contextualizada y verificable._
 
@@ -753,10 +754,10 @@ _Transformar los registros del motor en información útil, contextualizada y ve
   - ⬜ Calcular eficiencia de tiro y uso de posesiones (`F2`)
   - ⬜ Distinguir rendimiento individual y contexto del equipo (`F2`)
   - ⬜ Advertir cuando una muestra es demasiado pequeña (`F2`)
-- **Quintetos y enfrentamientos** — 0 %
+- **Quintetos y enfrentamientos** — 15 %
   - ⬜ Comparar rendimiento de combinaciones de cinco jugadores (`F2`)
   - ⬜ Analizar perfiles de rivales con el mismo criterio (`F2`)
-  - ⬜ Desglosar resultados por tipo de jugada y zona (`F2`)
+  - 🔄 Desglosar resultados por tipo de jugada y zona (`F2` · 60 % · @codex · [#145](https://github.com/dariogea/BM27/issues/145)) — _Tiros de campo por tipo de jugada o zona en el acta. Faltas, pérdidas y otras acciones quedan pendientes._
   - ⬜ Relacionar ajustes tácticos con cambios de rendimiento (`F2`)
 - **Herramientas de consulta** — 25 %
   - ⬜ Guardar filtros y comparaciones frecuentes (`F2`)

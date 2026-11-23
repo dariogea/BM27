@@ -48,5 +48,31 @@ with sync_playwright() as p:
         assert headers[1:-2] == [
             prefix + str(i + 1) for i in range(len(labels))
         ] + ["PR" + str(i) for i in range(1, extra + 1)]
+        report.get_by_text("Análisis de tiros de campo", exact=True).click()
+        grouped = report.get_by_role("region", name="Desglose de tiros de campo")
+        detail = page.evaluate("window.matchDetail")
+        shots = [event for event in detail["events"] if event["type"] == "shot"]
+        for mode, field in [("zones", "zone"), ("plays", "playType")]:
+            report.get_by_role("combobox", name="Agrupar tiros").select_option(mode)
+            rows = grouped.locator("tr[data-shot-category]").all()
+            assert rows
+            expected_totals = {side["teamId"]: side["totals"] for side in detail["boxScore"].values()
+                               if isinstance(side, dict) and "teamId" in side}
+            by_team = {team: [0, 0, 0] for team in expected_totals}
+            for row in rows:
+                team = row.get_attribute("data-team")
+                category = row.get_attribute("data-shot-category")
+                events = [shot for shot in shots if shot["offenseTeamId"] == team and shot[field] == category]
+                made = [shot for shot in events if shot["made"]]
+                cells = row.get_by_role("cell").all_text_contents()
+                values = [len(made), len(events), sum(shot["points"] for shot in made)]
+                assert [int(cells[i]) for i in (1, 2, 4)] == values
+                if not events:
+                    assert cells[3] == "—"
+                by_team[team] = [total + value for total, value in zip(by_team[team], values)]
+            for team, values in by_team.items():
+                totals = expected_totals[team]
+                assert values == [totals["fieldGoalsMade"], totals["fieldGoalsAttempted"],
+                                  totals["points"] - totals["freeThrowsMade"]]
         print(f"PASS: {len(labels)} regulation periods, {extra} overtime periods")
     browser.close()

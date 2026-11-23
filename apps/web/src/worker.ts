@@ -110,6 +110,8 @@ function myTeamOf(u: Universe): MyTeamView | null {
   const progress = u.currentSeason?.competitions.find((c) => c.competitionId === competition.id);
   const statsById = new Map((progress?.playerStats ?? []).map((s) => [s.playerId, s]));
   const order = prepareTeam(team, playersById).players.map((p) => p.id);
+  const selected = new Set(order);
+  order.push(...team.playerIds.filter((id) => !selected.has(id)));
 
   let position: number | null = null;
   let wins = 0;

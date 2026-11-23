@@ -136,3 +136,13 @@ El filtro **Mínimo de minutos** sirve para acotar la muestra, también al consu
 Las cifras de tiro siguen siendo aciertos entre intentos. Los jugadores sin tiempo jugado no
 entran en las tasas por 40 minutos. Las consultas muestran las unidades y la base del cálculo.
 La producción por posesión todavía no se ofrece.
+
+## Filtros de plantilla (#121)
+
+**Mi equipo** permite combinar nombre, posición y disponibilidad. La posición también reconoce
+los puestos secundarios de un jugador. Filtrar o reordenar la tabla no modifica el quinteto:
+las estrellas de titular conservan la convocatoria preparada por el motor.
+
+Los lesionados aparecen en la plantilla completa, en el mercado y en la rotación, incluso cuando
+están fuera de la convocatoria. La regla de emergencia del motor con menos de ocho sanos sigue
+siendo PLACEHOLDER y puede hacer jugar a los menos lesionados.

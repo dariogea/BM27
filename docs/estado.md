@@ -114,3 +114,5 @@ Reglas en [`coordinacion.md`](coordinacion.md).
 | #115 | PROBADA | Calendario futuro de liga regular con encuentros programados, filtro del club dirigido y descansos en grupos impares. |
 
 | #118 | PROBADA | Líderes por 40 minutos de tiempo real en pista, con filtro de minutos y porcentajes conservados. Normalización por posesiones pendiente. |
+
+| #121 | PROBADA | Filtros combinables de plantilla y visibilidad de todos los lesionados, con el orden de convocatoria conservado. |

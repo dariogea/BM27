@@ -10,7 +10,7 @@ import { UpdateBanner } from './UpdateBanner';
 import { PortalView } from './PortalView';
 import type { Tab } from './navigation';
 import { SavesPanel } from './SavesPanel';
-import type { SlotSummary } from './slotStore';
+import { AUTO_SAVE, PREVIOUS_AUTO_SAVE, type SlotSummary } from './slotStore';
 import type { MatchDetail, TeamTactics } from '@bm27/schema';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { CompetitionView } from './CompetitionView';
@@ -150,12 +150,17 @@ export function App() {
   }, [send]);
   const [status, setStatus] = useState('');
   const [error, setError] = useState('');
+  const [offerRecovery, setOfferRecovery] = useState(false);
+  const recovery = offerRecovery
+    ? slots?.find((slot) => slot.name === PREVIOUS_AUTO_SAVE)
+    : undefined;
   /** Bumped whenever the team's saved settings change, to reset the editors. */
   const [revision, setRevision] = useState(0);
   const fileInput = useRef<HTMLInputElement>(null);
 
   const run = async (command: Pending, working: string, compressed = false): Promise<void> => {
     setBusy(true);
+    setOfferRecovery(false);
     setError('');
     setStatus(working);
     const reply = await send(command);
@@ -176,6 +181,7 @@ export function App() {
         setStatus(reply.message);
         break;
       case 'error':
+        setOfferRecovery(command.type === 'loadSlot' && command.name === AUTO_SAVE);
         setError(reply.message);
         setStatus('');
         break;
@@ -257,6 +263,15 @@ export function App() {
         }
         break;
       }
+    }
+  };
+
+  const loadLocalSlot = (name: string): void => {
+    if (
+      !view ||
+      window.confirm('¿Sustituir la partida abierta? Se perderán sus cambios sin guardar.')
+    ) {
+      void run({ type: 'loadSlot', name }, 'Cargando del dispositivo…');
     }
   };
 
@@ -537,9 +552,16 @@ export function App() {
           </p>
         </div>
         {error && (
-          <p className="error" role="alert">
-            Error: {error}
-          </p>
+          <div>
+            <p className="error" role="alert">
+              {error}
+            </p>
+            {recovery && (
+              <button disabled={busy} onClick={() => loadLocalSlot(recovery.name)}>
+                Cargar autoguardado anterior · {recovery.team} · Temporada {recovery.season}
+              </button>
+            )}
+          </div>
         )}
 
         {view && !watchingMatch && (
@@ -610,15 +632,7 @@ export function App() {
               )
                 void run({ type: 'saveSlot', name }, 'Guardando en este dispositivo…');
             }}
-            onLoad={(name) => {
-              if (
-                !view ||
-                window.confirm(
-                  'Cargar sustituirá la partida abierta. Guarda antes los cambios que quieras conservar. ¿Continuar?',
-                )
-              )
-                void run({ type: 'loadSlot', name }, 'Cargando del dispositivo…');
-            }}
+            onLoad={loadLocalSlot}
             onDelete={(name) => {
               if (
                 window.confirm(

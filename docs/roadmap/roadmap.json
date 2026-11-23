@@ -1200,8 +1200,11 @@
         },
         {
           "t": "Recuperación ante archivo corrupto",
-          "s": "pendiente",
-          "i": 16
+          "s": "en-curso",
+          "p": 50,
+          "i": 136,
+          "o": "codex",
+          "n": "Si falla el autoguardado actual, se puede abrir el anterior y conservarlo en el siguiente guardado. La recuperación de archivos externos depende de su propia copia."
         },
         {
           "t": "Copias de seguridad automáticas",

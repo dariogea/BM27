@@ -19,7 +19,7 @@ también con **Jugar y ver**, y al simular hasta el final de la temporada. Se co
 en una sola transacción. Las ranuras manuales se conservan y la preferencia persiste al reiniciar.
 
 El menú principal ofrece **Continuar** con el club y la temporada del guardado más reciente.
-Si esa copia no se puede abrir, **Mis partidas** permite elegir la anterior. Cargar una copia
+Si falla el autoguardado actual y hay una copia anterior, aparece **Cargar autoguardado anterior** con su club y temporada. El primer autoguardado tras cargar esa copia la conserva. También puedes elegirla en **Mis partidas**. Cargar una copia
 no crea un nuevo autoguardado hasta que se juega otra jornada.
 
 Si falla el autoguardado por falta de espacio, la partida sigue abierta en memoria: aparece un

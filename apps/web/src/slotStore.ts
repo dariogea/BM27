@@ -109,7 +109,7 @@ export class IndexedDbSaveStore implements SaveStore {
     ]);
     return value;
   }
-  async save(name: string, universe: Universe): Promise<void> {
+  async save(name: string, universe: Universe, rotateAutomatic = true): Promise<void> {
     name = checkedName(name);
     return this.perform(async () => {
       const json = exportSave(universe);
@@ -127,7 +127,7 @@ export class IndexedDbSaveStore implements SaveStore {
       const done = finished(tx);
       const data = tx.objectStore('payloads');
       const meta = tx.objectStore('summaries');
-      if (name === AUTO_SAVE) {
+      if (name === AUTO_SAVE && rotateAutomatic) {
         const previousData = data.get(AUTO_SAVE) as IDBRequest<Payload | undefined>;
         const previousSummary = meta.get(AUTO_SAVE) as IDBRequest<SlotSummary | undefined>;
         previousSummary.onsuccess = () => {

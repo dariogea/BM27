@@ -1,5 +1,5 @@
 import { queryWorld } from './worldData';
-import { AUTO_SAVE, isAutomaticSlot, IndexedDbSaveStore } from './slotStore';
+import { AUTO_SAVE, isAutomaticSlot, IndexedDbSaveStore, PREVIOUS_AUTO_SAVE } from './slotStore';
 /// <reference lib="webworker" />
 import {
   advanceSeason,
@@ -60,6 +60,7 @@ import { ReplayProofs } from './replayProof';
 let universe: Universe | null = null;
 let selectedDataPack: DataPack | null = null;
 const slotStore = new IndexedDbSaveStore();
+let preservePreviousAutosave = false;
 /** Universe from which the matches shown on screen can be re-simulated. */
 let replayUniverse: Universe | null = null;
 const replayProofs = new ReplayProofs();
@@ -399,7 +400,8 @@ async function handle(command: Command): Promise<Reply> {
   const automatic = async (): Promise<string> => {
     try {
       if (await slotStore.autosaveEnabled()) {
-        await slotStore.save(AUTO_SAVE, need());
+        await slotStore.save(AUTO_SAVE, need(), !preservePreviousAutosave);
+        preservePreviousAutosave = false;
         return ' Guardado automático completado.';
       }
       return '';
@@ -429,7 +431,12 @@ async function handle(command: Command): Promise<Reply> {
         command.enabled ? 'Guardado automático activado.' : 'Guardado automático desactivado.',
       );
     case 'loadSlot': {
-      const loaded = await slotStore.load(command.name);
+      const slotName = command.name.trim();
+      const loaded = await slotStore.load(slotName).catch((error: unknown) => {
+        if (slotName === AUTO_SAVE) preservePreviousAutosave = true;
+        throw error;
+      });
+      if (slotName === PREVIOUS_AUTO_SAVE) preservePreviousAutosave = true;
       universe = loaded;
       offseasonReport = null;
       replayUniverse = loaded;

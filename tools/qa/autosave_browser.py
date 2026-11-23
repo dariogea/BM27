@@ -56,6 +56,44 @@ with sync_playwright() as playwright:
     expect(page.get_by_test_id("status")).to_contain_text("Guardado automático completado")
     assert export_payload() == second
 
+    page.evaluate("""async () => {
+        const request = indexedDB.open('bm27-saves-v1', 1);
+        const db = await new Promise((resolve, reject) => {
+            request.onsuccess = () => resolve(request.result);
+            request.onerror = () => reject(request.error);
+        });
+        try {
+            await new Promise((resolve, reject) => {
+                const tx = db.transaction('payloads', 'readwrite');
+                tx.objectStore('payloads').put({ name: '__bm27_autosave__', json: 'broken' });
+                tx.oncomplete = resolve;
+                tx.onabort = () => reject(tx.error);
+            });
+        } finally {
+            db.close();
+        }
+    }""")
+    page.reload()
+    page.get_by_role("button", name="Continuar", exact=True).click()
+    expect(page.get_by_role("alert")).to_contain_text("dañada")
+    expect(page.get_by_test_id("summary")).to_have_count(0)
+    recovery = page.get_by_role("button", name="Cargar autoguardado anterior", exact=False)
+    expect(recovery).to_contain_text("Temporada 1")
+    recovery.focus()
+    page.keyboard.press("Enter")
+    expect(page.get_by_test_id("status")).to_contain_text("Partida cargada")
+    assert export_payload() == first
+    header.get_by_role("button", name="Jugar jornada", exact=True).click()
+    expect(page.get_by_test_id("status")).to_contain_text("Guardado automático completado")
+    assert export_payload() == second
+    page.get_by_role("navigation", name="Secciones de la partida").get_by_role(
+        "button", name="Partidas", exact=True
+    ).click()
+    page.once("dialog", lambda dialog: dialog.accept())
+    previous.get_by_role("button", name="Cargar", exact=True).click()
+    expect(page.get_by_test_id("status")).to_contain_text("Partida cargada")
+    assert export_payload() == first
+
     for width, height, theme in [(1280, 800, "dark"), (1920, 1080, "light")]:
         page.set_viewport_size({"width": width, "height": height})
         if theme == "light":
@@ -71,5 +109,5 @@ with sync_playwright() as playwright:
         assert not violations, violations
         assert page.evaluate("document.documentElement.scrollWidth <= innerWidth")
     assert not errors, errors
-    print("PASS: Continue after restart, previous checkpoint recovery, deterministic continuation and two PC accessibility audits")
+    print("PASS: corrupt autosave recovery without overwriting the last valid copy, Continue after restart, previous checkpoint recovery, deterministic continuation and two PC accessibility audits")
     browser.close()

@@ -1,5 +1,7 @@
 import type { GroupSeason, MatchResult } from '@bm27/schema';
 
+import type { CompetitionViewData } from './protocol';
+
 export type StandingRow = GroupSeason['standings'][number];
 
 export type StandingKey =
@@ -84,4 +86,29 @@ export function formOf(matches: readonly MatchResult[], teamId: string, count = 
       const other = m.homeTeamId === teamId ? m.awayScore : m.homeScore;
       return own > other ? 'W' : 'L';
     });
+}
+
+export interface ScheduledGame {
+  id: string;
+  round: number;
+  homeTeamId: string;
+  awayTeamId: string;
+  result: MatchResult | null;
+}
+
+/** Merge recorded results and generated fixtures without treating a scheduled game as played. */
+export function competitionSchedule(
+  competition: CompetitionViewData,
+  stage: 'regular' | 'playoff',
+): ScheduledGame[] {
+  const results = competition.matches.filter((match) => match.stage === stage);
+  const played = new Set(results.map((match) => match.id));
+  const pending =
+    stage === 'regular'
+      ? (competition.fixtures ?? []).filter((fixture) => !played.has(fixture.id))
+      : [];
+  return [
+    ...results.map((match) => ({ ...match, result: match })),
+    ...pending.map((fixture) => ({ ...fixture, result: null })),
+  ].sort((a, b) => a.round - b.round);
 }

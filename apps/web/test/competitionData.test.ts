@@ -1,6 +1,13 @@
+import type { CompetitionViewData } from '../src/protocol';
 import type { MatchResult } from '@bm27/schema';
 import { describe, expect, it } from 'vitest';
-import { formOf, sortStandings, winShare, type StandingRow } from '../src/competitionData';
+import {
+  competitionSchedule,
+  formOf,
+  sortStandings,
+  winShare,
+  type StandingRow,
+} from '../src/competitionData';
 
 const row = (
   position: number,
@@ -137,5 +144,39 @@ describe('formOf', () => {
     );
     expect(formOf(series, 'a')).toEqual(['W', 'W', 'W', 'W', 'W']);
     expect(formOf(series, 'a', 11)).toEqual([...'LLLLLLWWWWW']);
+  });
+});
+
+describe('competitionSchedule', () => {
+  const played = game('g1', 'regular', 1, 'a', 'b', 80, 70);
+  const playoff = game('p1', 'playoff', 1, 'a', 'b', 90, 85);
+  const competition: CompetitionViewData = {
+    competitionId: 'c',
+    seasonNumber: 1,
+    phase: 'regular',
+    groups: [],
+    playoffSeries: [],
+    matches: [played, playoff],
+    fixtures: [
+      { id: 'g2', round: 2, group: 0, homeTeamId: 'b', awayTeamId: 'a' },
+      { id: 'g1', round: 1, group: 0, homeTeamId: 'a', awayTeamId: 'b' },
+    ],
+    championTeamId: null,
+    promotedTeamIds: [],
+    relegatedTeamIds: [],
+  };
+  it('joins scheduled fixtures with results once and leaves future scores unavailable', () => {
+    const before = JSON.stringify(competition);
+    const schedule = competitionSchedule(competition, 'regular');
+    expect(schedule.map((m) => m.id)).toEqual(['g1', 'g2']);
+    expect(schedule[0]!.result).toEqual(played);
+    expect(schedule[1]!.result).toBeNull();
+    expect(competitionSchedule(competition, 'playoff').map((m) => m.result)).toEqual([playoff]);
+    expect(JSON.stringify(competition)).toBe(before);
+  });
+  it('supports completed and earlier views without fixture data', () => {
+    const { fixtures: _fixtures, ...old } = competition;
+    expect(competitionSchedule(old, 'regular').map((m) => m.result)).toEqual([played]);
+    expect(competitionSchedule({ ...old, matches: [] }, 'regular')).toEqual([]);
   });
 });

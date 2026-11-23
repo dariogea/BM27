@@ -1235,7 +1235,10 @@
             },
             {
               "t": "Clasificación y calendario",
-              "s": "hecho"
+              "s": "hecho",
+              "o": "codex",
+              "i": 115,
+              "n": "Clasificación y jornadas jugadas o programadas de la liga regular. Filtro del club dirigido y descansos; probado con grupo impar."
             },
             {
               "t": "Detalle del partido (box score y narración)",

@@ -113,3 +113,15 @@ Validación de #72: **280/280 pruebas** de la suite completa, lint, tipos, forma
 Los nombres de la plantilla, de los contratos y de los agentes libres abren su ficha completa.
 El botón de regreso vuelve a la pantalla de origen y enfoca el nombre desde el que se abrió.
 Las consultas conservan las reglas de visibilidad del potencial y no modifican la partida.
+
+## Calendario de liga regular (#115)
+
+Tras iniciar la temporada, **Competición → Jornada** permite consultar las jornadas futuras.
+Cada encuentro muestra los clubes local y visitante, y el estado **Programado** hasta que se
+disputa. Los encuentros pendientes carecen de acta y marcador.
+
+**Solo mis partidos** también filtra estas jornadas. Si el club descansa, aparece el estado
+sin partido de esa jornada. La lista procede de los encuentros del núcleo y conserva sus IDs.
+La consulta no inicia otra temporada ni altera resultados. Antes de empezar una temporada
+el calendario sigue pendiente de generación. La interfaz no asigna fechas civiles ni anticipa
+cruces de playoffs que aún no estén decididos.

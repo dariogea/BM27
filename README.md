@@ -25,18 +25,18 @@ con las temporadas. El objetivo es un gestor deportivo profundo, explicable y du
 
 ## Descargar para Windows
 
-**[⬇ Descargar BM27 v0.1.0-alpha.22 para Windows (.exe, 1,5 MB)](https://github.com/dariogea/BM27/releases/download/v0.1.0-alpha.22/BM27_0.1.0-alpha.22_x64-setup.exe)**
+**[⬇ Descargar BM27 v0.1.0-alpha.24 para Windows (.exe, 1,5 MB)](https://github.com/dariogea/BM27/releases/download/v0.1.0-alpha.24/BM27_0.1.0-alpha.24_x64-setup.exe)**
 
 Versión **alfa** ([todas las versiones](https://github.com/dariogea/BM27/releases)). Pasos:
 
 1. Entra en GitHub con tu cuenta (el repositorio es privado: sin sesión el enlace da «404»).
-2. Pulsa el enlace de arriba: se descarga `BM27_0.1.0-alpha.22_x64-setup.exe`.
+2. Pulsa el enlace de arriba: se descarga `BM27_0.1.0-alpha.24_x64-setup.exe`.
 3. Ábrelo con doble clic. Se instala solo para tu usuario, sin permisos de administrador.
 4. Si Windows dice **«Windows protegió su PC»**, pulsa **«Más información»** y **«Ejecutar de todos modos»** (el instalador no está firmado con un certificado de pago).
 5. Abre **BM27** desde el menú Inicio. En **Actualizaciones** puedes consultar la versión y buscar novedades.
 
 Comprobación opcional: la huella SHA-256 del archivo es
-`7c1bf4f39ca871a4aff6b4dd4266d0c293b933a5730d18b5b149b9f579240f1b`.
+`a7858ff726fc56fae342939346f45d72da059b7d23f83a337233e2d4a11ea793`.
 
 **Limitaciones:** los clubes y jugadores son generados; nadie ha ejecutado aún este instalador en un Windows real; la
 comprobación de actualizaciones necesita un token de lectura mientras el repositorio sea privado
@@ -44,13 +44,13 @@ comprobación de actualizaciones necesita un token de lectura mientras el reposi
 
 ## Estado real del juego
 
-| Sistema        | Qué existe hoy                                                                                                                                                                                   | Qué falta para el objetivo completo                                                               |
-| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------- |
-| Partido        | Simulación por posesiones, tácticas, lesiones, tiempos muertos, repetición con teclado, análisis de tiros y pérdidas, eficiencia ofensiva, rendimiento de quintetos y actas descargables en CSV. | Órdenes tácticas durante el partido, movimientos de jugadores en pista y calibración contrastada. |
-| Club y mercado | Equipo propio, quinteto, agentes libres, contratos, salarios y cuentas del club.                                                                                                                 | Traspasos negociados, personal, instalaciones, patrocinadores y decisiones económicas profundas.  |
-| Mundo          | Cuatro niveles, temporadas, ascensos, descensos, desarrollo y retiradas.                                                                                                                         | Cantera real, ojeo, competiciones adicionales y mayor estabilidad contrastada.                    |
-| Experiencia    | Fichas con gráficos de evolución, calendario futuro, informe del próximo rival y exportación CSV de líderes.                                                                                     | Más profundidad de gestión y pruebas de instalación en Windows.                                   |
-| Partidas       | Autoguardado por jornada con recuperación de la copia anterior y archivos JSON o gzip con comprobación de integridad.                                                                            | Historial más completo y opciones avanzadas de recuperación.                                      |
+| Sistema        | Qué existe hoy                                                                                                                                                                                                                      | Qué falta para el objetivo completo                                                                 |
+| -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| Partido        | Simulación por posesiones, tácticas, lesiones, tiempos muertos, reproducción con gráfico de marcador, órdenes al descanso, análisis de tiros y pérdidas, eficiencia ofensiva, rendimiento de quintetos y actas descargables en CSV. | Ajustes tácticos durante los periodos, movimientos de jugadores en pista y calibración contrastada. |
+| Club y mercado | Equipo propio, quinteto, agentes libres, contratos, salarios y cuentas del club.                                                                                                                                                    | Traspasos negociados, personal, instalaciones, patrocinadores y decisiones económicas profundas.    |
+| Mundo          | Cuatro niveles, temporadas, ascensos, descensos, desarrollo y retiradas.                                                                                                                                                            | Cantera real, ojeo, competiciones adicionales y mayor estabilidad contrastada.                      |
+| Experiencia    | Fichas con gráficos de evolución, calendario futuro, informe del próximo rival y exportación CSV de líderes.                                                                                                                        | Más profundidad de gestión y pruebas de instalación en Windows.                                     |
+| Partidas       | Autoguardado por jornada con recuperación de la copia anterior y archivos JSON o gzip con comprobación de integridad.                                                                                                               | Historial más completo y opciones avanzadas de recuperación.                                        |
 
 Los entrenadores y la entrada de jóvenes siguen usando reglas provisionales (`PLACEHOLDER`).
 Las escalas de salarios y las bandas estadísticas son aproximaciones. No se presentan como sistemas

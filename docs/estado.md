@@ -134,3 +134,5 @@ Reglas en [`coordinacion.md`](coordinacion.md).
 | #145 | PROBADA | Acta con desglose de tiros de campo por zona y jugada. Aciertos, intentos y puntos cotejados con los eventos y el acta. |
 
 | #149 | PROBADA | Diferencial de marcador de cada jugador hasta la jugada actual, calculado con quintetos y anotaciones. |
+
+| #148 | PROBADA | Portada con la entrega v0.1.0-alpha.16 de Windows y huella SHA-256 comprobada. |

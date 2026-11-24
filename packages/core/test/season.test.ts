@@ -3,6 +3,7 @@ import { parseUniverse } from '@bm27/schema';
 import { beforeAll, describe, expect, it } from 'vitest';
 import {
   advanceSeason,
+  beginManagedMatchday,
   buildRoundRobin,
   bracketOrder,
   computeStandings,
@@ -125,6 +126,33 @@ describe('calendar and standings', () => {
 });
 
 describe('season simulation', () => {
+  it('commits one complete matchday after halftime and preserves an unchanged plan', () => {
+    const managed = { ...universe, userTeamId: universe.competitions[0]!.teamIds[0]! };
+    const before = hashValue(managed);
+    const paused = beginManagedMatchday(managed)!;
+    expect(
+      paused.boxScore.home.teamId === managed.userTeamId ||
+        paused.boxScore.away.teamId === managed.userTeamId,
+    ).toBe(true);
+    expect(hashValue(managed)).toBe(before);
+    const standard = advanceSeason(managed);
+    expect(paused.finish()).toEqual(standard);
+    expect(() => paused.finish()).toThrow(/already resumed/);
+
+    const otherPlan = beginManagedMatchday(managed)!;
+    const adjusted = otherPlan.finish({
+      pace: otherPlan.tactics.pace === 'slow' ? 'fast' : 'slow',
+      pressure: otherPlan.tactics.pressure === 'high' ? 'low' : 'high',
+    });
+    expect(adjusted.played.filter((result) => result.id !== paused.matchId)).toEqual(
+      standard.played.filter((result) => result.id !== paused.matchId),
+    );
+    expect(adjusted.universe.teams.find((team) => team.id === managed.userTeamId)?.tactics).toEqual(
+      managed.teams.find((team) => team.id === managed.userTeamId)?.tactics,
+    );
+    expect(hashValue(managed)).toBe(before);
+  });
+
   it('same seed ⇒ identical season (same hash)', () => {
     const again = simulateSeason(generateUniverse({ seed: 'season-test' }));
     expect(hashValue(again.season)).toBe(hashValue(outcome.season));

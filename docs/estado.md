@@ -153,3 +153,5 @@ Reglas en [`coordinacion.md`](coordinacion.md).
 | #173 | PROBADA | Los equipos de la IA que necesitan canteranos de urgencia usan los nombres del paquete de datos de su partida. Regresión cubierta al iniciar temporada. |
 
 | #179 | PROBADA | Portada con la actualización de cantera, instalador v0.1.0-alpha.22 de Windows y huella SHA-256 verificada. |
+
+| #178 | PROBADA | Instrucciones del club dirigido al descanso, con validación del registro antes y después, avance único de la jornada y comprobación de guardado. |

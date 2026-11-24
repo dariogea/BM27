@@ -8,11 +8,11 @@
 
 ## Resumen
 
-**Preparación estimada para lanzamiento: 20 %** `██████░░░░░░░░░░░░░░░░░░░░░░░░`  (475 elementos)
+**Preparación estimada para lanzamiento: 20 %** `██████░░░░░░░░░░░░░░░░░░░░░░░░`  (476 elementos)
 
 ```mermaid
 pie showData title Elementos por estado
-  "Hecho" : 129
+  "Hecho" : 130
   "En curso" : 30
   "Pendiente" : 285
   "Bloqueado" : 2
@@ -73,7 +73,7 @@ flowchart LR
 | --- | ---: | --- | ---: | --- |
 | **F0 Fundaciones** | 76 % | `███████████████░░░░░` | 82/110 | Núcleo determinista, motor de partido, mundo persistente, mercado y finanzas, y la forma de trabajar de los dos agentes. |
 | **F1 Primera versión jugable** | 60 % | `████████████░░░░░░░░` | 24/43 | Que el propietario pueda jugar de principio a fin una temporada y varias más sin tocar una terminal, con consultas básicas del mundo. |
-| **F2 Profundidad de gestión** | 7 % | `█░░░░░░░░░░░░░░░░░░░` | 7/184 | Traspasos, cantera y ojeadores, economía con decisiones, entrenador rival con criterio, motor de partido completo. |
+| **F2 Profundidad de gestión** | 7 % | `█░░░░░░░░░░░░░░░░░░░` | 8/185 | Traspasos, cantera y ojeadores, economía con decisiones, entrenador rival con criterio, motor de partido completo. |
 | **F3 Mundo, datos y mods** | 9 % | `██░░░░░░░░░░░░░░░░░░` | 5/63 | Calibración con datos contrastados, paquetes de datos cargables, pirámide completa y otras competiciones. |
 | **F4 Presentación** | 28 % | `██████░░░░░░░░░░░░░░` | 8/36 | Diseño visual, accesibilidad, partido en 2D, narración, sonido y varios idiomas. |
 | **F5 Distribución** | 19 % | `████░░░░░░░░░░░░░░░░` | 2/22 | Instalador de escritorio, versiones alfa y beta en GitHub, actualización automática, firma y otras plataformas. |
@@ -84,7 +84,7 @@ flowchart LR
 | Área | Avance | | ✅ | 🔄 | ⬜ | ⛔ | 💡 | Para qué sirve |
 | --- | ---: | --- | ---: | ---: | ---: | ---: | ---: | --- |
 | **Núcleo y arquitectura** | 54 % | `███████████░░░░░░░░░` | 8 | 2 | 6 | 0 | 0 | La base técnica que hace fiable todo lo demás: reproducible, sin interfaz, validada por esquemas. |
-| **Motor de partido** | 61 % | `████████████░░░░░░░░` | 28 | 4 | 14 | 0 | 3 | Que cada partido se juegue posesión a posesión con reglas de baloncesto reales y que las tácticas tengan efecto medible. |
+| **Motor de partido** | 62 % | `████████████░░░░░░░░` | 29 | 4 | 14 | 0 | 3 | Que cada partido se juegue posesión a posesión con reglas de baloncesto reales y que las tácticas tengan efecto medible. |
 | **Jugadores** | 42 % | `████████░░░░░░░░░░░░` | 9 | 2 | 10 | 0 | 2 | Personas con atributos, carrera, potencial y personalidad que el usuario descubre y gestiona. |
 | **Clubes** | 27 % | `█████░░░░░░░░░░░░░░░` | 4 | 0 | 9 | 0 | 2 | El club como organización: plantilla, reputación, afición, estadio y objetivos. |
 | **Entrenadores y personal técnico** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 9 | 0 | 0 | Las personas que dirigen y apoyan al equipo, con efecto real en el juego. |
@@ -201,7 +201,7 @@ _La base técnica que hace fiable todo lo demás: reproducible, sin interfaz, va
 
 </details>
 
-<details><summary><b>Motor de partido</b> — 61 % `███████░░░░░`</summary>
+<details><summary><b>Motor de partido</b> — 62 % `███████░░░░░`</summary>
 
 _Que cada partido se juegue posesión a posesión con reglas de baloncesto reales y que las tácticas tengan efecto medible._
 
@@ -234,14 +234,15 @@ _Que cada partido se juegue posesión a posesión con reglas de baloncesto reale
   - 🔄 Faltas antideportivas y descalificantes (`F2` · 70 % · @claude · [#11](https://github.com/dariogea/BM27/issues/11)) — _T-028: antideportivas con 2 tiros y posesión, y expulsión con 2 faltas de conducta. Falta la falta descalificante directa._
   - 💡 Árbitros con criterio propio (estricto o permisivo) (`F3`)
   - 💡 Sanciones y suspensiones fuera de la pista (`F3`)
-- **Defensa y tácticas** — 50 %
+- **Defensa y tácticas** — 56 %
   - ✅ Defensa individual y coberturas del bloqueo directo (`F0`)
   - ✅ Defensas en zona y presión (`F0`)
   - ✅ Ritmo de juego y plan ofensivo (`F0`)
   - ✅ Efecto de las tácticas verificado con tests de equilibrio (`F0`)
   - ⬜ Ayudas defensivas y rotaciones (`F2`)
   - ⬜ Jugadas ensayadas y sistemas de ataque propios (`F2`)
-  - ⬜ Ajustes tácticos durante el partido (`F2` · [#10](https://github.com/dariogea/BM27/issues/10)) — _T-011._
+  - ✅ Ritmo y presión del equipo propio al descanso (`F2` · @codex · [#178](https://github.com/dariogea/BM27/issues/178)) — _Continuación del mismo partido al descanso, solo para el club dirigido. La primera mitad se conserva y el resultado se incorpora a la jornada al terminar._
+  - ⬜ Ajustes tácticos del entrenador rival durante el partido (`F2` · [#10](https://github.com/dariogea/BM27/issues/10)) — _T-011._
   - ⬜ Planes específicos contra un rival (`F2`)
 - **Rotaciones, energía y entrenador de partido** — 65 %
   - ✅ Quinteto inicial y plan de minutos (`F0`) — _El entrenador es un PLACEHOLDER con reglas fijas._

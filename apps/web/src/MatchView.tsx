@@ -216,6 +216,7 @@ export function BoxScoreView(props: {
   detail: MatchDetail;
   playerNames: Record<string, string>;
   tactics: Record<string, TeamTactics>;
+  halftimeInstructions?: string;
   name: (teamId: string) => string;
 }) {
   const { detail, name } = props;
@@ -259,12 +260,17 @@ export function BoxScoreView(props: {
       </table>
 
       <p className="note">
-        <strong>Tácticas de {name(home.teamId)}:</strong>{' '}
+        <strong>Plan inicial de {name(home.teamId)}:</strong>{' '}
         {describeTactics(props.tactics[home.teamId])}
         <br />
-        <strong>Tácticas de {name(away.teamId)}:</strong>{' '}
+        <strong>Plan inicial de {name(away.teamId)}:</strong>{' '}
         {describeTactics(props.tactics[away.teamId])}
       </p>
+      {props.halftimeInstructions && (
+        <p className="note">
+          <strong>Tu plan desde el descanso</strong> · {props.halftimeInstructions}
+        </p>
+      )}
       <OffensiveEfficiency teams={[home, away]} name={name} />
       <TeamBox team={home} title={name(home.teamId)} playerNames={props.playerNames} />
       <TeamBox team={away} title={name(away.teamId)} playerNames={props.playerNames} />

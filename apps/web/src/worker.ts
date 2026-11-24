@@ -4,6 +4,7 @@ import { AUTO_SAVE, isAutomaticSlot, IndexedDbSaveStore, PREVIOUS_AUTO_SAVE } fr
 import {
   advanceSeason,
   askingSalary,
+  beginManagedMatchday,
   clubRating,
   competitionOfTeam,
   effectiveSalaryLimit,
@@ -32,8 +33,14 @@ import {
   setTeamRotation,
   setTeamTactics,
   setUserTeam,
+  startSeason,
   standingsOf,
+  type AdvanceOutcome,
+  type CompetitionSeasonOptions,
+  type HalftimeTactics,
+  type ManagedMatchday,
 } from '@bm27/core';
+import { DEFAULT_TACTICS, TeamTacticsSchema } from '@bm27/schema';
 import type {
   DataPack,
   MatchDetail,
@@ -70,7 +77,11 @@ const replayProofs = new ReplayProofs();
  */
 /** What happened to the user's squad when the last season ended. */
 let offseasonReport: OffseasonReport | null = null;
-const myMatches = new Map<string, { detail: MatchDetail; tactics: Record<string, TeamTactics> }>();
+const myMatches = new Map<
+  string,
+  { detail: MatchDetail; tactics: Record<string, TeamTactics>; halftimeTactics?: HalftimeTactics }
+>();
+let managedMatch: ManagedMatchday | null = null;
 
 function tablesOf(u: Universe): CompetitionViewData[] {
   if (u.currentSeason) {
@@ -288,13 +299,30 @@ function need(): Universe {
   return universe;
 }
 
+function matchPlayerNames(
+  detail: Pick<MatchDetail, 'boxScore'>,
+  source: Universe,
+): Record<string, string> {
+  const ids = new Set(
+    [...detail.boxScore.home.players, ...detail.boxScore.away.players].map((line) => line.playerId),
+  );
+  return Object.fromEntries(
+    source.players
+      .filter((player) => ids.has(player.id))
+      .map((player) => [player.id, `${player.firstName} ${player.lastName}`]),
+  );
+}
+
 /** Plays one step, remembering the user team's matches in full. */
-function step(): { season: Season | null; played: MatchResult[] } {
-  const before = need();
+function step(
+  before = need(),
+  advance: (options: CompetitionSeasonOptions) => AdvanceOutcome = (options) =>
+    advanceSeason(before, options),
+): { season: Season | null; played: MatchResult[] } {
   const userTeamId = before.userTeamId;
   // Older seasons cannot be reconstructed from this season's universe.
   if (!before.currentSeason) replayProofs.clear();
-  const outcome = advanceSeason(before, {
+  const outcome = advance({
     onMatch: (detail) => {
       const { homeTeamId, awayTeamId } = detail.result;
       if (homeTeamId !== userTeamId && awayTeamId !== userTeamId) return;
@@ -379,6 +407,13 @@ function describeMine(played: MatchResult[], u: Universe, before: string | null)
 }
 
 async function handle(command: Command): Promise<Reply> {
+  if (
+    managedMatch &&
+    command.type !== 'finishManagedMatch' &&
+    command.type !== 'cancelManagedMatch'
+  ) {
+    throw new Error('Continúa el partido desde el descanso o sal de él antes de cambiar de tarea.');
+  }
   const start = performance.now();
   const ms = (): number => Math.round(performance.now() - start);
   let storageWarning: string | undefined;
@@ -409,6 +444,22 @@ async function handle(command: Command): Promise<Reply> {
       storageWarning = `No se pudo completar el guardado automático: ${error instanceof Error ? error.message : String(error)} La partida sigue abierta; guarda una copia en archivo.`;
       return ` ${storageWarning}`;
     }
+  };
+  const playMatchday = async (
+    before: Universe,
+    advance?: (options: CompetitionSeasonOptions) => AdvanceOutcome,
+  ) => {
+    const { season, played } = step(before, advance);
+    const mine = describeMine(played, need(), before.userTeamId);
+    const saved = await automatic();
+    return {
+      played,
+      reply: state(
+        season
+          ? `Temporada ${before.seasonNumber} terminada.${mine}${saved}`
+          : `Jornada jugada: ${played.length} partidos.${mine}${saved}`,
+      ),
+    };
   };
   switch (command.type) {
     case 'listSlots':
@@ -518,19 +569,52 @@ async function handle(command: Command): Promise<Reply> {
       universe = releasePlayer(need(), command.playerId);
       return state(`${p ? `${p.firstName} ${p.lastName}` : 'El jugador'} queda libre.`);
     }
+    case 'beginManagedMatch': {
+      const before = need();
+      if (before.userTeamId === null) throw new Error('Elige el equipo que vas a dirigir.');
+      const started = before.currentSeason ? before : startSeason(before);
+      const match = beginManagedMatchday(started);
+      if (!match) throw new Error('Tu equipo no tiene un partido con descanso en esta jornada.');
+      managedMatch = match;
+      const detail = { events: match.events, boxScore: match.boxScore };
+      return {
+        id: command.id,
+        type: 'halftime',
+        match: {
+          matchId: match.matchId,
+          detail,
+          playerNames: matchPlayerNames(detail, started),
+          tactics: match.tactics,
+        },
+      };
+    }
+    case 'cancelManagedMatch':
+    case 'finishManagedMatch': {
+      const match = managedMatch;
+      if (!match || match.matchId !== command.matchId) {
+        throw new Error('Este partido ya no está pendiente de continuar.');
+      }
+      if (command.type === 'cancelManagedMatch') {
+        managedMatch = null;
+        return state('Has salido del encuentro. La jornada sigue pendiente.');
+      }
+      const parsed = command.tactics
+        ? TeamTacticsSchema.parse({ ...DEFAULT_TACTICS, ...command.tactics })
+        : undefined;
+      const before = need();
+      managedMatch = null;
+      const { reply } = await playMatchday(before, (options) => match.finish(parsed, options));
+      const stored = myMatches.get(match.matchId);
+      if (stored && parsed) {
+        stored.halftimeTactics = { pace: parsed.pace, pressure: parsed.pressure };
+      }
+      reply.watchedMatchId = match.matchId;
+      return reply;
+    }
     case 'advance': {
-      offseasonReport = null;
-      const userTeamId = need().userTeamId;
-      const seasonNumber = need().seasonNumber;
-      const { season, played } = step();
-      const mine = describeMine(played, need(), userTeamId);
-      const saved = await automatic();
-      const reply = state(
-        season
-          ? `Temporada ${seasonNumber} terminada.${mine}${saved}`
-          : `Jornada jugada: ${played.length} partidos.${mine}${saved}`,
-      );
-      if (command.watch && userTeamId) {
+      const before = need();
+      const { played, reply } = await playMatchday(before);
+      if (command.watch && before.userTeamId) {
         reply.watchedMatchId = played.find((match) => myMatches.has(match.id))?.id;
       }
       return reply;
@@ -550,23 +634,14 @@ async function handle(command: Command): Promise<Reply> {
     case 'matchDetail': {
       const u = need();
       const stored = myMatches.get(command.matchId);
-      const names = (detail: MatchDetail, source: Universe): Record<string, string> => {
-        const ids = new Set(
-          [...detail.boxScore.home.players, ...detail.boxScore.away.players].map((l) => l.playerId),
-        );
-        const out: Record<string, string> = {};
-        for (const p of source.players) {
-          if (ids.has(p.id)) out[p.id] = `${p.firstName} ${p.lastName}`;
-        }
-        return out;
-      };
       if (stored) {
         return {
           id: command.id,
           type: 'matchDetail',
           detail: stored.detail,
-          playerNames: names(stored.detail, u),
+          playerNames: matchPlayerNames(stored.detail, u),
           tactics: stored.tactics,
+          halftimeTactics: stored.halftimeTactics,
           ms: ms(),
         };
       }
@@ -602,7 +677,7 @@ async function handle(command: Command): Promise<Reply> {
         id: command.id,
         type: 'matchDetail',
         detail,
-        playerNames: names(detail, source),
+        playerNames: matchPlayerNames(detail, source),
         tactics,
         ms: ms(),
       };

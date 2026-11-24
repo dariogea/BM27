@@ -80,5 +80,13 @@ no datos verificados; el entrenador que pide los tiempos muertos y hace los camb
   reales.
 - Quién elige la táctica de cada club es un `PLACEHOLDER`: una regla simple según la plantilla, con
   algo de azar. No hay entrenadores todavía.
-- No hay tácticas por jugador (a quién defender, quién lanza al final) ni cambios de táctica
-  durante el partido (los tiempos muertos solo dan descanso y cortan rachas).
+- Las instrucciones individuales y los ajustes durante un periodo están pendientes.
+
+## Instrucciones al descanso
+
+En **Tácticas → Dirigir partido** se puede seguir la primera mitad y ajustar el ritmo y la
+presión del equipo propio al descanso. Los ajustes se aplican desde el siguiente periodo y
+siguen vigentes en la prórroga. El plan de la temporada se conserva para la próxima jornada.
+El marcador y la clasificación se actualizan al terminar el encuentro, junto con el resto
+de la jornada. El resultado se guarda en la partida. El acta y el registro detallado de ese
+partido están disponibles durante la sesión.

@@ -1,5 +1,6 @@
 import type { WorldPayload, WorldQuery } from './worldTypes';
 import type { SlotSummary } from './slotStore';
+import type { HalftimeTactics } from '@bm27/core';
 import type {
   Contract,
   Fixture,
@@ -33,6 +34,9 @@ export type Command =
   | { id: number; type: 'renewContract'; playerId: string; years: number }
   | { id: number; type: 'releasePlayer'; playerId: string }
   | { id: number; type: 'advance'; watch?: boolean }
+  | { id: number; type: 'beginManagedMatch' }
+  | { id: number; type: 'finishManagedMatch'; matchId: string; tactics?: HalftimeTactics }
+  | { id: number; type: 'cancelManagedMatch'; matchId: string }
   | { id: number; type: 'finishSeason' }
   | { id: number; type: 'matchDetail'; matchId: string }
   | { id: number; type: 'exportSave' }
@@ -185,10 +189,18 @@ export interface GameView {
   finance: FinanceView | null;
 }
 
+export interface HalftimeView {
+  matchId: string;
+  detail: Pick<MatchDetail, 'events' | 'boxScore'>;
+  playerNames: Record<string, string>;
+  tactics: HalftimeTactics;
+}
+
 export type Reply =
   | { id: number; type: 'dataPack'; summary: DataPackSummary | null; message: string }
   | { id: number; type: 'world'; result: WorldPayload }
   | { id: number; type: 'slots'; slots: SlotSummary[]; autosave: boolean; message: string }
+  | { id: number; type: 'halftime'; match: HalftimeView }
   | {
       id: number;
       type: 'state';
@@ -204,6 +216,7 @@ export type Reply =
       playerNames: Record<string, string>;
       /** Tactics each team used in this match, by team id. */
       tactics: Record<string, TeamTactics>;
+      halftimeTactics?: HalftimeTactics;
       ms: number;
     }
   | { id: number; type: 'save'; json: string; fileName: string }

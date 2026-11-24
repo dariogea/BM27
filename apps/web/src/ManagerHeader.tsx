@@ -16,6 +16,7 @@ export function ManagerHeader(props: {
   view: GameView | null;
   active: Tab;
   busy: boolean;
+  inMatch?: boolean;
   theme: 'dark' | 'light';
   compact: boolean;
   palette: PaletteId;
@@ -98,14 +99,14 @@ export function ManagerHeader(props: {
               type="button"
               className="watch-match-button"
               onClick={props.onWatch}
-              disabled={props.busy}
+              disabled={props.busy || props.inMatch}
             >
               Jugar y ver
             </button>
           )}
           <button
             className="continue-button"
-            disabled={props.busy || !view}
+            disabled={props.busy || props.inMatch || !view}
             onClick={props.onAdvance}
           >
             {props.busy ? 'Procesando…' : 'Jugar jornada'} <span aria-hidden="true">»</span>
@@ -120,7 +121,9 @@ export function ManagerHeader(props: {
               key={id}
               className={active === id ? 'active' : ''}
               aria-pressed={active === id}
-              disabled={id !== 'saves' && (!view || (requiresTeam(id) && !view.myTeam))}
+              disabled={
+                props.inMatch || (id !== 'saves' && (!view || (requiresTeam(id) && !view.myTeam)))
+              }
               onClick={() => props.onNavigate(id)}
             >
               {label}

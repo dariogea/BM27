@@ -25,9 +25,11 @@ const STAT_ROWS: [string, (totals: ReplayTotals) => string | number][] = [
 export function ReplayViewer(props: {
   managedTeamId: string | null;
   broadcast?: boolean;
+  halftime?: boolean;
+  startAt?: number;
   instructions?: string;
   onFinish?: () => void;
-  detail: MatchDetail;
+  detail: Pick<MatchDetail, 'events' | 'boxScore'>;
   playerNames: Record<string, string>;
   name: (id: string) => string;
 }) {
@@ -36,7 +38,7 @@ export function ReplayViewer(props: {
     region.current?.focus({ preventScroll: true });
     region.current?.scrollIntoView({ block: 'start' });
   }, []);
-  const [cursor, setCursor] = useState(0);
+  const [cursor, setCursor] = useState(props.startAt ?? 0);
   const [playing, setPlaying] = useState(props.broadcast ?? false);
   const [clip, setClip] = useState<{ end: number; returnTo: number } | null>(null);
   const [rate, setRate] = useState(5);
@@ -149,7 +151,13 @@ export function ReplayViewer(props: {
     >
       <div className="replay-heading">
         <div>
-          <h2>{props.broadcast ? 'Retransmisión del partido' : 'Repetición y mapa de tiros'}</h2>
+          <h2>
+            {props.halftime
+              ? 'Primera mitad'
+              : props.broadcast
+                ? 'Retransmisión del partido'
+                : 'Repetición y mapa de tiros'}
+          </h2>
         </div>
         <span className="status-pill">{playing ? 'Reproduciendo' : 'En pausa'}</span>
       </div>
@@ -198,7 +206,7 @@ export function ReplayViewer(props: {
           Siguiente periodo
         </button>
         <button onClick={() => seek(last)} disabled={position >= last}>
-          Saltar al final
+          {props.halftime ? 'Saltar al descanso' : 'Saltar al final'}
         </button>
         <label>
           Velocidad

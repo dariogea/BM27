@@ -1,4 +1,5 @@
 import { queryWorld } from './worldData';
+import { exportBrowserSave, importBrowserSave } from './browserSave';
 import { AUTO_SAVE, isAutomaticSlot, IndexedDbSaveStore, PREVIOUS_AUTO_SAVE } from './slotStore';
 /// <reference lib="webworker" />
 import {
@@ -21,11 +22,9 @@ import {
   renewContract,
   signFreeAgent,
   teamPayroll,
-  exportSave,
   generateUniverse,
   generateUniverseFromDataPack,
   parseDataPack,
-  importSave,
   playerAbility,
   playerOverall,
   prepareTeam,
@@ -692,12 +691,12 @@ async function handle(command: Command): Promise<Reply> {
       return {
         id: command.id,
         type: 'save',
-        json: exportSave(u),
+        json: await exportBrowserSave(u),
         fileName: `bm27-${u.seed.replace(/[^a-zA-Z0-9_-]+/g, '_') || 'partida'}-t${u.seasonNumber}.json`,
       };
     }
     case 'importSave': {
-      universe = importSave(command.json);
+      universe = await importBrowserSave(command.json);
       offseasonReport = null;
       replayUniverse = universe;
       myMatches.clear();

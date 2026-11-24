@@ -185,7 +185,7 @@ _La base técnica que hace fiable todo lo demás: reproducible, sin interfaz, va
 - ✅ Núcleo sin interfaz (headless, sin DOM) (`F0`) — _Pilar 3; lo comprueba ESLint y un test._
 - ✅ Generador de azar con semilla (xoshiro128**) (`F0`)
 - ✅ Semilla propia por partido, independiente del orden (`F0`)
-- ✅ Huella SHA-256 e integridad del guardado (`F0`) — _El checksum está implementado; no se afirma serialización canónica entre órdenes de claves distintos._
+- ✅ Huella SHA-256 e integridad del guardado (`F0`) — _La huella verifica el texto del contenido del guardado. El Worker aprovecha SHA-256 nativo cuando está disponible y conserva la vía de cálculo del núcleo (#187)._
 - ✅ Esquemas zod y JSON Schema exportados (`F0`)
 - ✅ schemaVersion y migraciones encadenadas (v0 a v5) (`F0`)
 - 🔄 API pública del núcleo estable y documentada (`F0` · 40 %) — _Hay API pero sin documento de referencia._

@@ -1,5 +1,6 @@
-import { exportSave, importSave, type SaveStore } from '@bm27/core';
+import type { SaveStore } from '@bm27/core';
 import type { Universe } from '@bm27/schema';
+import { exportBrowserSave, importBrowserSave } from './browserSave';
 
 export const AUTO_SAVE = '__bm27_autosave__';
 export const PREVIOUS_AUTO_SAVE = '__bm27_autosave_previous__';
@@ -112,7 +113,7 @@ export class IndexedDbSaveStore implements SaveStore {
   async save(name: string, universe: Universe, rotateAutomatic = true): Promise<void> {
     name = checkedName(name);
     return this.perform(async () => {
-      const json = exportSave(universe);
+      const json = await exportBrowserSave(universe);
       const summary: SlotSummary = {
         name,
         seed: universe.seed,
@@ -147,7 +148,7 @@ export class IndexedDbSaveStore implements SaveStore {
       const row = await this.read<Payload>('payloads', checkedName(name));
       if (!row) throw new Error('No se encuentra esa partida guardada.');
       try {
-        return importSave(row.json);
+        return await importBrowserSave(row.json);
       } catch {
         throw new Error(
           'La partida está dañada o no es compatible. Las demás ranuras no se han modificado. Puedes importar una copia de seguridad.',

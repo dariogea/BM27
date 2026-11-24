@@ -67,7 +67,7 @@
         {
           "t": "Huella SHA-256 e integridad del guardado",
           "s": "hecho",
-          "n": "El checksum está implementado; no se afirma serialización canónica entre órdenes de claves distintos."
+          "n": "La huella verifica el texto del contenido del guardado. El Worker aprovecha SHA-256 nativo cuando está disponible y conserva la vía de cálculo del núcleo (#187)."
         },
         {
           "t": "Esquemas zod y JSON Schema exportados",

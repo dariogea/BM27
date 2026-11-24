@@ -108,7 +108,7 @@ flowchart LR
 | **Cantera y formación** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Desarrollar un sistema de formación con entradas, recursos y salidas, más allá del relevo automático. |
 | **Ojeo y reclutamiento** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Convertir la búsqueda de jugadores en información adquirida, contrastable y con límites. |
 | **Carrera del entrenador** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Permitir una trayectoria profesional con reputación y responsabilidades separadas del club. |
-| **Análisis estadístico y toma de decisiones** | 38 % | `████████░░░░░░░░░░░░` | 1 | 7 | 4 | 0 | 0 | Transformar los registros del motor en información útil, contextualizada y verificable. |
+| **Análisis estadístico y toma de decisiones** | 40 % | `████████░░░░░░░░░░░░` | 1 | 7 | 4 | 0 | 0 | Transformar los registros del motor en información útil, contextualizada y verificable. |
 | **Inscripción y administración deportiva** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Hacer explícitas las condiciones para competir y fichar, manteniendo las reglas como datos. |
 | **Calendario y logística deportiva** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Que los desplazamientos, descansos y cambios de fecha tengan una planificación coherente. |
 | **Instalaciones y operaciones del club** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Gestionar mejoras materiales con capacidad, plazos, mantenimiento y efectos concretos. |
@@ -153,7 +153,7 @@ Los agentes solo trabajan cuando el propietario lo autoriza (D-052); esto reflej
 | 🔄 En curso | Calcular eficiencia de tiro y uso de posesiones | Análisis estadístico y toma de decisiones | 50 % | [#153](https://github.com/dariogea/BM27/issues/153) |
 | 🔄 En curso | Distinguir rendimiento individual y contexto del equipo | Análisis estadístico y toma de decisiones | 50 % | [#149](https://github.com/dariogea/BM27/issues/149) |
 | 🔄 En curso | Analizar perfiles de rivales con el mismo criterio | Análisis estadístico y toma de decisiones | 50 % | [#160](https://github.com/dariogea/BM27/issues/160) |
-| 🔄 En curso | Desglosar resultados por tipo de jugada y zona | Análisis estadístico y toma de decisiones | 60 % | [#145](https://github.com/dariogea/BM27/issues/145) |
+| 🔄 En curso | Desglosar resultados por tipo de jugada y zona | Análisis estadístico y toma de decisiones | 80 % | [#164](https://github.com/dariogea/BM27/issues/164) |
 | 🔄 En curso | Mostrar evolución temporal sin mezclar temporadas | Análisis estadístico y toma de decisiones | 50 % | [#142](https://github.com/dariogea/BM27/issues/142) |
 | 🔄 En curso | Exportar consultas estadísticas con sus unidades | Análisis estadístico y toma de decisiones | 50 % | [#124](https://github.com/dariogea/BM27/issues/124) |
 | 🔄 En curso | Elegir densidad de tablas y tamaño de interfaz | Accesibilidad y preferencias de uso | 40 % | [#52](https://github.com/dariogea/BM27/issues/52) |
@@ -748,7 +748,7 @@ _Permitir una trayectoria profesional con reputación y responsabilidades separa
 
 </details>
 
-<details><summary><b>Análisis estadístico y toma de decisiones</b> — 38 % `█████░░░░░░░`</summary>
+<details><summary><b>Análisis estadístico y toma de decisiones</b> — 40 % `█████░░░░░░░`</summary>
 
 _Transformar los registros del motor en información útil, contextualizada y verificable._
 
@@ -757,10 +757,10 @@ _Transformar los registros del motor en información útil, contextualizada y ve
   - 🔄 Calcular eficiencia de tiro y uso de posesiones (`F2` · 50 % · @codex · [#153](https://github.com/dariogea/BM27/issues/153)) — _Tiro efectivo y puntos por posesión registrada de cada equipo en el acta. Uso individual de posesiones pendiente._
   - 🔄 Distinguir rendimiento individual y contexto del equipo (`F2` · 50 % · @codex · [#149](https://github.com/dariogea/BM27/issues/149)) — _Diferencial de puntos durante los minutos en pista de cada jugador a partir del registro del partido._
   - ⬜ Advertir cuando una muestra es demasiado pequeña (`F2`)
-- **Quintetos y enfrentamientos** — 53 %
+- **Quintetos y enfrentamientos** — 58 %
   - ✅ Comparar rendimiento de combinaciones de cinco jugadores (`F2` · @codex · [#156](https://github.com/dariogea/BM27/issues/156)) — _Tiempo, puntos anotados y recibidos y diferencial por quinteto registrado en el acta de ambos equipos._
   - 🔄 Analizar perfiles de rivales con el mismo criterio (`F2` · 50 % · @codex · [#160](https://github.com/dariogea/BM27/issues/160)) — _Informe del siguiente rival en el Portal con forma, balance y medias de anotación de la temporada actual._
-  - 🔄 Desglosar resultados por tipo de jugada y zona (`F2` · 60 % · @codex · [#145](https://github.com/dariogea/BM27/issues/145)) — _Tiros de campo por tipo de jugada o zona en el acta. Faltas, pérdidas y otras acciones quedan pendientes._
+  - 🔄 Desglosar resultados por tipo de jugada y zona (`F2` · 80 % · @codex · [#164](https://github.com/dariogea/BM27/issues/164)) — _Tiros de campo por zona y tipo de jugada, y pérdidas por tipo de jugada en el acta. Faltas y otras acciones pendientes._
   - ⬜ Relacionar ajustes tácticos con cambios de rendimiento (`F2`)
 - **Herramientas de consulta** — 25 %
   - ⬜ Guardar filtros y comparaciones frecuentes (`F2`)

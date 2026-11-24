@@ -11,7 +11,11 @@ export function shotBreakdown({ events, boxScore }: MatchDetail) {
   const teams = new Map(
     [boxScore.home, boxScore.away].map(({ teamId }) => [
       teamId,
-      { zones: new Map<ShotZone, ShotTotals>(), plays: new Map<PlayType, ShotTotals>() },
+      {
+        zones: new Map<ShotZone, ShotTotals>(),
+        plays: new Map<PlayType, ShotTotals>(),
+        turnovers: new Map<PlayType, number>(),
+      },
     ]),
   );
   function record<K>(group: Map<K, ShotTotals>, key: K, made: boolean, points: number): void {
@@ -24,9 +28,13 @@ export function shotBreakdown({ events, boxScore }: MatchDetail) {
     group.set(key, totals);
   }
   for (const event of events) {
-    if (event.type !== 'shot') continue;
+    if (event.type !== 'shot' && event.type !== 'turnover') continue;
     const team = teams.get(event.offenseTeamId);
     if (!team) continue;
+    if (event.type === 'turnover') {
+      team.turnovers.set(event.playType, (team.turnovers.get(event.playType) ?? 0) + 1);
+      continue;
+    }
     record(team.zones, event.zone, event.made, event.points);
     record(team.plays, event.playType, event.made, event.points);
   }

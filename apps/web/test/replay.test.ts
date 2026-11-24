@@ -4,6 +4,7 @@ import { generateUniverseFromDataPack, simulateCompetitionSeason } from '@bm27/c
 import type { MatchDetail } from '@bm27/schema';
 import sample from '../../../data/packs/example-eight-clubs.json';
 import { buildReplay, replayClock, replayEventText, replayPlayerTotals } from '../src/replayData';
+import { scoreTimeline } from '../src/scoreTimeline';
 
 const matches: MatchDetail[] = [];
 beforeAll(() => {
@@ -13,6 +14,33 @@ beforeAll(() => {
   });
 });
 describe('event-only match playback', () => {
+  it('places both score lines on the recorded clock including overtime', () => {
+    const overtime = matches.find((match) => match.result.overtimePeriods > 0);
+    expect(overtime).toBeDefined();
+    for (const match of [matches[0]!, overtime!]) {
+      const { frames } = buildReplay(match);
+      const timeline = scoreTimeline(frames);
+      const expectedSeconds = match.events.reduce(
+        (total, event) => total + (event.type === 'period_start' ? event.periodSeconds : 0),
+        0,
+      );
+      expect(timeline.elapsed[0]).toBe(0);
+      expect(timeline.elapsed.at(-1)).toBe(expectedSeconds);
+      expect(
+        timeline.elapsed.every((value, index) => value >= (timeline.elapsed[index - 1] ?? 0)),
+      ).toBe(true);
+      expect(timeline.changes.slice(1).map(({ frame }) => frame)).toEqual(
+        match.events.flatMap((event, index) =>
+          (event.type === 'shot' || event.type === 'free_throw') && event.made ? [index + 1] : [],
+        ),
+      );
+      expect(timeline.changes.at(-1)).toMatchObject({
+        home: match.result.homeScore,
+        away: match.result.awayScore,
+      });
+    }
+  });
+
   it('reaches exactly the box score through every complete match without altering its source', () => {
     expect(matches.length).toBeGreaterThan(56);
     for (const match of matches) {

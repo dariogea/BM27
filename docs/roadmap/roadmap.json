@@ -1460,7 +1460,14 @@
           "s": "hecho",
           "i": 15,
           "o": "codex",
-          "n": "Jugar y ver muestra el partido jugada a jugada con el plan guardado. El motor calcula el resultado al empezar. Órdenes durante el encuentro pendientes."
+          "n": "Jugar y ver reproduce el encuentro con el plan guardado. Dirigir partido permite dar instrucciones al equipo propio en el descanso (#178)."
+        },
+        {
+          "t": "Evolución del marcador durante la retransmisión",
+          "s": "hecho",
+          "o": "codex",
+          "i": 184,
+          "n": "Dos líneas de anotación por tiempo de juego, hasta la jugada visible. Funciona al rebobinar y durante la prórroga."
         },
         {
           "t": "Estadísticas en vivo durante la reproducción",

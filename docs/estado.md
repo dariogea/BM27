@@ -155,3 +155,5 @@ Reglas en [`coordinacion.md`](coordinacion.md).
 | #179 | PROBADA | Portada con la actualización de cantera, instalador v0.1.0-alpha.22 de Windows y huella SHA-256 verificada. |
 
 | #178 | PROBADA | Instrucciones del club dirigido al descanso, con validación del registro antes y después, avance único de la jornada y comprobación de guardado. |
+
+| #184 | PROBADA | Gráfico de los puntos por tiempo de juego, sincronizado con la jugada del reproductor y comprobado con partidos con prórroga. |

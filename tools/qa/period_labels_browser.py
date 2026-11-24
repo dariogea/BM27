@@ -57,6 +57,25 @@ with sync_playwright() as p:
         report.get_by_text("Análisis de tiros y pérdidas", exact=True).click()
         efficiency = report.get_by_role("table", name="Eficiencia ofensiva")
         box = page.evaluate("window.matchDetail.boxScore")
+        detail = page.evaluate("window.matchDetail")
+        replay = page.get_by_test_id("replay-viewer")
+        chart = replay.locator(".score-progression svg")
+        expect(chart).to_have_attribute(
+            "aria-label", "Tras 0:00 de juego, "
+            f"{replay.locator('.replay-scoreboard > div').first.locator('span').inner_text()} 0, "
+            f"{replay.locator('.replay-scoreboard > div').last.locator('span').inner_text()} 0"
+        )
+        start_paths = chart.locator("path").evaluate_all("(paths) => paths.map((path) => path.getAttribute('d'))")
+        replay.get_by_role("button", name="Saltar al final", exact=True).click()
+        minutes, seconds = divmod(sum(e["periodSeconds"] for e in detail["events"] if e["type"] == "period_start"), 60)
+        home = replay.locator(".replay-scoreboard > div").first.locator("span").inner_text()
+        away = replay.locator(".replay-scoreboard > div").last.locator("span").inner_text()
+        expect(chart).to_have_attribute(
+            "aria-label", f"Tras {minutes}:{seconds:02d} de juego, {home} {box['home']['points']}, {away} {box['away']['points']}"
+        )
+        assert chart.locator("path").evaluate_all("(paths) => paths.map((path) => path.getAttribute('d'))") != start_paths
+        replay.get_by_role("button", name="Inicio", exact=True).click()
+        assert chart.locator("path").evaluate_all("(paths) => paths.map((path) => path.getAttribute('d'))") == start_paths
         for index, side in enumerate(["home", "away"]):
             line = box[side]
             totals = line["totals"]
@@ -66,7 +85,6 @@ with sync_playwright() as p:
             assert abs(float(cells[0].replace("%", "").strip().replace(",", ".")) - 100 * expected_efg) <= 0.051
             assert abs(float(cells[1].replace(",", ".")) - expected_ppp) <= 0.0051
         grouped = report.get_by_role("region", name="Desglose de tiros y pérdidas")
-        detail = page.evaluate("window.matchDetail")
         shots = [event for event in detail["events"] if event["type"] == "shot"]
         turnovers = [event for event in detail["events"] if event["type"] == "turnover"]
         for mode, field in [("zones", "zone"), ("plays", "playType")]:

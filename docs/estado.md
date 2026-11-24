@@ -134,3 +134,5 @@ Reglas en [`coordinacion.md`](coordinacion.md).
 | #145 | PROBADA | Acta con desglose de tiros de campo por zona y jugada. Aciertos, intentos y puntos cotejados con los eventos y el acta. |
 
 | #149 | PROBADA | Diferencial de marcador de cada jugador hasta la jugada actual, calculado con quintetos y anotaciones. |
+
+| #153 | PROBADA | Tiro efectivo y puntos por posesión en el acta de ambos equipos, contrastados contra dos partidos del motor. |

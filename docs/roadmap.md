@@ -13,8 +13,8 @@
 ```mermaid
 pie showData title Elementos por estado
   "Hecho" : 128
-  "En curso" : 28
-  "Pendiente" : 288
+  "En curso" : 29
+  "Pendiente" : 287
   "Bloqueado" : 2
   "Idea" : 29
 ```
@@ -108,7 +108,7 @@ flowchart LR
 | **Cantera y formación** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Desarrollar un sistema de formación con entradas, recursos y salidas, más allá del relevo automático. |
 | **Ojeo y reclutamiento** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Convertir la búsqueda de jugadores en información adquirida, contrastable y con límites. |
 | **Carrera del entrenador** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Permitir una trayectoria profesional con reputación y responsabilidades separadas del club. |
-| **Análisis estadístico y toma de decisiones** | 22 % | `████░░░░░░░░░░░░░░░░` | 0 | 5 | 7 | 0 | 0 | Transformar los registros del motor en información útil, contextualizada y verificable. |
+| **Análisis estadístico y toma de decisiones** | 26 % | `█████░░░░░░░░░░░░░░░` | 0 | 6 | 6 | 0 | 0 | Transformar los registros del motor en información útil, contextualizada y verificable. |
 | **Inscripción y administración deportiva** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Hacer explícitas las condiciones para competir y fichar, manteniendo las reglas como datos. |
 | **Calendario y logística deportiva** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Que los desplazamientos, descansos y cambios de fecha tengan una planificación coherente. |
 | **Instalaciones y operaciones del club** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Gestionar mejoras materiales con capacidad, plazos, mantenimiento y efectos concretos. |
@@ -150,6 +150,7 @@ Los agentes solo trabajan cuando el propietario lo autoriza (D-052); esto reflej
 | 🔄 En curso | Tablas ordenables y filtros | Interfaz web | 65 % | [#52](https://github.com/dariogea/BM27/issues/52) |
 | 🔄 En curso | Atajos de teclado | Interfaz web | 35 % | [#139](https://github.com/dariogea/BM27/issues/139) |
 | 🔄 En curso | Normalizar estadísticas por posesión y por minuto | Análisis estadístico y toma de decisiones | 50 % | [#118](https://github.com/dariogea/BM27/issues/118) |
+| 🔄 En curso | Calcular eficiencia de tiro y uso de posesiones | Análisis estadístico y toma de decisiones | 50 % | [#153](https://github.com/dariogea/BM27/issues/153) |
 | 🔄 En curso | Distinguir rendimiento individual y contexto del equipo | Análisis estadístico y toma de decisiones | 50 % | [#149](https://github.com/dariogea/BM27/issues/149) |
 | 🔄 En curso | Desglosar resultados por tipo de jugada y zona | Análisis estadístico y toma de decisiones | 60 % | [#145](https://github.com/dariogea/BM27/issues/145) |
 | 🔄 En curso | Mostrar evolución temporal sin mezclar temporadas | Análisis estadístico y toma de decisiones | 50 % | [#142](https://github.com/dariogea/BM27/issues/142) |
@@ -746,13 +747,13 @@ _Permitir una trayectoria profesional con reputación y responsabilidades separa
 
 </details>
 
-<details><summary><b>Análisis estadístico y toma de decisiones</b> — 22 % `███░░░░░░░░░`</summary>
+<details><summary><b>Análisis estadístico y toma de decisiones</b> — 26 % `███░░░░░░░░░`</summary>
 
 _Transformar los registros del motor en información útil, contextualizada y verificable._
 
-- **Métricas deportivas** — 25 %
+- **Métricas deportivas** — 38 %
   - 🔄 Normalizar estadísticas por posesión y por minuto (`F2` · 50 % · @codex · [#118](https://github.com/dariogea/BM27/issues/118)) — _Líderes por 40 minutos a partir de los segundos reales en pista y filtro mínimo de minutos. Normalización por posesiones pendiente._
-  - ⬜ Calcular eficiencia de tiro y uso de posesiones (`F2`)
+  - 🔄 Calcular eficiencia de tiro y uso de posesiones (`F2` · 50 % · @codex · [#153](https://github.com/dariogea/BM27/issues/153)) — _Tiro efectivo y puntos por posesión registrada de cada equipo en el acta. Uso individual de posesiones pendiente._
   - 🔄 Distinguir rendimiento individual y contexto del equipo (`F2` · 50 % · @codex · [#149](https://github.com/dariogea/BM27/issues/149)) — _Diferencial de puntos durante los minutos en pista de cada jugador a partir del registro del partido._
   - ⬜ Advertir cuando una muestra es demasiado pequeña (`F2`)
 - **Quintetos y enfrentamientos** — 15 %

@@ -49,6 +49,16 @@ with sync_playwright() as p:
             prefix + str(i + 1) for i in range(len(labels))
         ] + ["PR" + str(i) for i in range(1, extra + 1)]
         report.get_by_text("Análisis de tiros de campo", exact=True).click()
+        efficiency = report.get_by_role("table", name="Eficiencia ofensiva")
+        box = page.evaluate("window.matchDetail.boxScore")
+        for index, side in enumerate(["home", "away"]):
+            line = box[side]
+            totals = line["totals"]
+            cells = efficiency.locator("tbody tr").nth(index).get_by_role("cell").all_text_contents()
+            expected_efg = (totals["fieldGoalsMade"] + 0.5 * totals["threePointersMade"]) / totals["fieldGoalsAttempted"]
+            expected_ppp = line["points"] / line["possessions"]
+            assert abs(float(cells[0].replace("%", "").strip().replace(",", ".")) - 100 * expected_efg) <= 0.051
+            assert abs(float(cells[1].replace(",", ".")) - expected_ppp) <= 0.0051
         grouped = report.get_by_role("region", name="Desglose de tiros de campo")
         detail = page.evaluate("window.matchDetail")
         shots = [event for event in detail["events"] if event["type"] == "shot"]

@@ -151,3 +151,5 @@ Reglas en [`coordinacion.md`](coordinacion.md).
 | #167 | PROBADA | Portada con las mejoras del acta, instalador v0.1.0-alpha.21 de Windows y huella SHA-256 verificada. |
 
 | #173 | PROBADA | Los equipos de la IA que necesitan canteranos de urgencia usan los nombres del paquete de datos de su partida. Regresión cubierta al iniciar temporada. |
+
+| #179 | PROBADA | Portada con la actualización de cantera, instalador v0.1.0-alpha.22 de Windows y huella SHA-256 verificada. |

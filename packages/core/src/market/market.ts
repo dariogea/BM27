@@ -370,7 +370,7 @@ export function closeMarket(universe: Universe, rng: Rng): Universe {
         if (!mandatory) break;
         // PLACEHOLDER: nobody affordable is left, so the club promotes a youth player.
         const quality = universe.qualityByLevel[String(competition.level)] ?? 45;
-        const youth = generatePlayer(rng, DEFAULT_NAME_POOL, {
+        const youth = generatePlayer(rng, universe.namePool ?? DEFAULT_NAME_POOL, {
           id: playerId(nextPlayerSeq++),
           teamId: null,
           quality: quality + MARKET.prospectQualityOffset,

@@ -2215,7 +2215,11 @@
             },
             {
               "t": "Calcular eficiencia de tiro y uso de posesiones",
-              "s": "pendiente"
+              "s": "en-curso",
+              "p": 50,
+              "i": 153,
+              "o": "codex",
+              "n": "Tiro efectivo y puntos por posesión registrada de cada equipo en el acta. Uso individual de posesiones pendiente."
             },
             {
               "t": "Distinguir rendimiento individual y contexto del equipo",

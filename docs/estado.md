@@ -135,4 +135,5 @@ Reglas en [`coordinacion.md`](coordinacion.md).
 
 | #149 | PROBADA | Diferencial de marcador de cada jugador hasta la jugada actual, calculado con quintetos y anotaciones. |
 
+| #153 | PROBADA | Tiro efectivo y puntos por posesión en el acta de ambos equipos, contrastados contra dos partidos del motor. |
 | #148 | PROBADA | Portada con la entrega v0.1.0-alpha.16 de Windows y huella SHA-256 comprobada. |

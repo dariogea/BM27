@@ -257,6 +257,7 @@ export function BoxScoreView(props: {
         <strong>Tácticas de {name(away.teamId)}:</strong>{' '}
         {describeTactics(props.tactics[away.teamId])}
       </p>
+      <OffensiveEfficiency teams={[home, away]} name={name} />
       <TeamBox team={home} title={name(home.teamId)} playerNames={props.playerNames} />
       <TeamBox team={away} title={name(away.teamId)} playerNames={props.playerNames} />
       <ShotAnalysis detail={detail} name={name} />
@@ -267,6 +268,62 @@ export function BoxScoreView(props: {
         name={name}
       />
     </section>
+  );
+}
+
+const effectivePercent = new Intl.NumberFormat('es', {
+  style: 'percent',
+  maximumFractionDigits: 1,
+});
+const pointsPerPossession = new Intl.NumberFormat('es', {
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+});
+
+function OffensiveEfficiency({
+  teams,
+  name,
+}: {
+  teams: TeamBoxScore[];
+  name: (teamId: string) => string;
+}) {
+  return (
+    <div className="scroll" tabIndex={0} role="region" aria-label="Eficiencia ofensiva">
+      <table>
+        <caption>Eficiencia ofensiva</caption>
+        <thead>
+          <tr>
+            <th scope="col" className="name">
+              Equipo
+            </th>
+            <th scope="col">Tiro efectivo</th>
+            <th scope="col">Puntos por posesión</th>
+          </tr>
+        </thead>
+        <tbody>
+          {teams.map(({ teamId, totals, points, possessions }) => (
+            <tr key={teamId}>
+              <th scope="row" className="name">
+                {name(teamId)}
+              </th>
+              <td>
+                {totals.fieldGoalsAttempted
+                  ? effectivePercent.format(
+                      (totals.fieldGoalsMade + 0.5 * totals.threePointersMade) /
+                        totals.fieldGoalsAttempted,
+                    )
+                  : '—'}
+              </td>
+              <td>{possessions ? pointsPerPossession.format(points / possessions) : '—'}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <p className="note">
+        En el tiro efectivo, cada triple anotado cuenta como una canasta y media. Los puntos por
+        posesión usan las posesiones registradas en el acta.
+      </p>
+    </div>
   );
 }
 

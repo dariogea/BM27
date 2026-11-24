@@ -25,18 +25,18 @@ con las temporadas. El objetivo es un gestor deportivo profundo, explicable y du
 
 ## Descargar para Windows
 
-**[⬇ Descargar BM27 v0.1.0-alpha.21 para Windows (.exe, 1,5 MB)](https://github.com/dariogea/BM27/releases/download/v0.1.0-alpha.21/BM27_0.1.0-alpha.21_x64-setup.exe)**
+**[⬇ Descargar BM27 v0.1.0-alpha.22 para Windows (.exe, 1,5 MB)](https://github.com/dariogea/BM27/releases/download/v0.1.0-alpha.22/BM27_0.1.0-alpha.22_x64-setup.exe)**
 
 Versión **alfa** ([todas las versiones](https://github.com/dariogea/BM27/releases)). Pasos:
 
 1. Entra en GitHub con tu cuenta (el repositorio es privado: sin sesión el enlace da «404»).
-2. Pulsa el enlace de arriba: se descarga `BM27_0.1.0-alpha.21_x64-setup.exe`.
+2. Pulsa el enlace de arriba: se descarga `BM27_0.1.0-alpha.22_x64-setup.exe`.
 3. Ábrelo con doble clic. Se instala solo para tu usuario, sin permisos de administrador.
 4. Si Windows dice **«Windows protegió su PC»**, pulsa **«Más información»** y **«Ejecutar de todos modos»** (el instalador no está firmado con un certificado de pago).
 5. Abre **BM27** desde el menú Inicio. En **Actualizaciones** puedes consultar la versión y buscar novedades.
 
 Comprobación opcional: la huella SHA-256 del archivo es
-`30930169dba092c8d33fd61eb772cf161713491a346803230156dc44463bca54`.
+`7c1bf4f39ca871a4aff6b4dd4266d0c293b933a5730d18b5b149b9f579240f1b`.
 
 **Limitaciones:** los clubes y jugadores son generados; nadie ha ejecutado aún este instalador en un Windows real; la
 comprobación de actualizaciones necesita un token de lectura mientras el repositorio sea privado

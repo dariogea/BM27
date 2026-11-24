@@ -1,6 +1,6 @@
 import { LineupAnalysis } from './LineupAnalysis';
 import { EMPTY_SHOT_TOTALS, shotBreakdown, type ShotTotals } from './shotBreakdown';
-import type { MatchDetail, MatchEvent, TeamBoxScore, TeamTactics } from '@bm27/schema';
+import type { MatchDetail, MatchEvent, PlayType, TeamBoxScore, TeamTactics } from '@bm27/schema';
 import { useMemo, useState } from 'react';
 
 export const minutes = (seconds: number): string =>
@@ -337,10 +337,10 @@ function ShotAnalysis({ detail, name }: { detail: MatchDetail; name: (teamId: st
   const percent = new Intl.NumberFormat('es', { style: 'percent', maximumFractionDigits: 1 });
   return (
     <details>
-      <summary>Análisis de tiros de campo</summary>
+      <summary>Análisis de tiros y pérdidas</summary>
       <div className="bar">
         <label>
-          Agrupar tiros
+          Agrupar estadísticas
           <select
             value={group}
             onChange={(event) => setGroup(event.target.value === 'plays' ? 'plays' : 'zones')}
@@ -350,7 +350,7 @@ function ShotAnalysis({ detail, name }: { detail: MatchDetail; name: (teamId: st
           </select>
         </label>
       </div>
-      <div className="scroll" tabIndex={0} role="region" aria-label="Desglose de tiros de campo">
+      <div className="scroll" tabIndex={0} role="region" aria-label="Desglose de tiros y pérdidas">
         <table>
           <thead>
             <tr>
@@ -360,13 +360,14 @@ function ShotAnalysis({ detail, name }: { detail: MatchDetail; name: (teamId: st
               <th scope="col">Intentos</th>
               <th scope="col">% Acierto</th>
               <th scope="col">Puntos de campo</th>
+              {group === 'plays' && <th scope="col">Pérdidas</th>}
             </tr>
           </thead>
           <tbody>
             {Object.entries(labels).flatMap(([category, label]) =>
               ids.map((id) => {
-                const grouped: ReadonlyMap<string, ShotTotals> | undefined =
-                  breakdown.get(id)?.[group];
+                const team = breakdown.get(id);
+                const grouped: ReadonlyMap<string, ShotTotals> | undefined = team?.[group];
                 const totals = grouped?.get(category) ?? EMPTY_SHOT_TOTALS;
                 return (
                   <tr key={`${category}/${id}`} data-shot-category={category} data-team={id}>
@@ -376,6 +377,7 @@ function ShotAnalysis({ detail, name }: { detail: MatchDetail; name: (teamId: st
                     <td>{totals.attempts}</td>
                     <td>{totals.attempts ? percent.format(totals.made / totals.attempts) : '—'}</td>
                     <td>{totals.points}</td>
+                    {group === 'plays' && <td>{team?.turnovers.get(category as PlayType) ?? 0}</td>}
                   </tr>
                 );
               }),

@@ -2256,10 +2256,10 @@
             {
               "t": "Desglosar resultados por tipo de jugada y zona",
               "s": "en-curso",
-              "p": 60,
-              "i": 145,
+              "p": 80,
+              "i": 164,
               "o": "codex",
-              "n": "Tiros de campo por tipo de jugada o zona en el acta. Faltas, pérdidas y otras acciones quedan pendientes."
+              "n": "Tiros de campo por zona y tipo de jugada, y pérdidas por tipo de jugada en el acta. Faltas y otras acciones pendientes."
             },
             {
               "t": "Relacionar ajustes tácticos con cambios de rendimiento",

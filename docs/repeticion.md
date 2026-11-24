@@ -105,8 +105,10 @@ recorrido específico final.
 
 Con el foco en el reproductor, **Espacio** reproduce o pausa, las flechas **←** y **→** cambian de jugada y **Inicio** y **Fin** saltan a los extremos. Los botones, el selector de velocidad y el deslizador mantienen sus propios controles de teclado.
 
-En el acta, **Análisis de tiros de campo** permite agrupar por zona o por tipo de jugada. Se muestran los aciertos, los intentos, el porcentaje y los puntos de campo de ambos equipos. Las categorías sin intentos muestran un guion en el porcentaje.
+En el acta, **Análisis de tiros y pérdidas** permite agrupar por zona o por tipo de jugada. Se muestran los aciertos, los intentos, el porcentaje y los puntos de campo de ambos equipos. Las categorías sin intentos muestran un guion en el porcentaje.
 
 La columna **+/−** suma los puntos a favor y resta los puntos en contra del equipo mientras ese jugador está en pista. Se calcula hasta la jugada que estás viendo y cambia al rebobinar.
 
 En **Rendimiento de los quintetos**, elige el equipo para consultar cuánto tiempo pasó en pista cada combinación de cinco jugadores y los puntos que anotó y recibió. La misma combinación se agrupa si vuelve a entrar. La tabla muestra el partido completo.
+
+Al agrupar por tipo de jugada, el acta también cuenta las pérdidas etiquetadas con esa jugada.

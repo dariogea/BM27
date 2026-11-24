@@ -141,3 +141,5 @@ Reglas en [`coordinacion.md`](coordinacion.md).
 | #156 | PROBADA | Tiempo y marcador por combinación real de cinco jugadores, cotejados con el acta y los tiempos individuales. |
 
 | #160 | PROBADA | El informe del próximo rival muestra forma, balance y medias de puntos de su competición y temporada. |
+
+| #159 | PROBADA | Portada con los análisis del acta, instalador v0.1.0-alpha.19 de Windows y huella SHA-256 verificada. |

@@ -16,6 +16,7 @@ import {
   importSave,
   parseDataPack,
   simulateSeason,
+  startSeason,
   sha256Hex,
 } from '../src/index';
 
@@ -49,6 +50,27 @@ describe('versioned data packs', () => {
     for (const player of arrivals) expect(sample.names.firstNames).toContain(player.firstName);
     expect(outcome.universe.namePool).toEqual(sample.names);
     expect(outcome.universe.dataPackId).toBe(sample.id);
+  });
+  it('uses pack names when clubs must promote emergency youth players', () => {
+    const world = generateUniverseFromDataPack(sample, 'emergency-youth');
+    const [shortClub, ...otherClubs] = world.teams;
+    const shortClubId = shortClub!.id;
+    const started = startSeason({
+      ...world,
+      teams: [{ ...shortClub!, playerIds: [] }, ...otherClubs],
+      players: world.players.filter((player) => player.teamId && player.teamId !== shortClubId),
+    });
+    const originalIds = new Set(world.players.map((player) => player.id));
+    const promoted = started.players.filter(
+      (player) => player.teamId === shortClubId && !originalIds.has(player.id),
+    );
+    expect(promoted).toHaveLength(started.competitions[0]!.rosterMin);
+    for (const player of promoted) {
+      expect(sample.names.firstNames).toContain(player.firstName);
+      const [firstSurname, secondSurname] = player.lastName.split(' ');
+      expect(sample.names.lastNames).toContain(firstSurname);
+      expect(sample.names.lastNames).toContain(secondSurname);
+    }
   });
   it('is deterministic and agrees with direct generation using the same validated data', () => {
     const a = generateUniverseFromDataPack(sample, 'same-pack');

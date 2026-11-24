@@ -2285,10 +2285,10 @@
             {
               "t": "Exportar consultas estadísticas con sus unidades",
               "s": "en-curso",
-              "p": 50,
+              "p": 75,
               "o": "codex",
-              "i": 124,
-              "n": "Tabla visible de líderes exportable en CSV con filtros, muestra y unidades. Resto de consultas pendiente."
+              "i": 168,
+              "n": "CSV de líderes con filtros y unidades y CSV de las estadísticas individuales del acta. Resto de consultas pendiente."
             },
             {
               "t": "Enlazar cada cifra de partido con los eventos de origen",

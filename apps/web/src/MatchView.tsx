@@ -1,3 +1,4 @@
+import { MatchCsvButton } from './MatchCsvButton';
 import { LineupAnalysis } from './LineupAnalysis';
 import { EMPTY_SHOT_TOTALS, shotBreakdown, type ShotTotals } from './shotBreakdown';
 import type { MatchDetail, MatchEvent, PlayType, TeamBoxScore, TeamTactics } from '@bm27/schema';
@@ -224,6 +225,12 @@ export function BoxScoreView(props: {
       <h2>
         Acta del partido · {name(home.teamId)} {home.points} – {away.points} {name(away.teamId)}
       </h2>
+      <MatchCsvButton
+        key={detail.result.id}
+        detail={detail}
+        playerNames={props.playerNames}
+        name={name}
+      />
       <table>
         <thead>
           <tr>

@@ -1,5 +1,8 @@
 """Verify that actual two-half and four-quarter games use the correct labels."""
+import csv
+import io
 import os
+from pathlib import Path
 from playwright.sync_api import expect, sync_playwright
 
 with sync_playwright() as p:
@@ -7,14 +10,17 @@ with sync_playwright() as p:
         executable_path=os.environ.get("BM27_CHROMIUM", "/usr/bin/chromium"),
         args=["--no-sandbox", "--no-zygote", "--single-process", "--disable-dev-shm-usage"],
     )
-    page = browser.new_page(viewport={"width": 1280, "height": 800})
+    page = browser.new_page(viewport={"width": 1280, "height": 800}, accept_downloads=True)
     page.add_init_script("""
         const OriginalWorker = Worker;
         window.Worker = class extends OriginalWorker {
             constructor(...args) {
                 super(...args);
                 this.addEventListener('message', ({data}) => {
-                    if (data.type === 'matchDetail') window.matchDetail = data.detail;
+                    if (data.type === 'matchDetail') {
+                        window.matchDetail = data.detail;
+                        window.matchPlayerNames = data.playerNames;
+                    }
                 });
             }
         };
@@ -105,5 +111,33 @@ with sync_playwright() as p:
             assert sum(int(row[1]) for row in rows) == box[side]["points"]
             assert sum(int(row[2]) for row in rows) == box[other]["points"]
             assert all(int(row[3]) == int(row[1]) - int(row[2]) for row in rows)
+        with page.expect_download() as download:
+            report.get_by_role("button", name="Exportar acta CSV").click()
+        assert download.value.suggested_filename.endswith(".csv")
+        contents = Path(download.value.path()).read_text(encoding="utf-8-sig")
+        exported = list(csv.DictReader(io.StringIO(contents), delimiter=";"))
+        player_names = page.evaluate("window.matchPlayerNames")
+        fields = {
+            "Segundos en pista": "seconds", "Puntos": "points",
+            "Tiros de campo anotados": "fieldGoalsMade",
+            "Tiros de campo intentados": "fieldGoalsAttempted",
+            "Triples anotados": "threePointersMade", "Triples intentados": "threePointersAttempted",
+            "Tiros libres anotados": "freeThrowsMade", "Tiros libres intentados": "freeThrowsAttempted",
+            "Rebotes ofensivos": "offensiveRebounds", "Rebotes defensivos": "defensiveRebounds",
+            "Asistencias": "assists", "Robos": "steals", "Tapones": "blocks",
+            "Pérdidas": "turnovers", "Faltas": "fouls",
+        }
+        for side, venue in [("home", "Local"), ("away", "Visitante")]:
+            actual = [row for row in exported if row["Sede"] == venue]
+            players = sorted(box[side]["players"], key=lambda p: (-int(p["starter"]), -p["seconds"]))
+            assert len(actual) == len(players)
+            for row, player in zip(actual, players):
+                assert row["Partido"] == detail["result"]["id"]
+                assert row["Jugador"] == player_names.get(player["playerId"], player["playerId"])
+                assert row["Titular"] == ("Sí" if player["starter"] else "No")
+                assert int(row["Puntos local"]) == box["home"]["points"]
+                assert int(row["Puntos visitante"]) == box["away"]["points"]
+                assert all(int(row[column]) == player[field] for column, field in fields.items())
+        expect(report.get_by_text("Acta exportada.", exact=True)).to_be_visible()
         print(f"PASS: {len(labels)} regulation periods, {extra} overtime periods")
     browser.close()

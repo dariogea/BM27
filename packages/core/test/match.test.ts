@@ -1,6 +1,12 @@
 import { MatchEventSchema, type Ruleset } from '@bm27/schema';
 import { describe, expect, it } from 'vitest';
-import { getBuiltinRuleset, hashValue, playMatch, simulateMatch } from '../src/index';
+import {
+  beginHalftimeMatch,
+  getBuiltinRuleset,
+  hashValue,
+  playMatch,
+  simulateMatch,
+} from '../src/index';
 import { makeTestTeam } from './helpers';
 
 const fiba = getBuiltinRuleset('fiba');
@@ -19,6 +25,32 @@ describe('match determinism', () => {
     const first = simulateMatch({ home: teamA, away: teamB, ruleset: fiba, seed: 'm1' });
     const second = simulateMatch({ home: teamA, away: teamB, ruleset: fiba, seed: 'm2' });
     expect(hashValue(second)).not.toBe(hashValue(first));
+  });
+});
+
+describe.each([
+  ['four quarters, home', fiba, teamA.teamId],
+  ['two halves, away', { ...fiba, periods: 2, periodMinutes: 20 }, teamB.teamId],
+] as const)('halftime (%s)', (_name, ruleset, teamId) => {
+  it('continues the exact simulation and applies instructions from the next period', () => {
+    const input = { home: teamA, away: teamB, ruleset, seed: 'halftime-control' };
+    const firstHalfPeriods = ruleset.periods / 2;
+    const ordinary = simulateMatch(input);
+    const firstHalf = ordinary.filter((event) => event.period <= firstHalfPeriods);
+
+    const replay = beginHalftimeMatch(input, teamId);
+    expect(replay.events).toEqual(firstHalf);
+    expect(replay.events.at(-1)).toMatchObject({ period: firstHalfPeriods, type: 'period_end' });
+    expect(replay.finish()).toEqual(ordinary);
+    expect(() => replay.finish()).toThrow(/already resumed/);
+
+    const override = { pace: 'fast', pressure: 'high' } as const;
+    const paused = beginHalftimeMatch(input, teamId);
+    const changed = paused.finish(override);
+    expect(changed.slice(0, firstHalf.length)).toEqual(firstHalf);
+    expect(changed.slice(firstHalf.length)).not.toEqual(ordinary.slice(firstHalf.length));
+    expect(beginHalftimeMatch(input, teamId).finish(override)).toEqual(changed);
+    expect(simulateMatch(input)).toEqual(ordinary);
   });
 });
 

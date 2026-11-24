@@ -1,10 +1,12 @@
 import type {
+  BoxScore,
   Competition,
   CompetitionProgress,
   CompetitionSeason,
   Fixture,
   GroupSeason,
   MatchDetail,
+  MatchEvent,
   MatchResult,
   Player,
   Ruleset,
@@ -16,7 +18,17 @@ import type {
 } from '@bm27/schema';
 import { closeMarket } from '../market/market';
 import { createRng } from '../rng';
-import { addStatLine, emptyStatLine, playMatch, prepareTeam, type PreparedTeam } from '../match';
+import {
+  addStatLine,
+  beginHalftimeMatch,
+  emptyStatLine,
+  playMatch,
+  prepareTeam,
+  summarizeMatch,
+  type HalftimeTactics,
+  type PlayedMatch,
+  type PreparedTeam,
+} from '../match';
 import { applyOffseason } from './offseason';
 import { bestOfForRound, bracketOrder, bracketSize } from './playoffs';
 import { buildRoundRobin } from './schedule';
@@ -321,16 +333,33 @@ function settlePlayoffs(competition: Competition, work: CompetitionProgress): vo
   }
 }
 
-/**
- * Plays the next step of a competition: one regular-season matchday, or one
- * game of every open playoff series. Returns a new progress object.
- */
+function playoffFixtures(progress: CompetitionProgress, prefix: string) {
+  return progress.playoffSeries
+    .filter((series) => series.round === progress.playoffRound)
+    .flatMap((series, index) => {
+      if (series.winnerTeamId !== null || series.lowSeedTeamId === null) return [];
+      const game = series.matchIds.length + 1;
+      const highHome = game % 2 === 1;
+      return [
+        {
+          series,
+          highHome,
+          id: `${prefix}-p${series.round}-${index + 1}-${game}`,
+          homeTeamId: highHome ? series.highSeedTeamId : series.lowSeedTeamId,
+          awayTeamId: highHome ? series.lowSeedTeamId : series.highSeedTeamId,
+        },
+      ];
+    });
+}
+
+/** Plays the next regular-season matchday or game of each active playoff series. */
 function stepCompetition(
   ctx: SeasonContext,
   competition: Competition,
   progress: CompetitionProgress,
   options: CompetitionSeasonOptions,
   played: MatchResult[],
+  staged?: { id: string; match: PlayedMatch },
 ): CompetitionProgress {
   if (progress.phase === 'done') return progress;
   const { universe, seasonNumber } = ctx;
@@ -350,12 +379,15 @@ function stepCompetition(
     homeTeamId: string,
     awayTeamId: string,
   ): MatchResult => {
-    const match = playMatch(
-      preparedTeam(ctx, homeTeamId),
-      preparedTeam(ctx, awayTeamId),
-      ruleset,
-      matchSeed(universe.seed, id),
-    );
+    const match =
+      staged?.id === id
+        ? staged.match
+        : playMatch(
+            preparedTeam(ctx, homeTeamId),
+            preparedTeam(ctx, awayTeamId),
+            ruleset,
+            matchSeed(universe.seed, id),
+          );
     const result: MatchResult = {
       id,
       seasonNumber,
@@ -423,20 +455,8 @@ function stepCompetition(
     }
   } else {
     const prefix = `s${seasonNumber}-${competition.id}`;
-    const current = work.playoffSeries.filter((s) => s.round === work.playoffRound);
-    current.forEach((series, index) => {
-      if (series.winnerTeamId !== null || series.lowSeedTeamId === null) return;
-      const game = series.matchIds.length + 1;
-      const id = `${prefix}-p${series.round}-${index + 1}-${game}`;
-      // The higher seed hosts the odd games (1, 3, 5...).
-      const highHome = game % 2 === 1;
-      const result = play(
-        id,
-        'playoff',
-        series.round,
-        highHome ? series.highSeedTeamId : series.lowSeedTeamId,
-        highHome ? series.lowSeedTeamId : series.highSeedTeamId,
-      );
+    for (const { series, highHome, id, homeTeamId, awayTeamId } of playoffFixtures(work, prefix)) {
+      const result = play(id, 'playoff', series.round, homeTeamId, awayTeamId);
       const homeWon = result.homeScore > result.awayScore;
       if (homeWon === highHome) series.highSeedWins++;
       else series.lowSeedWins++;
@@ -444,7 +464,7 @@ function stepCompetition(
       const needed = Math.floor(series.bestOf / 2) + 1;
       if (series.highSeedWins >= needed) series.winnerTeamId = series.highSeedTeamId;
       else if (series.lowSeedWins >= needed) series.winnerTeamId = series.lowSeedTeamId;
-    });
+    }
     settlePlayoffs(competition, work);
   }
 
@@ -550,6 +570,65 @@ export function advanceSeason(
   options: CompetitionSeasonOptions = {},
 ): AdvanceOutcome {
   const started = universe.currentSeason ? universe : startSeason(universe);
+  return advanceStartedSeason(started, options);
+}
+
+export interface ManagedMatchday {
+  matchId: string;
+  events: MatchEvent[];
+  boxScore: BoxScore;
+  tactics: HalftimeTactics;
+  finish(tactics?: HalftimeTactics, options?: CompetitionSeasonOptions): AdvanceOutcome;
+}
+
+/** Starts the user's next fixture without applying any part of the matchday to the universe. */
+export function beginManagedMatchday(universe: Universe): ManagedMatchday | null {
+  const teamId = universe.userTeamId;
+  if (teamId === null) return null;
+  const started = universe.currentSeason ? universe : startSeason(universe);
+  const competition = started.competitions.find((entry) => entry.teamIds.includes(teamId));
+  const progress = started.currentSeason?.competitions.find(
+    (entry) => entry.competitionId === competition?.id,
+  );
+  if (!competition || !progress || progress.phase === 'done') return null;
+  const ruleset = rulesetOf(started, competition);
+  if (ruleset.periods < 2) return null;
+  const fixtures =
+    progress.phase === 'regular'
+      ? progress.fixtures.filter((fixture) => fixture.round === progress.nextRound)
+      : playoffFixtures(progress, `s${started.seasonNumber}-${competition.id}`);
+  const fixture = fixtures.find(
+    (entry) => entry.homeTeamId === teamId || entry.awayTeamId === teamId,
+  );
+  if (!fixture) return null;
+
+  const ctx = makeContext(started);
+  const { id, homeTeamId, awayTeamId } = fixture;
+  const home = preparedTeam(ctx, homeTeamId);
+  const away = preparedTeam(ctx, awayTeamId);
+  const halftime = beginHalftimeMatch(
+    { home, away, ruleset, seed: matchSeed(started.seed, id) },
+    teamId,
+  );
+  const { events, tactics } = halftime;
+  const { boxScore } = summarizeMatch(events, home, away, ruleset);
+  return {
+    matchId: id,
+    events,
+    boxScore,
+    tactics,
+    finish(nextTactics, options = {}) {
+      const match = summarizeMatch(halftime.finish(nextTactics), home, away, ruleset);
+      return advanceStartedSeason(started, options, { id, match });
+    },
+  };
+}
+
+function advanceStartedSeason(
+  started: Universe,
+  options: CompetitionSeasonOptions,
+  staged?: { id: string; match: PlayedMatch },
+): AdvanceOutcome {
   const progress = started.currentSeason as SeasonProgress;
   const ctx = makeContext(started);
   ctx.injuries = [];
@@ -557,7 +636,14 @@ export function advanceSeason(
   const competitionsById = new Map(started.competitions.map((c) => [c.id, c]));
   const played: MatchResult[] = [];
   const competitions = progress.competitions.map((p) =>
-    stepCompetition(ctx, competitionsById.get(p.competitionId) as Competition, p, options, played),
+    stepCompetition(
+      ctx,
+      competitionsById.get(p.competitionId) as Competition,
+      p,
+      options,
+      played,
+      staged,
+    ),
   );
   // Injured players recover one game per match of their team; new injuries start counting
   // from the team's next match. Done after the whole step so every match saw the same squads.

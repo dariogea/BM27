@@ -82,7 +82,7 @@ terminar la experiencia. Los pesos son hipótesis de planificación publicadas, 
 
 **Preparación estimada para lanzamiento: 20 %** `██████░░░░░░░░░░░░░░░░░░░░░░░░`
 
-475 elementos organizados en 7 fases y 34 áreas de desarrollo. El índice pondera la profundidad y el producto terminado; no es una comparación medida con otro juego ni una fecha de entrega.
+476 elementos organizados en 7 fases y 34 áreas de desarrollo. El índice pondera la profundidad y el producto terminado; no es una comparación medida con otro juego ni una fecha de entrega.
 
 ![Preparación del producto por fases](docs/assets/development-progress.svg)
 

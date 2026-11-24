@@ -49,7 +49,7 @@ export interface ReplayHighlight {
 }
 
 /** Exact snapshots of recorded events. No simulated positions or random calls. */
-export function buildReplay(detail: MatchDetail): {
+export function buildReplay(detail: Pick<MatchDetail, 'events' | 'boxScore'>): {
   frames: ReplayFrame[];
   shots: ReplayShot[];
   highlights: ReplayHighlight[];

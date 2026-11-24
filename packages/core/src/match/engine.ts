@@ -296,8 +296,47 @@ const clamp = (value: number, min: number, max: number): number =>
 
 const round2 = (value: number): number => Math.round(value * 100) / 100;
 
+export type HalftimeTactics = Pick<TeamTactics, 'pace' | 'pressure'>;
+
+interface HalftimeSnapshot {
+  events: MatchEvent[];
+  tactics: HalftimeTactics;
+}
+
+export interface HalftimeMatch extends HalftimeSnapshot {
+  /** Completes the same simulation. No second call is permitted. */
+  finish(tactics?: HalftimeTactics): MatchEvent[];
+}
+
 /** Simulates one match and returns its complete event log. */
 export function simulateMatch(input: MatchInput): MatchEvent[] {
+  const result = runMatch(input).next();
+  if (!result.done) throw new Error('An uninterrupted match paused unexpectedly');
+  return result.value;
+}
+
+/** Plays up to halftime and holds the engine state for one team's instructions. */
+export function beginHalftimeMatch(input: MatchInput, teamId: string): HalftimeMatch {
+  if (input.ruleset.periods < 2) throw new Error('This ruleset has no halftime break');
+  const side = input.home.teamId === teamId ? 'home' : input.away.teamId === teamId ? 'away' : null;
+  if (!side) throw new Error('The managed team is not playing this match');
+  const simulation = runMatch(input, side);
+  const breakState = simulation.next();
+  if (breakState.done) throw new Error('The match did not reach halftime');
+  return {
+    ...breakState.value,
+    finish(tactics) {
+      const result = simulation.next(tactics);
+      if (!result.done || !result.value) throw new Error('The halftime match has already resumed');
+      return result.value;
+    },
+  };
+}
+
+function* runMatch(
+  input: MatchInput,
+  managedSide?: 'home' | 'away',
+): Generator<HalftimeSnapshot, MatchEvent[], HalftimeTactics | undefined> {
   const rng = createRng(input.seed);
   const rules = input.ruleset;
   const events: MatchEvent[] = [];
@@ -1639,6 +1678,7 @@ export function simulateMatch(input: MatchInput): MatchEvent[] {
   // ---------------------------------------------------------------------------
   // Game loop
   // ---------------------------------------------------------------------------
+  const halftime = Math.floor(rules.periods / 2);
   for (period = 1; ; period++) {
     const overtime = period > rules.periods;
     if (overtime && home.score !== away.score) {
@@ -1657,7 +1697,7 @@ export function simulateMatch(input: MatchInput): MatchEvent[] {
       home.timeoutsLeft = away.timeoutsLeft = rules.timeoutsOvertime;
     } else if (period === 1) {
       home.timeoutsLeft = away.timeoutsLeft = rules.timeoutsFirstHalf;
-    } else if (period === Math.floor(rules.periods / 2) + 1) {
+    } else if (period === halftime + 1) {
       home.timeoutsLeft = away.timeoutsLeft = rules.timeoutsSecondHalf;
     }
     if (period > 1) {
@@ -1721,8 +1761,7 @@ export function simulateMatch(input: MatchInput): MatchEvent[] {
         jumperIds: [homeJumper.id, awayJumper.id],
       });
     } else {
-      const amount =
-        period === Math.floor(rules.periods / 2) + 1 ? E.halftimeRecovery : E.breakRecovery;
+      const amount = period === halftime + 1 ? E.halftimeRecovery : E.breakRecovery;
       rest(home, amount);
       rest(away, amount);
       deadBall();
@@ -1749,6 +1788,16 @@ export function simulateMatch(input: MatchInput): MatchEvent[] {
       offenseTeamId: offense.team.teamId,
       type: 'period_end',
     });
+    if (managedSide && period === halftime) {
+      const side = managedSide === 'home' ? home : away;
+      const { pace, pressure } = side.tactics;
+      const tactics = yield {
+        events: events.slice(),
+        tactics: { pace, pressure },
+      };
+      if (tactics)
+        side.tactics = { ...side.tactics, pace: tactics.pace, pressure: tactics.pressure };
+    }
   }
 
   events.push({

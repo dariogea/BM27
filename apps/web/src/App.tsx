@@ -2,6 +2,7 @@ import { readSaveFile } from './compressedSave';
 import { ClubBadge } from './ClubBadge';
 import { DEFAULT_PALETTE, isPaletteId, paletteVars, type PaletteId } from './palette';
 import { ReplayViewer } from './ReplayViewer';
+import { describeHalftime, HalftimeControls } from './HalftimeControls';
 import { DataPackPanel } from './DataPackPanel';
 import { WorldView } from './WorldView';
 import type { WorldPayload, WorldQuery } from './worldTypes';
@@ -16,7 +17,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { CompetitionView } from './CompetitionView';
 import { BoxScoreView, describeTactics } from './MatchView';
 import { isDesktop, pickSaveFile, saveCompressedFile, saveTextFile } from './platform';
-import type { Command, DataPackSummary, GameView, Reply } from './protocol';
+import type { Command, DataPackSummary, GameView, HalftimeView, Reply } from './protocol';
 import { FinancePanel } from './FinanceView';
 import { MarketPanel } from './MarketView';
 import { LineupEditor, OffseasonPanel, SquadTable, TacticsEditor } from './TeamView';
@@ -59,6 +60,8 @@ interface ShownMatch {
   playerNames: Record<string, string>;
   tactics: Record<string, TeamTactics>;
   broadcast?: boolean;
+  startAt?: number;
+  halftimeInstructions?: string;
 }
 
 export function App() {
@@ -132,6 +135,9 @@ export function App() {
   const [competitionId, setCompetitionId] = useState('');
   const [teamChoice, setTeamChoice] = useState('');
   const [match, setMatch] = useState<ShownMatch | null>(null);
+  const [halftime, setHalftime] = useState<HalftimeView | null>(null);
+  const [halftimeReady, setHalftimeReady] = useState(false);
+  const showHalftimeControls = useCallback(() => setHalftimeReady(true), []);
   const [broadcastFinished, setBroadcastFinished] = useState(false);
   const [busy, setBusy] = useState(false);
   const [slots, setSlots] = useState<SlotSummary[] | null>(null);
@@ -164,13 +170,21 @@ export function App() {
     setError('');
     setStatus(working);
     const reply = await send(command);
-    const watching = command.type === 'advance' && command.watch;
+    const watching =
+      (command.type === 'advance' && command.watch) || command.type === 'finishManagedMatch';
     const broadcast =
       watching && reply.type === 'state' && reply.watchedMatchId
         ? await send({ type: 'matchDetail', matchId: reply.watchedMatchId })
         : null;
     if (reply.type !== 'save') setBusy(false);
     switch (reply.type) {
+      case 'halftime':
+        setHalftime(reply.match);
+        setHalftimeReady(false);
+        setMatch(null);
+        setTab('match');
+        setStatus('');
+        break;
       case 'dataPack':
         setDataPack(reply.summary);
         setStatus(reply.message);
@@ -189,6 +203,11 @@ export function App() {
         setView(reply.view);
         setError(reply.storageWarning ?? '');
         setStatus(reply.message);
+        if (command.type === 'cancelManagedMatch') {
+          setHalftime(null);
+          setTab('tactics');
+        }
+        if (command.type === 'finishManagedMatch') setHalftime(null);
         if (watching) {
           if (broadcast?.type === 'matchDetail') {
             setMatch({
@@ -196,6 +215,11 @@ export function App() {
               playerNames: broadcast.playerNames,
               tactics: broadcast.tactics,
               broadcast: true,
+              startAt:
+                command.type === 'finishManagedMatch' ? halftime?.detail.events.length : undefined,
+              halftimeInstructions: broadcast.halftimeTactics
+                ? describeHalftime(broadcast.halftimeTactics)
+                : undefined,
             });
             setBroadcastFinished(false);
             setTab('match');
@@ -232,14 +256,25 @@ export function App() {
           setCompetitionId(mine.competitionId);
           setTab('portal');
         }
-        if (command.type === 'finishSeason' || command.type === 'advance') {
+        if (
+          command.type === 'finishSeason' ||
+          command.type === 'advance' ||
+          command.type === 'finishManagedMatch'
+        ) {
           // After promotion or relegation the team may have changed competition.
           if (mine && !reply.view.seasonInProgress) setCompetitionId(mine.competitionId);
         }
         break;
       }
       case 'matchDetail':
-        setMatch({ detail: reply.detail, playerNames: reply.playerNames, tactics: reply.tactics });
+        setMatch({
+          detail: reply.detail,
+          playerNames: reply.playerNames,
+          tactics: reply.tactics,
+          halftimeInstructions: reply.halftimeTactics
+            ? describeHalftime(reply.halftimeTactics)
+            : undefined,
+        });
         setTab('match');
         setStatus('');
         break;
@@ -308,7 +343,7 @@ export function App() {
   const watchMatch = () =>
     void run({ type: 'advance', watch: true }, 'Preparando la retransmisión…');
   const revealReport = useCallback(() => setBroadcastFinished(true), []);
-  const watchingMatch = tab === 'match' && match?.broadcast && !broadcastFinished;
+  const watchingMatch = tab === 'match' && (halftime || (match?.broadcast && !broadcastFinished));
 
   const newGameButton = (
     <button
@@ -352,6 +387,7 @@ export function App() {
         view={view}
         active={tab}
         busy={busy}
+        inMatch={halftime !== null}
         theme={theme}
         palette={palette}
         onPalette={setPalette}
@@ -695,6 +731,13 @@ export function App() {
             <button type="button" disabled={busy} onClick={watchMatch}>
               Jugar y ver
             </button>
+            <button
+              type="button"
+              disabled={busy}
+              onClick={() => void run({ type: 'beginManagedMatch' }, 'Preparando el partido…')}
+            >
+              Dirigir partido
+            </button>
           </section>
         )}
 
@@ -772,7 +815,35 @@ export function App() {
 
         {view &&
           tab === 'match' &&
-          (match ? (
+          (halftime ? (
+            <>
+              <ReplayViewer
+                key={halftime.matchId}
+                detail={halftime.detail}
+                playerNames={halftime.playerNames}
+                name={name}
+                managedTeamId={view.userTeamId}
+                broadcast
+                halftime
+                onFinish={showHalftimeControls}
+              />
+              <HalftimeControls
+                club={mine?.name ?? ''}
+                initial={halftime.tactics}
+                ready={halftimeReady}
+                busy={busy}
+                onContinue={(tactics) =>
+                  void run(
+                    { type: 'finishManagedMatch', matchId: halftime.matchId, tactics },
+                    'Jugando la segunda mitad…',
+                  )
+                }
+                onCancel={() =>
+                  void run({ type: 'cancelManagedMatch', matchId: halftime.matchId }, 'Saliendo…')
+                }
+              />
+            </>
+          ) : match ? (
             <>
               <ReplayViewer
                 key={`${match.detail.result.id}/${match.broadcast ?? false}`}
@@ -781,10 +852,12 @@ export function App() {
                 name={name}
                 managedTeamId={view.userTeamId}
                 broadcast={match.broadcast}
+                startAt={match.startAt}
                 onFinish={match.broadcast ? revealReport : undefined}
                 instructions={
                   match.broadcast && view.userTeamId
-                    ? describeTactics(match.tactics[view.userTeamId])
+                    ? (match.halftimeInstructions ??
+                      describeTactics(match.tactics[view.userTeamId]))
                     : undefined
                 }
               />
@@ -793,6 +866,7 @@ export function App() {
                   detail={match.detail}
                   playerNames={match.playerNames}
                   tactics={match.tactics}
+                  halftimeInstructions={match.halftimeInstructions}
                   name={name}
                 />
               )}

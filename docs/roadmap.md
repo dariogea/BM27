@@ -12,9 +12,9 @@
 
 ```mermaid
 pie showData title Elementos por estado
-  "Hecho" : 128
+  "Hecho" : 129
   "En curso" : 29
-  "Pendiente" : 287
+  "Pendiente" : 286
   "Bloqueado" : 2
   "Idea" : 29
 ```
@@ -73,7 +73,7 @@ flowchart LR
 | --- | ---: | --- | ---: | --- |
 | **F0 Fundaciones** | 76 % | `███████████████░░░░░` | 82/110 | Núcleo determinista, motor de partido, mundo persistente, mercado y finanzas, y la forma de trabajar de los dos agentes. |
 | **F1 Primera versión jugable** | 60 % | `████████████░░░░░░░░` | 24/43 | Que el propietario pueda jugar de principio a fin una temporada y varias más sin tocar una terminal, con consultas básicas del mundo. |
-| **F2 Profundidad de gestión** | 6 % | `█░░░░░░░░░░░░░░░░░░░` | 6/184 | Traspasos, cantera y ojeadores, economía con decisiones, entrenador rival con criterio, motor de partido completo. |
+| **F2 Profundidad de gestión** | 6 % | `█░░░░░░░░░░░░░░░░░░░` | 7/184 | Traspasos, cantera y ojeadores, economía con decisiones, entrenador rival con criterio, motor de partido completo. |
 | **F3 Mundo, datos y mods** | 9 % | `██░░░░░░░░░░░░░░░░░░` | 5/63 | Calibración con datos contrastados, paquetes de datos cargables, pirámide completa y otras competiciones. |
 | **F4 Presentación** | 28 % | `██████░░░░░░░░░░░░░░` | 8/36 | Diseño visual, accesibilidad, partido en 2D, narración, sonido y varios idiomas. |
 | **F5 Distribución** | 19 % | `████░░░░░░░░░░░░░░░░` | 2/22 | Instalador de escritorio, versiones alfa y beta en GitHub, actualización automática, firma y otras plataformas. |
@@ -108,7 +108,7 @@ flowchart LR
 | **Cantera y formación** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Desarrollar un sistema de formación con entradas, recursos y salidas, más allá del relevo automático. |
 | **Ojeo y reclutamiento** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Convertir la búsqueda de jugadores en información adquirida, contrastable y con límites. |
 | **Carrera del entrenador** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Permitir una trayectoria profesional con reputación y responsabilidades separadas del club. |
-| **Análisis estadístico y toma de decisiones** | 26 % | `█████░░░░░░░░░░░░░░░` | 0 | 6 | 6 | 0 | 0 | Transformar los registros del motor en información útil, contextualizada y verificable. |
+| **Análisis estadístico y toma de decisiones** | 34 % | `███████░░░░░░░░░░░░░` | 1 | 6 | 5 | 0 | 0 | Transformar los registros del motor en información útil, contextualizada y verificable. |
 | **Inscripción y administración deportiva** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Hacer explícitas las condiciones para competir y fichar, manteniendo las reglas como datos. |
 | **Calendario y logística deportiva** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Que los desplazamientos, descansos y cambios de fecha tengan una planificación coherente. |
 | **Instalaciones y operaciones del club** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Gestionar mejoras materiales con capacidad, plazos, mantenimiento y efectos concretos. |
@@ -747,7 +747,7 @@ _Permitir una trayectoria profesional con reputación y responsabilidades separa
 
 </details>
 
-<details><summary><b>Análisis estadístico y toma de decisiones</b> — 26 % `███░░░░░░░░░`</summary>
+<details><summary><b>Análisis estadístico y toma de decisiones</b> — 34 % `████░░░░░░░░`</summary>
 
 _Transformar los registros del motor en información útil, contextualizada y verificable._
 
@@ -756,8 +756,8 @@ _Transformar los registros del motor en información útil, contextualizada y ve
   - 🔄 Calcular eficiencia de tiro y uso de posesiones (`F2` · 50 % · @codex · [#153](https://github.com/dariogea/BM27/issues/153)) — _Tiro efectivo y puntos por posesión registrada de cada equipo en el acta. Uso individual de posesiones pendiente._
   - 🔄 Distinguir rendimiento individual y contexto del equipo (`F2` · 50 % · @codex · [#149](https://github.com/dariogea/BM27/issues/149)) — _Diferencial de puntos durante los minutos en pista de cada jugador a partir del registro del partido._
   - ⬜ Advertir cuando una muestra es demasiado pequeña (`F2`)
-- **Quintetos y enfrentamientos** — 15 %
-  - ⬜ Comparar rendimiento de combinaciones de cinco jugadores (`F2`)
+- **Quintetos y enfrentamientos** — 40 %
+  - ✅ Comparar rendimiento de combinaciones de cinco jugadores (`F2` · @codex · [#156](https://github.com/dariogea/BM27/issues/156)) — _Tiempo, puntos anotados y recibidos y diferencial por quinteto registrado en el acta de ambos equipos._
   - ⬜ Analizar perfiles de rivales con el mismo criterio (`F2`)
   - 🔄 Desglosar resultados por tipo de jugada y zona (`F2` · 60 % · @codex · [#145](https://github.com/dariogea/BM27/issues/145)) — _Tiros de campo por tipo de jugada o zona en el acta. Faltas, pérdidas y otras acciones quedan pendientes._
   - ⬜ Relacionar ajustes tácticos con cambios de rendimiento (`F2`)

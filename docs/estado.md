@@ -137,3 +137,5 @@ Reglas en [`coordinacion.md`](coordinacion.md).
 
 | #153 | PROBADA | Tiro efectivo y puntos por posesión en el acta de ambos equipos, contrastados contra dos partidos del motor. |
 | #148 | PROBADA | Portada con la entrega v0.1.0-alpha.16 de Windows y huella SHA-256 comprobada. |
+
+| #156 | PROBADA | Tiempo y marcador por combinación real de cinco jugadores, cotejados con el acta y los tiempos individuales. |

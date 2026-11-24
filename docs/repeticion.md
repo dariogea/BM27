@@ -112,3 +112,5 @@ La columna **+/−** suma los puntos a favor y resta los puntos en contra del eq
 En **Rendimiento de los quintetos**, elige el equipo para consultar cuánto tiempo pasó en pista cada combinación de cinco jugadores y los puntos que anotó y recibió. La misma combinación se agrupa si vuelve a entrar. La tabla muestra el partido completo.
 
 Al agrupar por tipo de jugada, el acta también cuenta las pérdidas etiquetadas con esa jugada.
+
+**Exportar acta CSV** guarda el marcador y las estadísticas individuales de los dos equipos con sus unidades, incluidos los jugadores con cero segundos en pista.

@@ -108,7 +108,7 @@ flowchart LR
 | **Cantera y formación** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Desarrollar un sistema de formación con entradas, recursos y salidas, más allá del relevo automático. |
 | **Ojeo y reclutamiento** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Convertir la búsqueda de jugadores en información adquirida, contrastable y con límites. |
 | **Carrera del entrenador** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Permitir una trayectoria profesional con reputación y responsabilidades separadas del club. |
-| **Análisis estadístico y toma de decisiones** | 40 % | `████████░░░░░░░░░░░░` | 1 | 7 | 4 | 0 | 0 | Transformar los registros del motor en información útil, contextualizada y verificable. |
+| **Análisis estadístico y toma de decisiones** | 42 % | `████████░░░░░░░░░░░░` | 1 | 7 | 4 | 0 | 0 | Transformar los registros del motor en información útil, contextualizada y verificable. |
 | **Inscripción y administración deportiva** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Hacer explícitas las condiciones para competir y fichar, manteniendo las reglas como datos. |
 | **Calendario y logística deportiva** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Que los desplazamientos, descansos y cambios de fecha tengan una planificación coherente. |
 | **Instalaciones y operaciones del club** | 0 % | `░░░░░░░░░░░░░░░░░░░░` | 0 | 0 | 12 | 0 | 0 | Gestionar mejoras materiales con capacidad, plazos, mantenimiento y efectos concretos. |
@@ -155,7 +155,7 @@ Los agentes solo trabajan cuando el propietario lo autoriza (D-052); esto reflej
 | 🔄 En curso | Analizar perfiles de rivales con el mismo criterio | Análisis estadístico y toma de decisiones | 50 % | [#160](https://github.com/dariogea/BM27/issues/160) |
 | 🔄 En curso | Desglosar resultados por tipo de jugada y zona | Análisis estadístico y toma de decisiones | 80 % | [#164](https://github.com/dariogea/BM27/issues/164) |
 | 🔄 En curso | Mostrar evolución temporal sin mezclar temporadas | Análisis estadístico y toma de decisiones | 50 % | [#142](https://github.com/dariogea/BM27/issues/142) |
-| 🔄 En curso | Exportar consultas estadísticas con sus unidades | Análisis estadístico y toma de decisiones | 50 % | [#124](https://github.com/dariogea/BM27/issues/124) |
+| 🔄 En curso | Exportar consultas estadísticas con sus unidades | Análisis estadístico y toma de decisiones | 75 % | [#168](https://github.com/dariogea/BM27/issues/168) |
 | 🔄 En curso | Elegir densidad de tablas y tamaño de interfaz | Accesibilidad y preferencias de uso | 40 % | [#52](https://github.com/dariogea/BM27/issues/52) |
 
 ### En curso sin dueño asignado
@@ -748,7 +748,7 @@ _Permitir una trayectoria profesional con reputación y responsabilidades separa
 
 </details>
 
-<details><summary><b>Análisis estadístico y toma de decisiones</b> — 40 % `█████░░░░░░░`</summary>
+<details><summary><b>Análisis estadístico y toma de decisiones</b> — 42 % `█████░░░░░░░`</summary>
 
 _Transformar los registros del motor en información útil, contextualizada y verificable._
 
@@ -762,10 +762,10 @@ _Transformar los registros del motor en información útil, contextualizada y ve
   - 🔄 Analizar perfiles de rivales con el mismo criterio (`F2` · 50 % · @codex · [#160](https://github.com/dariogea/BM27/issues/160)) — _Informe del siguiente rival en el Portal con forma, balance y medias de anotación de la temporada actual._
   - 🔄 Desglosar resultados por tipo de jugada y zona (`F2` · 80 % · @codex · [#164](https://github.com/dariogea/BM27/issues/164)) — _Tiros de campo por zona y tipo de jugada, y pérdidas por tipo de jugada en el acta. Faltas y otras acciones pendientes._
   - ⬜ Relacionar ajustes tácticos con cambios de rendimiento (`F2`)
-- **Herramientas de consulta** — 25 %
+- **Herramientas de consulta** — 31 %
   - ⬜ Guardar filtros y comparaciones frecuentes (`F2`)
   - 🔄 Mostrar evolución temporal sin mezclar temporadas (`F2` · 50 % · @codex · [#142](https://github.com/dariogea/BM27/issues/142)) — _En la ficha de jugador, comparación de medias por temporada y club a partir del historial real._
-  - 🔄 Exportar consultas estadísticas con sus unidades (`F2` · 50 % · @codex · [#124](https://github.com/dariogea/BM27/issues/124)) — _Tabla visible de líderes exportable en CSV con filtros, muestra y unidades. Resto de consultas pendiente._
+  - 🔄 Exportar consultas estadísticas con sus unidades (`F2` · 75 % · @codex · [#168](https://github.com/dariogea/BM27/issues/168)) — _CSV de líderes con filtros y unidades y CSV de las estadísticas individuales del acta. Resto de consultas pendiente._
   - ⬜ Enlazar cada cifra de partido con los eventos de origen (`F2`)
 
 </details>

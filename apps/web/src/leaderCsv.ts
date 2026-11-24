@@ -1,10 +1,5 @@
+import { spreadsheetCsv } from './spreadsheetCsv';
 import { LEADER_METRICS, type LeagueRecordsPayload } from './leagueRecordsTypes';
-
-const cell = (value: string | number): string => {
-  if (typeof value === 'number') return String(value).replace('.', ',');
-  const text = /^\s*[=+@-]/u.test(value) ? `'${value}` : value;
-  return `"${text.replaceAll('"', '""')}"`;
-};
 
 /** Export exactly the displayed rows, with the filters and units needed to interpret them. */
 export function leadersCsv(data: LeagueRecordsPayload): string {
@@ -75,5 +70,5 @@ export function leadersCsv(data: LeagueRecordsPayload): string {
       factor,
     ]);
   }
-  return '\uFEFF' + rows.map((row) => row.map(cell).join(';')).join('\r\n') + '\r\n';
+  return spreadsheetCsv(rows);
 }

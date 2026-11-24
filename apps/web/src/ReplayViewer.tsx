@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { MatchDetail } from '@bm27/schema';
+import { ScoreProgression } from './ScoreProgression';
+import { scoreTimeline } from './scoreTimeline';
 import {
   buildReplay,
   replayClock,
@@ -47,9 +49,14 @@ export function ReplayViewer(props: {
   const [outcome, setOutcome] = useState('all');
   const projection = useMemo(() => {
     try {
-      return { data: buildReplay(props.detail), error: '' };
+      const data = buildReplay(props.detail);
+      return { data, timeline: scoreTimeline(data.frames), error: '' };
     } catch (error) {
-      return { data: null, error: error instanceof Error ? error.message : String(error) };
+      return {
+        data: null,
+        timeline: null,
+        error: error instanceof Error ? error.message : String(error),
+      };
     }
   }, [props.detail]);
   const last = (projection.data?.frames.length ?? 1) - 1;
@@ -231,6 +238,14 @@ export function ReplayViewer(props: {
       <p className="replay-current" data-testid="replay-event">
         {replayEventText(frame.event, who)}
       </p>
+      {projection.timeline && (
+        <ScoreProgression
+          timeline={projection.timeline}
+          cursor={position}
+          homeName={props.name(home)}
+          awayName={props.name(away)}
+        />
+      )}
       <div className="bar">
         <label>
           Repetir jugada destacada

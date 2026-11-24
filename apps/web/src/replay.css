@@ -70,6 +70,59 @@
   border-left: 3px solid var(--accent);
   background: var(--raised);
 }
+.score-progression {
+  margin: 18px 0;
+  padding: 12px 16px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--raised);
+}
+.score-progression figcaption {
+  font-weight: 650;
+}
+.score-progression svg {
+  display: block;
+  width: min(100%, 660px);
+  margin: 8px auto 0;
+}
+.score-progression text {
+  fill: var(--muted);
+  font-size: 11px;
+}
+.score-progression-grid line,
+.score-progression-cursor {
+  stroke: var(--line);
+}
+.score-progression svg path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+}
+.score-progression-home {
+  color: var(--accent);
+}
+.score-progression-away {
+  color: var(--text);
+  stroke-dasharray: 4 3;
+}
+.score-progression-legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+  font-size: 12px;
+}
+.score-progression-legend span::before {
+  display: inline-block;
+  width: 14px;
+  margin-right: 6px;
+  border-top: 2px solid currentColor;
+  vertical-align: middle;
+  content: '';
+}
+.score-progression-legend .score-progression-away::before {
+  border-top-style: dashed;
+}
 .replay-grid {
   display: grid;
   grid-template-columns: minmax(420px, 1.4fr) minmax(280px, 1fr);

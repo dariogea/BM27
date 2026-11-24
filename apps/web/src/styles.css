@@ -1230,3 +1230,39 @@ button.portal-club-link.opponent-name {
   color: var(--muted);
   font-size: 13px;
 }
+
+.rival-scout {
+  padding-block: 5px 8px;
+}
+.rival-scout dl {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 3px 10px;
+  margin: 6px 0 8px;
+}
+.rival-scout dd {
+  margin: 0;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.rival-scout ol {
+  display: flex;
+  gap: 5px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.rival-scout li {
+  min-width: 1.8em;
+  text-align: center;
+  font-weight: 700;
+  border-radius: 3px;
+}
+.rival-win {
+  background: var(--soft-good);
+  color: var(--good);
+}
+.rival-loss {
+  background: var(--soft-bad);
+  color: var(--danger);
+}

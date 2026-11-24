@@ -84,5 +84,17 @@ with sync_playwright() as p:
                 totals = expected_totals[team]
                 assert values == [totals["fieldGoalsMade"], totals["fieldGoalsAttempted"],
                                   totals["points"] - totals["freeThrowsMade"]]
+        report.get_by_text("Rendimiento de los quintetos", exact=True).click()
+        lineup_table = report.get_by_role("region", name="Tabla de quintetos")
+        for side, other in [("home", "away"), ("away", "home")]:
+            report.get_by_role("combobox", name="Quintetos de").select_option(side)
+            rows = [row.get_by_role("cell").all_text_contents()
+                    for row in lineup_table.locator("tbody tr").all()]
+            assert rows
+            seconds = sum(int(m) * 60 + int(s) for m, s in (row[0].split(":") for row in rows))
+            assert seconds == box[side]["totals"]["seconds"] / 5
+            assert sum(int(row[1]) for row in rows) == box[side]["points"]
+            assert sum(int(row[2]) for row in rows) == box[other]["points"]
+            assert all(int(row[3]) == int(row[1]) - int(row[2]) for row in rows)
         print(f"PASS: {len(labels)} regulation periods, {extra} overtime periods")
     browser.close()

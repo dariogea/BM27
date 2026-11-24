@@ -1,3 +1,4 @@
+import { LineupAnalysis } from './LineupAnalysis';
 import { EMPTY_SHOT_TOTALS, shotBreakdown, type ShotTotals } from './shotBreakdown';
 import type { MatchDetail, MatchEvent, TeamBoxScore, TeamTactics } from '@bm27/schema';
 import { useMemo, useState } from 'react';
@@ -261,6 +262,7 @@ export function BoxScoreView(props: {
       <TeamBox team={home} title={name(home.teamId)} playerNames={props.playerNames} />
       <TeamBox team={away} title={name(away.teamId)} playerNames={props.playerNames} />
       <ShotAnalysis detail={detail} name={name} />
+      <LineupAnalysis detail={detail} name={name} playerNames={props.playerNames} />
       <PlayByPlay
         key={detail.result.id}
         detail={detail}

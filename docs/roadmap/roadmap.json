@@ -2240,7 +2240,10 @@
           "c": [
             {
               "t": "Comparar rendimiento de combinaciones de cinco jugadores",
-              "s": "pendiente"
+              "s": "hecho",
+              "i": 156,
+              "o": "codex",
+              "n": "Tiempo, puntos anotados y recibidos y diferencial por quinteto registrado en el acta de ambos equipos."
             },
             {
               "t": "Analizar perfiles de rivales con el mismo criterio",

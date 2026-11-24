@@ -1,3 +1,4 @@
+import { lineupBreakdown } from '../src/lineupBreakdown';
 import { beforeAll, describe, expect, it } from 'vitest';
 import { generateUniverseFromDataPack, simulateCompetitionSeason } from '@bm27/core';
 import type { MatchDetail } from '@bm27/schema';
@@ -83,6 +84,28 @@ describe('event-only match playback', () => {
         0,
       );
       expect(total).toBe(5 * (end.homeScore - end.awayScore));
+    }
+  });
+  it('reconciles five-player combinations with every match and player line', () => {
+    for (const match of matches) {
+      const { frames } = buildReplay(match);
+      for (const side of ['home', 'away'] as const) {
+        const team = match.boxScore[side];
+        const opponent = match.boxScore[side === 'home' ? 'away' : 'home'];
+        const groups = lineupBreakdown(frames, side);
+        expect(groups.reduce((score, row) => score + row.pointsFor, 0)).toBe(team.points);
+        expect(groups.reduce((score, row) => score + row.pointsAgainst, 0)).toBe(opponent.points);
+        expect(new Set(groups.map((row) => [...row.players].sort().join('|'))).size).toBe(
+          groups.length,
+        );
+        for (const player of team.players) {
+          const active = groups.filter((row) => row.players.includes(player.playerId));
+          expect(active.reduce((seconds, row) => seconds + row.seconds, 0)).toBe(player.seconds);
+          expect(
+            active.reduce((margin, row) => margin + row.pointsFor - row.pointsAgainst, 0),
+          ).toBe(replayPlayerTotals(frames.at(-1)!, player.playerId).plusMinus);
+        }
+      }
     }
   });
   it('counts the outgoing shift at a substitution and resumes only when the game clock moves', () => {

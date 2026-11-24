@@ -147,3 +147,5 @@ Reglas en [`coordinacion.md`](coordinacion.md).
 | #164 | PROBADA | Pérdidas por tipo de jugada en el acta, cotejadas con el registro y el total de ambos equipos. |
 
 | #168 | PROBADA | CSV de estadísticas individuales del acta, cotejado fila a fila con ambos equipos del registro. |
+
+| #167 | PROBADA | Portada con las mejoras del acta, instalador v0.1.0-alpha.21 de Windows y huella SHA-256 verificada. |

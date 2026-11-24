@@ -2247,7 +2247,11 @@
             },
             {
               "t": "Analizar perfiles de rivales con el mismo criterio",
-              "s": "pendiente"
+              "s": "en-curso",
+              "p": 50,
+              "i": 160,
+              "o": "codex",
+              "n": "Informe del siguiente rival en el Portal con forma, balance y medias de anotación de la temporada actual."
             },
             {
               "t": "Desglosar resultados por tipo de jugada y zona",

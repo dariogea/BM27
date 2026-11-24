@@ -1,3 +1,4 @@
+import { formOf } from './competitionData';
 import { useState } from 'react';
 import type { ReactNode } from 'react';
 import type { GameView } from './protocol';
@@ -54,6 +55,30 @@ export function PortalView(props: {
   );
   const competition = view.competitions.find((c) => c.id === props.competitionId);
   const table = view.tables.find((c) => c.competitionId === props.competitionId);
+  const opponent = mine?.nextMatch?.opponentId;
+  const upcomingTable = view.tables.find(
+    (c) => c.competitionId === mine?.competitionId && c.seasonNumber === view.seasonNumber,
+  );
+  const opposition = (upcomingTable?.matches ?? []).filter(
+    (match) => match.homeTeamId === opponent || match.awayTeamId === opponent,
+  );
+  const recentForm = opponent ? formOf(opposition, opponent) : [];
+  let rivalWins = 0;
+  let rivalPoints = 0;
+  let rivalConceded = 0;
+  for (const match of opposition) {
+    const home = match.homeTeamId === opponent;
+    const points = home ? match.homeScore : match.awayScore;
+    const conceded = home ? match.awayScore : match.homeScore;
+    rivalWins += Number(points > conceded);
+    rivalPoints += points;
+    rivalConceded += conceded;
+  }
+  const average = (points: number): string =>
+    (points / opposition.length).toLocaleString('es', {
+      minimumFractionDigits: 1,
+      maximumFractionDigits: 1,
+    });
   // A table can belong to the previous season after promotion; retain its actual season label.
   const recentMatches = view.tables
     .flatMap((c) => c.matches.map((match) => ({ match, season: c.seasonNumber })))
@@ -412,8 +437,42 @@ export function PortalView(props: {
             <>
               {clubButton(mine.nextMatch.opponentId, 'opponent-name')}
               <p>
-                Jornada {mine.nextMatch.round} · {mine.nextMatch.home ? 'En casa' : 'A domicilio'}
+                {upcomingTable?.phase === 'playoffs' ? 'Ronda' : 'Jornada'} {mine.nextMatch.round} ·{' '}
+                {mine.nextMatch.home ? 'En casa' : 'A domicilio'}
               </p>
+              {opposition.length ? (
+                <div
+                  className="rival-scout"
+                  role="group"
+                  aria-label="Rendimiento del próximo rival"
+                >
+                  <p className="note">
+                    Temporada {view.seasonNumber} · {opposition.length}{' '}
+                    {opposition.length === 1 ? 'partido' : 'partidos'}
+                  </p>
+                  <dl>
+                    <dt>Balance</dt>
+                    <dd>
+                      {rivalWins} V · {opposition.length - rivalWins} D
+                    </dd>
+                    <dt>Puntos a favor por partido</dt>
+                    <dd>{average(rivalPoints)}</dd>
+                    <dt>Puntos en contra por partido</dt>
+                    <dd>{average(rivalConceded)}</dd>
+                  </dl>
+                  <ol aria-label="Últimos cinco resultados, del más antiguo al más reciente">
+                    {recentForm.map((result, i) => (
+                      <li key={i} className={result === 'W' ? 'rival-win' : 'rival-loss'}>
+                        <abbr title={result === 'W' ? 'Victoria' : 'Derrota'}>
+                          {result === 'W' ? 'V' : 'D'}
+                        </abbr>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+              ) : (
+                <p className="note">El rival aún no ha jugado esta temporada.</p>
+              )}
               <button className="text-action" onClick={() => props.onNavigate('tactics')}>
                 Preparar partido →
               </button>

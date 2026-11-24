@@ -73,6 +73,28 @@ with sync_playwright() as p:
         return {balance:eur(v.finance.balance),limit:eur(v.market.salaryLimit),payroll:eur(v.market.payroll),position:row.position,played:row.played,wins:row.wins,losses:row.losses,team:v.myTeam.name};
     }""")
     portal=page.get_by_test_id('manager-portal')
+    rival_expected=page.evaluate("""() => {
+        const view=window.bm27ObservedState;
+        const id=view.myTeam.nextMatch.opponentId;
+        const matches=view.tables.find(t=>t.competitionId===view.myTeam.competitionId && t.seasonNumber===view.seasonNumber)
+            .matches.filter(m=>m.homeTeamId===id||m.awayTeamId===id);
+        const scores=matches.map(m=>m.homeTeamId===id ? [m.homeScore,m.awayScore] : [m.awayScore,m.homeScore]);
+        const wins=scores.filter(([a,b])=>a>b).length;
+        const mean=i=>(scores.reduce((n,s)=>n+s[i],0)/scores.length).toLocaleString('es',{minimumFractionDigits:1,maximumFractionDigits:1});
+        return {
+            names: [view.teamNames[id]],
+            stats: [`${wins} V · ${scores.length-wins} D`,mean(0),mean(1)],
+            form: scores.slice(-5).map(([a,b])=>a>b?'V':'D')
+        };
+    }""")
+    rival=page.get_by_role('group',name='Rendimiento del próximo rival')
+    assert page.locator('button.opponent-name').all_text_contents()==rival_expected['names']
+    assert rival.locator('dd').all_text_contents()==rival_expected['stats']
+    assert rival.get_by_role('listitem').all_text_contents()==rival_expected['form']
+    competition=page.get_by_role('combobox',name='Competición del portal')
+    competition.select_option(index=1)
+    assert rival.locator('dd').all_text_contents()==rival_expected['stats']
+    competition.select_option(index=0)
     for amount in ['balance','limit','payroll']:
         assert portal.get_by_text(expected[amount],exact=True).count()>0,expected
     actual=portal.get_by_role('region',name='Clasificación del portal',exact=True).locator('tr.mine td').all_text_contents()

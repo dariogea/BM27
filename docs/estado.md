@@ -159,3 +159,5 @@ Reglas en [`coordinacion.md`](coordinacion.md).
 | #184 | PROBADA | Gráfico de los puntos por tiempo de juego, sincronizado con la jugada del reproductor y comprobado con partidos con prórroga. |
 
 | #188 | PROBADA | Portada con las mejoras del acta, instalador v0.1.0-alpha.24 de Windows y huella SHA-256 verificada. |
+
+| #187 | PROBADA | Verificación más rápida de los guardados con SHA-256 nativo. Equivalencia de archivo, recuperación y compatibilidad verificadas. |

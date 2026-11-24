@@ -5,6 +5,7 @@ import {
   migrateUniverseData,
   parseUniverse,
   parseWith,
+  type SaveEnvelope,
   type Universe,
 } from '@bm27/schema';
 import { sha256Hex } from '../hash';
@@ -31,10 +32,25 @@ export class SaveError extends Error {
 /** Serialises a universe into a self-describing JSON document with a checksum. */
 export function exportSave(universe: Universe): string {
   const payload = JSON.stringify(universe);
+  return writeEnvelope(payload, sha256Hex(payload));
+}
+
+type SaveDigest = (payload: string) => Promise<string>;
+
+/** Serialises the same envelope with a caller-provided SHA-256 implementation. */
+export async function exportSaveWithDigest(
+  universe: Universe,
+  digest: SaveDigest,
+): Promise<string> {
+  const payload = JSON.stringify(universe);
+  return writeEnvelope(payload, await digest(payload));
+}
+
+function writeEnvelope(payload: string, sha256: string): string {
   const head = JSON.stringify({
     format: SAVE_FORMAT,
     schemaVersion: SCHEMA_VERSION,
-    checksum: `sha256:${sha256Hex(payload)}`,
+    checksum: `sha256:${sha256}`,
   });
   // Hand-assembled so the payload is serialised (and hashed) only once.
   return `${head.slice(0, -1)},"payload":${payload}}`;
@@ -45,6 +61,17 @@ export function exportSave(universe: Universe): string {
  * version of the game; older data is migrated automatically).
  */
 export function importSave(json: string): Universe {
+  const envelope = readEnvelope(json);
+  return verifyAndMigrate(envelope, sha256Hex(JSON.stringify(envelope.payload)));
+}
+
+/** Verifies the same envelope with a caller-provided SHA-256 implementation. */
+export async function importSaveWithDigest(json: string, digest: SaveDigest): Promise<Universe> {
+  const envelope = readEnvelope(json);
+  return verifyAndMigrate(envelope, await digest(JSON.stringify(envelope.payload)));
+}
+
+function readEnvelope(json: string): SaveEnvelope {
   let raw: unknown;
   try {
     raw = JSON.parse(json);
@@ -57,9 +84,11 @@ export function importSave(json: string): Universe {
       `The save file was written by a newer version of the game (data version ${version}; this build understands up to ${SCHEMA_VERSION}).`,
     );
   }
-  const envelope = parseWith(SaveEnvelopeSchema, 'save file', raw);
-  const actual = `sha256:${sha256Hex(JSON.stringify(envelope.payload))}`;
-  if (actual !== envelope.checksum) {
+  return parseWith(SaveEnvelopeSchema, 'save file', raw);
+}
+
+function verifyAndMigrate(envelope: SaveEnvelope, sha256: string): Universe {
+  if (`sha256:${sha256}` !== envelope.checksum) {
     throw new SaveError(
       'The save file is corrupt: its checksum does not match its content (it was modified or damaged).',
     );

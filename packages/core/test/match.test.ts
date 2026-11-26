@@ -50,6 +50,19 @@ describe.each([
     expect(changed.slice(0, firstHalf.length)).toEqual(firstHalf);
     expect(changed.slice(firstHalf.length)).not.toEqual(ordinary.slice(firstHalf.length));
     expect(beginHalftimeMatch(input, teamId).finish(override)).toEqual(changed);
+    for (const orders of [
+      { offenseFocus: 'perimeter' },
+      { defenseScheme: 'zone' },
+      { pickAndRollCoverage: 'blitz' },
+      { offensiveRebounding: 'crash' },
+    ] as const) {
+      const adjusted = beginHalftimeMatch(input, teamId).finish(orders);
+      expect(adjusted.slice(0, firstHalf.length)).toEqual(firstHalf);
+      expect(adjusted.slice(firstHalf.length), JSON.stringify(orders)).not.toEqual(
+        ordinary.slice(firstHalf.length),
+      );
+      expect(beginHalftimeMatch(input, teamId).finish(orders)).toEqual(adjusted);
+    }
     expect(simulateMatch(input)).toEqual(ordinary);
   });
 });

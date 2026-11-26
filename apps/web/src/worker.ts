@@ -36,10 +36,10 @@ import {
   standingsOf,
   type AdvanceOutcome,
   type CompetitionSeasonOptions,
-  type HalftimeTactics,
+  type HalftimeChanges,
   type ManagedMatchday,
 } from '@bm27/core';
-import { DEFAULT_TACTICS, TeamTacticsSchema } from '@bm27/schema';
+import { TeamTacticsSchema } from '@bm27/schema';
 import type {
   DataPack,
   MatchDetail,
@@ -78,9 +78,10 @@ const replayProofs = new ReplayProofs();
 let offseasonReport: OffseasonReport | null = null;
 const myMatches = new Map<
   string,
-  { detail: MatchDetail; tactics: Record<string, TeamTactics>; halftimeTactics?: HalftimeTactics }
+  { detail: MatchDetail; tactics: Record<string, TeamTactics>; halftimeTactics?: HalftimeChanges }
 >();
 let managedMatch: ManagedMatchday | null = null;
+const halftimeChangesSchema = TeamTacticsSchema.omit({ rotationDepth: true }).partial().optional();
 
 function tablesOf(u: Universe): CompetitionViewData[] {
   if (u.currentSeason) {
@@ -597,15 +598,13 @@ async function handle(command: Command): Promise<Reply> {
         managedMatch = null;
         return state('Has salido del encuentro. La jornada sigue pendiente.');
       }
-      const parsed = command.tactics
-        ? TeamTacticsSchema.parse({ ...DEFAULT_TACTICS, ...command.tactics })
-        : undefined;
+      const parsed = halftimeChangesSchema.parse(command.tactics);
       const before = need();
       managedMatch = null;
       const { reply } = await playMatchday(before, (options) => match.finish(parsed, options));
       const stored = myMatches.get(match.matchId);
       if (stored && parsed) {
-        stored.halftimeTactics = { pace: parsed.pace, pressure: parsed.pressure };
+        stored.halftimeTactics = parsed;
       }
       reply.watchedMatchId = match.matchId;
       return reply;

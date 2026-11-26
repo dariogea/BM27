@@ -223,3 +223,15 @@
 .replay-player-stats td {
   font-variant-numeric: tabular-nums;
 }
+
+.bar.halftime-tactics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-bottom: 16px;
+}
+
+.halftime-tactics label {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}

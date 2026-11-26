@@ -25,7 +25,8 @@ import {
   playMatch,
   prepareTeam,
   summarizeMatch,
-  type HalftimeTactics,
+  type HalftimeChanges,
+  type HalftimeSettings,
   type PlayedMatch,
   type PreparedTeam,
 } from '../match';
@@ -577,8 +578,8 @@ export interface ManagedMatchday {
   matchId: string;
   events: MatchEvent[];
   boxScore: BoxScore;
-  tactics: HalftimeTactics;
-  finish(tactics?: HalftimeTactics, options?: CompetitionSeasonOptions): AdvanceOutcome;
+  tactics: HalftimeSettings;
+  finish(tactics?: HalftimeChanges, options?: CompetitionSeasonOptions): AdvanceOutcome;
 }
 
 /** Starts the user's next fixture without applying any part of the matchday to the universe. */

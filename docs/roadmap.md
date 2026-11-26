@@ -241,7 +241,7 @@ _Que cada partido se juegue posesión a posesión con reglas de baloncesto reale
   - ✅ Efecto de las tácticas verificado con tests de equilibrio (`F0`)
   - ⬜ Ayudas defensivas y rotaciones (`F2`)
   - ⬜ Jugadas ensayadas y sistemas de ataque propios (`F2`)
-  - ✅ Ritmo y presión del equipo propio al descanso (`F2` · @codex · [#178](https://github.com/dariogea/BM27/issues/178)) — _Continuación del mismo partido al descanso, solo para el club dirigido. La primera mitad se conserva y el resultado se incorpora a la jornada al terminar._
+  - ✅ Instrucciones de ataque y defensa al descanso (`F2` · @codex · [#178](https://github.com/dariogea/BM27/issues/178)) — _Ritmo, presión, foco ofensivo, defensa, bloqueo directo y rebote ofensivo para el club dirigido (#193). La primera mitad se conserva y el resultado se incorpora a la jornada al terminar._
   - ⬜ Ajustes tácticos del entrenador rival durante el partido (`F2` · [#10](https://github.com/dariogea/BM27/issues/10)) — _T-011._
   - ⬜ Planes específicos contra un rival (`F2`)
 - **Rotaciones, energía y entrenador de partido** — 65 %

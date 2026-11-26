@@ -59,6 +59,23 @@ def check(browser, periods, pack=None):
     pressure = "low" if half["tactics"]["pressure"] == "high" else "high"
     page.get_by_label("Ritmo al descanso").select_option(pace)
     page.get_by_label("Presión al descanso").select_option(pressure)
+    orders = {"pace": pace, "pressure": pressure}
+    focus = "inside" if half["tactics"]["offenseFocus"] != "inside" else "perimeter"
+    rebound = "crash" if half["tactics"]["offensiveRebounding"] != "crash" else "get-back"
+    page.get_by_label("Ataque al descanso").select_option(focus)
+    page.get_by_label("Rebote ofensivo al descanso").select_option(rebound)
+    orders.update(offenseFocus=focus, offensiveRebounding=rebound)
+    defense = "zone" if periods == 2 else "man"
+    page.get_by_label("Defensa al descanso").select_option(defense)
+    if defense != half["tactics"]["defenseScheme"]:
+        orders["defenseScheme"] = defense
+    coverage = page.get_by_label("Bloqueo directo al descanso")
+    if defense == "zone":
+        expect(coverage).to_be_disabled()
+    else:
+        plan = "blitz" if half["tactics"]["pickAndRollCoverage"] != "blitz" else "drop"
+        coverage.select_option(plan)
+        orders["pickAndRollCoverage"] = plan
     page.add_script_tag(path=os.environ.get("BM27_AXE_PATH", "/tmp/bm27-axe/package/axe.min.js"))
     assert page.evaluate("""async () => (await axe.run(document, {
         runOnly: {type: 'tag', values: ['wcag2a','wcag2aa','wcag21aa']}
@@ -67,7 +84,7 @@ def check(browser, periods, pack=None):
     page.wait_for_function("Boolean(window.bm27Match)")
     played = page.evaluate("window.bm27Match")
     assert played["detail"]["events"][:len(half["detail"]["events"])] == half["detail"]["events"]
-    assert played["halftimeTactics"] == {"pace": pace, "pressure": pressure}
+    assert played["halftimeTactics"] == orders
     assert page.evaluate("window.bm27State.myTeam.tactics") == initial["myTeam"]["tactics"]
     assert page.evaluate("window.bm27State.myTeam.lastMatch") == played["detail"]["result"]
     page.evaluate("(matchId) => window.bm27Worker.postMessage({id: 900002, type: 'finishManagedMatch', matchId})",

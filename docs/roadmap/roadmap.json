@@ -308,11 +308,11 @@
               "f": "F2"
             },
             {
-              "t": "Ritmo y presión del equipo propio al descanso",
+              "t": "Instrucciones de ataque y defensa al descanso",
               "s": "hecho",
               "f": "F2",
               "i": 178,
-              "n": "Continuación del mismo partido al descanso, solo para el club dirigido. La primera mitad se conserva y el resultado se incorpora a la jornada al terminar.",
+              "n": "Ritmo, presión, foco ofensivo, defensa, bloqueo directo y rebote ofensivo para el club dirigido (#193). La primera mitad se conserva y el resultado se incorpora a la jornada al terminar.",
               "o": "codex"
             },
             {

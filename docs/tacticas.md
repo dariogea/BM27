@@ -84,8 +84,9 @@ no datos verificados; el entrenador que pide los tiempos muertos y hace los camb
 
 ## Instrucciones al descanso
 
-En **Tácticas → Dirigir partido** se puede seguir la primera mitad y ajustar el ritmo y la
-presión del equipo propio al descanso. Los ajustes se aplican desde el siguiente periodo y
+En **Tácticas → Dirigir partido** se puede seguir la primera mitad y ajustar el ritmo, la presión, el foco ofensivo, la defensa, la cobertura del bloqueo directo y
+el rebote ofensivo del equipo propio al descanso. La cobertura del bloqueo directo se usa en
+defensa individual. Los ajustes se aplican desde el siguiente periodo y
 siguen vigentes en la prórroga. El plan de la temporada se conserva para la próxima jornada.
 El marcador y la clasificación se actualizan al terminar el encuentro, junto con el resto
 de la jornada. El resultado se guarda en la partida. El acta y el registro detallado de ese

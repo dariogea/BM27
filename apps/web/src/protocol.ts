@@ -1,6 +1,6 @@
 import type { WorldPayload, WorldQuery } from './worldTypes';
 import type { SlotSummary } from './slotStore';
-import type { HalftimeTactics } from '@bm27/core';
+import type { HalftimeChanges, HalftimeSettings } from '@bm27/core';
 import type {
   Contract,
   Fixture,
@@ -35,7 +35,7 @@ export type Command =
   | { id: number; type: 'releasePlayer'; playerId: string }
   | { id: number; type: 'advance'; watch?: boolean }
   | { id: number; type: 'beginManagedMatch' }
-  | { id: number; type: 'finishManagedMatch'; matchId: string; tactics?: HalftimeTactics }
+  | { id: number; type: 'finishManagedMatch'; matchId: string; tactics?: HalftimeChanges }
   | { id: number; type: 'cancelManagedMatch'; matchId: string }
   | { id: number; type: 'finishSeason' }
   | { id: number; type: 'matchDetail'; matchId: string }
@@ -193,7 +193,7 @@ export interface HalftimeView {
   matchId: string;
   detail: Pick<MatchDetail, 'events' | 'boxScore'>;
   playerNames: Record<string, string>;
-  tactics: HalftimeTactics;
+  tactics: HalftimeSettings;
 }
 
 export type Reply =
@@ -216,7 +216,7 @@ export type Reply =
       playerNames: Record<string, string>;
       /** Tactics each team used in this match, by team id. */
       tactics: Record<string, TeamTactics>;
-      halftimeTactics?: HalftimeTactics;
+      halftimeTactics?: HalftimeChanges;
       ms: number;
     }
   | { id: number; type: 'save'; json: string; fileName: string }

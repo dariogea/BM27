@@ -297,15 +297,17 @@ const clamp = (value: number, min: number, max: number): number =>
 const round2 = (value: number): number => Math.round(value * 100) / 100;
 
 export type HalftimeTactics = Pick<TeamTactics, 'pace' | 'pressure'>;
+export type HalftimeSettings = Omit<TeamTactics, 'rotationDepth'>;
+export type HalftimeChanges = Partial<HalftimeSettings>;
 
 interface HalftimeSnapshot {
   events: MatchEvent[];
-  tactics: HalftimeTactics;
+  tactics: HalftimeSettings;
 }
 
 export interface HalftimeMatch extends HalftimeSnapshot {
   /** Completes the same simulation. No second call is permitted. */
-  finish(tactics?: HalftimeTactics): MatchEvent[];
+  finish(tactics?: HalftimeChanges): MatchEvent[];
 }
 
 /** Simulates one match and returns its complete event log. */
@@ -336,7 +338,7 @@ export function beginHalftimeMatch(input: MatchInput, teamId: string): HalftimeM
 function* runMatch(
   input: MatchInput,
   managedSide?: 'home' | 'away',
-): Generator<HalftimeSnapshot, MatchEvent[], HalftimeTactics | undefined> {
+): Generator<HalftimeSnapshot, MatchEvent[], HalftimeChanges | undefined> {
   const rng = createRng(input.seed);
   const rules = input.ruleset;
   const events: MatchEvent[] = [];
@@ -1790,13 +1792,19 @@ function* runMatch(
     });
     if (managedSide && period === halftime) {
       const side = managedSide === 'home' ? home : away;
-      const { pace, pressure } = side.tactics;
-      const tactics = yield {
-        events: events.slice(),
-        tactics: { pace, pressure },
-      };
-      if (tactics)
-        side.tactics = { ...side.tactics, pace: tactics.pace, pressure: tactics.pressure };
+      const { rotationDepth, ...settings } = side.tactics;
+      const tactics = yield { events: events.slice(), tactics: settings };
+      if (tactics) {
+        side.tactics = {
+          rotationDepth,
+          pace: tactics.pace ?? side.tactics.pace,
+          pressure: tactics.pressure ?? side.tactics.pressure,
+          offenseFocus: tactics.offenseFocus ?? side.tactics.offenseFocus,
+          defenseScheme: tactics.defenseScheme ?? side.tactics.defenseScheme,
+          pickAndRollCoverage: tactics.pickAndRollCoverage ?? side.tactics.pickAndRollCoverage,
+          offensiveRebounding: tactics.offensiveRebounding ?? side.tactics.offensiveRebounding,
+        };
+      }
     }
   }
 

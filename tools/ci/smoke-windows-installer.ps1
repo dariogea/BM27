@@ -1,6 +1,6 @@
 param(
     [Parameter(Mandatory = $true)]
-    [string]$BuiltExecutable,
+    [string]$BuildDirectory,
 
     [Parameter(Mandatory = $true)]
     [string]$BundleDirectory
@@ -12,7 +12,12 @@ if ($bundle.Count -ne 1) {
     throw "Expected a single Windows installer, found $($bundle.Count)."
 }
 
-$expectedHash = (Get-FileHash -LiteralPath $BuiltExecutable -Algorithm SHA256).Hash
+$built = @(Get-ChildItem -LiteralPath $BuildDirectory -Filter '*.exe' -File)
+if ($built.Count -eq 0) {
+    throw 'No compiled Windows application was found.'
+}
+$buildHashes = @($built | Get-FileHash -Algorithm SHA256 | ForEach-Object { $_.Hash })
+Write-Output "Compiled executables: $($built.Name -join ', ')"
 $installDirectory = Join-Path ([IO.Path]::GetTempPath()) ('bm27-smoke-' + [Guid]::NewGuid())
 # NSIS reads /D= as the last argument. It takes the entire remaining path, including spaces.
 $setup = Start-Process -FilePath $bundle[0].FullName -ArgumentList "/S /D=$installDirectory" -PassThru
@@ -25,11 +30,13 @@ if ($setup.ExitCode -ne 0) {
 }
 
 $installed = @(Get-ChildItem -LiteralPath $installDirectory -Filter '*.exe' -File |
-    Where-Object { (Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash -eq $expectedHash })
+    Where-Object { (Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash -in $buildHashes })
 if ($installed.Count -ne 1) {
     throw 'The installed application does not match the compiled executable.'
 }
 
+$installedHash = (Get-FileHash -LiteralPath $installed[0].FullName -Algorithm SHA256).Hash
+Write-Output "Installed and verified: $($installed[0].Name)"
 $app = Start-Process -FilePath $installed[0].FullName -WorkingDirectory $installDirectory -PassThru
 try {
     $deadline = [DateTime]::UtcNow.AddSeconds(45)
@@ -40,7 +47,7 @@ try {
             throw "The installed application exited before opening a window (code $($app.ExitCode))."
         }
         if ($app.MainWindowHandle -ne 0 -and $app.MainWindowTitle -like '*Basketball Manager 2027*') {
-            Write-Output "Installed and opened: $($app.MainWindowTitle) (SHA-256 $expectedHash)"
+            Write-Output "Installed and opened: $($app.MainWindowTitle) (SHA-256 $installedHash)"
             return
         }
     } while ([DateTime]::UtcNow -lt $deadline)

@@ -73,9 +73,14 @@ jobs:
       - name: Verificar instalación y arranque en Windows
         shell: pwsh
         run: |
-          ./tools/ci/smoke-windows-installer.ps1 `
-            -BuiltExecutable apps/desktop/src-tauri/target/release/bm27-desktop.exe `
-            -BundleDirectory apps/desktop/src-tauri/target/release/bundle/nsis
+          try {
+            ./tools/ci/smoke-windows-installer.ps1 `
+              -BuildDirectory apps/desktop/src-tauri/target/release `
+              -BundleDirectory apps/desktop/src-tauri/target/release/bundle/nsis
+          } catch {
+            Write-Output "::error title=Prueba de instalación::$(($_.Exception.Message -replace '[\r\n]+', ' '))"
+            throw
+          }
 
       - name: Publicar en GitHub Releases
         if: github.event.inputs.tag != '' || startsWith(github.ref, 'refs/tags/')

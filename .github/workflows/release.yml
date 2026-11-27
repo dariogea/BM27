@@ -75,7 +75,6 @@ jobs:
         run: |
           try {
             ./tools/ci/smoke-windows-installer.ps1 `
-              -BuildDirectory apps/desktop/src-tauri/target/release `
               -BundleDirectory apps/desktop/src-tauri/target/release/bundle/nsis
           } catch {
             Write-Output "::error title=Prueba de instalación::$(($_.Exception.Message -replace '[\r\n]+', ' '))"

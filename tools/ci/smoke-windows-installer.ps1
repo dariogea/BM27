@@ -20,10 +20,11 @@ $extractorPath = if ($extractor) { $extractor.Source } else {
 if ($LASTEXITCODE -ne 0) {
     throw "Could not extract the Windows installer (7-Zip exit code $LASTEXITCODE)."
 }
-$payloadHashes = @(Get-ChildItem -LiteralPath $payloadDirectory -Filter '*.exe' -File -Recurse |
+$appFileName = 'bm27-desktop.exe'
+$payloadHashes = @(Get-ChildItem -LiteralPath $payloadDirectory -Filter $appFileName -File -Recurse |
     Get-FileHash -Algorithm SHA256 | ForEach-Object { $_.Hash })
 if ($payloadHashes.Count -eq 0) {
-    throw 'The Windows installer does not contain an executable.'
+    throw "The Windows installer does not contain $appFileName."
 }
 New-Item -Path $installDirectory -ItemType Directory | Out-Null
 # NSIS reads /D= as the last argument. It takes the entire remaining path, including spaces.
@@ -36,7 +37,7 @@ if ($setup.ExitCode -ne 0) {
     throw "The installer exited with code $($setup.ExitCode)."
 }
 
-$installed = @(Get-ChildItem -LiteralPath $installDirectory -Filter '*.exe' -File -Recurse |
+$installed = @(Get-ChildItem -LiteralPath $installDirectory -Filter $appFileName -File -Recurse |
     Where-Object { (Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash -in $payloadHashes })
 if ($installed.Count -ne 1) {
     $installedNames = @(Get-ChildItem -LiteralPath $installDirectory -Filter '*.exe' -File -Recurse).Name

@@ -163,3 +163,5 @@ Reglas en [`coordinacion.md`](coordinacion.md).
 | #187 | PROBADA | Verificación más rápida de los guardados con SHA-256 nativo. Equivalencia de archivo, recuperación y compatibilidad verificadas. |
 
 | #193 | PROBADA | Ampliadas las órdenes al descanso con ajustes de ataque, defensa, bloqueo directo y rebote ofensivo. |
+
+| #196 | PROBADA | Portada con las nuevas órdenes al descanso y el guardado rápido, instalador v0.1.0-alpha.26 de Windows y huella SHA-256 verificada. |

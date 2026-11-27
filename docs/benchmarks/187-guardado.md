@@ -13,3 +13,7 @@ Los archivos fueron idénticos byte a byte. La importación incluye el cálculo 
 ## Tamaño con gzip
 
 La medición de referencia de #17 sobre el mismo universo dio 1.945.619 bytes comprimidos a 10 temporadas, 5.323.547 a 30 y 8.731.881 a 50. Para la partida de 50 temporadas la compresión y la descompresión tardaron 1.201 y 393 ms respectivamente, medidos por separado con zlib de Node. Queda por medir el tiempo completo de guardar y cargar en la aplicación de Windows.
+
+## Apertura completa en Chromium
+
+En el mismo equipo se abrió el JSON de 50 temporadas desde el selector de archivos del juego. Se midió desde la selección hasta que el Worker devolvió la partida cargada. La mediana de tres intentos por versión bajó de **4.140 ms en la alfa 24 a 1.908 ms en la alfa 25**. Se verificaron la semilla y la temporada 51 en las seis cargas. Los tiempos incluyen lectura del archivo y el envío del estado al navegador. El instalador de Windows requiere una medición propia.

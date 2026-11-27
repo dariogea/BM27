@@ -70,6 +70,13 @@ jobs:
           if-no-files-found: error
           retention-days: 14
 
+      - name: Verificar instalación y arranque en Windows
+        shell: pwsh
+        run: |
+          ./tools/ci/smoke-windows-installer.ps1 `
+            -BuiltExecutable apps/desktop/src-tauri/target/release/bm27-desktop.exe `
+            -BundleDirectory apps/desktop/src-tauri/target/release/bundle/nsis
+
       - name: Publicar en GitHub Releases
         if: github.event.inputs.tag != '' || startsWith(github.ref, 'refs/tags/')
         shell: bash
